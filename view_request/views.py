@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.utils import timezone
 from django.core.paginator import Paginator
-from .models import Blog
+from .models import Blog,Comment
 from .forms import NewBlog
 
 
@@ -60,5 +60,17 @@ def delete(request,pk):
 
 def detail(request,pk):
     blog_detail= get_object_or_404(Blog,pk=pk)
-    return render(request,'viewcrud/detail.html',{'blog':blog_detail})
+    comments_list = Comment.objects.filter(post = pk)
+    return render(request,'viewcrud/detail.html',{'blog':blog_detail,'comments':comments_list})
+
+def new_comment(request, pk):
+    comment = Comment()
+    comment.writer = request.POST['writer']
+    comment.content = request.POST['content']
+    comment.post = get_object_or_404(Blog, pk=pk)
+    comment.save()
+    return redirect('detail', pk)
+
+
+
 # Create your views here.
