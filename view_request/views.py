@@ -14,7 +14,7 @@ def read(request):
     blogs = Blog.objects
     blog_list = Blog.objects.all()
     #페이지 자르기
-    paginator = Paginator(blog_list,5)
+    paginator = Paginator(blog_list,6)
     page=request.GET.get('page')
     posts=paginator.get_page(page)
     return render(request, 'viewcrud/funccrud.html',{'blogs':blogs, 'posts':posts})
