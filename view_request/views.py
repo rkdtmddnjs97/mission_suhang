@@ -19,7 +19,7 @@ def create(request):
            post=form.save(commit=False)
            post.pub_date=timezone.now()
            post.save()
-           return redirect('home')
+           return redirect('home1')
 
     #입력된 글 저장하기
 
@@ -48,6 +48,6 @@ def update(request,pk):
 def delete(request,pk):
     blog=get_object_or_404(Blog,pk=pk)
     blog.delete()
-    return redirect('home')
+    return redirect('home1')
 
 # Create your views here.
