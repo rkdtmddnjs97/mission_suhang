@@ -58,7 +58,7 @@ ROOT_URLCONF = 'missionProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['missionProject/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
