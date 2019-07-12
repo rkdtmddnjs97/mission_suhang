@@ -62,3 +62,12 @@ def detail(request,pk):
     blog_detail= get_object_or_404(Blog,pk=pk)
     return render(request,'viewcrud/detail.html',{'blog':blog_detail})
 # Create your views here.
+
+def scrap(request,pk):
+    blog_detail=get_object_or_404(Blog, pk=pk)
+    if blog_detail.user.filter(username=request.user.username).exists():
+        blog_detail.user.remove(request.user)    
+    else:
+        blog_detail.user.add(request.user)
+    blog_detail.save()
+    return redirect('detail', pk)

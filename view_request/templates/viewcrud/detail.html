@@ -1,7 +1,21 @@
 <h1>상세페이지</h1>
 <div class="container jumbotron">
-        <h1>{{ blog.title }}</h1>
-        <p>{{ blog.pub_date }}</p>
-        <p>{{ blog.body }}</p>
-        <a href="{% url 'home1' %}">돌아가기</a>
-    </div>
+
+    <p>이 글을 '스크랩'한 사람</p>
+    {% for user in blog.user.all %}
+    {{user}}
+    {% endfor %}
+
+
+    <h1>{{ blog.title }}</h1>
+    <p>{{ blog.pub_date }}</p>
+    <p>{{ blog.body }}</p>
+
+
+    <form action="{% url 'scrap' blog.id %}" method="GET">
+        <input type="hidden" name="scrap" value="{{user}}">
+        <button type="submit">스크랩</button>
+    </form>
+
+    <a href="{% url 'home1' %}">돌아가기</a>
+</div>
