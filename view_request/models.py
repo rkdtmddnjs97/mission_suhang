@@ -5,11 +5,8 @@ class Blog(models.Model):
     title=models.CharField(max_length=100)
     pub_date=models.DateTimeField('date published')
     body=models.TextField()
-<<<<<<< HEAD
-=======
     user = models.ManyToManyField(User, blank=True)
 
->>>>>>> 79cf8ac880b116c1fdcc5e123155b81035d6457d
     def __str__(self):
         return self.title
         
