@@ -1,0 +1,49 @@
+{% if error %}
+{{ error }}
+<br>
+<br>
+{% endif %}
+
+<!doctype html>
+<html lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>login</title>
+
+
+</head>
+
+<body>
+
+
+      <h1>Login</h1>
+      <div class="tabs">
+        <span class="tab signin active"><a href="#signin">Sign in</a></span>
+        
+    
+    
+            <form method="POST" action="{% url 'login'%}">
+                {% csrf_token %}
+            <input type="email" name="username" id="email" class="inpt" required="required" placeholder="Your id">
+            <label for="email">Your id</label>
+            <input type="password" name="password" id="password" class="inpt" required="required"
+              placeholder="Your password">
+            <label for="password">Your password</label>
+            <input type="checkbox" id="remember" class="checkbox" checked>
+            <label for="remember">Remember me</label>
+            <div class="submit-wrap">
+              <input type="submit" value="Sign in" class="submit">
+              <a href="{% url 'signup' %}" class="more"><input type="button" value="Sign Up" class="submit"></a>
+            </div>
+          </form>
+
+
+  
+
+
+
+  
+
+</body>
+
