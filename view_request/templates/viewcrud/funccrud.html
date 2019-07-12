@@ -9,7 +9,7 @@
     {% for blog in posts %}
       <h2>{{blog.title}}</h2>
       <h5>{{blog.pub_date}}</h5>
-      <p>{{blog.body}}</p>
+      <p>{{blog.summary}}<a href="{% url 'detail' blog.id %}">...more</a></p>
       <a href = "{% url 'update' blog.id %}">수정</a>
       <a href = "{% url 'delete' blog.id %}">삭제</a>
 

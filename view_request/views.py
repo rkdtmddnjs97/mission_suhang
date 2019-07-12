@@ -58,4 +58,7 @@ def delete(request,pk):
     blog.delete()
     return redirect('home1')
 
+def detail(request,pk):
+    blog_detail= get_object_or_404(Blog,pk=pk)
+    return render(request,'viewcrud/detail.html',{'blog':blog_detail})
 # Create your views here.

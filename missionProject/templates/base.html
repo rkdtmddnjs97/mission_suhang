@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <div class='pont'>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <a class="navbar-brand" href="{% url 'home' %}">Mission Complete</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -52,16 +53,22 @@
                     </form>
                 </div>
             </nav>
+    <div class="container">
     {% block content %}
     {% endblock %}
-
+</div>
+</div>
 </body>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
 input{
     all:unset;
 }
-
+.pont{
+    font-family: 'Do Hyeon', sans-serif;
+}
 </style>
 
 </html>

@@ -7,4 +7,7 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+        
+    def summary(self):
+        return self.body[:100] #100글자까지만 출력해라
 # Create your models here.
