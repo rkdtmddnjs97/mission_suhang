@@ -14,7 +14,7 @@
 
 <body>
     <div class='pont'>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <a class="navbar-brand" href="{% url 'home' %}">Mission Complete</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,13 +47,20 @@
                     </li>
                         
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                   
+                            <span class='green_window'>
+                                <input type='text' class='input_text' />
+                            </span>
+                            &nbsp;
+                            <button type='submit' class='sch_smit'>검색</button>
+                    
+                     
                 </div>
             </nav>
+           
+            
     <div class="container">
+    
     {% block content %}
     {% endblock %}
 </div>
@@ -69,6 +76,37 @@ input{
 .pont{
     font-family: 'Do Hyeon', sans-serif;
 }
+.green_window {
+                                display: inline-block;
+                                width: 366px; height: 34px;
+                                border: 3px solid #7c817b;
+                                background: white;
+                            }
+                            .input_text {
+                                width: 348px; height: 21px;
+                                margin: 6px 0 0 9px;
+                                border: 0;
+                                line-height: 21px;
+                                font-weight: bold;
+                                font-size: 16px;
+                                outline: none;
+                            }
+                            .sch_smit {
+                                width: 54px; height: 35px;
+                                margin: 0; border: 0;
+                                vertical-align: top;
+                                background: rgb(108, 114, 106);
+                                color: white;
+                                font-weight: bold;
+                                border-radius: 1px;
+                                cursor: pointer;
+                            }
+                            .sch_smit:hover {
+                                background: rgb(120, 121, 119);
+                            }
+
+
+
 </style>
 
 </html>

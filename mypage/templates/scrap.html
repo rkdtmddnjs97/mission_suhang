@@ -4,6 +4,12 @@
 
 <h1>스크랩한 게시물</h1>
 <br>
+{%for post in scraped_post %}
+<a href="{% url 'detail' post.id %}">
+    <li>{{post.title}}</li>
+</a>
+{%endfor%}
+
 <a href="{% url 'profile' %}">뒤로가기</a>
 
 {% endblock %}

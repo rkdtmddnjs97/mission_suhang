@@ -6,16 +6,28 @@
     <a href="{% url 'newblog' %}">글쓰기</a>
 
     <!--블로그 목록 뜨는곳-->
+    
+    <div class="container">
+    <div class="row">
     {% for blog in posts %}
-      <h2>{{blog.title}}</h2>
-      <h5>{{blog.pub_date}}</h5>
-      <p>{{blog.summary}}<a href="{% url 'detail' blog.id %}">...more</a></p>
-      <a href = "{% url 'update' blog.id %}">수정</a>
-      <a href = "{% url 'delete' blog.id %}">삭제</a>
+    <div class="col">
+    <div class="card" style="width: 30rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{blog.title}}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{blog.pub_date}}</h6>
+              <p class="card-text">{{blog.summary}}<a href="{% url 'detail' blog.id %}">...more</a></p>
+              
+              <a href = "{% url 'update' blog.id %}">수정</a>
+              <a href = "{% url 'delete' blog.id %}">삭제</a>
 
-     <hr>
-
-    {% endfor %}
+            </div>
+          </div>
+          <br>
+        </div>
+    
+          {% endfor %}
+        </div>
+    </div>
     <!--페이지네이터-->
     <div class='container'>
         {%if posts.has_previous%}
@@ -32,4 +44,5 @@
         <a href="?page={{posts.paginator.num_pages}}">Last</a>
         {%endif%}
     </div>
+   
 {% endblock %}

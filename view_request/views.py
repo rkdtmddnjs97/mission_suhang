@@ -14,7 +14,7 @@ def read(request):
     blogs = Blog.objects
     blog_list = Blog.objects.all()
     #페이지 자르기
-    paginator = Paginator(blog_list,5)
+    paginator = Paginator(blog_list,6)
     page=request.GET.get('page')
     posts=paginator.get_page(page)
     return render(request, 'viewcrud/funccrud.html',{'blogs':blogs, 'posts':posts})
@@ -74,3 +74,12 @@ def new_comment(request, pk):
 
 
 # Create your views here.
+
+def scrap(request,pk):
+    blog_detail=get_object_or_404(Blog, pk=pk)
+    if blog_detail.user.filter(username=request.user.username).exists():
+        blog_detail.user.remove(request.user)    
+    else:
+        blog_detail.user.add(request.user)
+    blog_detail.save()
+    return redirect('detail', pk)
