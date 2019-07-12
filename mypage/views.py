@@ -13,3 +13,6 @@ def performing(request):
 
 def scrap(request):
     return render(request, 'scrap.html')
+
+def editProfile(request):
+    return render(request, 'editProfile.html')

@@ -1,0 +1,31 @@
+<h1>회원정보 수정 창</h1>
+
+
+<form action="" method="POST">
+    {% csrf_token%}
+
+    회원사진
+    <br><br>
+    <input type="text" name="nickname" value="닉네임">
+    (lvl)
+    <br><br>
+    
+    평점
+    <br><br>
+
+    <input type="text" name="university" value="학교">
+    <br><br>
+
+    <input type="text" name="department" value="전공">
+    <br><br>
+
+    <input type="textarea" name="introduction" value="간단한 본인소개">
+    <br><br>
+
+    #해시태그
+    <br>
+    <br>
+    <button type="submit">수정</button>
+    <a href="{% url 'profile' %}">취소</a>
+
+</form>
