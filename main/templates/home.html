@@ -1,3 +1,6 @@
+{% extends 'base.html'%}
+
+{% block content %}
 <h1>메인 페이지입니당</h1>
 <a href="{% url 'profile' %}">mypage</a>
 <br>
@@ -13,3 +16,4 @@
 
 <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
 <h1>추천 의뢰</h1> 
+{% endblock %}
