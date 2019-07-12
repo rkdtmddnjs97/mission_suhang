@@ -5,7 +5,7 @@ from .models import accountInfo
 def signup(request):
     if request.method == 'POST':
         if request.POST['password1'] == request.POST['password2']:
-            user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
+            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
             auth.login(request, user)
             Info=accountInfo()
             Info.university=request.POST['university']
