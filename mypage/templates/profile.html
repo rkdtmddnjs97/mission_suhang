@@ -1,13 +1,16 @@
-<h1>회원정보</h1>
-<a href="{% url 'editProfile' %}">회원정보 수정</a>
+{% extends 'base.html'%}
 
+{% block content %}
+<h1>회원정보</h1> <a href="{% url 'editProfile' %}">회원정보 수정</a>
+<br><br>
 <p>회원사진</p>
 <p>닉네임 (lvl)</p>
 <p>평점</p>
 <p>간단한 본인소개</p>
 <p>#해시태그</p>
 
-
-<a href="{% url 'performing' %}">수행중인 미션</a>
-<a href="{% url 'commissioned' %}">의뢰중인 미션</a>
+<a href="{% url 'performing' %}">수행중인 미션</a><br>
+<a href="{% url 'commissioned' %}">의뢰중인 미션</a><br>
 <a href="{% url 'scrap' %}">스크랩한 미션</a>
+
+{% endblock %}
