@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.utils import timezone
+from django.core.paginator import Paginator
 from .models import Blog
 from .forms import NewBlog
 
@@ -8,8 +9,15 @@ def welcome(request):
     return render(request, 'viewcrud/index.html')
 
 def read(request):
-    blogs=Blog.objects.all()
-    return render(request, 'viewcrud/funccrud.html',{'blogs':blogs})
+    #페이지네이터기능
+    #blogs=Blog.objects.all()
+    blogs = Blog.objects
+    blog_list = Blog.objects.all()
+    #페이지 자르기
+    paginator = Paginator(blog_list,5)
+    page=request.GET.get('page')
+    posts=paginator.get_page(page)
+    return render(request, 'viewcrud/funccrud.html',{'blogs':blogs, 'posts':posts})
 
 def create(request):
     #새로운 글쓰기 == POST

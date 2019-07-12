@@ -12,7 +12,7 @@
     <a href="{% url 'newblog' %}">글쓰기</a>
 
     <!--블로그 목록 뜨는곳-->
-    {% for blog in blogs %}
+    {% for blog in posts %}
       <h2>{{blog.title}}</h2>
       <h5>{{blog.pub_date}}</h5>
       <p>{{blog.body}}</p>
@@ -22,5 +22,21 @@
      <hr>
 
     {% endfor %}
+    <!--페이지네이터-->
+    <div class='container'>
+        {%if posts.has_previous%}
+        <a href="?page=1">First</a>
+        <a href="?page={{posts.previous_page_number}}">Previous</a>
+        {%endif%}
+
+        <span>{{posts.number}}</span>
+        <span>of</span>
+        <span>{{posts.paginator.num_pages}}</span>
+
+        {%if posts.has_next%}
+        <a href="?page={{posts.next_page_number}}">NEXT</a>
+        <a href="?page={{posts.paginator.num_pages}}">Last</a>
+        {%endif%}
+    </div>
 </body>
 </html>
