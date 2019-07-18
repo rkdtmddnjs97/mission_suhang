@@ -73,8 +73,7 @@ def new_comment(request, pk):
 
 
 
-# Create your views here.
-
+# scrap function
 def scrap(request,pk):
     blog_detail=get_object_or_404(Blog, pk=pk)
     if blog_detail.user.filter(username=request.user.username).exists():
