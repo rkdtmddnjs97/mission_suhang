@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1>Detail Post</h1>
+    <p>이 임무를 노리는 사람</p>
+    {% for user in post.user.all %}
+    {{user}}
+    {% endfor %}
+    <p>
+        <h2>제목 : {{post.title}}</h2>
+        <p>작성자 : {{post.writer}}</p>
+        <p>발행일 : {{post.pub_date}}</p>
+        <p>
+            본문
+            <br>
+            {{post.body}}
+        </p>
+    </p>
+    <form action="{% url 'scrap' post.id%}" method="get">
+        <input type="hidden" name = 'scrap' value="{{user}}">
+        <button type="submit">scrap</button>
+    </form>
+    
+    <br>
+    <a href="{% url 'request' %}"> Go list </a>
+    <br>
+    
+
+    <a href="{% url 'edit' post.id %}">수정하기</a>
+    <a href="{%url 'delete' post.id %}">삭제하기</a>
+    <hr>
+    <h3>comments</h3>
+    {% for comment in comments %}
+    <p>작성자:{{comment.writer}}</p>
+    <p>comment:{{comment.content}}</p>
+    <hr>
+    {% endfor%}
+    <form action="{% url 'new_comment' post.id %}" method="POST">
+        {% csrf_token %}
+        작성자 : <input name="writer" type="text">
+        <br>
+        내용 :<br> <textarea name="content" id="" cols="30" rows="10"></textarea>
+        <br>
+        <input type="submit">
+        <br>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+{%endblock%}
