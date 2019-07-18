@@ -45,7 +45,7 @@ def delete(request, post_id):
 
 def new_comment(request, post_id):
     comment = B_Comment()
-    comment.writer = request.POST['writer']
+    comment.writer = request.user.username
     comment.content = request.POST['content']
     comment.post = get_object_or_404( B_Blog, pk=post_id)
     comment.save()

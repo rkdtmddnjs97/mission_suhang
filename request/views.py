@@ -33,6 +33,7 @@ def create(request):
     writer = request.user.username
     new_post.writer = writer
     new_post.pub_date = timezone.datetime.now()
+    
     new_post.save()
     return redirect('request')
 
@@ -54,7 +55,7 @@ def delete(request, post_id):
 
 def new_comment(request, post_id):
     comment = Comment()
-    comment.writer = request.POST['writer']
+    comment.writer = request.user.username
     comment.content = request.POST['content']
     comment.post = get_object_or_404(Post, pk=post_id)
     comment.save()
@@ -67,4 +68,14 @@ def scrap(request,post_id):
     else:
         post.user.add(request.user)
     post.save()
+    return redirect('detail', post_id)
+def start(request,post_id):
+    mode=Post.objects.get(id=post_id)
+    mode.status='running'
+    mode.save()
+    return redirect('detail', post_id)
+def end(request,post_id):
+    mode=Post.objects.get(id=post_id)
+    mode.status='blocked'
+    mode.save()
     return redirect('detail', post_id)

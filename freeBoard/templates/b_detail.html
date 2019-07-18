@@ -27,8 +27,10 @@
 
 <a href="{% url 'board' %}"> home </a>
 <br>
+{% if user.username == blog.writer %}
 <a href="{% url 'b_edit' blog.id %}">수정하기</a>
 <a href="{%url 'b_delete' blog.id %}">삭제하기</a>
+{% endif %}
 <hr>
 <h2>comments</h2>
 {% for comment in comments %}
@@ -39,7 +41,7 @@
 {% endfor%}
 <form action="{% url 'b_new_comment' blog.id %}" method="POST">
     {% csrf_token %}
-    작성자 : <input name="writer" type="text">
+    작성자 :<p> {{user.username}}</p>
     <br>
     내용 : <textarea name="content" id="" cols="30" rows="10"></textarea>
     <input type="submit">

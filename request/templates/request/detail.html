@@ -10,6 +10,7 @@
         <h2>제목 : {{post.title}}</h2>
         <p>작성자 : {{post.writer}}</p>
         <p>발행일 : {{post.pub_date}}</p>
+        <p>상태 : {{post.status}}</p>
         <p>
             본문
             <br>
@@ -29,7 +30,11 @@
     {% if user.username == post.writer %}
     <a href="{% url 'edit' post.id %}">수정하기</a>
     <a href="{% url 'delete' post.id %}">삭제하기</a>
-    <a href="">미션완료!</a>
+    {% if post.status == 'ready' %}
+    <a href="{% url 'start' post.id %}">미션수행</a>
+    {% elif post.status == 'running' %}
+    <a href="{% url 'end' post.id %}">미션완료</a>
+    {% endif %}
     {% endif %}
     
     <hr>
@@ -41,7 +46,7 @@
     {% endfor%}
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}
-        작성자 : <input name="writer" type="text">
+        작성자 :<p> {{user.username}}</p>
         <br>
         내용 :<br> <textarea name="content" id="" cols="30" rows="10"></textarea>
         <br>

@@ -7,6 +7,8 @@ class Post(models.Model):
     pub_date = models.DateTimeField('Date published')
     body = models.TextField()
     user = models.ManyToManyField(User, blank=True)
+    status=models.CharField(default='ready',max_length=200)
+   
 class Comment(models.Model):
     writer = models.CharField(max_length=200)
     content = models.TextField()
