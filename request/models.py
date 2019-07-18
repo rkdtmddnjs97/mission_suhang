@@ -11,7 +11,7 @@ class Post(models.Model):
     body = models.TextField()
     user = models.ManyToManyField(User, blank=True)
     status=models.CharField(default='ready',max_length=200)
-   hashtag = models.ManyToManyField(Hashtag)
+    hashtag = models.ManyToManyField(Hashtag)
 
     def __str__(self):
         return self.title

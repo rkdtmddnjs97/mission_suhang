@@ -11,6 +11,9 @@ class Profile(models.Model):
     name=models.CharField(max_length=200,null=True)
     nickname=models.CharField(max_length=200,null=True)
     introduction=models.TextField(null=True)
+    email=models.CharField(max_length=200,null=True)
+    approval=models.BooleanField(default=False)
+    ssn=models.CharField(max_length=200,null=True)
 
     def __str__(self):
         return self.name

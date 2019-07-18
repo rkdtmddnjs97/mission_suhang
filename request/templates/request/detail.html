@@ -43,6 +43,8 @@
     <p>작성자:{{comment.writer}}</p>
     <p>comment:{{comment.content}}</p>
     <hr>
+    
+    <a href="{% url 'comment_delete' comment.id %}">삭제하기</a>
     {% endfor%}
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}

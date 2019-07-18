@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>login</title>
+
+</head>
+<body>
+
+    <h1>이메일 인증</h1>
+    
+      
+          <form method="POST" action="{% url 'approve'%}">
+              {% csrf_token %}
+             인증번호 <input type="text" name="ssn"  placeholder="Your ssn">
+             <input type="submit" value="인증" >
+        </form>
+</body>

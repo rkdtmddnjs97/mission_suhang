@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 
+
 # Create your views here.
 
 def home(request):
@@ -32,6 +33,7 @@ def create(request):
     new_post.title=request.POST['title']
     writer = request.user.username
     new_post.writer = writer
+    new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
     
     new_post.save()
@@ -60,7 +62,13 @@ def new_comment(request, post_id):
     comment.post = get_object_or_404(Post, pk=post_id)
     comment.save()
     return redirect('detail', post_id)
-
+def comment_delete(request,comment_id):
+    delete_comment=Comment.objects.get(id=comment_id)
+    delete_comment.delete()
+    return redirect('detail', delete_comment.post.pk)
+def comment_edit(request,comment_id):
+    edit_comment=Comment.objects.get(id=comment_id)
+    edit_comment
 def scrap(request,post_id):
     post=get_object_or_404(Post, pk = post_id)
     if post.user.filter(username=request.user.username).exists():
