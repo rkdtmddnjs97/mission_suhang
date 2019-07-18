@@ -18,6 +18,7 @@ from django.urls import path, include
 import main.views
 import view_request.urls
 import view_request.views
+import request.urls
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path('', main.views.home, name="home"),
     path('mypage/', include('mypage.urls')),
     path('accounts/', include('accounts.urls')),
-    path('crud/',include(view_request.urls)),
+    path('request/', include('request.urls')),
+    # path('crud/',include(view_request.urls)),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
    
