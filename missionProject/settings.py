@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'mypage.apps.MypageConfig',
     'request.apps.RequestConfig',
     'view_request.apps.ViewRequestConfig',
+    'freeBoard.apps.FreeboardConfig',
 
 ]
 

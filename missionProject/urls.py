@@ -26,5 +26,6 @@ urlpatterns = [
     path('mypage/', include('mypage.urls')),
     path('accounts/', include('accounts.urls')),
     path('crud/',include(view_request.urls)),
+    path('freeBoard/',include('freeBoard.urls')),
 ]
    

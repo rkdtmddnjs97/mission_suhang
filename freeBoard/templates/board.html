@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Make Your Blog! </h1>
+    <a href="{% url 'b_new'%}">새 글 작성하기 </a>
+    <h2>블로그 글 목록</h2>
+    {% for blog in Blogs %}
+    <a href="{% url 'b_detail' blog.id %}">
+        제목 : {{blog.title}}
+    </a>
+    <br>
+    작성자 : {{blog.writer}}
+    <br>
+   작성일: {{blog.pub_date}}
+    <hr>
+    
+    
+    {% endfor %}
+
+{% endblock %}

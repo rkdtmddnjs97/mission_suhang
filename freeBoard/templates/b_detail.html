@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Detail Post</h1>
+
+<p>이 글을 '좋아요'하는 사람</p>
+{% for user in blog.user.all %}
+{{user}}
+
+{% endfor %}
+{{like_count}}
+<hr>
+
+    <h2>제목 : {{blog.title}}</h2>
+    <p>작성자 : {{blog.writer}}</p>
+    <p>발행일: {{blog.pub_date}}</p>
+
+    
+        본문
+        <br>
+        <p> {{blog.body}}</p>
+</p>
+<form action="{% url 'b_like' blog.id %}" method="get">
+    <input type="hidden" name = 'like' value="{{user}}">
+    <button type="submit">좋아요</button>
+</form>
+<br>
+
+<a href="{% url 'board' %}"> home </a>
+<br>
+<a href="{% url 'b_edit' blog.id %}">수정하기</a>
+<a href="{%url 'b_delete' blog.id %}">삭제하기</a>
+<hr>
+<h2>comments</h2>
+{% for comment in comments %}
+{{comment.writer}}
+<br>
+{{comment.content}}
+<hr>
+{% endfor%}
+<form action="{% url 'b_new_comment' blog.id %}" method="POST">
+    {% csrf_token %}
+    작성자 : <input name="writer" type="text">
+    <br>
+    내용 : <textarea name="content" id="" cols="30" rows="10"></textarea>
+    <input type="submit">
+</form>
+</div>
+{% endblock %}
