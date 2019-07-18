@@ -19,39 +19,42 @@
 
 <body>
 
-  
-
-                
-             <form method="POST" action="{% url 'signup' %}">
-                    {% csrf_token %}
-
-                        <input type="email" name="username" id="email" class="inpt" required="required"
-                            placeholder="Your id">
-                        <label for="email">Your id</label>
-                        <input type="password" name="password1" id="password" class="inpt" required="required"
-                            placeholder="Your password">
-                            <input type="password" name="password2" id="password" class="inpt" required="required"
-                            placeholder="Your password">
-                        <label for="password">Your password</label>
-                        <hr>
-                        대학교:<input type="text" name="university">
-                        <hr>
-                        학과:<input type="text" name="department">
-                        <hr>
-                        이름:<input type="text" name="name">
-                        <hr>
-                        닉네임:<input type="text" name="nickname"> <hr>
-                        자기소개: <textarea name="introduction" id="" cols="30" rows="10" placeholder="write your content"></textarea>
-                        <hr>
-                        <div class="submit-wrap">
-                             <input class="btn btn-primary" type="submit" value="Sign Up!">
-
-                        </div>
-                    </form>
-   
 
 
 
+    <form method="POST" action="{% url 'signup' %}">
+        {% csrf_token %}
 
-{% endblock %}
+        <label for="email">ID</label>
+        <input type="text" name="username" id="email" class="inpt" required="required" placeholder="Your id">
 
+        <label for="password">Password</label>
+        <input type="password" name="password1" id="password" class="inpt" required="required"
+            placeholder="password">
+
+        <label for="password">Confirm Password</label>
+        <input type="password" name="password2" id="password" class="inpt" required="required"
+            placeholder="confirm password">
+        
+        <hr>
+        대학교 : <input type="text" name="university">
+        <hr>
+        학과 : <input type="text" name="department">
+        <hr>
+        이름 : <input type="text" name="name">
+        <hr>
+        닉네임 : <input type="text" name="nickname">
+        <hr>
+        자기소개 : <textarea name="introduction" id="" cols="30" rows="10" placeholder="write your content"></textarea>
+        <hr>
+        <div class="submit-wrap">
+            <input class="btn btn-primary" type="submit" value="Sign Up!">
+
+        </div>
+    </form>
+
+
+
+
+
+    {% endblock %}

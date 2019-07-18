@@ -8,7 +8,7 @@
         <p>{{ blog.pub_date }}</p>
         <p>{{ blog.body }}</p>
 
-        <p>이 글을 '좋아요'하는 사람</p>
+        <p>이 글을 '스크랩'한 사람</p>
         {% for user in blog.user.all %}
         {{user}}
         {% endfor %}
