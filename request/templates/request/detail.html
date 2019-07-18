@@ -26,8 +26,12 @@
     <br>
     
 
+    {% if user.username == post.writer %}
     <a href="{% url 'edit' post.id %}">수정하기</a>
-    <a href="{%url 'delete' post.id %}">삭제하기</a>
+    <a href="{% url 'delete' post.id %}">삭제하기</a>
+    <a href="">미션완료!</a>
+    {% endif %}
+    
     <hr>
     <h3>comments</h3>
     {% for comment in comments %}

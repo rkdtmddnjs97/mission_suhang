@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -23,12 +24,14 @@ def detail(request,post_id):
     return render(request, 'request/detail.html', {'post':post, 'comments':comments_list})
 
 def new(request):
-    return render(request, 'request/new.html')
+    user = request.user
+    return render(request, 'request/new.html', {'user':user})
 
 def create(request):
     new_post = Post()
     new_post.title=request.POST['title']
-    new_post.writer = request.POST['writer']
+    writer = request.user.username
+    new_post.writer = writer
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
     return redirect('request')
@@ -40,7 +43,6 @@ def edit(request, post_id):
 def update(request, post_id):
     update_post = Post.objects.get(id=post_id)
     update_post.title = request.POST['title']
-    update_post.writer = request.POST['writer']
     update_post.body = request.POST['body']
     update_post.save()
     return redirect('request')

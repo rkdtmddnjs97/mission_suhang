@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import B_Blog,B_Comment
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your views here.
 def board(request):
@@ -13,12 +14,14 @@ def detail(request,post_id):
     return render(request, 'b_detail.html', {'blog':blog,'comments':comments_list,'like_count':blog.total_likes})
 
 def new(request):
-    return render(request, 'b_new.html')
+    user = request.user
+    return render(request, 'b_new.html', {'user':user})
 
 def create(request):
     new_post = B_Blog()
     new_post.title=request.POST['title']
-    new_post.writer = request.POST['writer']
+    writer = request.user.username
+    new_post.writer = writer
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
@@ -31,7 +34,6 @@ def edit(request, post_id):
 def update(request, post_id):
     update_post = B_Blog.objects.get(id=post_id)
     update_post.title = request.POST['title']
-    update_post.writer = request.POST['writer']
     update_post.body = request.POST['body']
     update_post.save()
     return redirect('board')

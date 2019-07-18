@@ -28,13 +28,12 @@ urlpatterns = [
     path('', main.views.home, name="home"),
     path('mypage/', include('mypage.urls')),
     path('accounts/', include('accounts.urls')),
-<<<<<<< HEAD
     path('crud/',include(view_request.urls)),
     path('freeBoard/',include('freeBoard.urls')),
-]
-=======
     path('request/', include('request.urls')),
+]
+
     # path('crud/',include(view_request.urls)),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
->>>>>>> f936038dbd4feb3b084c7617c38ae4f413407d13
+# ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
    
