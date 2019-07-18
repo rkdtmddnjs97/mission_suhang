@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from view_request.models import Blog
+from request.models import Post
 from accounts.models import Profile
-#from .models import Blog
+from django.contrib.auth.models import User
+
 # Create your views here.
 
-
-#import 가 답이 안나와서..
 
 def profile(request):
     # my_profile = Profile.objects.all()
@@ -21,11 +20,24 @@ def performing(request):
     return render(request, 'performing.html')
 
 def scrap(request):
-    #view_request앱 Blog모델객체 사용
-    my_scraped_post = Blog.objects.filter(user = request.user)
+    #request앱 Post모델객체 사용
+    my_scraped_post = Post.objects.filter(user = request.user)
 
     return render(request, 'scrap.html', {'scraped_post':my_scraped_post})
 
 
 def editProfile(request):
-    return render(request, 'editProfile.html')
+    userProfile = request.user.profile
+    return render(request, 'editProfile.html', {'userProfile': userProfile})
+
+def updateProfile(request):
+    #user = User.objects.get(pk=user_id)
+    user = request.user
+    
+    user.profile.university=request.POST['university']
+    user.profile.department=request.POST['department']
+    user.profile.name=request.POST['name']
+    user.profile.nickname=request.POST['nickname']
+    user.profile.introduction=request.POST['introduction']
+    user.save()
+    return redirect('profile')

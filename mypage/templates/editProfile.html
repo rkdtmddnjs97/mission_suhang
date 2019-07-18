@@ -1,25 +1,30 @@
 <h1>회원정보 수정 창</h1>
 
 
-<form action="" method="POST">
+<form action="{% url 'updateProfile' %}" method="POST">
     {% csrf_token%}
 
     회원사진
     <br><br>
-    <input type="text" name="nickname" value="닉네임">
+
+    이름 : <input type="text" name="name" value="{{userProfile.name}}">
+    <br><br>
+
+    닉네임 : <input type="text" name="nickname" value="{{userProfile.nickname}}">
     (lvl)
     <br><br>
     
     평점
     <br><br>
 
-    <input type="text" name="university" value="학교">
+    학교 : <input type="text" name="university" value="{{userProfile.university}}">
     <br><br>
 
-    <input type="text" name="department" value="전공">
+    전공 : <input type="text" name="department" value="{{userProfile.department}}">
     <br><br>
 
-    <input type="textarea" name="introduction" value="간단한 본인소개">
+    간단한 본인소개 <br>
+    <input type="textarea" name="introduction" value="{{userProfile.introduction}}">
     <br><br>
 
     #해시태그

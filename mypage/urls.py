@@ -8,4 +8,5 @@ urlpatterns = [
     path('performing/', views.performing, name="performing"),
     path('scrap/', views.scrap, name="scrap"),
     path('editProfile/', views.editProfile, name="editProfile"),
+    path('updateProfile/', views.updateProfile, name="updateProfile"),
 ]
