@@ -1,19 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .models import accountInfo
+from .models import Profile
 def signup(request):
     if request.method == 'POST':
         if request.POST['password1'] == request.POST['password2']:
             user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
             auth.login(request, user)
-            Info=accountInfo()
-            Info.university=request.POST['university']
-            Info.department=request.POST['department']
-            Info.name=request.POST['name']
-            Info.nickname=request.POST['nickname']
-            Info.introduction=request.POST['introduction']
-            Info.save()
+            
+            user.profile.university=request.POST['university']
+            user.profile.department=request.POST['department']
+            user.profile.name=request.POST['name']
+            user.profile.nickname=request.POST['nickname']
+            user.profile.introduction=request.POST['introduction']
+            user.save()
            
             return redirect('home')
     return render(request, 'signup.html')
