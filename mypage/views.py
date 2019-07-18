@@ -9,8 +9,9 @@ from django.contrib.auth.models import User
 def profile(request):
     # my_profile = Profile.objects.all()
     my_profile = request.user.profile
+    user = request.user
 
-    return render(request, 'profile.html', {'my_profile':my_profile})
+    return render(request, 'profile.html', {'my_profile':my_profile, 'user':user})
     # return render(request, 'profile.html')
 
 def commissioned(request):
