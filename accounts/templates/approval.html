@@ -11,9 +11,63 @@
     <h1>이메일 인증</h1>
     
       
-          <form method="POST" action="{% url 'approve'%}">
+          <form method="POST" action="{% url 'approve'%}" name='submitForm'>
               {% csrf_token %}
              인증번호 <input type="text" name="ssn"  placeholder="Your ssn">
              <input type="submit" value="인증" >
         </form>
+        <div id="timerTxt"></div>
+
+        <script type="text/javascript">
+
+          var timerId;
+      
+          var timerSec = 5;
+      
+          
+      
+          window.onload= function() {
+      
+            timerId = setInterval('timer()', 1000);
+      
+          }
+      
+          
+      
+          function timer() {
+      
+            var min = Math.floor(timerSec / 60)
+      
+            var sec = timerSec % 60;
+      
+            
+      
+            var msg = (min < 10 ? "0"+ min : min) + ":" + (sec < 10 ? "0"+ sec : sec);
+      
+            timerSec--;
+      
+            
+      
+            if (timerSec < 0) { /* time End*/
+      
+              msg += "<br>Timer End!"
+      
+              clearInterval(timerId);
+              document.submitForm.submit()
+      
+            }
+      
+            
+      
+            document.getElementById("timerTxt").innerHTML = msg;
+      
+            
+      
+          }
+      
+        </script>
+      
+      
+      
+     
 </body>

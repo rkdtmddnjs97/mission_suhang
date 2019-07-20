@@ -39,9 +39,10 @@ def signup(request):
     return render(request, 'signup.html')
 
 def approve(request):
+    if request.user.profile.ssn == request.POST['ssn']:
 
-    if request.user.profile.approval == False:
-         if request.user.profile.ssn == request.POST['ssn']:
+    
+        if request.user.profile.approval == False:
             request.user.profile.approval=True
             
     else:
