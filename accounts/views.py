@@ -15,7 +15,7 @@ def signup(request):
             string_pool = string.ascii_letters + string.digits + string.punctuation
  
 # 랜덤한 문자열 생성
-            result = "" 
+            result = "인증번호:" 
             for i in range(_LENGTH) :
                 result += random.choice(string_pool) # 랜덤한 문자열 하나 선택
 
@@ -29,11 +29,11 @@ def signup(request):
             user.profile.nickname=request.POST['nickname']
             user.profile.introduction=request.POST['introduction']
             user.profile.email=request.POST['email']
-            user.profile.ssn=result
+            user.profile.ssn=result.split(':')[1]
 
             user.save()
             
-            email = EmailMessage('subject text', result , to=[request.POST['email']])
+            email = EmailMessage('인증 메일', result , to=[request.POST['email']])
             email.send()
             return render(request,'approval.html')
     return render(request, 'signup.html')
