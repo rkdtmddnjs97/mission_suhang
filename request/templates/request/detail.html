@@ -40,12 +40,26 @@
     <hr>
     <h3>comments</h3>
     {% for comment in comments %}
+   
     <p>작성자:{{comment.writer}}</p>
+    {% if comment.edit == False %}
     <p>comment:{{comment.content}}</p>
     <hr>
     
     <a href="{% url 'comment_delete' comment.id %}">삭제하기</a>
-    {% endfor%}
+    <a href="{% url 'comment_edit' comment.id %}">수정하기</a>
+    {% else %}
+    <form action="{% url 'modify' comment.id %}" method="POST">
+        {% csrf_token %}
+      
+          <textarea name= 'modify_comment' id="" cols="30" rows="10" placeholder="write your content" >{{comment.content}}</textarea>
+        <br>
+        <br>
+        <input type="submit" value='수정'>
+        
+</form>
+    {% endif %}
+    {% endfor %}
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}
         작성자 :<p> {{user.username}}</p>

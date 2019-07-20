@@ -68,7 +68,15 @@ def comment_delete(request,comment_id):
     return redirect('detail', delete_comment.post.pk)
 def comment_edit(request,comment_id):
     edit_comment=Comment.objects.get(id=comment_id)
-    edit_comment
+    edit_comment.edit=True
+    edit_comment.save()
+    return redirect('detail', edit_comment.post.pk)
+def modify(request,comment_id):
+    modify=Comment.objects.get(id=comment_id)
+    modify.content=request.POST['modify_comment']
+    modify.edit=False
+    modify.save()
+    return redirect('detail', modify.post.pk)
 def scrap(request,post_id):
     post=get_object_or_404(Post, pk = post_id)
     if post.user.filter(username=request.user.username).exists():
