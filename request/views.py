@@ -66,15 +66,11 @@ def comment_delete(request,comment_id):
     delete_comment=Comment.objects.get(id=comment_id)
     delete_comment.delete()
     return redirect('detail', delete_comment.post.pk)
-def comment_edit(request,comment_id):
-    edit_comment=Comment.objects.get(id=comment_id)
-    edit_comment.edit=True
-    edit_comment.save()
     return redirect('detail', edit_comment.post.pk)
 def modify(request,comment_id):
     modify=Comment.objects.get(id=comment_id)
     modify.content=request.POST['modify_comment']
-    modify.edit=False
+
     modify.save()
     return redirect('detail', modify.post.pk)
 def scrap(request,post_id):

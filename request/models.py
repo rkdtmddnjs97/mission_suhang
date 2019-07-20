@@ -20,5 +20,10 @@ class Comment(models.Model):
     writer = models.CharField(max_length=200)
     content = models.TextField(null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    edit=models.BooleanField(default=False)
+    
 # Create your models here.
+class Opinion(models.Model):
+    o_writer = models.CharField(max_length=200)
+    o_content = models.TextField(null=True)
+    o_post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    
