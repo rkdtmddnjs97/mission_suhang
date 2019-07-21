@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
-def home(request):
+def request_home(request):
     post_list = Post.objects.all()
     if request.user.is_authenticated:
         my_scrap_post = Post.objects.filter(user = request.user)
@@ -16,19 +16,19 @@ def home(request):
     paginator = Paginator(post_list, 3)
     page = request.GET.get('page')
     blogs = paginator.get_page(page)
-    return render(request, 'request/home.html', {'blogs':blogs,'scrap_post':my_scrap_post})
+    return render(request, 'request_home.html', {'blogs':blogs,'scrap_post':my_scrap_post})
                                         
 
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments_list = Comment.objects.filter(post = post_id)
     hashtag = Hashtag.objects.filter(tag=post_id)
-    return render(request, 'request/detail.html', {'post':post, 'comments':comments_list, 'hashtag':hashtag})
+    return render(request, 'detail.html', {'post':post, 'comments':comments_list, 'hashtag':hashtag})
 
 def new(request):
     user = request.user
     hashtag = Hashtag.objects.all()
-    return render(request, 'request/new.html', {'user':user, 'hashtag':hashtag})
+    return render(request, 'new.html', {'user':user, 'hashtag':hashtag})
 
 def create(request):
     new_post = Post()
@@ -60,7 +60,7 @@ def create(request):
 
 def edit(request, post_id):
     edit_post = Post.objects.get(id=post_id)
-    return render(request, 'request/edit.html', {'post':edit_post})
+    return render(request, 'edit.html', {'post':edit_post})
 
 def update(request, post_id):
     update_post = Post.objects.get(id=post_id)
@@ -115,3 +115,7 @@ def end(request,post_id):
     mode.status='blocked'
     mode.save()
     return redirect('detail', post_id)
+
+def tag_post(request, tag_id):
+    tag_related_posts = Post.objects.filter(hashtag = tag_id)
+    return render(request, 'tag_post.html', {'tag_posts':tag_related_posts})
