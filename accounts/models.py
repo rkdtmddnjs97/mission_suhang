@@ -16,7 +16,7 @@ class Profile(models.Model):
     ssn=models.CharField(max_length=200,null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.user)
     
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
