@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Hashtag(models.Model):
     name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
     title=models.CharField(max_length=200)
@@ -11,7 +14,7 @@ class Post(models.Model):
     body = models.TextField()
     user = models.ManyToManyField(User, blank=True)
     status=models.CharField(default='ready',max_length=200)
-    hashtag = models.ManyToManyField(Hashtag)
+    hashtag = models.ManyToManyField(Hashtag, related_name="tag")
 
     def __str__(self):
         return self.title

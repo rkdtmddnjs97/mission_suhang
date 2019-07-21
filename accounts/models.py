@@ -9,8 +9,9 @@ class Profile(models.Model):
     university=models.CharField(max_length=200,null=True)
     department=models.CharField(max_length=200,null=True)
     name=models.CharField(max_length=200,null=True)
-    nickname=models.CharField(max_length=200,null=True)
+    hashtag=models.CharField(max_length=50,null=True)
     introduction=models.TextField(null=True)
+    
     email=models.CharField(max_length=200,null=True)
     approval=models.BooleanField(default=False)
     ssn=models.CharField(max_length=200,null=True)

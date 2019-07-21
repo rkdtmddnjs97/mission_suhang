@@ -52,9 +52,6 @@ def approve(request):
     return redirect('home')  
 
     
-  
-            
-
 
 def login(request):
     if request.method == 'POST':

@@ -16,6 +16,10 @@
             <br>
             {{post.body}}
         </p>
+        해시태그<br>
+        {% for tag in hashtag.all %}
+            <a href="">#{{tag}}</a>
+        {% endfor %}
     </p>
     <form action="{% url 'scrap' post.id%}" method="get">
         <input type="hidden" name = 'scrap' value="{{user}}">
