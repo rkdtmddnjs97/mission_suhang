@@ -15,6 +15,7 @@ class Post(models.Model):
     user = models.ManyToManyField(User, blank=True)
     status=models.CharField(default='ready',max_length=200)
     hashtag = models.ManyToManyField(Hashtag, related_name="tag")
+    mypage=models.ForeignKey(User, on_delete=models.CASCADE,related_name='mypage',null=True)
 
     def __str__(self):
         return self.title

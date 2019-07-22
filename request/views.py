@@ -37,6 +37,7 @@ def create(request):
     new_post.title=request.POST['title']
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
+    new_post.mypage=request.user
     new_post.save()
 
     #tag_temp=request.POST['hashtag'].upper()
@@ -50,11 +51,17 @@ def create(request):
         if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
             pass
         else:
+            # if Hashtag.objects.filter(name=hash.upper()).exists():
+            #     tag = Hashtag.objects.filter(name=hash.upper())
+            #     # print("해당 tag의 타입은")
+            #     print(type(tag))
+            #     # print("입니다.")
+            #     new_post.hashtag.add(tag)
+            # else:
+            #     tag = Hashtag.objects.create(name=hash.upper())
+            #     new_post.hashtag.add(tag)
             tag = Hashtag.objects.create(name=hash.upper())
             new_post.hashtag.add(tag)
-
-    # tag = Hashtag.objects.create(name=request.POST['hashtag'].upper())
-    # new_post.hashtag.add(tag)
 
     return redirect('request')
 

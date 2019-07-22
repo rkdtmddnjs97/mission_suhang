@@ -15,7 +15,8 @@ def profile(request):
     # return render(request, 'profile.html')
 
 def commissioned(request):
-    return render(request, 'commissioned.html')
+    commissioned_post=Post.objects.filter(mypage=request.user)
+    return render(request, 'commissioned.html',{'commissioned_post':commissioned_post})
 
 def performing(request):
     return render(request, 'performing.html')
