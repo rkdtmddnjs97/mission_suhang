@@ -39,6 +39,10 @@
     {% elif post.status == 'running' %}
     <a href="{% url 'end' post.id %}">미션완료</a>
     {% endif %}
+    {% else %}
+    {% if post.status == 'ready' %}
+    <a href="{% url 'missionApply' post.id %}">의로 신청</a>
+    {% endif %}
     {% endif %}
     
     <hr>

@@ -1,19 +1,35 @@
+
 {% extends 'base.html'%}
+{% load custom_tags %}
 
 {% block content %}
 
 <h1>의뢰한 글</h1>
-{% for commission in commissioned_post %}
-
-        <a href="{% url 'detail' commission.id %}">
+{% for commission in applications %}
+<a href="{% url 'detail' commission.id %}">
+        
             <b>제목 : {{commission.title}}</b>
         </a>
-        <hr>
+        
         작성자 : {{commission.writer}}
         <hr>
         {{commission.pub_date}}
-
+        <hr>
+       {{commission.id}}
+       {{ran}}
+        <details>
+            <summary>수행자들</summary>
+            {% for number in appliers|length|times %} 
+            
+            {% if connector|get_by_index:number == commission.id %} 
+                {{appliers|get_by_index:number}} 
+            {% endif %} 
+        {% endfor %} 
+        </details>
+       
+       <br>
 {% endfor %}
+
 <br>
 <a href="{% url 'profile' %}">뒤로가기</a>
 

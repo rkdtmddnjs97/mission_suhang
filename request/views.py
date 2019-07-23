@@ -1,11 +1,34 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Comment, Hashtag
+from .models import Post, Comment, Hashtag,ApplyMission
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
+from accounts.models import Profile
 
 
 # Create your views here.
+# def like(request,post_id):
+#     post=get_object_or_404(B_Blog, pk = post_id)
+#     if post.user.filter(username=request.user.username).exists():
+#         post.user.remove(request.user)    
+#     else:
+#         post.user.add(request.user)
+       
+#     post.save()
+#     return redirect('b_detail', post_id)
+def apply(request,post_id):
+    post=Post.objects.get(id=post_id)
+    applyMission = ApplyMission()
+    applyMission.user=User.objects.get(username=post.writer)
+    applyMission.post=Post.objects.get(id=post_id)
+    applyMission.applier=request.user
+    applyMission.save()
+    
+    
+
+    
+    return redirect('detail', post_id)
+
 
 def request_home(request):
     post_list = Post.objects.all()
@@ -35,10 +58,15 @@ def create(request):
     writer = request.user.username
     new_post.writer = writer
     new_post.title=request.POST['title']
+   
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
-    new_post.mypage=request.user
     new_post.save()
+    
+    applyMission = ApplyMission()
+    applyMission.user=request.user
+    applyMission.post = new_post
+    applyMission.save()
 
     #tag_temp=request.POST['hashtag'].upper()
     # print(type(tag_temp))
