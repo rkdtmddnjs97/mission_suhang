@@ -15,6 +15,7 @@ class Profile(models.Model):
     email=models.CharField(max_length=200,null=True)
     approval=models.BooleanField(default=False)
     ssn=models.CharField(max_length=200,null=True)
+    connector=models.IntegerField(null=True)
 
     def __str__(self):
         return str(self.user)

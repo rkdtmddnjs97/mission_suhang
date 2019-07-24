@@ -9,4 +9,6 @@ urlpatterns = [
     path('scrap/', views.scrap, name="scrap"),
     path('editProfile/', views.editProfile, name="editProfile"),
     path('updateProfile/', views.updateProfile, name="updateProfile"),
+   
 ]
+

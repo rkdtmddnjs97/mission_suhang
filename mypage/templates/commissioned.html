@@ -1,6 +1,6 @@
 
 {% extends 'base.html'%}
-{% load custom_tags %}
+
 
 {% block content %}
 
@@ -15,14 +15,14 @@
         <hr>
         {{commission.pub_date}}
         <hr>
-       {{commission.id}}
-       {{ran}}
+       
         <details>
             <summary>수행자들</summary>
-            {% for number in appliers|length|times %} 
+            {% for applie in appliers%} 
             
-            {% if connector|get_by_index:number == commission.id %} 
-                {{appliers|get_by_index:number}} 
+            {% if applie.connector == commission.id %} 
+                {{applie.email}} 
+                <br>
             {% endif %} 
         {% endfor %} 
         </details>
@@ -33,4 +33,5 @@
 <br>
 <a href="{% url 'profile' %}">뒤로가기</a>
 
-{% endblock %}
+
+{% endblock %}`

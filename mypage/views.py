@@ -26,15 +26,21 @@ def commissioned(request):
         else:
             notNone.append(application)
     appliers=[]
-    connector=[]
+
+    applicants=[]
     for applie in notNone:
-        appliers.append(Profile.objects.filter(user=applie.applier))
-        connector.append(applie.post.id)
+        pro=Profile.objects.get(user=applie.applier)
+        pro.connector=applie.post.id
+        appliers.append(pro)
     
+        
+  
+        
+
    
-    print(connector)
-    print(appliers)
-    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'connector':connector})
+
+   
+    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers})
 
 def performing(request):
     return render(request, 'performing.html')
