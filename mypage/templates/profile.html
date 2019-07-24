@@ -17,10 +17,11 @@
 평점 :
 <p>간단한 본인소개</p>
 {{my_profile.introduction}}
-<br>
-<br>
-<p>#해시태그</p>
-
+<br><br>
+{% for tag in tag_list %}
+ <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
+{% endfor %}
+<br><br>
 <a href="{% url 'performing' %}">수행중인 미션</a><br>
 <a href="{% url 'commissioned' %}">의뢰중인 미션</a><br>
 <a href="{% url 'scrap' %}">스크랩한 미션</a>
