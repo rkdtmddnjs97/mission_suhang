@@ -1,4 +1,3 @@
-
 {% extends 'base.html'%}
 
 
@@ -7,34 +6,38 @@
 <h1>의뢰한 글</h1>
 {% for commission in applications %}
 <a href="{% url 'detail' commission.id %}">
-        
-            <b>제목 : {{commission.title}}</b>
-        </a>
-        
-        작성자 : {{commission.writer}}
-        <hr>
-        {{commission.pub_date}}
-        <hr>
-        {% if commission.status == 'ready' %}
-        <details>
-            <summary>수행자들</summary>
-           
-            {% for applie in appliers%} 
-            
-            {% if applie.connector == commission.id %} 
-                {{applie.email}} 
-                
-                <a href="{% url 'start' commission.id %}">승낙</a>
-                
-                <br>
-            {% endif %} 
-        {% endfor %} 
-        
-        </details>
-        {% else %}
-        {{'신청완료'}}
-        {% endif %}
-       <br>
+
+    <b>제목 : {{commission.title}}</b>
+</a>
+
+작성자 : {{commission.writer}}
+<hr>
+{{commission.pub_date}}
+<hr>
+{% if commission.status == 'ready' %}
+<details>
+    <summary>수행자들</summary>
+
+    {% for applie in appliers%}
+
+    {% if applie.connector == commission.id %}
+    {{applie.email}}
+
+    <form action="{% url 'start' commission.id %}" method="POST">
+        {% csrf_token%}
+        <input type="hidden" name='approval' value="{{applie.id}}">
+        <button type="submit">승낙</button>
+    </form>
+
+    <br>
+    {% endif %}
+    {% endfor %}
+
+</details>
+{% else %}
+{{'신청완료'}}
+{% endif %}
+<br>
 {% endfor %}
 
 <br>

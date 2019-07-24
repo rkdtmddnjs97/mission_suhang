@@ -141,6 +141,7 @@ def scrap(request,post_id):
 def start(request,post_id):
     mode=Post.objects.get(id=post_id)
     mode.status='running'
+    mode.approved_id=request.POST['approval']
     mode.save()
     return redirect('detail', post_id)
 

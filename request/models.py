@@ -14,6 +14,7 @@ class Post(models.Model):
     user = models.ManyToManyField(User, blank=True)
     status=models.CharField(default='ready',max_length=200)
     hashtag = models.ManyToManyField(Hashtag, related_name="post_tag")
+    approved_id=models.IntegerField(null=True)
  
    
     def __str__(self):
