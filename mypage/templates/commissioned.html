@@ -15,18 +15,25 @@
         <hr>
         {{commission.pub_date}}
         <hr>
-       
+        {% if commission.status == 'ready' %}
         <details>
             <summary>수행자들</summary>
+           
             {% for applie in appliers%} 
             
             {% if applie.connector == commission.id %} 
                 {{applie.email}} 
+                
+                <a href="{% url 'start' commission.id %}">승낙</a>
+                
                 <br>
             {% endif %} 
         {% endfor %} 
+        
         </details>
-       
+        {% else %}
+        {{'신청완료'}}
+        {% endif %}
        <br>
 {% endfor %}
 

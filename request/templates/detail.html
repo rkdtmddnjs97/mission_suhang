@@ -34,9 +34,8 @@
     {% if user.username == post.writer %}
     <a href="{% url 'edit' post.id %}">수정하기</a>
     <a href="{% url 'delete' post.id %}">삭제하기</a>
-    {% if post.status == 'ready' %}
-    <a href="{% url 'start' post.id %}">미션수행</a>
-    {% elif post.status == 'running' %}
+    
+    {% if post.status == 'running' %}
     <a href="{% url 'end' post.id %}">미션완료</a>
     {% endif %}
     {% else %}
