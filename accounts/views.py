@@ -3,18 +3,20 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import Profile
+from hashtag.models import Hashtag
 import string
 import random
 
 def signup(request):
+    hashtag = Hashtag.objects.all()
     if request.method == 'POST':
         if request.POST['password1'] == request.POST['password2']:
             _LENGTH = 8 # 20자리
  
-# 숫자 + 대소문자 + 특수문자
+            # 숫자 + 대소문자 + 특수문자
             string_pool = string.ascii_letters + string.digits + string.punctuation
  
-# 랜덤한 문자열 생성
+            # 랜덤한 문자열 생성
             result = "인증번호:" 
             for i in range(_LENGTH) :
                 result += random.choice(string_pool) # 랜덤한 문자열 하나 선택
@@ -26,17 +28,21 @@ def signup(request):
             user.profile.university=request.POST['university']
             user.profile.department=request.POST['department']
             user.profile.name=request.POST['name']
-            user.profile.nickname=request.POST['nickname']
             user.profile.introduction=request.POST['introduction']
             user.profile.email=request.POST['email']
             user.profile.ssn=result.split(':')[1]
-
+            
+            tag_list = request.POST.getlist('hashtag')
+            for tag in tag_list:
+                input_tag = Hashtag.objects.filter(name=tag)
+                user.profile.hashtag.add(input_tag)
+            
             user.save()
             
             email = EmailMessage('인증 메일', result , to=[request.POST['email']])
             email.send()
             return render(request,'approval.html')
-    return render(request, 'signup.html')
+    return render(request, 'signup.html', {'hashtag':hashtag})
 
 def approve(request):
     if request.user.profile.ssn == request.POST['ssn']:

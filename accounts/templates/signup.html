@@ -43,11 +43,17 @@
         <hr>
         이름 : <input type="text" name="name">
         <hr>
-        닉네임 : <input type="text" name="nickname">
-        <hr>
         자기소개 : <textarea name="introduction" id="" cols="30" rows="10" placeholder="write your content"></textarea>
         <hr>
+        해시태그 : 
+            {% for tag in hashtag %}
+            <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}}
+            <!-- <a href="">{{tag}}</a> -->
+            {% endfor %}
+        <hr>
         이메일: <input type="text" name="email"> 
+        <hr>
+        
         <div class="submit-wrap">
             <input class="btn btn-primary" type="submit" value="Sign Up!">
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from hashtag.models import Hashtag
 
 
 # Create your models here.
@@ -10,7 +11,7 @@ class Profile(models.Model):
     university=models.CharField(max_length=200,null=True)
     department=models.CharField(max_length=200,null=True)
     name=models.CharField(max_length=200,null=True)
-    hashtag=models.CharField(max_length=50,null=True)
+    hashtag=models.ManyToManyField(Hashtag, related_name="my_tag")
     introduction=models.TextField(null=True)
     email=models.CharField(max_length=200,null=True)
     approval=models.BooleanField(default=False)

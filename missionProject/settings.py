@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'request.apps.RequestConfig',
     'view_request.apps.ViewRequestConfig',
     'freeBoard.apps.FreeboardConfig',
+    'hashtag.apps.HashtagConfig',
 
 ]
 

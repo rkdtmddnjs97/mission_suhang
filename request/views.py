@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Comment, Hashtag,ApplyMission
+from .models import Post, Comment,ApplyMission
+from hashtag.models import Hashtag
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
@@ -45,7 +46,7 @@ def request_home(request):
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments_list = Comment.objects.filter(post = post_id)
-    hashtag = Hashtag.objects.filter(tag=post_id)
+    hashtag = Hashtag.objects.filter(post_tag=post_id)
     return render(request, 'detail.html', {'post':post, 'comments':comments_list, 'hashtag':hashtag})
 
 def new(request):
