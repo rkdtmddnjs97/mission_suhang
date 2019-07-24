@@ -26,7 +26,6 @@ def commissioned(request):
         else:
             notNone.append(application)
     appliers=[]
-
     applicants=[]
     for applie in notNone:
         pro=Profile.objects.get(user=applie.applier)
@@ -48,7 +47,19 @@ def scrap(request):
 
 def editProfile(request):
     userProfile = request.user.profile
-    return render(request, 'editProfile.html', {'userProfile': userProfile})
+    my_tag = userProfile.hashtag.all()
+    all_tag = Hashtag.objects.all()
+    checked_tag = []
+    uncheked_tag = []
+    for checked in my_tag:
+        checked_tag.append(checked)
+    for unchecked in all_tag:
+        if unchecked in checked_tag:
+            pass
+        else:
+            uncheked_tag.append(unchecked)
+    
+    return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'unchecked_tag':uncheked_tag})
 
 def updateProfile(request):
     #user = User.objects.get(pk=user_id)
@@ -57,7 +68,12 @@ def updateProfile(request):
     user.profile.university=request.POST['university']
     user.profile.department=request.POST['department']
     user.profile.name=request.POST['name']
-    user.profile.nickname=request.POST['nickname']
     user.profile.introduction=request.POST['introduction']
+
+    tag_list = request.POST.getlist('hashtag')
+    for tag in tag_list:
+        input_tag = Hashtag.objects.get(name=tag.upper())
+        user.profile.hashtag.add(input_tag)
     user.save()
+    
     return redirect('profile')
