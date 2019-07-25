@@ -19,6 +19,7 @@ import main.views
 import view_request.urls
 import view_request.views
 import request.urls
+import search.views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -31,6 +32,7 @@ urlpatterns = [
     path('crud/',include(view_request.urls)),
     path('freeBoard/',include('freeBoard.urls')),
     path('request/', include('request.urls')),
+    path('search_result/', search.views.search, name="search"),
 ]
 
     # path('crud/',include(view_request.urls)),
