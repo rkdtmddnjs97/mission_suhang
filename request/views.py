@@ -50,9 +50,9 @@ def create(request):
     writer = request.user.username
     new_post.writer = writer
     new_post.title=request.POST['title']
-   
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
+    new_post.attached_img = request.FILES.get('attached_img')
     new_post.save()
     
     applyMission = ApplyMission()
@@ -82,6 +82,10 @@ def update(request, post_id):
     update_post = Post.objects.get(id=post_id)
     update_post.title = request.POST['title']
     update_post.body = request.POST['body']
+    if request.FILES.get('attached_img') is None: #프로필 사진 form이 입력되지 않았을 시.
+        pass
+    else:
+        update_post.attached_img = request.FILES.get('attached_img')
     update_post.save()
     return redirect('request')
 

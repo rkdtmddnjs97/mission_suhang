@@ -10,10 +10,9 @@ from hashtag.models import Hashtag
 
 def personal(request):
     my_profile = request.user.profile
-    user = request.user
     tag_list = my_profile.hashtag.all()
 
-    return render(request, 'profile.html', {'my_profile':my_profile, 'user':user, 'tag_list':tag_list })
+    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list})
 
 def commissioned(request):
     commissioned_post=ApplyMission.objects.filter( user=request.user)
