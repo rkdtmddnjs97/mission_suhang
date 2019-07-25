@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>comments</h2>
+
+<br>
+
+<hr>
+
+<form action="" >
+    {% csrf_token %}
+    작성자 : <input name="writer" type="text" value='{{request.user.username}}'>
+    <br>
+    내용 : <textarea name="content" id="" cols="30" rows="10"></textarea>
+    <input type="submit">
+
+</form>
+  
+
+{%endblock%}
