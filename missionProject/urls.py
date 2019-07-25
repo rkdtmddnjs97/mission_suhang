@@ -33,9 +33,7 @@ urlpatterns = [
     path('freeBoard/',include('freeBoard.urls')),
     path('request/', include('request.urls')),
     path('search_result/', search.views.search, name="search"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-    # path('crud/',include(view_request.urls)),
-# ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
    

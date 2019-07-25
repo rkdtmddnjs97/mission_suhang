@@ -6,17 +6,6 @@ from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from accounts.models import Profile
 
-
-# Create your views here.
-# def like(request,post_id):
-#     post=get_object_or_404(B_Blog, pk = post_id)
-#     if post.user.filter(username=request.user.username).exists():
-#         post.user.remove(request.user)    
-#     else:
-#         post.user.add(request.user)
-       
-#     post.save()
-#     return redirect('b_detail', post_id)
 def apply(request,post_id):
     post=Post.objects.get(id=post_id)
     applyMission = ApplyMission()
@@ -71,11 +60,6 @@ def create(request):
     applyMission.post = new_post
     applyMission.save()
 
-    #tag_temp=request.POST['hashtag'].upper()
-    # print(type(tag_temp))
-    # print(tag_temp)
-
-    #list에 해시태그 분할저장
     hash_list = request.POST['hashtag'].split('#')
 
     for index,hash in enumerate(hash_list):
@@ -88,10 +72,6 @@ def create(request):
             else:
                 tag = Hashtag.objects.create(name=hash.upper())
                 new_post.hashtag.add(tag)
-
-            # tag = Hashtag.objects.create(name=hash.upper())
-            # new_post.hashtag.add(tag)
-
     return redirect('request')
 
 def edit(request, post_id):
@@ -122,7 +102,6 @@ def comment_delete(request,comment_id):
     delete_comment=Comment.objects.get(id=comment_id)
     delete_comment.delete()
     return redirect('detail', delete_comment.post.pk)
-    #return redirect('detail', edit_comment.post.pk)
 
 def modify(request,comment_id):
     modify=Comment.objects.get(id=comment_id)
@@ -153,7 +132,6 @@ def start(request,post_id,app_id):
         if a_m.user != personal:
             a_m.applier=None
 
-    #    SomeModel.objects.filter(id=id).delete()
     return redirect('commissioned')
 
 def end(request,post_id):
