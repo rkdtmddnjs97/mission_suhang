@@ -10,7 +10,13 @@ def board(request):
     paginator = Paginator(Blogs,5)
     page = request.GET.get('page')
     blogs = paginator.get_page(page)
-    return render(request, 'board.html', {'blogs':blogs})
+    reverse_blog = []
+
+    for blog in blogs:
+        reverse_blog.append(blog)
+
+    reverse_blog.reverse()     
+    return render(request, 'board.html', {'blogs':blogs,'reverse_blog':reverse_blog })
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
