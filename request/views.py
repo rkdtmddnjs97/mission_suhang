@@ -26,19 +26,30 @@ def request_home(request):
     paginator = Paginator(post_list, 3)
     page = request.GET.get('page')
     blogs = paginator.get_page(page)
-    return render(request, 'request_home.html', {'blogs':blogs,'scrap_post':my_scrap_post})
+    reversed_blogs= []
+    for blog in blogs:
+        reversed_blogs.append(blog)
+    reversed_blogs.reverse()
+    return render(request, 'request_home.html', {'blogs':blogs,'scrap_post':my_scrap_post,'reversed_blogs':reversed_blogs})
                                         
 
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments_list = Comment.objects.filter(post = post_id)
+    paginator = Paginator(comments_list,10)
+    page = request.GET.get('page')
+    comments = paginator.get_page(page)
+    reversed_comment=[]
+    for comment in comments:
+        reversed_comment.append(comment)
+    reversed_comment.reverse()
     hashtag = Hashtag.objects.filter(post_tag=post_id)
     A_M=ApplyMission.objects.filter(post=post_id)
     judge=False
     for a_m in A_M:
         if a_m.applier == request.user:
             judge=True
-    return render(request, 'detail.html', {'post':post, 'comments':comments_list, 'hashtag':hashtag,'judge':judge})
+    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge})
 
 def new(request):
     user = request.user
