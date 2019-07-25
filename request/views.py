@@ -5,6 +5,20 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from accounts.models import Profile
+from mypage.models import MTM_chat,chatting
+
+
+
+
+def like(request,post_id):
+    post=get_object_or_404(B_Blog, pk = post_id)
+    if post.user.filter(username=request.user.username).exists():
+        post.user.remove(request.user)    
+    else:
+        post.user.add(request.user)
+       
+    post.save()
+    return redirect('b_detail', post_id)
 
 def apply(request,post_id):
     post=Post.objects.get(id=post_id)
@@ -13,6 +27,7 @@ def apply(request,post_id):
     applyMission.post=Post.objects.get(id=post_id)
     applyMission.applier=request.user
     applyMission.save()
+  
     return redirect('detail', post_id)
 
 

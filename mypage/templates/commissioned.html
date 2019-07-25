@@ -27,7 +27,10 @@
         {% csrf_token%}
     
         <button type="submit">승낙</button>
+    
     </form>
+
+    
 
     <br>
     {% endif %}
@@ -35,16 +38,25 @@
 
 </details>
 {% else %}
+
 {% for applie in appliers%}
 {% if applie.connector == commission.id %}
 수행중인 계정:{{applie.profile_id}}
 {% if commission.s_flag == True %}
 <br>제출상태:제출완료
 <br>
+
 <a href="{% url 'submission' commission.id %}">제출물 보기</a>
 {% else %}
 <br>제출상태:제출전
+
+
+    
+
+
+
 {% endif %}
+<a href="{% url 'chat' app_id=applie.id request_id=commission_user.id %}" >채팅</a>
 {% endif %}
 {% endfor %}
 {% endif %}

@@ -4,10 +4,49 @@ from accounts.models import Profile
 from django.utils import timezone
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
+from .models import MTM_chat,chatting
+from django.core.exceptions import ObjectDoesNotExist
 
-# Create your views here.
+
+# def search(request):
+#     input_data = request.GET['input_data'].upper()
+#     try:
+#         tag = Hashtag.objects.get(name=input_data)
+#         results = Post.objects.filter(hashtag=tag)
+#         result_flag = True
+#         return render(request, 'search_result.html', {'input_data': input_data, 'results': results, 'result_flag':result_flag})
+
+#     except ObjectDoesNotExist:
+#         results = '검색 결과가 없습니다^^'
+#         result_flag = False
+#         return render(request, 'search_result.html', {'input_data': input_data, 'results': results, 'result_flag':result_flag})
+
+def chat(request,app_id,request_id):
+  
+    #room=MTM_chat.objects.filter()
+    try:
+        
+
+        tmp1=MTM_chat.objects.get(profile_fk=app_id,request_fk=request_id)
+        chat_objects=chatting.objects.filter(chatting_fk=tmp1.id)
+    
+    except ObjectDoesNotExist:
+
+        tmp=chatting()
+      
+        chat_room=MTM_chat()
+        chat_room.profile_fk=Profile.objects.get(id=app_id)
+        chat_room.request_fk=Profile.objects.get(id=request_id)
+        chat_room.save()
+        tmp=chatting()
+        tmp.chatting_fk=chat_room
+        tmp.save()
+        chat_objects=chatting.objects.filter(chatting_fk=chat_room.id)
+    
+    return render(request,'chatting.html',{'chat_objects':chat_objects})
 
 
+    
 def personal(request):
     my_profile = request.user.profile
     tag_list = my_profile.hashtag.all()
@@ -31,15 +70,18 @@ def commissioned(request):
         pro=Profile.objects.get(user=applie.applier)
         pro.connector=applie.post.id
         appliers.append(pro)
+    commission_user=Profile.objects.get(profile_id=request.user.username)
 
-    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers})
+    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user})
 
 def performing(request):
     performing_post= Post.objects.filter(approved_id=request.user.username)
-   
-
+    perform_profiles=[]
+    for perform in performing_post:
+        perform_profiles.append(Profile.objects.get(profile_id=perform.writer))
+    perform_user=Profile.objects.get(profile_id=request.user.username)
     
-    return render(request, 'performing.html',{'performing_post':performing_post})
+    return render(request, 'performing.html',{'performing_post':performing_post,'perform_profiles':perform_profiles,'perform_user':perform_user})
 
 def scrap(request):
     #request앱 Post모델객체 사용

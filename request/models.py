@@ -17,6 +17,7 @@ class Post(models.Model):
     s_flag=models.BooleanField(default=False)
     attached_img=models.ImageField(upload_to='attached_img/', null=True, blank=True)
     
+
     def __str__(self):
         return self.title
 

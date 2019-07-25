@@ -12,5 +12,6 @@ urlpatterns = [
     path('submit_page/<int:post_id>', views.submit_page, name="submit_page"),
     path('submit_send/<int:post_id>', views.submit_send, name="submit_send"),
     path('submission/<int:post_id>', views.submission, name="submission"),
+    path('chat/<app_id> <request_id>', views.chat, name="chat"),
 ]
 
