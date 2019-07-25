@@ -73,17 +73,25 @@ def updateProfile(request):
     user.profile.department=request.POST['department']
     user.profile.name=request.POST['name']
     user.profile.introduction=request.POST['introduction']
+    
+    if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
+        pass
+    else:
+        user.profile.profile_img = request.FILES.get('pofile_img')
 
     tag_list = request.POST.getlist('hashtag')
     for tag in tag_list:
         input_tag = Hashtag.objects.get(name=tag.upper())
         user.profile.hashtag.add(input_tag)
+
     user.save()
 
     return redirect('profile')
+
 def submit_page(request,post_id):
      post=Post.objects.get(id=post_id)
      return render(request, 'submit.html',{'post':post})
+
 def submit_send(request,post_id):
     form=submit_form()
     form.pub_date=timezone.datetime.now()
