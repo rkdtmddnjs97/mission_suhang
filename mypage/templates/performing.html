@@ -1,7 +1,25 @@
 {% extends 'base.html'%}
 
 {% block content %}
+{% for post in performing_post %}
+<a href="{% url 'detail' post.id %}">
 
+    <b>제목 : {{post.title}}</b>
+</a>
+
+작성자 : {{post.writer}}
+<hr>
+{{post.pub_date}}
+<br>
+{% if post.s_flag == False %}
+<a href="{% url 'submit_page' post.id %}">제출 페이지</a>
+{% else %}
+제출완료
+<a href="{% url 'submission' post.id %}">제출 결과</a>
+{% endif %}
+<hr>
+
+{% endfor %}
 <br>
 <a href="{% url 'profile' %}">뒤로가기</a>
 

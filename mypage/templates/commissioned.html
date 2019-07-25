@@ -21,11 +21,11 @@
     {% for applie in appliers%}
 
     {% if applie.connector == commission.id %}
-    {{applie.email}}
+    {{applie.profile_id}}
 
-    <form action="{% url 'start' commission.id %}" method="POST">
+    <form action="{% url 'start' post_id=commission.id app_id=applie.profile_id %}" method="POST">
         {% csrf_token%}
-        <input type="hidden" name='approval' value="{{applie.id}}">
+    
         <button type="submit">승낙</button>
     </form>
 
@@ -35,8 +35,20 @@
 
 </details>
 {% else %}
-{{'신청완료'}}
+{% for applie in appliers%}
+{% if applie.connector == commission.id %}
+수행중인 계정:{{applie.profile_id}}
+{% if commission.s_flag == True %}
+<br>제출상태:제출완료
+<br>
+<a href="{% url 'submission' commission.id %}">제출물 보기</a>
+{% else %}
+<br>제출상태:제출전
 {% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
 <br>
 {% endfor %}
 

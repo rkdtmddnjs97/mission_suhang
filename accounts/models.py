@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from hashtag.models import Hashtag
 
 
+
 # Create your models here.
 class Profile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE, null=True)
@@ -17,6 +18,8 @@ class Profile(models.Model):
     approval=models.BooleanField(default=False)
     ssn=models.CharField(max_length=200,null=True)
     connector=models.IntegerField(null=True)
+    profile_id=models.CharField(unique=True,max_length=200,null=True)
+    
 
     def __str__(self):
         return str(self.user)

@@ -30,6 +30,7 @@ def signup(request):
             user.profile.name=request.POST['name']
             user.profile.introduction=request.POST['introduction']
             user.profile.email=request.POST['email']
+            user.profile.profile_id=request.POST['username']
             user.profile.ssn=result.split(':')[1]
             
             tag_list = request.POST.getlist('hashtag')

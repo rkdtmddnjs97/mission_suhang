@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from request.models import Post,ApplyMission
+from request.models import Post,ApplyMission,submit_form
 from accounts.models import Profile
+from django.utils import timezone
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
 
@@ -31,12 +32,15 @@ def commissioned(request):
         pro=Profile.objects.get(user=applie.applier)
         pro.connector=applie.post.id
         appliers.append(pro)
-    
 
     return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers})
 
 def performing(request):
-    return render(request, 'performing.html')
+    performing_post= Post.objects.filter(approved_id=request.user.username)
+   
+
+    
+    return render(request, 'performing.html',{'performing_post':performing_post})
 
 def scrap(request):
     #request앱 Post모델객체 사용
@@ -75,5 +79,25 @@ def updateProfile(request):
         input_tag = Hashtag.objects.get(name=tag.upper())
         user.profile.hashtag.add(input_tag)
     user.save()
-    
+
     return redirect('profile')
+def submit_page(request,post_id):
+     post=Post.objects.get(id=post_id)
+     return render(request, 'submit.html',{'post':post})
+def submit_send(request,post_id):
+    form=submit_form()
+    form.pub_date=timezone.datetime.now()
+    form.writer=request.POST['writer']
+    form.title=request.POST['title']
+    form.body=request.POST['body']
+    form.submit=Post.objects.get(id=post_id)
+    form.save()
+    post=Post.objects.get(id=post_id)
+    post.s_flag=True
+    post.save()
+    return redirect('performing')
+
+def submission(request,post_id):
+    submission_result=submit_form.objects.get(submit=post_id)
+    return render(request,'submission.html',{'submission_result':submission_result})
+
