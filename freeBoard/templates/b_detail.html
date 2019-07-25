@@ -38,6 +38,21 @@
 <br>
 {{comment.content}}
 <hr>
+{% if user.username == comment.writer %}
+<a href="{% url 'b_comment_delete' comment.id %}">삭제하기</a>
+<details>
+    <summary>수정하기</summary>
+    <form action="{% url 'b_modify' comment.id %}" method="POST">
+        {% csrf_token %}
+      
+          <textarea name= 'modify_comment' id="" cols="30" rows="10" placeholder="write your content" >{{comment.content}}</textarea>
+        <br>
+        <br>
+        <input type="submit" value='수정'>
+        
+    </form>
+</details>
+{% endif %}
 {% endfor%}
 <form action="{% url 'b_new_comment' blog.id %}" method="POST">
     {% csrf_token %}

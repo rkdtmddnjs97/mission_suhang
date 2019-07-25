@@ -51,6 +51,18 @@ def new_comment(request, post_id):
     comment.save()
     return redirect('b_detail', post_id)
 
+def comment_delete(request,comment_id):
+    delete_comment=B_Comment.objects.get(id=comment_id)
+    delete_comment.delete()
+    return redirect('b_detail', delete_comment.post.pk)
+    #return redirect('detail', edit_comment.post.pk)
+
+def modify(request,comment_id):
+    modify=B_Comment.objects.get(id=comment_id)
+    modify.content=request.POST['modify_comment']
+    modify.save()
+    return redirect('b_detail', modify.post.pk)
+
 def like(request,post_id):
     post=get_object_or_404(B_Blog, pk = post_id)
     if post.user.filter(username=request.user.username).exists():
