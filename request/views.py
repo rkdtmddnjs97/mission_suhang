@@ -24,10 +24,6 @@ def apply(request,post_id):
     applyMission.post=Post.objects.get(id=post_id)
     applyMission.applier=request.user
     applyMission.save()
-    
-    
-
-    
     return redirect('detail', post_id)
 
 
@@ -35,6 +31,7 @@ def request_home(request):
     post_list = Post.objects.all()
     if request.user.is_authenticated:
         my_scrap_post = Post.objects.filter(user = request.user)
+        
     else:
         my_scrap_post = None
     paginator = Paginator(post_list, 3)
@@ -47,7 +44,12 @@ def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments_list = Comment.objects.filter(post = post_id)
     hashtag = Hashtag.objects.filter(post_tag=post_id)
-    return render(request, 'detail.html', {'post':post, 'comments':comments_list, 'hashtag':hashtag})
+    A_M=ApplyMission.objects.filter(post=post_id)
+    judge=False
+    for a_m in A_M:
+        if a_m.applier == request.user:
+            judge=True
+    return render(request, 'detail.html', {'post':post, 'comments':comments_list, 'hashtag':hashtag,'judge':judge})
 
 def new(request):
     user = request.user
@@ -138,12 +140,21 @@ def scrap(request,post_id):
     post.save()
     return redirect('detail', post_id)
 
-def start(request,post_id):
+def start(request,post_id,app_id):
     mode=Post.objects.get(id=post_id)
     mode.status='running'
-    mode.approved_id=request.POST['approval']
+    mode.approved_id=app_id
     mode.save()
-    return redirect('detail', post_id)
+    tmp=Post.objects.get(id=post_id)
+    profile=Profile.objects.get(profile_id=app_id)
+    personal=User.objects.get(id=profile.user.id)
+    A_M=ApplyMission.objects.filter(post=tmp)
+    for a_m in A_M:
+        if a_m.user != personal:
+            a_m.applier=None
+
+    #    SomeModel.objects.filter(id=id).delete()
+    return redirect('commissioned')
 
 def end(request,post_id):
     mode=Post.objects.get(id=post_id)

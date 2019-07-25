@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<h1>제출 페이지</h1>
+<form action="{% url 'submit_send' post.id %}" method="POST">
+        {% csrf_token %}
+        제목 : <input type="text" name='title'>
+        <br>
+        <br>
+        작성자 : <input type="text" name='writer' value='{{user.username}}'>
+        <br>
+        <br>
+        본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" ></textarea>
+        <br>
+        <br>
+        <button type='submit'> 제출</button>
+
+
+
+</form>
+{% endblock %}

@@ -40,10 +40,14 @@
     {% endif %}
     {% else %}
     {% if post.status == 'ready' %}
-    <a href="{% url 'missionApply' post.id %}">의로 신청</a>
+    {% if judge == False %}
+    <a href="{% url 'missionApply' post.id %}">의뢰 신청</a>
+    {% else %}
+    의뢰신청 완료
     {% endif %}
     {% endif %}
-    
+    {% endif %}
+   
     <hr>
     <h3>comments</h3>
     {% for comment in comments %}
