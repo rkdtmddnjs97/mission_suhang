@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>해당 태그와 관련된 게시물</p>
+<br>
+
+{% for post in b_tag_posts %}
+    <a href="{% url 'b_detail' post.id %}">{{post.title}}</a>
+{% endfor %}
+
+
+{% endblock %}
