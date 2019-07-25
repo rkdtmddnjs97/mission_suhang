@@ -8,7 +8,7 @@ import string
 import random
 
 def signup(request):
-    hashtag = Hashtag.objects.all()
+    all_hashtag = Hashtag.objects.all()
     if request.method == 'POST':
         if request.POST['password1'] == request.POST['password2']:
             _LENGTH = 8 # 20자리
@@ -35,7 +35,7 @@ def signup(request):
             
             tag_list = request.POST.getlist('hashtag')
             for tag in tag_list:
-                input_tag = Hashtag.objects.filter(name=tag)
+                input_tag = Hashtag.objects.get(name=tag.upper())
                 user.profile.hashtag.add(input_tag)
             
             user.save()
@@ -43,7 +43,7 @@ def signup(request):
             email = EmailMessage('인증 메일', result , to=[request.POST['email']])
             email.send()
             return render(request,'approval.html')
-    return render(request, 'signup.html', {'hashtag':hashtag})
+    return render(request, 'signup.html', {'hashtag':all_hashtag})
 
 def approve(request):
     if request.user.profile.ssn == request.POST['ssn']:

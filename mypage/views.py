@@ -3,17 +3,17 @@ from request.models import Post,ApplyMission,submit_form
 from accounts.models import Profile
 from django.utils import timezone
 from django.contrib.auth.models import User
+from hashtag.models import Hashtag
 
 # Create your views here.
 
 
 def personal(request):
-    # my_profile = Profile.objects.all()
     my_profile = request.user.profile
     user = request.user
+    tag_list = my_profile.hashtag.all()
 
-    return render(request, 'profile.html', {'my_profile':my_profile, 'user':user})
-    # return render(request, 'profile.html')
+    return render(request, 'profile.html', {'my_profile':my_profile, 'user':user, 'tag_list':tag_list })
 
 def commissioned(request):
     commissioned_post=ApplyMission.objects.filter( user=request.user)
@@ -27,13 +27,12 @@ def commissioned(request):
         else:
             notNone.append(application)
     appliers=[]
-
     applicants=[]
     for applie in notNone:
         pro=Profile.objects.get(user=applie.applier)
         pro.connector=applie.post.id
         appliers.append(pro)
-    
+
     return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers})
 
 def performing(request):
@@ -52,7 +51,19 @@ def scrap(request):
 
 def editProfile(request):
     userProfile = request.user.profile
-    return render(request, 'editProfile.html', {'userProfile': userProfile})
+    my_tag = userProfile.hashtag.all()
+    all_tag = Hashtag.objects.all()
+    checked_tag = []
+    uncheked_tag = []
+    for checked in my_tag:
+        checked_tag.append(checked)
+    for unchecked in all_tag:
+        if unchecked in checked_tag:
+            pass
+        else:
+            uncheked_tag.append(unchecked)
+    
+    return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'unchecked_tag':uncheked_tag})
 
 def updateProfile(request):
     #user = User.objects.get(pk=user_id)
@@ -61,9 +72,14 @@ def updateProfile(request):
     user.profile.university=request.POST['university']
     user.profile.department=request.POST['department']
     user.profile.name=request.POST['name']
-    user.profile.nickname=request.POST['nickname']
     user.profile.introduction=request.POST['introduction']
+
+    tag_list = request.POST.getlist('hashtag')
+    for tag in tag_list:
+        input_tag = Hashtag.objects.get(name=tag.upper())
+        user.profile.hashtag.add(input_tag)
     user.save()
+
     return redirect('profile')
 def submit_page(request,post_id):
      post=Post.objects.get(id=post_id)
@@ -84,3 +100,4 @@ def submit_send(request,post_id):
 def submission(request,post_id):
     submission_result=submit_form.objects.get(submit=post_id)
     return render(request,'submission.html',{'submission_result':submission_result})
+
