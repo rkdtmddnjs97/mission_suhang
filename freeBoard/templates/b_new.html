@@ -12,6 +12,10 @@
     <br>
     본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content"></textarea>
     <br>
+    {% for tag in hashtag %}
+    <!-- <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}} -->
+    <a href="">{{tag}}</a>
+    {% endfor %}
     <br>
     <p>* 해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</p>
     -> <input type="text" name='hashtag'>

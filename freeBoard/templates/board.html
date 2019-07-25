@@ -4,7 +4,7 @@
     <h1>Make Your Blog! </h1>
     <a href="{% url 'b_new'%}">새 글 작성하기 </a>
     <h2>블로그 글 목록</h2>
-    {% for blog in blogs %}
+    {% for blog in reverse_blog %}
     <div class="card">
     <div class="card-body">
     <a href="{% url 'b_detail' blog.id %}">
