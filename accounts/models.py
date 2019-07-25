@@ -19,6 +19,7 @@ class Profile(models.Model):
     ssn=models.CharField(max_length=200,null=True)
     connector=models.IntegerField(null=True)
     profile_id=models.CharField(unique=True,max_length=200,null=True)
+    profile_img=models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     
 
 

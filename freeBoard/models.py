@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from hashtag.models import Hashtag
 # Create your models here.
 class B_Blog(models.Model):
     title=models.CharField(max_length=200)
@@ -7,6 +8,7 @@ class B_Blog(models.Model):
     body=models.TextField()
     pub_date = models.DateTimeField('Date published',null=True)
     user = models.ManyToManyField(User, blank=True,related_name='user')
+    hashtag = models.ManyToManyField(Hashtag, related_name="freeboard_tag")
     
 
     @property

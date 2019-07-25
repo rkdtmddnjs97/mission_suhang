@@ -4,17 +4,28 @@
     <h1>Make Your Blog! </h1>
     <a href="{% url 'b_new'%}">새 글 작성하기 </a>
     <h2>블로그 글 목록</h2>
-    {% for blog in Blogs %}
+    {% for blog in reverse_blog %}
+    <div class="card">
+    <div class="card-body">
     <a href="{% url 'b_detail' blog.id %}">
-        제목 : {{blog.title}}
-    </a>
-    <br>
-    작성자 : {{blog.writer}}
-    <br>
-   작성일: {{blog.pub_date}}
-    <hr>
-    
-    
+        <h5 class="card-title"> 제목 : {{blog.title}}</h5></a>
+    <p class ="card-subtitle mb-3 text-muted">작성자 : {{blog.writer}}</p>
+    <h6 class="card-subtitle mb-2 text-muted"> 작성일: {{blog.pub_date}}</h6>
+    </div>
+    </div>
     {% endfor %}
+    {%if blogs.has_previous%}
+    <a href="?page=1">First</a>
+    <a href="?page={{blogs.previous_page_number}}">Previous</a>
+    {%endif%}
+    
+    <span>{{blogs.number}}</span>
+    <span>of</span>
+    <span>{{blogs.paginator.num_pages}}</span>
+    
+    {%if blogs.has_next%}
+    <a href="?page={{blogs.next_page_number}}">Next</a>
+    <a href="?page={{blogs.paginator.num_pages}}">Last</a>
+    {%endif%}
 
 {% endblock %}

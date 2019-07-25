@@ -5,10 +5,12 @@
 <h1>회원정보 수정 창</h1>
 
 
-<form action="{% url 'updateProfile' %}" method="POST">
+<form action="{% url 'updateProfile' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token%}
 
-    회원사진
+    프로필 사진<br>
+    <img src="{{userProfile.profile_img.url}}" alt=""><br>
+    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="">
     <br><br>
 
     이름 : <input type="text" name="name" value="{{userProfile.name}}">

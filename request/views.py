@@ -9,6 +9,7 @@ from mypage.models import MTM_chat,chatting
 
 
 
+
 def like(request,post_id):
     post=get_object_or_404(B_Blog, pk = post_id)
     if post.user.filter(username=request.user.username).exists():
@@ -18,6 +19,7 @@ def like(request,post_id):
        
     post.save()
     return redirect('b_detail', post_id)
+
 def apply(request,post_id):
     post=Post.objects.get(id=post_id)
     applyMission = ApplyMission()
@@ -39,19 +41,30 @@ def request_home(request):
     paginator = Paginator(post_list, 3)
     page = request.GET.get('page')
     blogs = paginator.get_page(page)
-    return render(request, 'request_home.html', {'blogs':blogs,'scrap_post':my_scrap_post})
+    reversed_blogs= []
+    for blog in blogs:
+        reversed_blogs.append(blog)
+    reversed_blogs.reverse()
+    return render(request, 'request_home.html', {'blogs':blogs,'scrap_post':my_scrap_post,'reversed_blogs':reversed_blogs})
                                         
 
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments_list = Comment.objects.filter(post = post_id)
+    paginator = Paginator(comments_list,10)
+    page = request.GET.get('page')
+    comments = paginator.get_page(page)
+    reversed_comment=[]
+    for comment in comments:
+        reversed_comment.append(comment)
+    reversed_comment.reverse()
     hashtag = Hashtag.objects.filter(post_tag=post_id)
     A_M=ApplyMission.objects.filter(post=post_id)
     judge=False
     for a_m in A_M:
         if a_m.applier == request.user:
             judge=True
-    return render(request, 'detail.html', {'post':post, 'comments':comments_list, 'hashtag':hashtag,'judge':judge})
+    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge})
 
 def new(request):
     user = request.user
@@ -63,9 +76,9 @@ def create(request):
     writer = request.user.username
     new_post.writer = writer
     new_post.title=request.POST['title']
-   
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
+    new_post.attached_img = request.FILES.get('attached_img')
     new_post.save()
     
     applyMission = ApplyMission()
@@ -73,11 +86,6 @@ def create(request):
     applyMission.post = new_post
     applyMission.save()
 
-    #tag_temp=request.POST['hashtag'].upper()
-    # print(type(tag_temp))
-    # print(tag_temp)
-
-    #list에 해시태그 분할저장
     hash_list = request.POST['hashtag'].split('#')
 
     for index,hash in enumerate(hash_list):
@@ -90,10 +98,6 @@ def create(request):
             else:
                 tag = Hashtag.objects.create(name=hash.upper())
                 new_post.hashtag.add(tag)
-
-            # tag = Hashtag.objects.create(name=hash.upper())
-            # new_post.hashtag.add(tag)
-
     return redirect('request')
 
 def edit(request, post_id):
@@ -104,6 +108,10 @@ def update(request, post_id):
     update_post = Post.objects.get(id=post_id)
     update_post.title = request.POST['title']
     update_post.body = request.POST['body']
+    if request.FILES.get('attached_img') is None: #프로필 사진 form이 입력되지 않았을 시.
+        pass
+    else:
+        update_post.attached_img = request.FILES.get('attached_img')
     update_post.save()
     return redirect('request')
 
@@ -124,7 +132,6 @@ def comment_delete(request,comment_id):
     delete_comment=Comment.objects.get(id=comment_id)
     delete_comment.delete()
     return redirect('detail', delete_comment.post.pk)
-    #return redirect('detail', edit_comment.post.pk)
 
 def modify(request,comment_id):
     modify=Comment.objects.get(id=comment_id)
@@ -155,7 +162,6 @@ def start(request,post_id,app_id):
         if a_m.user != personal:
             a_m.applier=None
 
-    #    SomeModel.objects.filter(id=id).delete()
     return redirect('commissioned')
 
 def end(request,post_id):

@@ -3,12 +3,12 @@
 {% block content %}
 <h1>회원정보</h1> <a href="{% url 'editProfile' %}">회원정보 수정</a>
 <br><br>
-<p>회원사진</p>
-아이디 : {{user.username}}
+회원사진<br>
+<img src="{{ my_profile.profile_img.url }}">
+<br><br>
+아이디 : {{my_profile.profile_id}}
 <br>
 이름 : {{my_profile.name}}
-<br>
-닉네임 (lvl): {{my_profile.nickname}}
 <br>
 학교 : {{my_profile.university}}
 <br>

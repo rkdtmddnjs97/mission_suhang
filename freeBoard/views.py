@@ -1,21 +1,40 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import B_Blog,B_Comment
 from django.utils import timezone
+from hashtag.models import Hashtag
 from django.contrib.auth.models import User
-
+from django.core.paginator import Paginator
 # Create your views here.
 def board(request):
     Blogs = B_Blog.objects.all()
-    return render(request, 'board.html', {'Blogs':Blogs})
+    paginator = Paginator(Blogs,5)
+    page = request.GET.get('page')
+    blogs = paginator.get_page(page)
+    reverse_blog = []
+
+    for blog in blogs:
+        reverse_blog.append(blog)
+
+    reverse_blog.reverse()     
+    return render(request, 'board.html', {'blogs':blogs,'reverse_blog':reverse_blog })
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
     comments_list = B_Comment.objects.filter(post = post_id)
-    return render(request, 'b_detail.html', {'blog':blog,'comments':comments_list,'like_count':blog.total_likes})
+    paginator = Paginator(comments_list,10)
+    page = request.GET.get('page')
+    comments = paginator.get_page(page)
+    reversed_comments = []
+    for comment in comments:
+        reversed_comments.append(comment)
+    reversed_comments.reverse()
+    hashtag = Hashtag.objects.filter(freeboard_tag=post_id)
+    return render(request, 'b_detail.html', {'blog':blog,'comments':reversed_comments,'hashtag':hashtag,'like_count':blog.total_likes})
 
 def new(request):
     user = request.user
-    return render(request, 'b_new.html', {'user':user})
+    hashtag = Hashtag.objects.all()
+    return render(request, 'b_new.html', {'user':user,'hashtag':hashtag})
 
 def create(request):
     new_post = B_Blog()
@@ -25,6 +44,22 @@ def create(request):
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
+    #list에 해시태그 분할저장
+    hash_list = request.POST['hashtag'].split('#')
+
+    for index,hash in enumerate(hash_list):
+        if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
+            pass
+        else:
+            if Hashtag.objects.filter(name=hash.upper()).exists():
+                tag = Hashtag.objects.get(name=hash.upper())
+                new_post.hashtag.add(tag)
+            else:
+                tag = Hashtag.objects.create(name=hash.upper())
+                new_post.hashtag.add(tag)
+
+            # tag = Hashtag.objects.create(name=hash.upper())
+            # new_post.hashtag.add(tag)
     return redirect('board')
 
 def edit(request, post_id):
@@ -51,6 +86,18 @@ def new_comment(request, post_id):
     comment.save()
     return redirect('b_detail', post_id)
 
+def comment_delete(request,comment_id):
+    delete_comment=B_Comment.objects.get(id=comment_id)
+    delete_comment.delete()
+    return redirect('b_detail', delete_comment.post.pk)
+    #return redirect('detail', edit_comment.post.pk)
+
+def modify(request,comment_id):
+    modify=B_Comment.objects.get(id=comment_id)
+    modify.content=request.POST['modify_comment']
+    modify.save()
+    return redirect('b_detail', modify.post.pk)
+
 def like(request,post_id):
     post=get_object_or_404(B_Blog, pk = post_id)
     if post.user.filter(username=request.user.username).exists():
@@ -60,3 +107,7 @@ def like(request,post_id):
        
     post.save()
     return redirect('b_detail', post_id)
+
+def tag_post(request, tag_id):
+    tag_related_posts = B_Blog.objects.filter(hashtag = tag_id)
+    return render(request, 'b_tag_post.html', {'b_tag_posts':tag_related_posts})
