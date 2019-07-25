@@ -3,11 +3,14 @@ from .models import B_Blog,B_Comment
 from django.utils import timezone
 from hashtag.models import Hashtag
 from django.contrib.auth.models import User
-
+from django.core.paginator import Paginator
 # Create your views here.
 def board(request):
     Blogs = B_Blog.objects.all()
-    return render(request, 'board.html', {'Blogs':Blogs})
+    paginator = Paginator(Blogs,5)
+    page = request.GET.get('page')
+    blogs = paginator.get_page(page)
+    return render(request, 'board.html', {'blogs':blogs})
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
