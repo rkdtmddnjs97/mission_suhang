@@ -9,7 +9,7 @@
 {% endfor %}
 {{like_count}}
 <hr>
-
+<p>  
     <h2>제목 : {{blog.title}}</h2>
     <p>작성자 : {{blog.writer}}</p>
     <p>발행일: {{blog.pub_date}}</p>
@@ -18,7 +18,12 @@
         본문
         <br>
         <p> {{blog.body}}</p>
+        해시태그<br>
+        {% for tag in hashtag.all %}
+            <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
+        {% endfor %}
 </p>
+
 <form action="{% url 'b_like' blog.id %}" method="get">
     <input type="hidden" name = 'like' value="{{user}}">
     <button type="submit">좋아요</button>

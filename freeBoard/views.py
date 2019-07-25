@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import B_Blog,B_Comment
 from django.utils import timezone
+from hashtag.models import Hashtag
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -11,11 +12,13 @@ def board(request):
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
     comments_list = B_Comment.objects.filter(post = post_id)
-    return render(request, 'b_detail.html', {'blog':blog,'comments':comments_list,'like_count':blog.total_likes})
+    hashtag = Hashtag.objects.filter(freeboard_tag=post_id)
+    return render(request, 'b_detail.html', {'blog':blog,'comments':comments_list,'hashtag':hashtag,'like_count':blog.total_likes})
 
 def new(request):
     user = request.user
-    return render(request, 'b_new.html', {'user':user})
+    hashtag = Hashtag.objects.all()
+    return render(request, 'b_new.html', {'user':user,'hashtag':hashtag})
 
 def create(request):
     new_post = B_Blog()
@@ -25,6 +28,22 @@ def create(request):
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
+    #list에 해시태그 분할저장
+    hash_list = request.POST['hashtag'].split('#')
+
+    for index,hash in enumerate(hash_list):
+        if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
+            pass
+        else:
+            if Hashtag.objects.filter(name=hash.upper()).exists():
+                tag = Hashtag.objects.get(name=hash.upper())
+                new_post.hashtag.add(tag)
+            else:
+                tag = Hashtag.objects.create(name=hash.upper())
+                new_post.hashtag.add(tag)
+
+            # tag = Hashtag.objects.create(name=hash.upper())
+            # new_post.hashtag.add(tag)
     return redirect('board')
 
 def edit(request, post_id):
@@ -72,3 +91,7 @@ def like(request,post_id):
        
     post.save()
     return redirect('b_detail', post_id)
+
+def tag_post(request, tag_id):
+    tag_related_posts = B_Blog.objects.filter(hashtag = tag_id)
+    return render(request, 'b_tag_post.html', {'b_tag_posts':tag_related_posts})
