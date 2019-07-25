@@ -10,10 +10,9 @@ from hashtag.models import Hashtag
 
 def personal(request):
     my_profile = request.user.profile
-    user = request.user
     tag_list = my_profile.hashtag.all()
 
-    return render(request, 'profile.html', {'my_profile':my_profile, 'user':user, 'tag_list':tag_list })
+    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list})
 
 def commissioned(request):
     commissioned_post=ApplyMission.objects.filter( user=request.user)
@@ -73,17 +72,25 @@ def updateProfile(request):
     user.profile.department=request.POST['department']
     user.profile.name=request.POST['name']
     user.profile.introduction=request.POST['introduction']
+    
+    if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
+        pass
+    else:
+        user.profile.profile_img = request.FILES.get('pofile_img')
 
     tag_list = request.POST.getlist('hashtag')
     for tag in tag_list:
         input_tag = Hashtag.objects.get(name=tag.upper())
         user.profile.hashtag.add(input_tag)
+
     user.save()
 
     return redirect('profile')
+
 def submit_page(request,post_id):
      post=Post.objects.get(id=post_id)
      return render(request, 'submit.html',{'post':post})
+
 def submit_send(request,post_id):
     form=submit_form()
     form.pub_date=timezone.datetime.now()
