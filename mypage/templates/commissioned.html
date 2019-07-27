@@ -19,8 +19,7 @@
     <summary>수행자들</summary>
 
     {% for applie in appliers%}
-    {% for connector in connectors %}
-    {% if connector == commission.id %}
+    {% if applie.connector == commission.id %}
     {{applie.profile_id}}
 
     <form action="{% url 'start' post_id=commission.id app_id=applie.profile_id %}" method="POST">
@@ -34,14 +33,13 @@
 
     <br>
     {% endif %}
-    {% endfor %}
+ 
     {% endfor %}
 
 </details>
 {% else %}
 {% for applie in appliers%}
-{% for connector in connectors %}
-{% if connector == commission.id %}
+{% if applie.connector == commission.id %}
 {% if commission.approved_id == applie.profile_id%}
 수행중인 계정:{{applie.profile_id}}
 {% if commission.s_flag == True %}
@@ -57,7 +55,7 @@
 <a href="{% url 'chat' app_id=applie.id request_id=commission_user.id  %}">채팅</a>
 {% endif %}
 {% endif %}
-{% endfor %}
+
 {% endfor %}
 {% endif %}
 
