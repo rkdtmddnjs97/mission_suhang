@@ -29,7 +29,7 @@
         <button type="submit">승낙</button>
     
     </form>
-    
+    <a href="{% url 'chat' app_id=applie.id request_id=commission_user.id  %}">채팅</a>
     <a href="{% url 'disagree' post_id=commission.id app_id=applie.profile_id %}">거절</a>
 
     <br>
@@ -46,14 +46,15 @@
 수행중인 계정:{{applie.profile_id}}
 {% if commission.s_flag == True %}
 <br>제출상태:제출완료
+<a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
 <br>
 
 <a href="{% url 'submission' commission.id %}">제출물 보기</a>
 {% else %}
 <br>제출상태:제출전
-
+<a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
 {% endif %}
-<a href="{% url 'chat' app_id=applie.id request_id=commission_user.id %}" >채팅</a>
+<a href="{% url 'chat' app_id=applie.id request_id=commission_user.id  %}">채팅</a>
 {% endif %}
 {% endif %}
 {% endfor %}

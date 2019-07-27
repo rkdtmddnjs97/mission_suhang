@@ -16,15 +16,20 @@
 <a href="{% url 'chat' app_id=perform_user.id request_id=perform_profile.id %}">채팅</a>
 <br>
 <a href="{% url 'mission_quit'  post.id %}">수행포기</a>
-{% endif %}
-{% endfor %}
-<br>
+{% if post.approved_id == request.user.username %}
 {% if post.s_flag == False %}
 <a href="{% url 'submit_page' post.id %}">제출 페이지</a>
 {% else %}
 제출완료
 <a href="{% url 'submission' post.id %}">제출 결과</a>
 {% endif %}
+{% else %}
+의뢰 대기
+{% endif %}
+{% endif %}
+{% endfor %}
+<br>
+
 <hr>
 
 {% endfor %}

@@ -97,7 +97,11 @@ def commissioned(request):
     return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user,'connectors':connectors})
 
 def performing(request):
-    performing_post= Post.objects.filter(approved_id=request.user.username)
+    tmp=ApplyMission.objects.filter(applier=request.user.id)
+    # Post.objects.filter(approved_id=request.user.username)
+    performing_post=[]
+    for n in tmp:
+        performing_post.append( Post.objects.get(id=n.post.id))
     perform_profiles=[]
     for perform in performing_post:
         perform_profiles.append(Profile.objects.get(profile_id=perform.writer))
@@ -204,3 +208,7 @@ def submission_edit(request,submission_id,postId):
     # submission_result=submit_form.objects.get(submit=post_id)
     # return render(request,'submission.html',{'submission_result':submission_result})
 
+def commission_quit(request,post_id):
+    tmp=Post.objects.get(id=post_id)
+    tmp.delete()
+    return redirect('commissioned')
