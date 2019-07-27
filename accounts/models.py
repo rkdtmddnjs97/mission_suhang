@@ -20,6 +20,10 @@ class Profile(models.Model):
     profile_id=models.CharField(unique=True,max_length=200,null=True)
     profile_img=models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     money=models.IntegerField(default=0)
+    connector=models.IntegerField(null=True)
+    
+
+
 
     def __str__(self):
         return str(self.user)

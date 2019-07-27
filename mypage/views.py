@@ -79,29 +79,34 @@ def commissioned(request):
     applications=[]
     notNone=[]
     for application in commissioned_post:
+        
         if application.applier is None :
-
-            applications.append(Post.objects.get(id=application.post.id))
+            tmp=Post.objects.get(id=application.post.id)
+            if tmp.status != 'blocked':
+                applications.append(tmp)
         else:
             notNone.append(application)
     appliers=[]
     applicants=[]
-    connectors=[]
+   
     for applie in notNone:
         pro=Profile.objects.get(user=applie.applier)
-        connectors.append(applie.post.id)
+        pro.connector=applie.post.id
+        pro.save()
         appliers.append(pro)
         
     commission_user=Profile.objects.get(profile_id=request.user.username)
 
-    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user,'connectors':connectors})
+    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user})
 
 def performing(request):
     tmp=ApplyMission.objects.filter(applier=request.user.id)
     # Post.objects.filter(approved_id=request.user.username)
     performing_post=[]
     for n in tmp:
-        performing_post.append( Post.objects.get(id=n.post.id))
+        tmp1=Post.objects.get(id=n.post.id)
+        if tmp1.status != 'blocked':
+            performing_post.append(tmp1)
     perform_profiles=[]
     for perform in performing_post:
         perform_profiles.append(Profile.objects.get(profile_id=perform.writer))
@@ -173,8 +178,9 @@ def submit_send(request,post_id):
     return redirect('performing')
 
 def submission(request,post_id):
+    post=Post.objects.get(id=post_id)
     submission_result=submit_form.objects.get(submit=post_id)
-    return render(request,'submission.html',{'submission_result':submission_result,'post_id':post_id})
+    return render(request,'submission.html',{'submission_result':submission_result,'post':post})
 
 def recharge(request,profile_id):
     money=request.POST['charge_money']

@@ -36,9 +36,7 @@
     <a href="{% url 'edit' post.id %}">수정하기</a>
     <a href="{% url 'delete' post.id %}">삭제하기</a>
     
-    {% if post.status == 'running' %}
-    <a href="{% url 'end' post.id %}">미션완료</a>
-    {% endif %}
+    
     {% else %}
     {% if post.status == 'ready' %}
     {% if judge == False %}
