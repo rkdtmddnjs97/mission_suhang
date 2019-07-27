@@ -21,6 +21,7 @@ urlpatterns = [
     path('calculate/<profile_id> <cash>', views.calculate, name="calculate"),
     path('mission_quit/<int:post_id>', views.mission_quit, name="mission_quit"),
     path('submission_edit/<submission_id> <postId>', views.submission_edit, name="submission_edit"),
+    path('commission_quit/<int:post_id>', views.commission_quit, name="commission_quit"),
 
 ]
 
