@@ -171,8 +171,8 @@ def start(request,post_id,app_id):
     mode.status='running'
     mode.approved_id=app_id
     mode.save()
-    
-    return redirect('commissioned')
+    return redirect('commissioned', profile_id=request.user.username)
+
 
 
 def end(request,post_id):

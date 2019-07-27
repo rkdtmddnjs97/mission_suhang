@@ -1,7 +1,14 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<h1>회원정보</h1> <a href="{% url 'editProfile' %}">회원정보 수정</a>
+
+<h1>회원정보</h1> 
+{% if request.user.username == my_profile.profile_id %}
+<a href="{% url 'editProfile' my_profile.profile_id %}">회원정보 수정</a>
+{% else %}
+<h6>--유저 본인이 아닙니다.--</h6>
+{% endif %}
+<h1></h1>
 <br><br>
 회원사진<br>
 <img src="{{ my_profile.profile_img.url }}">
@@ -17,6 +24,14 @@
 평점 :
 <p>간단한 본인소개</p>
 {{my_profile.introduction}}
+<br><br>
+
+{% for tag in tag_list %}
+ <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
+{% endfor %}
+<br><br>
+
+{% if request.user.username == my_profile.profile_id %}
 충전된 금액:{{my_profile.money}}
 <details>
     <summary>충전</summary>
@@ -30,13 +45,10 @@
 </form>
 </details>
 <br>
+<a href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
+<a href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
+<a href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
 <br><br>
-{% for tag in tag_list %}
- <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
-{% endfor %}
-<br><br>
-<a href="{% url 'performing' %}">수행중인 미션</a><br>
-<a href="{% url 'commissioned' %}">의뢰중인 미션</a><br>
-<a href="{% url 'scrap' %}">스크랩한 미션</a>
+{% endif %}
 
 {% endblock %}
