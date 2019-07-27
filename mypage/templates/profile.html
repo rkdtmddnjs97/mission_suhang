@@ -23,7 +23,7 @@
     <form action="{% url 'recharge' my_profile.id %}" method="POST">
         {% csrf_token %}
       
-          충전긍액:<input type="text" name='charge_money'>
+          충전금액:<input type="text" name='charge_money'>
           <input type="submit" value='확인'>
    
         
