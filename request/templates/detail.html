@@ -16,6 +16,9 @@
             <br>
             <img src="{{post.attached_img.url}}" alt=""><br>
             {{post.body}}
+            <br>
+            첨부파일 : 
+            <a href="{{post.attached_file.url}}" download="">{{post.attached_file}}</a>
         </p>
         해시태그<br>
         {% for tag in hashtag.all %}

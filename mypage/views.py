@@ -158,6 +158,11 @@ def submit_send(request,post_id):
     form.writer=request.POST['writer']
     form.title=request.POST['title']
     form.body=request.POST['body']
+    if request.FILES.get('attachment') is None:
+        form.attachment = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
+    else:
+        form.attachment = request.FILES.get('attachment')
+        
     form.submit=Post.objects.get(id=post_id)
     form.save()
     post=Post.objects.get(id=post_id)

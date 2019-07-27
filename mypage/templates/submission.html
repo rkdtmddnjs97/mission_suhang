@@ -8,6 +8,10 @@
 작성자:{{submission_result.writer}}
 <br>
 본문:{{submission_result.body}}
+<br>
+첨부파일 :
+<a href="{{submission_result.attachment.url}}" download="">{{submission_result.attachment}}</a>
+<br>
 {% if post.writer == user.username %}
 {% if post.status == 'running' %}
     <a href="{% url 'end' post.id %}">미션완료</a>
