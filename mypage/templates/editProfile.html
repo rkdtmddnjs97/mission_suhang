@@ -5,7 +5,7 @@
 <h1>회원정보 수정 창</h1>
 
 
-<form action="{% url 'updateProfile' %}" method="POST" enctype="multipart/form-data">
+<form action="{% url 'updateProfile' userProfile.profile_id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token%}
 
     프로필 사진<br>
@@ -39,7 +39,7 @@
     <br>
     <br>
     <button type="submit">수정</button>
-    <a href="{% url 'profile' %}">취소</a>
+    <a href="{% url 'profile' userProfile.profile_id %}">취소</a>
 
 </form>
 

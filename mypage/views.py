@@ -8,32 +8,14 @@ from .models import MTM_chat,chatting
 from django.core.exceptions import ObjectDoesNotExist
 
 
-# def search(request):
-#     input_data = request.GET['input_data'].upper()
-#     try:
-#         tag = Hashtag.objects.get(name=input_data)
-#         results = Post.objects.filter(hashtag=tag)
-#         result_flag = True
-#         return render(request, 'search_result.html', {'input_data': input_data, 'results': results, 'result_flag':result_flag})
-
-#     except ObjectDoesNotExist:
-#         results = '검색 결과가 없습니다^^'
-#         result_flag = False
-#         return render(request, 'search_result.html', {'input_data': input_data, 'results': results, 'result_flag':result_flag})
-
 def chat(request,app_id,request_id):
   
     #room=MTM_chat.objects.filter()
     try:
-        
-
         chat_room=MTM_chat.objects.get(profile_fk=app_id,request_fk=request_id)
         chat_objects=chatting.objects.filter(chatting_fk=chat_room.id)
     
     except ObjectDoesNotExist:
-
-      
-      
         chat_room=MTM_chat()
         chat_room.profile_fk=Profile.objects.get(id=app_id)
         chat_room.request_fk=Profile.objects.get(id=request_id)
@@ -62,19 +44,15 @@ def chat_edit(request,chat_id,appId,requestId):
     tmp.content=request.POST['modify_chat']
     tmp.save()
     return redirect('chat',appId,requestId)
-    
-def personal(request):
-    my_profile = request.user.profile
-    tag_list = my_profile.hashtag.all()
 
-    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list})
 def disagree(request,post_id,app_id):
     tmp=User.objects.get(username=app_id)
     eleminate=ApplyMission.objects.get( user=request.user,post=post_id,applier=tmp.id)
     eleminate.delete()
     return redirect('commissioned')
-def commissioned(request):
-    commissioned_post=ApplyMission.objects.filter( user=request.user)
+def commissioned(request, profile_id):
+    user = User.objects.get(username=profile_id)
+    commissioned_post=ApplyMission.objects.filter(user=user)
     
     applications=[]
     notNone=[]
@@ -92,12 +70,13 @@ def commissioned(request):
         connectors.append(applie.post.id)
         appliers.append(pro)
         
-    commission_user=Profile.objects.get(profile_id=request.user.username)
+    commission_user=Profile.objects.get(profile_id=profile_id)
 
     return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user,'connectors':connectors})
 
-def performing(request):
-    tmp=ApplyMission.objects.filter(applier=request.user.id)
+def performing(request, profile_id):
+    user=User.objects.get(username=profile_id)
+    tmp=ApplyMission.objects.filter(applier=user.id)
     # Post.objects.filter(approved_id=request.user.username)
     performing_post=[]
     for n in tmp:
@@ -105,55 +84,64 @@ def performing(request):
     perform_profiles=[]
     for perform in performing_post:
         perform_profiles.append(Profile.objects.get(profile_id=perform.writer))
-    perform_user=Profile.objects.get(profile_id=request.user.username)
+    perform_user=Profile.objects.get(profile_id=user.username)
     
     return render(request, 'performing.html',{'performing_post':performing_post,'perform_profiles':perform_profiles,'perform_user':perform_user})
 
-def scrap(request):
-    #request앱 Post모델객체 사용
-    my_scraped_post = Post.objects.filter(user = request.user)
+def scrap(request, profile_id):
+    user = User.objects.get(username = profile_id)
+    profile = profile_id
+    my_scraped_post = Post.objects.filter(user = user)
 
-    return render(request, 'scrap.html', {'scraped_post':my_scraped_post})
+    return render(request, 'scrap.html', {'scraped_post':my_scraped_post, 'profile':profile})
+
+def myProfile(request, profile_id):
+    my_profile = Profile.objects.get(profile_id=profile_id)
+    tag_list = my_profile.hashtag.all()
+    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list})
 
 
-def editProfile(request):
-    userProfile = request.user.profile
-    my_tag = userProfile.hashtag.all()
-    all_tag = Hashtag.objects.all()
-    checked_tag = []
-    uncheked_tag = []
-    for checked in my_tag:
-        checked_tag.append(checked)
-    for unchecked in all_tag:
-        if unchecked in checked_tag:
-            pass
-        else:
-            uncheked_tag.append(unchecked)
+def editProfile(request, profile_id):
+    if request.user.profile.profile_id==profile_id:
+        userProfile = Profile.objects.get(profile_id=profile_id)
+        my_tag = userProfile.hashtag.all()
+        all_tag = Hashtag.objects.all()
+        checked_tag = []
+        uncheked_tag = []
+        for checked in my_tag:
+            checked_tag.append(checked)
+        for unchecked in all_tag:
+            if unchecked in checked_tag:
+                pass
+            else:
+                uncheked_tag.append(unchecked)
+        
+        return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'unchecked_tag':uncheked_tag})
+    else:
+        print("본인 계정이 아니면 접근할 수 없습니다.") #나중에 html 경고창 띄우게 수정하면 참 좋을 듯ㅎㅎ
+        return redirect('profile', profile_id=profile_id)
+
+def updateProfile(request, profile_id):
+    user = Profile.objects.get(profile_id=profile_id)
     
-    return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'unchecked_tag':uncheked_tag})
-
-def updateProfile(request):
-    #user = User.objects.get(pk=user_id)
-    user = request.user
-    
-    user.profile.university=request.POST['university']
-    user.profile.department=request.POST['department']
-    user.profile.name=request.POST['name']
-    user.profile.introduction=request.POST['introduction']
+    user.university=request.POST['university']
+    user.department=request.POST['department']
+    user.name=request.POST['name']
+    user.introduction=request.POST['introduction']
     
     if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
         pass
     else:
-        user.profile.profile_img = request.FILES.get('pofile_img')
+        user.profile_img = request.FILES.get('pofile_img')
 
     tag_list = request.POST.getlist('hashtag')
     for tag in tag_list:
         input_tag = Hashtag.objects.get(name=tag.upper())
-        user.profile.hashtag.add(input_tag)
+        user.hashtag.add(input_tag)
 
     user.save()
 
-    return redirect('profile')
+    return redirect('profile', profile_id=profile_id)
 
 def submit_page(request,post_id):
      post=Post.objects.get(id=post_id)
@@ -170,7 +158,7 @@ def submit_send(request,post_id):
     post=Post.objects.get(id=post_id)
     post.s_flag=True
     post.save()
-    return redirect('performing')
+    return redirect('performing', profile_id=request.user.username)
 
 def submission(request,post_id):
     submission_result=submit_form.objects.get(submit=post_id)
@@ -187,7 +175,7 @@ def calculate(request,profile_id,cash):
     tmp2=tmp.money
     tmp.money=tmp1+tmp2
     tmp.save()
-    return redirect('profile')
+    return redirect('profile', profile_id=profile_id)
 
 def mission_quit(request,post_id):
     mode=Post.objects.get(id=post_id)
@@ -197,8 +185,8 @@ def mission_quit(request,post_id):
     tmp=User.objects.get(username=mode.writer)
     tmp1=ApplyMission.objects.get(user=tmp.id,post=mode.id,applier=request.user.id)
     tmp1.delete()
+    return redirect('performing', profile_id=request.user.username)
 
-    return redirect('performing')
 def submission_edit(request,submission_id,postId):
     tmp=submit_form.objects.get(id=submission_id)
     tmp.body=request.POST['content']
@@ -211,4 +199,4 @@ def submission_edit(request,submission_id,postId):
 def commission_quit(request,post_id):
     tmp=Post.objects.get(id=post_id)
     tmp.delete()
-    return redirect('commissioned')
+    return redirect('commissioned', profile_id=request.user.username)
