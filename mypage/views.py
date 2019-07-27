@@ -170,3 +170,15 @@ def submission(request,post_id):
     submission_result=submit_form.objects.get(submit=post_id)
     return render(request,'submission.html',{'submission_result':submission_result})
 
+def recharge(request,profile_id):
+    money=request.POST['charge_money']
+    profile=profile_id
+    return render(request,'charge.html',{'money':money,'profile':profile})
+
+def calculate(request,profile_id,cash):
+    tmp=Profile.objects.get(id=profile_id)
+    tmp1=int(cash)
+    tmp2=tmp.money
+    tmp.money=tmp1+tmp2
+    tmp.save()
+    return redirect('profile')
