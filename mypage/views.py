@@ -86,13 +86,15 @@ def commissioned(request):
             notNone.append(application)
     appliers=[]
     applicants=[]
+    connectors=[]
     for applie in notNone:
         pro=Profile.objects.get(user=applie.applier)
-        pro.connector=applie.post.id
+        connectors.append(applie.post.id)
         appliers.append(pro)
+        
     commission_user=Profile.objects.get(profile_id=request.user.username)
 
-    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user})
+    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user,'connectors':connectors})
 
 def performing(request):
     performing_post= Post.objects.filter(approved_id=request.user.username)
@@ -182,3 +184,21 @@ def calculate(request,profile_id,cash):
     tmp.money=tmp1+tmp2
     tmp.save()
     return redirect('profile')
+
+def mission_quit(request,post_id):
+    mode=Post.objects.get(id=post_id)
+    mode.status='ready'
+    mode.approved_id=None
+    mode.save()
+    tmp=User.objects.get(username=mode.writer)
+    tmp1=ApplyMission.objects.get(user=tmp.id,post=mode.id,applier=request.user.id)
+    tmp1.delete()
+    
+    return redirect('performing')
+# def apply(request,post_id):
+#     post=Post.objects.get(id=post_id)
+#     applyMission = ApplyMission()
+#     applyMission.user=User.objects.get(username=post.writer)
+#     applyMission.post=Post.objects.get(id=post_id)
+#     applyMission.applier=request.user
+#     applyMission.save()

@@ -14,6 +14,8 @@
 {% for perform_profile in perform_profiles %}
 {% if perform_profile.profile_id == post.writer %}
 <a href="{% url 'chat' app_id=perform_user.id request_id=perform_profile.id %}">채팅</a>
+<br>
+<a href="{% url 'mission_quit'  post.id %}">수행포기</a>
 {% endif %}
 {% endfor %}
 <br>

@@ -19,6 +19,7 @@ urlpatterns = [
     path('chat_edit/<chat_id> <appId> <requestId>', views.chat_edit, name="chat_edit"),
     path('recharge/<int:profile_id>', views.recharge, name="recharge"),
     path('calculate/<profile_id> <cash>', views.calculate, name="calculate"),
+    path('mission_quit/<int:post_id>', views.mission_quit, name="mission_quit"),
 
 ]
 
