@@ -72,18 +72,29 @@ def new(request):
     return render(request, 'new.html', {'user':user, 'hashtag':hashtag})
 
 def create(request):
+    tmp=Profile.objects.get(profile_id=request.user.username)
+    tmp1=request.POST['price']
+    tmp2=tmp.money
+    tmp3=tmp2-int(tmp1)
+    tmp.money=tmp3
+    tmp.save()
     new_post = Post()
     writer = request.user.username
     new_post.writer = writer
     new_post.title=request.POST['title']
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
+
+    new_post.attached_img = request.FILES.get('attached_img')
+    new_post.deposit=int(tmp1)
+
     #new_post.attached_img = request.FILES.get('attached_img')
 
     if request.FILES.get('attached_img') is None:
         new_post.attached_img = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
     else:
         new_post.attached_img = request.FILES.get('attached_img')
+
 
     new_post.save()
     
@@ -163,11 +174,16 @@ def start(request,post_id,app_id):
     return redirect('commissioned', profile_id=request.user.username)
 
 
+
 def end(request,post_id):
     mode=Post.objects.get(id=post_id)
     mode.status='blocked'
     mode.save()
-    return redirect('detail', post_id)
+    tmp=Profile.objects.get(profile_id=mode.approved_id)
+    tmp1=Profile.objects.get(profile_id=request.user.username)
+    tmp.money+=tmp1.money
+    tmp.save()
+    return redirect('profile')
 
 def tag_post(request, tag_id):
     tag_related_posts = Post.objects.filter(hashtag = tag_id)

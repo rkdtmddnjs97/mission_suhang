@@ -16,6 +16,7 @@ class Post(models.Model):
     approved_id=models.CharField(null=True,max_length=200)
     s_flag=models.BooleanField(default=False)
     attached_img=models.ImageField(upload_to='attached_img/', null=True, blank=True)
+    deposit=models.IntegerField(default=0)
     
 
     def __str__(self):
