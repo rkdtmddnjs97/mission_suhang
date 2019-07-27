@@ -35,7 +35,7 @@ def signup(request):
 
             # 프로필 사진 form이 입력되지 않았을 시 마이페이지 에러를 방지하기 위해 더미아미지를 넣도록 함.
             if request.FILES.get('profile_img') is None:
-                user.profile.profile_img = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwigrKqJi9DjAhXWMN4KHaLmAEgQjRx6BAgBEAU&url=http%3A%2F%2Fwww.koreapas.com%2Fbbs%2Fview.php%3Fid%3Dgofun%26no%3D122920&psig=AOvVaw0GwRBf4FdEj0Co8rKRzw6v&ust=1564144660350089"
+                user.profile.profile_img = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
             else:
                 user.profile.profile_img = request.FILES.get('pofile_img')
                 
