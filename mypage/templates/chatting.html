@@ -2,13 +2,33 @@
 {% block content %}
 
 <h2>comments</h2>
-
+{% for chat_object in chat_objects %}
+{{chat_object.writer}}
+<br>
+{{chat_object.content}}
+<hr>
+<a href="{% url 'chat_delete' chat_id=chat_object.id appId=app_id requestId=request_id %}">삭제</a>
+<details>
+    <summary>수정하기</summary>
+    <form action="{% url 'chat_edit' chat_id=chat_object.id appId=app_id requestId=request_id %}" method="POST">
+        {% csrf_token %}
+      
+          <textarea name= 'modify_chat' id="" cols="30" rows="10" placeholder="write your content" >{{chat_object.content}}</textarea>
+        <br>
+        <br>
+        <input type="submit" value='수정'>
+        
+</form>
+</details>
+{% endfor %}
 <br>
 
 <hr>
 
-<form action="" >
+<form action="{% url 'new_chat' chat_id %}" method="POST">
     {% csrf_token %}
+    <input name="app_id"type="hidden" value='{{app_id}}'>
+    <input name="request_id" type="hidden" value='{{request_id}}'>
     작성자 : <input name="writer" type="text" value='{{request.user.username}}'>
     <br>
     내용 : <textarea name="content" id="" cols="30" rows="10"></textarea>

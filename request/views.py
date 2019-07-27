@@ -27,7 +27,7 @@ def apply(request,post_id):
     applyMission.post=Post.objects.get(id=post_id)
     applyMission.applier=request.user
     applyMission.save()
-  
+
     return redirect('detail', post_id)
 
 
@@ -154,15 +154,8 @@ def start(request,post_id,app_id):
     mode.status='running'
     mode.approved_id=app_id
     mode.save()
-    tmp=Post.objects.get(id=post_id)
-    profile=Profile.objects.get(profile_id=app_id)
-    personal=User.objects.get(id=profile.user.id)
-    A_M=ApplyMission.objects.filter(post=tmp)
-    for a_m in A_M:
-        if a_m.user != personal:
-            a_m.applier=None
-
     return redirect('commissioned')
+
 
 def end(request,post_id):
     mode=Post.objects.get(id=post_id)

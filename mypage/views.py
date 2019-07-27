@@ -27,32 +27,52 @@ def chat(request,app_id,request_id):
     try:
         
 
-        tmp1=MTM_chat.objects.get(profile_fk=app_id,request_fk=request_id)
-        chat_objects=chatting.objects.filter(chatting_fk=tmp1.id)
+        chat_room=MTM_chat.objects.get(profile_fk=app_id,request_fk=request_id)
+        chat_objects=chatting.objects.filter(chatting_fk=chat_room.id)
     
     except ObjectDoesNotExist:
 
-        tmp=chatting()
+      
       
         chat_room=MTM_chat()
         chat_room.profile_fk=Profile.objects.get(id=app_id)
         chat_room.request_fk=Profile.objects.get(id=request_id)
         chat_room.save()
-        tmp=chatting()
-        tmp.chatting_fk=chat_room
-        tmp.save()
+
         chat_objects=chatting.objects.filter(chatting_fk=chat_room.id)
     
-    return render(request,'chatting.html',{'chat_objects':chat_objects})
+    return render(request,'chatting.html',{'chat_objects':chat_objects,'chat_id':chat_room.id,'app_id':app_id,'request_id':request_id})
 
+def new_chat(request,chat_id):
+    tmp=chatting()
+    tmp.chatting_fk=MTM_chat.objects.get(id=chat_id)
+    tmp.writer=request.POST['writer']
+    tmp.content=request.POST['content']
+    tmp.save()
+    app_id=request.POST['app_id']
+    request_id=request.POST['request_id']
+    return redirect('chat',app_id,request_id)
 
+def chat_delete(request,chat_id,appId,requestId):
+    tmp=chatting.objects.get(id=chat_id)
+    tmp.delete()
+    return redirect('chat',appId,requestId)
+def chat_edit(request,chat_id,appId,requestId):
+    tmp=chatting.objects.get(id=chat_id)
+    tmp.content=request.POST['modify_chat']
+    tmp.save()
+    return redirect('chat',appId,requestId)
     
 def personal(request):
     my_profile = request.user.profile
     tag_list = my_profile.hashtag.all()
 
     return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list})
-
+def disagree(request,post_id,app_id):
+    tmp=User.objects.get(username=app_id)
+    eleminate=ApplyMission.objects.get( user=request.user,post=post_id,applier=tmp.id)
+    eleminate.delete()
+    return redirect('commissioned')
 def commissioned(request):
     commissioned_post=ApplyMission.objects.filter( user=request.user)
     
