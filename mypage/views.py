@@ -86,13 +86,15 @@ def commissioned(request):
             notNone.append(application)
     appliers=[]
     applicants=[]
+    connectors=[]
     for applie in notNone:
         pro=Profile.objects.get(user=applie.applier)
-        pro.connector=applie.post.id
+        connectors.append(applie.post.id)
         appliers.append(pro)
+        
     commission_user=Profile.objects.get(profile_id=request.user.username)
 
-    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user})
+    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user,'connectors':connectors})
 
 def performing(request):
     performing_post= Post.objects.filter(approved_id=request.user.username)
