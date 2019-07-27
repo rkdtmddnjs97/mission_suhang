@@ -170,7 +170,7 @@ def submit_send(request,post_id):
 
 def submission(request,post_id):
     submission_result=submit_form.objects.get(submit=post_id)
-    return render(request,'submission.html',{'submission_result':submission_result})
+    return render(request,'submission.html',{'submission_result':submission_result,'post_id':post_id})
 
 def recharge(request,profile_id):
     money=request.POST['charge_money']
@@ -193,12 +193,14 @@ def mission_quit(request,post_id):
     tmp=User.objects.get(username=mode.writer)
     tmp1=ApplyMission.objects.get(user=tmp.id,post=mode.id,applier=request.user.id)
     tmp1.delete()
-    
+
     return redirect('performing')
-# def apply(request,post_id):
-#     post=Post.objects.get(id=post_id)
-#     applyMission = ApplyMission()
-#     applyMission.user=User.objects.get(username=post.writer)
-#     applyMission.post=Post.objects.get(id=post_id)
-#     applyMission.applier=request.user
-#     applyMission.save()
+def submission_edit(request,submission_id,postId):
+    tmp=submit_form.objects.get(id=submission_id)
+    tmp.body=request.POST['content']
+    tmp.save()
+    return redirect('submission', postId)
+    # def submission(request,post_id):
+    # submission_result=submit_form.objects.get(submit=post_id)
+    # return render(request,'submission.html',{'submission_result':submission_result})
+
