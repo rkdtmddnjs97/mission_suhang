@@ -184,3 +184,21 @@ def calculate(request,profile_id,cash):
     tmp.money=tmp1+tmp2
     tmp.save()
     return redirect('profile')
+
+def mission_quit(request,post_id):
+    mode=Post.objects.get(id=post_id)
+    mode.status='ready'
+    mode.approved_id=None
+    mode.save()
+    tmp=User.objects.get(username=mode.writer)
+    tmp1=ApplyMission.objects.get(user=tmp.id,post=mode.id,applier=request.user.id)
+    tmp1.delete()
+    
+    return redirect('performing')
+# def apply(request,post_id):
+#     post=Post.objects.get(id=post_id)
+#     applyMission = ApplyMission()
+#     applyMission.user=User.objects.get(username=post.writer)
+#     applyMission.post=Post.objects.get(id=post_id)
+#     applyMission.applier=request.user
+#     applyMission.save()
