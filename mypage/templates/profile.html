@@ -46,7 +46,9 @@
 </details>
 <br>
 <a href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
+<a href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
 <a href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
+<a href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
 <a href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
 <br><br>
 {% endif %}
