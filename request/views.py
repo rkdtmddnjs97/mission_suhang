@@ -74,10 +74,15 @@ def new(request):
 def create(request):
     tmp=Profile.objects.get(profile_id=request.user.username)
     tmp1=request.POST['price']
+    if tmp1 == '':
+        tmp1=0
     tmp2=tmp.money
     tmp3=tmp2-int(tmp1)
-    tmp.money=tmp3
-    tmp.save()
+    if tmp3 >= 0:
+        tmp.money=tmp3
+        tmp.save()
+    else:
+        return redirect('request')
     new_post = Post()
     writer = request.user.username
     new_post.writer = writer
@@ -167,10 +172,15 @@ def scrap(request,post_id):
     return redirect('detail', post_id)
 
 def start(request,post_id,app_id):
+    app=User.objects.get(username=app_id)
     mode=Post.objects.get(id=post_id)
     mode.status='running'
     mode.approved_id=app_id
     mode.save()
+    tmp=ApplyMission.objects.filter(post=post_id,user=request.user.id)
+    for n in tmp:
+        if n.applier != app.id:
+            n.applier= None
     return redirect('commissioned', profile_id=request.user.username)
 
 
