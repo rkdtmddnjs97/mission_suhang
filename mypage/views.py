@@ -206,3 +206,18 @@ def commission_quit(request,post_id):
     tmp=Post.objects.get(id=post_id)
     tmp.delete()
     return redirect('commissioned', profile_id=request.user.username)
+
+def performing_end(request,profile_id):
+    tmp=Post.objects.filter(approved_id=profile_id)
+    blocked_posts=[]
+    for n in tmp:
+        if n.status == 'blocked':
+            blocked_posts.append(n)
+    return render(request,'perform_end.html',{'blocked_posts':blocked_posts})
+def commission_end(request,profile_id):
+    tmp=Post.objects.filter(writer=request.user.username)
+    blocked_posts=[]
+    for n in tmp:
+        if n.status == 'blocked':
+            blocked_posts.append(n)
+    return render(request,'perform_end.html',{'blocked_posts':blocked_posts})

@@ -32,9 +32,15 @@ def apply(request,post_id):
 
 
 def request_home(request):
-    post_list = Post.objects.all()
+    post_list=[]
+    tmp= Post.objects.all()
+    for n in tmp:
+        if n.status != 'blocked':
+            post_list.append(n)
+    
     if request.user.is_authenticated:
         my_scrap_post = Post.objects.filter(user = request.user)
+        
         
     else:
         my_scrap_post = None
@@ -193,7 +199,7 @@ def end(request,post_id):
     tmp1=Profile.objects.get(profile_id=request.user.username)
     tmp.money+=tmp1.money
     tmp.save()
-    return redirect('profile')
+    return redirect('profile', tmp1.profile_id)
 
 def tag_post(request, tag_id):
     tag_related_posts = Post.objects.filter(hashtag = tag_id)
