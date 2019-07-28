@@ -213,11 +213,11 @@ def performing_end(request,profile_id):
     for n in tmp:
         if n.status == 'blocked':
             blocked_posts.append(n)
-    return render(request,'perform_end.html',{'blocked_posts':blocked_posts})
+    return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
 def commission_end(request,profile_id):
     tmp=Post.objects.filter(writer=request.user.username)
     blocked_posts=[]
     for n in tmp:
         if n.status == 'blocked':
             blocked_posts.append(n)
-    return render(request,'perform_end.html',{'blocked_posts':blocked_posts})
+    return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})

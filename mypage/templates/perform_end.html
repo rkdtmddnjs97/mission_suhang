@@ -2,9 +2,11 @@
 
 {% block content %}
 {% for blocked_post in blocked_posts%}
-{{blocked_post.writer}}
+<a href="{% url 'detail' blocked_post.id %}">{{blocked_post.writer}}</a>
 {{blocked_post.title}}
 {{blocked_post.body}}
 {{blocked_post.pub_date}}
 {% endfor %}
+<a href="{% url 'profile' profile_id %}">뒤로가기</a>
 {% endblock %}
+
