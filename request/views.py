@@ -34,7 +34,7 @@ def request_home(request):
     post_list=[]
     tmp= Post.objects.all()
     for n in tmp:
-        if n.status != 'blocked':
+        if n.status != 'completed':
             post_list.append(n)
     
     if request.user.is_authenticated:
@@ -191,7 +191,7 @@ def start(request,post_id,app_id):
 
 def end(request,post_id):
     mode=Post.objects.get(id=post_id)
-    mode.status='blocked'
+    mode.status='completed'
     mode.save()
     tmp=Profile.objects.get(profile_id=mode.approved_id)
     tmp1=Profile.objects.get(profile_id=request.user.username)

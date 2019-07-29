@@ -3,6 +3,8 @@ from request.models import Post
 from accounts.models import Profile
 # Create your views here.
 def home(request):
+    completed_posts = Post.objects.filter(status='completed')
+    mission_completed = completed_posts.count()
     recent_posts=[]
     posts=Post.objects.order_by('-pub_date')
     for index,post in enumerate(posts):
@@ -16,4 +18,4 @@ def home(request):
             if profile.mission_count != 0:
                  hot_users.append(profile)
 
-    return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users})
+    return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed})

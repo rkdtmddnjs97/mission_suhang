@@ -60,7 +60,7 @@ def commissioned(request, profile_id):
         
         if application.applier is None :
             tmp=Post.objects.get(id=application.post.id)
-            if tmp.status != 'blocked':
+            if tmp.status != 'completed':
                 applications.append(tmp)
         else:
             notNone.append(application)
@@ -84,7 +84,7 @@ def performing(request, profile_id):
     performing_post=[]
     for n in tmp:
         tmp1=Post.objects.get(id=n.post.id)
-        if tmp1.status != 'blocked':
+        if tmp1.status != 'completed':
             performing_post.append(tmp1)
     perform_profiles=[]
     for perform in performing_post:
@@ -127,24 +127,26 @@ def editProfile(request, profile_id):
         return redirect('profile', profile_id=profile_id)
 
 def updateProfile(request, profile_id):
-    user = Profile.objects.get(profile_id=profile_id)
+    update_profile = Profile.objects.get(profile_id=profile_id)
     
-    user.university=request.POST['university']
-    user.department=request.POST['department']
-    user.name=request.POST['name']
-    user.introduction=request.POST['introduction']
+    update_profile.university=request.POST['university']
+    update_profile.department=request.POST['department']
+    update_profile.name=request.POST['name']
+    update_profile.introduction=request.POST['introduction']
     
     if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
         pass
     else:
-        user.profile_img = request.FILES.get('pofile_img')
+        update_profile.profile_img = request.FILES.get('pofile_img')
 
     tag_list = request.POST.getlist('hashtag')
+    update_profile.hashtag.clear()
+
     for tag in tag_list:
         input_tag = Hashtag.objects.get(name=tag.upper())
-        user.hashtag.add(input_tag)
+        update_profile.hashtag.add(input_tag)
 
-    user.save()
+    update_profile.save()
 
     return redirect('profile', profile_id=profile_id)
 
@@ -216,13 +218,13 @@ def performing_end(request,profile_id):
     tmp=Post.objects.filter(approved_id=profile_id)
     blocked_posts=[]
     for n in tmp:
-        if n.status == 'blocked':
+        if n.status == 'completed':
             blocked_posts.append(n)
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
 def commission_end(request,profile_id):
     tmp=Post.objects.filter(writer=request.user.username)
     blocked_posts=[]
     for n in tmp:
-        if n.status == 'blocked':
+        if n.status == 'completed':
             blocked_posts.append(n)
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
