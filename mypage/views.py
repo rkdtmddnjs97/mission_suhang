@@ -127,24 +127,26 @@ def editProfile(request, profile_id):
         return redirect('profile', profile_id=profile_id)
 
 def updateProfile(request, profile_id):
-    user = Profile.objects.get(profile_id=profile_id)
+    update_profile = Profile.objects.get(profile_id=profile_id)
     
-    user.university=request.POST['university']
-    user.department=request.POST['department']
-    user.name=request.POST['name']
-    user.introduction=request.POST['introduction']
+    update_profile.university=request.POST['university']
+    update_profile.department=request.POST['department']
+    update_profile.name=request.POST['name']
+    update_profile.introduction=request.POST['introduction']
     
     if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
         pass
     else:
-        user.profile_img = request.FILES.get('pofile_img')
+        update_profile.profile_img = request.FILES.get('pofile_img')
 
     tag_list = request.POST.getlist('hashtag')
+    update_profile.hashtag.clear()
+
     for tag in tag_list:
         input_tag = Hashtag.objects.get(name=tag.upper())
-        user.hashtag.add(input_tag)
+        update_profile.hashtag.add(input_tag)
 
-    user.save()
+    update_profile.save()
 
     return redirect('profile', profile_id=profile_id)
 
