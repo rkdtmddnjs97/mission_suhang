@@ -22,6 +22,8 @@ urlpatterns = [
     path('mission_quit/<int:post_id>', views.mission_quit, name="mission_quit"),
     path('submission_edit/<submission_id> <postId>', views.submission_edit, name="submission_edit"),
     path('commission_quit/<int:post_id>', views.commission_quit, name="commission_quit"),
+    path('performing_end/<str:profile_id>', views.performing_end, name="performing_end"),
+    path('commission_end/<str:profile_id>', views.commission_end, name="commission_end"),
 
 ]
 
