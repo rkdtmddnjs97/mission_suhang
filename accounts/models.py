@@ -21,6 +21,7 @@ class Profile(models.Model):
     profile_img=models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     money=models.IntegerField(default=0)
     connector=models.IntegerField(null=True)
+    mission_count=models.IntegerField(default=0)
     
 
 
