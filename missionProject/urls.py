@@ -20,6 +20,7 @@ import view_request.urls
 import view_request.views
 import request.urls
 import search.views
+import notification.views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -33,6 +34,7 @@ urlpatterns = [
     path('freeBoard/',include('freeBoard.urls')),
     path('request/', include('request.urls')),
     path('search_result/', search.views.search, name="search"),
+    path('notifications/', notification.views.get, name="notifications")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

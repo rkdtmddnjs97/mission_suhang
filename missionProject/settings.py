@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'freeBoard.apps.FreeboardConfig',
     'hashtag.apps.HashtagConfig',
     'search.apps.SearchConfig',
+    'notification.apps.NotificationConfig',
 
 ]
 

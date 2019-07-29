@@ -1,0 +1,5 @@
+알림 창<br>
+{% for notification in notifications %}
+{{notification.creator}}가 당신({{notification.to}})에게 "{{notification.notifi_comment}}"라고 {{notification.notification_type}}하였습니다.
+<br>
+{% endfor %}
