@@ -197,6 +197,9 @@ def end(request,post_id):
     tmp1=Profile.objects.get(profile_id=request.user.username)
     tmp.money+=tmp1.money
     tmp.save()
+    profile=Profile.objects.get(profile_id=approved_id)
+    profile.mission_count+=1
+    profile.save()
     return redirect('profile', tmp1.profile_id)
 
 def tag_post(request, tag_id):
