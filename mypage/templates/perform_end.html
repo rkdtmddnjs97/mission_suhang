@@ -6,6 +6,8 @@
 {{blocked_post.title}}
 {{blocked_post.body}}
 {{blocked_post.pub_date}}
+<a href="{% url 'submit_result' blocked_post.id %}">최종 제출물</a>
+<a href="{% url 'delete_final' post_id=blocked_post.id app_id=profile_id %}">삭제</a>
 {% endfor %}
 <a href="{% url 'profile' profile_id %}">뒤로가기</a>
 {% endblock %}

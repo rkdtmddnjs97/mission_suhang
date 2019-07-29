@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from accounts.models import Profile
 from mypage.models import MTM_chat,chatting
 from notification.views import create_notification
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
@@ -209,9 +210,14 @@ def end(request,post_id):
     a_m=ApplyMission.objects.filter(post=post_id)
     for n in a_m:
         n.delete()
-    chat=MTM_chat.objects.get(profile_fk=tmp.id,request_fk=tmp1.id)
-    chat.delete()
-    return redirect('profile', tmp1.profile_id)
+    try:
+        chat=MTM_chat.objects.get(profile_fk=tmp.id,request_fk=tmp1.id)
+        chat.delete()
+        return redirect('profile', tmp1.profile_id)
+
+    except ObjectDoesNotExist:
+
+        return redirect('profile', tmp1.profile_id)
 
 def tag_post(request, tag_id):
     tag_related_posts = Post.objects.filter(hashtag = tag_id)

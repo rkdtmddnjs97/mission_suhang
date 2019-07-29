@@ -24,6 +24,8 @@ urlpatterns = [
     path('commission_quit/<int:post_id>', views.commission_quit, name="commission_quit"),
     path('performing_end/<str:profile_id>', views.performing_end, name="performing_end"),
     path('commission_end/<str:profile_id>', views.commission_end, name="commission_end"),
+    path('submit_result/<int:post_id>', views.submit_result, name="submit_result"),
+    path('delete_final/<post_id> <app_id>', views.delete_final, name="delete_final"),
 
 ]
 
