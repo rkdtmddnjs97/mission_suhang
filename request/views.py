@@ -197,9 +197,14 @@ def end(request,post_id):
     tmp1=Profile.objects.get(profile_id=request.user.username)
     tmp.money+=tmp1.money
     tmp.save()
-    profile=Profile.objects.get(profile_id=approved_id)
+    profile=Profile.objects.get(profile_id=mode.approved_id)
     profile.mission_count+=1
     profile.save()
+    a_m=ApplyMission.objects.filter(post=post_id)
+    for n in a_m:
+        n.delete()
+    chat=MTM_chat.objects.get(profile_fk=tmp.id,request_fk=tmp1.id)
+    chat.delete()
     return redirect('profile', tmp1.profile_id)
 
 def tag_post(request, tag_id):

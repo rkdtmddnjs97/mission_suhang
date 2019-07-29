@@ -14,12 +14,14 @@ def signup(request):
         if request.POST['password1'] == request.POST['password2']:
 
             _LENGTH = 8  # 20자리
-            string_pool = string.ascii_letters + string.digits + \
-                string.punctuation  # 숫자 + 대소문자 + 특수문자
-            result = "인증번호:"
+            string_pool = string.ascii_letters + string.digits 
+                # 숫자 + 대소문자 + 특수문자
+            result = "인증번호:\n"
+            tmp1=''
             for i in range(_LENGTH):
-                result += random.choice(string_pool)  # 랜덤한 문자열 하나 선택
-
+                tmp1+=random.choice(string_pool)
+                 # 랜덤한 문자열 하나 선택
+            result+=tmp1
             user = User.objects.create_user(
                 username=request.POST['username'], password=request.POST['password1'])
             auth.login(request, user)
@@ -30,7 +32,7 @@ def signup(request):
             user.profile.introduction = request.POST['introduction']
             user.profile.email = request.POST['email']
             user.profile.profile_id = request.POST['username']
-            user.profile.ssn = result.split(':')[1]
+            user.profile.ssn = tmp1
             user.profile.profile_img = request.FILES.get('pofile_img')
 
             # 프로필 사진 form이 입력되지 않았을 시 마이페이지 에러를 방지하기 위해 더미이미지를 넣도록 함.
