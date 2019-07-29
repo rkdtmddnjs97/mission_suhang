@@ -60,7 +60,7 @@ def commissioned(request, profile_id):
         
         if application.applier is None :
             tmp=Post.objects.get(id=application.post.id)
-            if tmp.status != 'blocked':
+            if tmp.status != 'completed':
                 applications.append(tmp)
         else:
             notNone.append(application)
@@ -84,7 +84,7 @@ def performing(request, profile_id):
     performing_post=[]
     for n in tmp:
         tmp1=Post.objects.get(id=n.post.id)
-        if tmp1.status != 'blocked':
+        if tmp1.status != 'completed':
             performing_post.append(tmp1)
     perform_profiles=[]
     for perform in performing_post:
@@ -216,13 +216,13 @@ def performing_end(request,profile_id):
     tmp=Post.objects.filter(approved_id=profile_id)
     blocked_posts=[]
     for n in tmp:
-        if n.status == 'blocked':
+        if n.status == 'completed':
             blocked_posts.append(n)
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
 def commission_end(request,profile_id):
     tmp=Post.objects.filter(writer=request.user.username)
     blocked_posts=[]
     for n in tmp:
-        if n.status == 'blocked':
+        if n.status == 'completed':
             blocked_posts.append(n)
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
