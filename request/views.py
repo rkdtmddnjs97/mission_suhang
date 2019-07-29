@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from accounts.models import Profile
 from mypage.models import MTM_chat,chatting
-
+from notification.views import create_notification
 
 
 
@@ -152,6 +152,12 @@ def new_comment(request, post_id):
     comment.content = request.POST['content']
     comment.post = get_object_or_404(Post, pk=post_id)
     comment.save()
+    
+    post = Post.objects.get(pk=post_id)
+    creator = request.user.profile
+    to = Profile.objects.get(profile_id=post.writer)
+    create_notification(creator, to, 'comment', comment.content)
+
     return redirect('detail', post_id)
 
 def comment_delete(request,comment_id):
