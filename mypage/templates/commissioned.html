@@ -28,7 +28,7 @@
         <button type="submit">승낙</button>
     
     </form>
-    <a href="{% url 'chat' app_id=applie.id request_id=commission_user.id  %}">채팅</a>
+    <a href="#" onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">채팅</a>
     <a href="{% url 'disagree' post_id=commission.id app_id=applie.profile_id %}">거절</a>
 
     <br>
@@ -52,7 +52,7 @@
 <br>제출상태:제출전
 <a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
 {% endif %}
-<a href="{% url 'chat' app_id=applie.id request_id=commission_user.id  %}">채팅</a>
+<a href="#" onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">채팅</a>
 {% endif %}
 {% endif %}
 
