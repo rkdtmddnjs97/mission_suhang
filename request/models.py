@@ -16,6 +16,7 @@ class Post(models.Model):
     approved_id=models.CharField(null=True,max_length=200)
     s_flag=models.BooleanField(default=False)
     attached_img=models.ImageField(upload_to='attached_img/', null=True, blank=True)
+    attached_file=models.FileField(upload_to='attached_file/', null=True, blank=True)
     deposit=models.IntegerField(default=0)
     
 
@@ -29,9 +30,10 @@ class ApplyMission(models.Model):
     
 class submit_form(models.Model):
     title=models.CharField(max_length=200,null=True)
-    writer = models.CharField(max_length=200,null=True)
-    pub_date = models.DateTimeField('Date published',null=True)
-    body = models.TextField(null=True)
+    writer=models.CharField(max_length=200,null=True)
+    pub_date=models.DateTimeField('Date published',null=True)
+    body=models.TextField(null=True)
+    attachment=models.FileField(upload_to='submit_file/', null=True, blank=True)
     submit=models.OneToOneField(Post,on_delete=models.CASCADE, null=True)
 
 class Comment(models.Model):

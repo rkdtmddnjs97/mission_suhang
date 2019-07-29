@@ -33,7 +33,7 @@ def signup(request):
             user.profile.ssn = result.split(':')[1]
             user.profile.profile_img = request.FILES.get('pofile_img')
 
-            # 프로필 사진 form이 입력되지 않았을 시 마이페이지 에러를 방지하기 위해 더미아미지를 넣도록 함.
+            # 프로필 사진 form이 입력되지 않았을 시 마이페이지 에러를 방지하기 위해 더미이미지를 넣도록 함.
             if request.FILES.get('profile_img') is None:
                 user.profile.profile_img = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
             else:

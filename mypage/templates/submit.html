@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>제출 페이지</h1>
-<form action="{% url 'submit_send' post.id %}" method="POST">
+<form action="{% url 'submit_send' post.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         제목 : <input type="text" name='title'>
         <br>
@@ -13,6 +13,7 @@
         본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" ></textarea>
         <br>
         <br>
+        첨부파일 : <input type="file" name="attachment">
         <button type='submit'> 제출</button>
 
 
