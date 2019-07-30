@@ -64,8 +64,8 @@
                             data-popover-content="#list-popover">알림({{notifi_count}})</a>
                         <div id="list-popover" style="display:none">
                             <ul class="ul-popover">
-                                {% for notification in notifications %}
-                                <li>{{notification.creator}}가 당신의 게시물에 {{notification.notification_type}}하였습니다.</li>
+                                {% for notification in notification_list %}
+                                <li>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</li>
                                 {% endfor %}
                                 <li><a href="{% url 'notifications' %}">see all</a></li>
                             </ul>
