@@ -8,5 +8,7 @@
 작성날짜:{{announcemnet.pub_date}}
 <br>
 {% endfor %}
+{% if judge == True %}
 <a href="{% url  'new_announcement'  %}">공지글 생성하기</a>
+{% endif %}
 {% endblock %}
