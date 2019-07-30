@@ -1,5 +1,4 @@
-{% extends 'base.html'%}
-{% block content %}
+
 <h1> 제출결과물 </h1>
 <br>
 
@@ -14,7 +13,25 @@
 <br>
 {% if post.writer == user.username %}
 {% if post.status == 'running' %}
-    <a href="{% url 'end' post.id %}">미션완료</a>
+<details>
+    <summary>제출 완료</summary>
+    <form action="{% url 'end' post.id %}" method="POST">
+        {% csrf_token %}
+      <p>평점:</p>
+       <input type="radio" name="rating" value="1">1
+       <input type="radio" name="rating" value="2">2
+       <input type="radio" name="rating" value="3">3
+       <input type="radio" name="rating" value="4">4
+       <input type="radio" name="rating" value="5">5
+    <br>
+    <p>후기</p>
+    <textarea name= 'review_content' id="" cols="30" rows="10" placeholder="write your review" ></textarea>
+
+        <br>
+        <input type="submit" value='미션완료'>
+        
+    </form>
+    </details>
     {% endif %}
 {% endif %}
 {% if submission_result.writer == user.username %}
@@ -31,4 +48,4 @@
 </details>
 
 {% endif %}
-{% endblock %}
+
