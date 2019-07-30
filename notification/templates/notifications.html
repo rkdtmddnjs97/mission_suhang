@@ -1,5 +1,5 @@
-알림 창<br>
+알림 센터<br><hr><br>
 {% for notification in notifications %}
-{{notification.creator}}가 당신({{notification.to}})에게 "{{notification.notifi_comment}}"라고 {{notification.notification_type}}하였습니다.
-<br>
+{{notification.creator}}가 당신에게 "{{notification.notifi_comment}}"라고 {{notification.notification_type}}하였습니다.
+<br><hr>
 {% endfor %}

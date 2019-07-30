@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from hashtag.models import Hashtag
 from .models import MTM_chat,chatting,Review,complaint
 from django.core.exceptions import ObjectDoesNotExist
+from notification.views import create_notification
 
 
 def chat(request,app_id,request_id):
@@ -33,12 +34,26 @@ def new_chat(request,chat_id):
     tmp.save()
     app_id=request.POST['app_id']
     request_id=request.POST['request_id']
+
+    request_user = Profile.objects.get(id=request_id)
+    app_user = Profile.objects.get(id=app_id)
+
+    if tmp.writer == request_user.profile_id:
+        creator = request_user
+        to = app_user
+        create_notification(creator, to, 'chat', tmp.content)
+    else:
+        creator = app_user
+        to = request_user
+        create_notification(creator, to, 'chat', tmp.content)
+
     return redirect('chat',app_id,request_id)
 
 def chat_delete(request,chat_id,appId,requestId):
     tmp=chatting.objects.get(id=chat_id)
     tmp.delete()
     return redirect('chat',appId,requestId)
+
 def chat_edit(request,chat_id,appId,requestId):
     tmp=chatting.objects.get(id=chat_id)
     tmp.content=request.POST['modify_chat']

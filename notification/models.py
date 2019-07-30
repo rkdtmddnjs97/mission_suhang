@@ -6,7 +6,8 @@ class Notification(models.Model):
     TYPE_CHOICES = (
         ('like', 'Like'),
         ('comment', 'Comment'),
-        ('mission_application', 'Mission_application')
+        ('mission_application', 'Mission_application'),
+        ('chat', 'Chat')
     )
 
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, related_name='creator')
