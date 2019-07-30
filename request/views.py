@@ -35,7 +35,7 @@ def request_home(request):
     post_list=[]
     tmp= Post.objects.all()
     for n in tmp:
-        if n.status != 'completed':
+        if n.status != 'completed' and n.status != 'running':
             post_list.append(n)
     
     if request.user.is_authenticated:
