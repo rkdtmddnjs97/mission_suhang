@@ -18,4 +18,8 @@ class Review(models.Model):
         reviews=models.TextField(null=True)
         ratings=models.IntegerField(default=0)
         writer=models.CharField(max_length=200,null=True)
-    
+class complaint(models.Model):
+        cause=models.TextField(null=True)
+        complainer=models.ForeignKey(Profile,on_delete=models.CASCADE, null=True,related_name='complainer')
+        prey=models.ForeignKey(Profile,on_delete=models.CASCADE, null=True,related_name='prey')
+        
