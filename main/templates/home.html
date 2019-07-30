@@ -19,7 +19,7 @@
 <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
 <span>Hot 수행자 : </span>
 {% for hot_user in hot_users %}
-    {{hot_user.profile_id}}
+    <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
 {% endfor %}
 <br><br>
 <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
@@ -32,16 +32,12 @@
 
 <span>최신 의뢰</span><br>
 {% for recent_post in recent_posts %}
-{{recent_post.title}}
+    {{recent_post.title}}
 {% endfor %}
 <br><br>    
 
 <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
 <p>추천 의뢰</p>
-
-
-
-
 
 
 {% endblock %}
