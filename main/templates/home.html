@@ -10,13 +10,14 @@
 <br>
 {% if user.is_authenticated %}
 <a href="{% url 'board'%}">자유게시판</a>
-<br><br>
+<br>
 <a href="{% url 'request'%}">의뢰게시판</a>
 
 
 {% endif %}
 <br>
 <a href="{% url 'announcement_board' %}">공지사항</a>
+<br>
 <br>
 <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
 <span>Hot 수행자 : </span>
@@ -34,9 +35,9 @@
 
 <span>최신 의뢰</span><br>
 {% for recent_post in recent_posts %}
-    {{recent_post.title}}
+    <a href="{% url 'detail' recent_post.id%}">{{recent_post.title}}</a><br>
 {% endfor %}
-<br><br>    
+<br>
 
 <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
 <p>추천 의뢰</p>

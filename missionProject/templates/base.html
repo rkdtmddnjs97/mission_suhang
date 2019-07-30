@@ -56,21 +56,18 @@
                         <a class="nav-link" href="{% url 'profile' user.profile.profile_id %}">Mypage (
                             {{user.username}} ) </a>
                     </li>
-                    <!-- <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
-                    </li> -->
-                    <!-- <li class="nav-item active">
+                    <li class="nav-item active">
                         <a class="nav-link" href="#" rel="popover" data-trigger="focus" data-placement="bottom"
                             data-popover-content="#list-popover">알림({{notifi_count}})</a>
                         <div id="list-popover" style="display:none">
                             <ul class="ul-popover">
                                 {% for notification in notification_list %}
-                                <li>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</li>
+                                    <li>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</li>
                                 {% endfor %}
                                 <li><a href="{% url 'notifications' %}">see all</a></li>
                             </ul>
                         </div>
-                    </li> -->
+                    </li>
 
 
                     {% endif %}
@@ -99,11 +96,6 @@
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
-
-    /* a[rel="popover"] {
-        display: inline-block;
-        margin: 20px;
-    } */
 
     input:not(#tag_box) {
         all: unset;
@@ -157,15 +149,6 @@
 </style>
 
 <script type="text/javascript">
-    // $(document).ready(function () {
-    //     // popover demo
-    //     $("a[data-toggle=popover]")
-    //         .popover()
-    //         .click(function (e) {
-    //             e.preventDefault()
-    //             return $('#list-popover').html();
-    //         })
-    // });
 
     $('[rel="popover"]').popover({
         container: 'body',
