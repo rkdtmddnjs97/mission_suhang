@@ -6,7 +6,11 @@ class Notification(models.Model):
     TYPE_CHOICES = (
         ('like', 'Like'),
         ('comment', 'Comment'),
-        ('mission_application', 'Mission_application'),
+        ('mission_apply', 'Mission_apply'),
+        ('mission_accept', 'Mission_accept'),
+        ('mission_reject', 'Mission_reject'),
+        ('mision_submit', 'Mission_submit'),
+        ('mission_complete', 'Mission_complete'),
         ('chat', 'Chat')
     )
 

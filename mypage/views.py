@@ -60,11 +60,18 @@ def chat_edit(request,chat_id,appId,requestId):
     tmp.save()
     return redirect('chat',appId,requestId)
 
+#의뢰자가 수행자의 미션신청을 거절
 def disagree(request,post_id,app_id):
-    tmp=User.objects.get(username=app_id)
-    eleminate=ApplyMission.objects.get( user=request.user,post=post_id,applier=tmp.id)
+    apply=User.objects.get(username=app_id)
+    eleminate=ApplyMission.objects.get(user=request.user, post=post_id, applier=apply.id)
     eleminate.delete()
-    return redirect('commissioned')
+
+    creator = Profile.objects.get(profile_id=request.user.username) 
+    to = Profile.objects.get(profile_id=apply.username)
+    create_notification(creator, to, 'mission_reject')
+
+    return redirect('commissioned', profile_id=request.user.username)
+
 def commissioned(request, profile_id):
     user = User.objects.get(username=profile_id)
     commissioned_post=ApplyMission.objects.filter(user=user)
@@ -196,6 +203,11 @@ def submit_send(request,post_id):
     post=Post.objects.get(id=post_id)
     post.s_flag=True
     post.save()
+
+    creator = Profile.objects.get(profile_id=request.user.username) 
+    to = Profile.objects.get(profile_id=post.writer)
+    create_notification(creator, to, 'mission_submit')
+
     return redirect('performing', profile_id=request.user.username)
 
 def submission(request,post_id):
