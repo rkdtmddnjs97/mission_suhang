@@ -7,6 +7,7 @@
 <br>
 {{chat_object.content}}
 <hr>
+{% if chat_object.writer == user.username %}
 <a href="{% url 'chat_delete' chat_id=chat_object.id appId=app_id requestId=request_id %}">삭제</a>
 <details>
     <summary>수정하기</summary>
@@ -20,6 +21,7 @@
         
 </form>
 </details>
+{% endif %}
 {% endfor %}
 <br>
 
