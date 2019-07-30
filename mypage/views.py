@@ -4,7 +4,7 @@ from accounts.models import Profile
 from django.utils import timezone
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
-from .models import MTM_chat,chatting
+from .models import MTM_chat,chatting,Review,complaint
 from django.core.exceptions import ObjectDoesNotExist
 from notification.views import create_notification
 
@@ -118,7 +118,18 @@ def scrap(request, profile_id):
 def myProfile(request, profile_id):
     my_profile = Profile.objects.get(profile_id=profile_id)
     tag_list = my_profile.hashtag.all()
-    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list})
+    review_objects=Review.objects.filter(review_fk=my_profile.id)
+    
+    number=review_objects.count()
+   
+    average_rate=0
+    for rate in review_objects:
+        average_rate+=rate.ratings
+    try:
+        average_rate/=number
+    except ZeroDivisionError:
+        average_rate=0
+    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number})
 
 
 def editProfile(request, profile_id):
@@ -235,6 +246,8 @@ def performing_end(request,profile_id):
     for n in tmp:
         if n.status == 'completed':
             blocked_posts.append(n)
+
+
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
 def commission_end(request,profile_id):
     tmp=Post.objects.filter(writer=request.user.username)
@@ -243,3 +256,20 @@ def commission_end(request,profile_id):
         if n.status == 'completed':
             blocked_posts.append(n)
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
+def submit_result(request,post_id):
+    form_result=submit_form.objects.get(submit=post_id)
+    return render(request,'submit_result.html',{'form_result':form_result})
+def delete_final(request, post_id,app_id):
+    delete_post=Post.objects.get(id=post_id)
+    delete_post.delete()
+    return redirect('performing_end',app_id)
+def complain(request,profile_id):
+    prey_profile=Profile.objects.get(id=profile_id)
+    complainer_profile=Profile.objects.get(profile_id=request.user.username)
+    complaints=complaint()
+    complaints.complainer=complainer_profile
+    complaints.prey=prey_profile
+    complaints.casuse=request.POST['complain_content']
+    complaints.save()
+    return redirect('profile',prey_profile.profile_id)
+

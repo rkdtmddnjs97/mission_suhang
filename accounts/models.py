@@ -23,6 +23,7 @@ class Profile(models.Model):
     connector=models.IntegerField(null=True)
     mission_count=models.IntegerField(default=0)
     
+    
 
 
 
