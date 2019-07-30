@@ -54,8 +54,10 @@ def announcement_board(request):
     if request.user.is_superuser == True:
         judge=True
     return render(request,'announcementBoard.html',{'announcements':announcements,'judge':judge})
+
 def new_announcement(request):
     return render(request,'new_announcement.html')
+
 def create_announcement(request):
     announcement=Announcement()
     announcement.title=request.POST['title']
@@ -73,13 +75,16 @@ def announcement_detail(request,announcement_id):
     if request.user.is_superuser == True:
         judge=True
     return render(request,'announcement_detail.html',{'announcement':announcement,'judge':judge})
+
 def announce_delete(request,announcement_id):
     announcement=Announcement.objects.get(id=announcement_id)
     announcement.delete()
     return redirect('announcement_board')
+
 def announce_edit(request,announcement_id):
     announcement=Announcement.objects.get(id=announcement_id)
     return render(request,'announcement_edit.html',{'announcement':announcement})
+    
 def update_announce(request,announcement_id):
     announcement=Announcement.objects.get(id=announcement_id)
     announcement.title=request.POST['title']
