@@ -50,7 +50,10 @@ def requisition(request,complaint_id):
 
 def announcement_board(request):
     announcements=Announcement.objects.all()
-    return render(request,'announcementBoard.html',{'announcements':announcements})
+    judge=False
+    if request.user.is_superuser == True:
+        judge=True
+    return render(request,'announcementBoard.html',{'announcements':announcements,'judge':judge})
 
 def new_announcement(request):
     return render(request,'new_announcement.html')
@@ -68,7 +71,10 @@ def create_announcement(request):
     
 def announcement_detail(request,announcement_id):
     announcement=Announcement.objects.get(id=announcement_id)
-    return render(request,'announcement_detail.html',{'announcement':announcement})
+    judge=False
+    if request.user.is_superuser == True:
+        judge=True
+    return render(request,'announcement_detail.html',{'announcement':announcement,'judge':judge})
 
 def announce_delete(request,announcement_id):
     announcement=Announcement.objects.get(id=announcement_id)
@@ -83,4 +89,5 @@ def update_announce(request,announcement_id):
     announcement=Announcement.objects.get(id=announcement_id)
     announcement.title=request.POST['title']
     announcement.content=request.POST['body']
+    announcement.save()
     return redirect('announcement_detail',announcement_id)
