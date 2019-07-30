@@ -24,7 +24,14 @@ def home(request):
     # user = Profile.objects.get(profile_id=request.user.username)
     # notifi = Notification.objects.filter(to=user)
     # count = notifi.count() 
-
+    ready_number=0
+    running_number=0
+    for index,post in enumerate(posts):
+        
+        if post.status == 'ready':
+            ready_number+=1
+        elif post.status =='running':
+            running_number+=1
     
 
-    return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed})
+    return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number})

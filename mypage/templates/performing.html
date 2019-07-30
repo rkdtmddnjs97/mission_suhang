@@ -7,7 +7,7 @@
     <b>제목 : {{post.title}}</b>
 </a>
 
-작성자 : {{post.writer}}
+<a href="{% url 'profile' post.writer %}">작성자 : {{post.writer}}</a>
 <hr>
 {{post.pub_date}}
 <br>
