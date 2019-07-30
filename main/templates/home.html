@@ -1,12 +1,18 @@
 {% extends 'base.html'%}
 
+
+
+
 {% block content %}
+
 <h1>메인 페이지입니당</h1>
 <br>
 {% if user.is_authenticated %}
 <a href="{% url 'board'%}">자유게시판</a>
 <br><br>
 <a href="{% url 'request'%}">의뢰게시판</a>
+
+
 {% endif %}
 <br><br>
 <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
@@ -25,6 +31,10 @@
 
 <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
 <p>추천 의뢰</p>
+
+
+
+
 
 
 {% endblock %}

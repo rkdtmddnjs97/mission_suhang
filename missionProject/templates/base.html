@@ -13,6 +13,18 @@
 </head>
 
 <body>
+
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
     <div class='pont'>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="{% url 'home' %}">Mission Complete</a>
@@ -41,11 +53,26 @@
                         </form>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'profile' user.profile.profile_id %}">Mypage ( {{user.username}} ) </a>
+                        <a class="nav-link" href="{% url 'profile' user.profile.profile_id %}">Mypage (
+                            {{user.username}} ) </a>
                     </li>
-                    <li class="nav-item active">
+                    <!-- <li class="nav-item active">
                         <a class="nav-link" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+                    </li> -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" rel="popover" data-trigger="focus" data-placement="bottom"
+                            data-popover-content="#list-popover">알림({{notifi_count}})</a>
+                        <div id="list-popover" style="display:none">
+                            <ul class="ul-popover">
+                                {% for notification in notifications %}
+                                <li>{{notification.creator}}가 당신의 게시물에 {{notification.notification_type}}하였습니다.</li>
+                                {% endfor %}
+                                <li><a href="{% url 'notifications' %}">see all</a></li>
+                            </ul>
+                        </div>
                     </li>
+
+
                     {% endif %}
                     </li>
 
@@ -57,7 +84,6 @@
                     &nbsp;
                     <button type='submit' class='sch_smit'>검색</button>
                 </form>
-
 
             </div>
         </nav>
@@ -73,6 +99,11 @@
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+    /* a[rel="popover"] {
+        display: inline-block;
+        margin: 20px;
+    } */
 
     input:not(#tag_box) {
         all: unset;
@@ -117,6 +148,36 @@
     .sch_smit:hover {
         background: rgb(120, 121, 119);
     }
+
+    .ul-popover {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
 </style>
+
+<script type="text/javascript">
+    // $(document).ready(function () {
+    //     // popover demo
+    //     $("a[data-toggle=popover]")
+    //         .popover()
+    //         .click(function (e) {
+    //             e.preventDefault()
+    //             return $('#list-popover').html();
+    //         })
+    // });
+
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+</script>
+
 
 </html>
