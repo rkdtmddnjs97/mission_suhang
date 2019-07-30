@@ -234,14 +234,7 @@ def end(request,post_id):
 
     for n in a_m:
         n.delete()
-    try:
-        chat=MTM_chat.objects.get(profile_fk=tmp.id,request_fk=tmp1.id)
-        chat.delete()
-        return redirect('profile', tmp1.profile_id)
-
-    except ObjectDoesNotExist:
-
-        return redirect('profile', tmp1.profile_id)
+    return redirect('profile', tmp1.profile_id)
 
 def tag_post(request, tag_id):
     tag_related_posts = Post.objects.filter(hashtag = tag_id)

@@ -17,10 +17,13 @@ def chat(request,app_id,request_id):
         chat_objects=chatting.objects.filter(chatting_fk=chat_room.id)
     
     except ObjectDoesNotExist:
-        chat_room=MTM_chat()
-        chat_room.profile_fk=Profile.objects.get(id=app_id)
-        chat_room.request_fk=Profile.objects.get(id=request_id)
-        chat_room.save()
+        try:
+             chat_room=MTM_chat.objects.get(profile_fk=request_id,request_fk=app_id)
+        except ObjectDoesNotExist:
+             chat_room=MTM_chat()
+             chat_room.profile_fk=Profile.objects.get(id=request_id)
+             chat_room.request_fk=Profile.objects.get(id=app_id)
+             chat_room.save()
 
         chat_objects=chatting.objects.filter(chatting_fk=chat_room.id)
     
@@ -123,6 +126,7 @@ def scrap(request, profile_id):
     return render(request, 'scrap.html', {'scraped_post':my_scraped_post, 'profile':profile})
 
 def myProfile(request, profile_id):
+    user_profile=Profile.objects.get(profile_id=request.user.username)
     my_profile = Profile.objects.get(profile_id=profile_id)
     tag_list = my_profile.hashtag.all()
     review_objects=Review.objects.filter(review_fk=my_profile.id)
@@ -136,7 +140,7 @@ def myProfile(request, profile_id):
         average_rate/=number
     except ZeroDivisionError:
         average_rate=0
-    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number})
+    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number,'user_profile':user_profile})
 
 
 def editProfile(request, profile_id):

@@ -47,6 +47,8 @@
           <input type="submit" value='신고'>
    </form>
   </details>
+  <br>
+  <a href="#" onclick="window.open('{% url 'chat' app_id=my_profile.id request_id=user_profile.id   %}','채팅창','width=500,height=700')">채팅</a> 
   {% endif %}
 <br>
 {% for tag in tag_list %}
