@@ -4,7 +4,7 @@ from accounts.models import Profile
 from django.utils import timezone
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
-from .models import MTM_chat,chatting
+from .models import MTM_chat,chatting,Review
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -103,7 +103,18 @@ def scrap(request, profile_id):
 def myProfile(request, profile_id):
     my_profile = Profile.objects.get(profile_id=profile_id)
     tag_list = my_profile.hashtag.all()
-    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list})
+    review_objects=Review.objects.filter(review_fk=my_profile.id)
+    
+    number=review_objects.count()
+   
+    average_rate=0
+    for rate in review_objects:
+        average_rate+=rate.ratings
+    try:
+        average_rate/=number
+    except ZeroDivisionError:
+        average_rate=0
+    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number})
 
 
 def editProfile(request, profile_id):

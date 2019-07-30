@@ -21,11 +21,22 @@
 <br>
 전공 : {{my_profile.department}}
 <br>
-평점 :
+평균 평점 :{{average_rate}}
+<br>
+총 클리어한 미션:{{number}}
 <p>간단한 본인소개</p>
 {{my_profile.introduction}}
-<br><br>
-
+<br>
+<details>
+  <summary>후기</summary>
+  {% for review in review_objects %}
+  의뢰자:{{review.writer}}<br>
+  평점:{{review.ratings}}<br>
+  후기:{{review.reviews}}<br>
+  <hr>
+  {% endfor %}
+</details>
+<br>
 {% for tag in tag_list %}
  <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
 {% endfor %}
