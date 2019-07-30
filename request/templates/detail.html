@@ -8,7 +8,7 @@
     {% endfor %}
     <p>
         <h2>제목 : {{post.title}}</h2>
-        <p>작성자 : {{post.writer}}</p>
+        <p>작성자 : <a href="{% url 'profile' post.writer %}">{{post.writer}}</a> </p>
         <p>발행일 : {{post.pub_date}}</p>
         <p>상태 : {{post.status}}</p>
         <p>금액:{{post.deposit}}</p>
@@ -55,7 +55,7 @@
     <h3>comments</h3>
     {% for comment in comments %}
    
-    <p>작성자:{{comment.writer}}</p>
+    <p>작성자: <a href="{% url 'profile' comment.writer %}">{{comment.writer}}</a> </p>
     
     <p>comment:{{comment.content}}</p>
     <hr>
