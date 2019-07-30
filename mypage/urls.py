@@ -26,6 +26,7 @@ urlpatterns = [
     path('commission_end/<str:profile_id>', views.commission_end, name="commission_end"),
     path('submit_result/<int:post_id>', views.submit_result, name="submit_result"),
     path('delete_final/<post_id> <app_id>', views.delete_final, name="delete_final"),
+    path('complain/<int:profile_id>', views.complain, name="complain"),
 
 ]
 

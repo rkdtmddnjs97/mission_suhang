@@ -4,7 +4,7 @@ from accounts.models import Profile
 from django.utils import timezone
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
-from .models import MTM_chat,chatting,Review
+from .models import MTM_chat,chatting,Review,complaint
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -248,3 +248,13 @@ def delete_final(request, post_id,app_id):
     delete_post=Post.objects.get(id=post_id)
     delete_post.delete()
     return redirect('performing_end',app_id)
+def complain(request,profile_id):
+    prey_profile=Profile.objects.get(id=profile_id)
+    complainer_profile=Profile.objects.get(profile_id=request.user.username)
+    complaints=complaint()
+    complaints.complainer=complainer_profile
+    complaints.prey=prey_profile
+    complaints.casuse=request.POST['complain_content']
+    complaints.save()
+    return redirect('profile',prey_profile.profile_id)
+
