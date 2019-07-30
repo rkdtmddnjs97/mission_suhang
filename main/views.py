@@ -63,9 +63,9 @@ def create_announcement(request):
     announcement.title=request.POST['title']
     announcement.writer=request.user.username
     announcement.content=request.POST['body']
-    announcement.announcement_img=request.FILES.get('attached_img')
-    announcement.announcement_file=request.FILES.get('attached_file')
     announcement.pub_date=timezone.datetime.now()
+    announcement.announcement_img = request.FILES.get('attached_img')
+    announcement.announcement_file=request.FILES.get('attached_file')
     announcement.save()
     return redirect('announcement_board')
     
@@ -89,5 +89,15 @@ def update_announce(request,announcement_id):
     announcement=Announcement.objects.get(id=announcement_id)
     announcement.title=request.POST['title']
     announcement.content=request.POST['body']
+
+    if request.FILES.get('attached_img') is None:
+        pass
+    else:
+        announcement.announcement_img = request.FILES.get('attached_img')
+    if request.FILES.get('attached_file') is None: 
+        pass
+    else:
+        announcement.announcement_file=request.FILES.get('attached_file')
+
     announcement.save()
     return redirect('announcement_detail',announcement_id)

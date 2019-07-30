@@ -3,11 +3,18 @@
 <h1>글을 수정중입니다.</h1>
 <form action="{% url 'update_announce' announcement.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        제목 : <input type="text" name='title' value="{{announcemnet.title}}">
+        제목 : <input type="text" name='title' value="{{announcement.title}}">
         <br>
         <br>
         작성자 : {{announcement.writer}}
         <br>
+        <br>
+        이미지 첨부 :
+        <img src="{{announcement.announcement_img.url}}" alt="">
+        <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
+        <br>
+        파일 첨부 :
+        <input type="file" name="attached_file">
         <br>
         본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" >{{announcement.content}}</textarea>
         <br>
