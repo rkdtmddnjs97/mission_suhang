@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>공지사항</h1>
+<br>
+{% for announcemnet in announcements %}
+<a href="{% url  'announcement_detail' announcemnet.id  %}">
+제목:{{announcemnet.title}}</a><br>
+작성날짜:{{announcemnet.pub_date}}
+<br>
+{% endfor %}
+<a href="{% url  'new_announcement'  %}">공지글 생성하기</a>
+{% endblock %}

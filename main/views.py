@@ -4,6 +4,8 @@ from accounts.models import Profile
 from notification.models import Notification
 from django.contrib.auth.models import User
 from mypage.models import complaint
+from .models import Announcement
+from django.utils import timezone
 
 # Create your views here.
 def home(request):
@@ -45,3 +47,35 @@ def requisition(request,complaint_id):
     tmp=complaint.objects.get(id=complaint_id)
     tmp.delete()
     return redirect('dissatisfication')
+
+def announcement_board(request):
+    announcements=Announcement.objects.all()
+    return render(request,'announcementBoard.html',{'announcements':announcements})
+def new_announcement(request):
+    return render(request,'new_announcement.html')
+def create_announcement(request):
+    announcement=Announcement()
+    announcement.title=request.POST['title']
+    announcement.writer=request.user.username
+    announcement.content=request.POST['body']
+    announcement.announcement_img=request.FILES.get('attached_img')
+    announcement.announcement_file=request.FILES.get('attached_file')
+    announcement.pub_date=timezone.datetime.now()
+    announcement.save()
+    return redirect('announcement_board')
+    
+def announcement_detail(request,announcement_id):
+    announcement=Announcement.objects.get(id=announcement_id)
+    return render(request,'announcement_detail.html',{'announcement':announcement})
+def announce_delete(request,announcement_id):
+    announcement=Announcement.objects.get(id=announcement_id)
+    announcement.delete()
+    return redirect('announcement_board')
+def announce_edit(request,announcement_id):
+    announcement=Announcement.objects.get(id=announcement_id)
+    return render(request,'announcement_edit.html',{'announcement':announcement})
+def update_announce(request,announcement_id):
+    announcement=Announcement.objects.get(id=announcement_id)
+    announcement.title=request.POST['title']
+    announcement.content=request.POST['body']
+    return redirect('announcement_detail',announcement_id)

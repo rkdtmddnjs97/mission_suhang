@@ -15,7 +15,9 @@
 
 
 {% endif %}
-<br><br>
+<br>
+<a href="{% url 'announcement_board' %}">공지사항</a>
+<br>
 <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
 <span>Hot 수행자 : </span>
 {% for hot_user in hot_users %}
