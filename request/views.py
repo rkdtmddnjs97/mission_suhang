@@ -8,6 +8,7 @@ from accounts.models import Profile
 from mypage.models import MTM_chat,chatting,Review
 from notification.views import create_notification
 from django.core.exceptions import ObjectDoesNotExist
+from notification.views import create_notification
 
 
 
@@ -19,17 +20,6 @@ def like(request,post_id):
         post.user.add(request.user)
     post.save()
     return redirect('b_detail', post_id)
-
-def apply(request,post_id):
-    post=Post.objects.get(id=post_id)
-    applyMission = ApplyMission()
-    applyMission.user=User.objects.get(username=post.writer)
-    applyMission.post=Post.objects.get(id=post_id)
-    applyMission.applier=request.user
-    applyMission.save()
-
-    return redirect('detail', post_id)
-
 
 def request_home(request):
     post_list=[]
@@ -182,6 +172,22 @@ def scrap(request,post_id):
     post.save()
     return redirect('detail', post_id)
 
+#수행자가 의뢰자의 미션 신청
+def apply(request,post_id):
+    post=Post.objects.get(id=post_id)
+    applyMission = ApplyMission()
+    applyMission.user=User.objects.get(username=post.writer)
+    applyMission.post=Post.objects.get(id=post_id)
+    applyMission.applier=request.user
+    applyMission.save()
+
+    creator = Profile.objects.get(profile_id=request.user.username)
+    to = Profile.objects.get(profile_id=post.writer)
+    create_notification(creator, to, 'mission_apply')
+
+    return redirect('detail', post_id)
+
+#의뢰자가 수행자의 미션신청을 승낙
 def start(request,post_id,app_id):
     app=User.objects.get(username=app_id)
     mode=Post.objects.get(id=post_id)
@@ -192,10 +198,15 @@ def start(request,post_id,app_id):
     for n in tmp:
         if n.applier != app.id:
             n.applier= None
+
+    creator = Profile.objects.get(profile_id=request.user.username) 
+    to = Profile.objects.get(profile_id=app.username)
+    create_notification(creator, to, 'mission_accept')
+
     return redirect('commissioned', profile_id=request.user.username)
 
 
-
+#미션수행 완료
 def end(request,post_id):
     mode=Post.objects.get(id=post_id)
     mode.status='completed'
@@ -207,14 +218,20 @@ def end(request,post_id):
     profile=Profile.objects.get(profile_id=mode.approved_id)
     profile.mission_count+=1
     profile.save()
+
     review=Review()
     review.review_fk=tmp
     review.reviews=request.POST['review_content']
- 
+
     review.ratings=int(request.POST['rating'])
     review.writer=request.user.username
     review.save()
     a_m=ApplyMission.objects.filter(post=post_id)
+
+    creator = Profile.objects.get(profile_id=request.user.username) 
+    to = Profile.objects.get(profile_id=mode.approved_id)
+    create_notification(creator, to, 'mission_complete')
+
     for n in a_m:
         n.delete()
     try:
