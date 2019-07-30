@@ -5,8 +5,9 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from accounts.models import Profile
-from mypage.models import MTM_chat,chatting
+from mypage.models import MTM_chat,chatting,Review
 from notification.views import create_notification
+from django.core.exceptions import ObjectDoesNotExist
 
 
 
@@ -34,7 +35,7 @@ def request_home(request):
     post_list=[]
     tmp= Post.objects.all()
     for n in tmp:
-        if n.status != 'completed':
+        if n.status != 'completed' and n.status != 'running':
             post_list.append(n)
     
     if request.user.is_authenticated:
@@ -206,12 +207,24 @@ def end(request,post_id):
     profile=Profile.objects.get(profile_id=mode.approved_id)
     profile.mission_count+=1
     profile.save()
+    review=Review()
+    review.review_fk=tmp
+    review.reviews=request.POST['review_content']
+ 
+    review.ratings=int(request.POST['rating'])
+    review.writer=request.user.username
+    review.save()
     a_m=ApplyMission.objects.filter(post=post_id)
     for n in a_m:
         n.delete()
-    chat=MTM_chat.objects.get(profile_fk=tmp.id,request_fk=tmp1.id)
-    chat.delete()
-    return redirect('profile', tmp1.profile_id)
+    try:
+        chat=MTM_chat.objects.get(profile_fk=tmp.id,request_fk=tmp1.id)
+        chat.delete()
+        return redirect('profile', tmp1.profile_id)
+
+    except ObjectDoesNotExist:
+
+        return redirect('profile', tmp1.profile_id)
 
 def tag_post(request, tag_id):
     tag_related_posts = Post.objects.filter(hashtag = tag_id)
