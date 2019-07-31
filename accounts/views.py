@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.models import User
 from django.contrib import auth
 from .models import Profile
 from hashtag.models import Hashtag
 import string
 import random
+from django.db import IntegrityError
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 def signup(request):
@@ -16,15 +19,16 @@ def signup(request):
             _LENGTH = 8  # 20자리
             string_pool = string.ascii_letters + string.digits 
                 # 숫자 + 대소문자 + 특수문자
-            result = "인증번호:\n"
-            tmp1=''
+            result =''
             for i in range(_LENGTH):
-                tmp1+=random.choice(string_pool)
+                result+=random.choice(string_pool)
                  # 랜덤한 문자열 하나 선택
-            result+=tmp1
-            user = User.objects.create_user(
-                username=request.POST['username'], password=request.POST['password1'])
-            auth.login(request, user)
+            try:
+                 user = User.objects.create_user(
+                 username=request.POST['username'], password=request.POST['password1'])
+                 auth.login(request, user)
+            except IntegrityError:
+                 return redirect('home')
 
             user.profile.university = request.POST['university']
             user.profile.department = request.POST['department']
@@ -32,7 +36,7 @@ def signup(request):
             user.profile.introduction = request.POST['introduction']
             user.profile.email = request.POST['email']
             user.profile.profile_id = request.POST['username']
-            user.profile.ssn = tmp1
+            user.profile.ssn = result
             user.profile.profile_img = request.FILES.get('pofile_img')
 
             # 프로필 사진 form이 입력되지 않았을 시 마이페이지 에러를 방지하기 위해 더미이미지를 넣도록 함.
@@ -47,8 +51,10 @@ def signup(request):
                 user.profile.hashtag.add(input_tag)
 
             user.save()
-
-            email = EmailMessage('인증 메일', result, to=[request.POST['email']])
+            html_content=render_to_string('email_approval.html',{'result':result})
+            message = strip_tags(html_content)
+            email = EmailMultiAlternatives('인증 메일', message, to=[request.POST['email']])
+            email.attach_alternative(html_content, "text/html")
             email.send()
             return render(request, 'approval.html')
     return render(request, 'signup.html', {'hashtag': all_hashtag})
