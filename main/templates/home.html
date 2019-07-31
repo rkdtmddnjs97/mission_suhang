@@ -9,11 +9,12 @@
 {% endif %}
 <br>
 {% if user.is_authenticated %}
+{% if request.user.profile.approval == True %}
 <a href="{% url 'board'%}">자유게시판</a>
 <br>
 <a href="{% url 'request'%}">의뢰게시판</a>
 
-
+{% endif %}
 {% endif %}
 <br>
 <a href="{% url 'announcement_board' %}">공지사항</a>
