@@ -9,6 +9,7 @@ from mypage.models import MTM_chat,chatting,Review
 from notification.views import create_notification
 from django.core.exceptions import ObjectDoesNotExist
 from notification.views import create_notification
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 
@@ -222,8 +223,10 @@ def end(request,post_id):
     review=Review()
     review.review_fk=tmp
     review.reviews=request.POST['review_content']
-
-    review.ratings=int(request.POST['rating'])
+    try:
+        review.ratings=int(request.POST['rating'])
+    except MultiValueDictKeyError:
+        review.ratings=0
     review.writer=request.user.username
     review.save()
     a_m=ApplyMission.objects.filter(post=post_id)
