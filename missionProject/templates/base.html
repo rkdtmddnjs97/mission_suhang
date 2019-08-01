@@ -38,17 +38,17 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    
-                    
+                    {% if not user.is_authenticated %}
+                    {% if request.user.is_superuser == False %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'signup' %}">Signup</a>
                     </li>
-                    
-                    {% if user.is_authenticated %}
-                    {% if request.user.profile.approval == True %}
+                    {% endif %}
+                    {% else %}
+                    {% if request.user.profile.approval == True or request.user.is_superuser == True %}
                     <li class="nav-item">
                         <form id="logout" class="nav-link" method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}

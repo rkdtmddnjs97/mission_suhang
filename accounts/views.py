@@ -64,6 +64,7 @@ def approve(request):
     if request.user.profile.ssn == request.POST['ssn']:
         if request.user.profile.approval == False:
             request.user.profile.approval = True
+            request.user.profile.save()
     else:
         request.user.delete()
     return redirect('home')
