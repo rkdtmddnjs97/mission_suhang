@@ -1,10 +1,11 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
 <div class="container">
         <h1>검색 결과</h1>
         <hr>
-        검색한 해시태그 : '#{{input_data}}'
+        {{search_type}} : '{{input_data}}'
         <div>
         <ol>
             {% if result_flag == True %}      

@@ -77,14 +77,27 @@
                     </li>
 
                 </ul>
-                <form action="{% url 'search' %}" method="GET">
-                    <span class='green_window'>
-                        <input type="text" name='input_data' class='input_text'>
-                    </span>
-                    &nbsp;
-                    <button type='submit' class='sch_smit'>검색</button>
-                </form>
 
+                
+
+    <form action="{% url 'search' %}" method="GET">
+        <div class="container">
+                <select class="form-control"  name ="input_type" >
+                  <option name="input_type" value ="title" selected>title</option>
+                  <option name="input_type" value ="hashtag">hashtag</option>
+                  <option name="input_type" value ="writer">writer</option>
+                  <option name="input_type" value ="body">Context</option>
+                </select>
+        </div>
+
+    <span class='green_window'>
+        <input type="text" name='input_data' class='input_text'>
+    </span>
+    &nbsp;
+    <button type='submit' class='sch_smit'>검색</button>
+</form>
+
+           
             </div>
         </nav>
 
