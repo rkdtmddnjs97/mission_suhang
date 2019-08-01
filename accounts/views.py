@@ -9,6 +9,7 @@ import random
 from django.db import IntegrityError
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def signup(request):
@@ -77,9 +78,15 @@ def login(request):
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('home')
+    
+            if request.user.profile.approval == True or request.user.is_superuser ==True:
+                    return redirect('home')
+            else:
+                    request.user.delete()
+                    return redirect('home')
         else:
             return render(request, 'login.html', {'error': 'username or password is incorrect.'})
+        
     else:
         return render(request, 'login.html')
 
