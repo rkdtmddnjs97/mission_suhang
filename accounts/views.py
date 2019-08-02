@@ -16,7 +16,16 @@ def signup(request):
     all_hashtag = Hashtag.objects.all()
     if request.method == 'POST':
         if request.POST['password1'] == request.POST['password2']:
+            school={'국민대학교': 'kookmin.ac.kr'}
+            tmp=request.POST['email'].split('@')[1]
+            tmp1=school[request.POST['university']] 
+            
+            if tmp == tmp1:
 
+                pass
+            else:
+                error2='학교가 안맞습니다.'
+                return render(request,'signup.html', {'hashtag': all_hashtag,'error2':error2})
             _LENGTH = 8  # 20자리
             string_pool = string.ascii_letters + string.digits 
                 # 숫자 + 대소문자 + 특수문자
@@ -31,17 +40,7 @@ def signup(request):
             except IntegrityError:
                 error1='아이디가 이미 존재합니다.'
                 return render(request, 'signup.html', {'hashtag': all_hashtag,'error1':error1})
-            school={'국민대학교': 'kookmin.ac.kr'}
-            tmp=request.POST['email'].split('@')[1]
-            tmp1=school[request.POST['university']] 
-            print(tmp1)
-            print(tmp)
-            if tmp == tmp1:
-
-                pass
-            else:
-                error2='학교가 안맞습니다.'
-                return render(request,'signup.html', {'hashtag': all_hashtag,'error2':error2})
+            
 
             user.profile.university = request.POST['university']
             user.profile.department = request.POST['department']
@@ -63,7 +62,8 @@ def signup(request):
                 input_tag = Hashtag.objects.get(name=tag.upper())
                 user.profile.hashtag.add(input_tag)
 
-            user.save()
+            user.profile.save()
+        
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)
             email = EmailMultiAlternatives('인증 메일', message, to=[request.POST['email']])
