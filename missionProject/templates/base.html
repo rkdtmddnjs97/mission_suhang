@@ -82,8 +82,11 @@
 
                 
 
-    <form action="{% url 'search' %}" method="GET">
+    <form action="{% url 'search' %}" method="GET">      
+            
         <div class="container">
+                <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판 <br>
+                <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
                 <select class="form-control"  name ="input_type" >
                   <option name="input_type" value ="title" selected>title</option>
                   <option name="input_type" value ="hashtag">hashtag</option>
@@ -115,9 +118,11 @@
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 
-    input:not(#tag_box) {
+    input:not(#tag_box){
         all: unset;
     }
+
+
 
     .pont {
         font-family: 'Do Hyeon', sans-serif;

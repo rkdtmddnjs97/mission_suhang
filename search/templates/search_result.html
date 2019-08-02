@@ -3,12 +3,14 @@
 
 {% block content %}
 <div class="container">
-        <h1>검색 결과</h1>
+    
+        <h1>{{input_board}}의 검색 결과</h1>
+      
         <hr>
         {{search_type}} : '{{input_data}}'
         <div>
         <ol>
-            {% if result_flag == True %}      
+            {% if result_flag == True %}
                 {% for result in results %}
                 <a href="{% url 'detail' result.id %}">
                     <li>{{result.title}} / {{result.writer}} / {{result.pub_date}}</li>
