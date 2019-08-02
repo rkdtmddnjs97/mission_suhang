@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if error %}
+{{error}}
+{% endif %}
 <h1>새 글을 작성해주세요</h1>
 
 <form action="{%url 'create' %}" method="POST" enctype="multipart/form-data">

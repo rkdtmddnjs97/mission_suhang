@@ -29,7 +29,9 @@ def signup(request):
                  username=request.POST['username'], password=request.POST['password1'])
                  auth.login(request, user)
             except IntegrityError:
-                 return redirect('home')
+                error1='아이디가 이미 존재합니다.'
+                return render(request, 'signup.html', {'hashtag': all_hashtag,'error1':error1})
+                
 
             user.profile.university = request.POST['university']
             user.profile.department = request.POST['department']
@@ -58,6 +60,9 @@ def signup(request):
             email.attach_alternative(html_content, "text/html")
             email.send()
             return render(request, 'approval.html')
+        else:
+              error='비밀번호가 일치하지 않습니다.'
+              return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error})
     return render(request, 'signup.html', {'hashtag': all_hashtag})
 
 

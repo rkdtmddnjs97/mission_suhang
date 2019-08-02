@@ -6,6 +6,10 @@
 <br>
 <br>
 {% endif %}
+{% if error1 %}
+{{error1}}
+<br>
+{% endif %}
 
 <!doctype html>
 <html lang="kr">
@@ -26,6 +30,7 @@
         {% csrf_token %}
 
         <label for="email">ID</label>
+       
         <input type="text" name="username" id="email" class="inpt" required="required" placeholder="Your id">
 
         <label for="password">Password</label>
