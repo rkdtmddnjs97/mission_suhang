@@ -32,6 +32,12 @@ def signup(request):
             '대구경북과학기술원':'dgist.ac.kr','울산과학기술원':'unist.ac.kr','계명대학교':'kmu.ac.kr','동신대학교':'dsu.ac.kr',
             '명지대학교':'mju.ac.kr','순천향대학교':'sch.ac.kr','한국교원대학교':'knue.ac.kr','한국교통대학교':'ut.ac.kr',
             '멋쟁이사자처럼':'likelion.org'}
+            try:
+                Profile.objects.get(email=request.POST['email'])
+                error4='이메일이 이미 존재합니다' 
+                return render(request,'signup.html', {'hashtag': all_hashtag,'error4':error4})
+            except ObjectDoesNotExist:
+                pass
             tmp=request.POST['email'].split('@')[1]
             try:
                 tmp1=school[request.POST['university']] #해당 대학교가 없습니다

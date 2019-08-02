@@ -63,6 +63,10 @@
             {% endfor %}
         <hr>
         이메일: <input type="email" name="email"> 
+        {% if error4 %}
+        {{error4}}
+        <br>
+        {% endif %}
         {% if error2 %}
         {{error2}}
 <br>
