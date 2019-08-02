@@ -44,5 +44,13 @@
 <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
 <p>추천 의뢰</p>
 
+{% for tag, posts in recommend_post.items %}
+    #{{tag}}와 관련된 게시물
+    {% for post in posts %}
+    <a href="{% url 'detail' post.id %}">{{post}}</a>
+    {% endfor %}
+    <br>
+{% endfor %}
+
 
 {% endblock %}
