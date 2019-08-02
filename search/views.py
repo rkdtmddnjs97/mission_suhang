@@ -7,11 +7,11 @@ from accounts.models import Profile
 
 
 def search(request):
-    input_data = request.GET['input_data'].upper()
+    input_data = request.GET['input_data']
     input_type = request.GET['input_type']
     if input_type == 'hashtag':
         try:
-             tag = Hashtag.objects.get(name=input_data)
+             tag = Hashtag.objects.get(name=input_data.upper())
              results = Post.objects.filter(hashtag=tag)
              input_data = '#'+input_data
              search_type = 'HashTag'
