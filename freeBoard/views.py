@@ -111,3 +111,6 @@ def like(request,post_id):
 def tag_post(request, tag_id):
     tag_related_posts = B_Blog.objects.filter(hashtag = tag_id)
     return render(request, 'b_tag_post.html', {'b_tag_posts':tag_related_posts})
+def like_more(request,post_id):
+    blog = get_object_or_404(B_Blog, pk=post_id)
+    return render(request,'like_more.html',{'blog':blog})

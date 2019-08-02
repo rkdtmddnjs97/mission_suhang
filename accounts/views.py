@@ -31,7 +31,17 @@ def signup(request):
             except IntegrityError:
                 error1='아이디가 이미 존재합니다.'
                 return render(request, 'signup.html', {'hashtag': all_hashtag,'error1':error1})
-                
+            school={'국민대학교': 'kookmin.ac.kr'}
+            tmp=request.POST['email'].split('@')[1]
+            tmp1=school[request.POST['university']] 
+            print(tmp1)
+            print(tmp)
+            if tmp == tmp1:
+
+                pass
+            else:
+                error2='학교가 안맞습니다.'
+                return render(request,'signup.html', {'hashtag': all_hashtag,'error2':error2})
 
             user.profile.university = request.POST['university']
             user.profile.department = request.POST['department']
