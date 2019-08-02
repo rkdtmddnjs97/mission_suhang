@@ -35,12 +35,13 @@
     <a href="{% url 'request' %}"> Go list </a>
     <br>
     
-
+    
     {% if user.username == post.writer %}
+    {% if post.status != 'running' and post.status != 'completed' %}
     <a href="{% url 'edit' post.id %}">수정하기</a>
     <a href="{% url 'delete' post.id %}">삭제하기</a>
     
-    
+    {% endif %}
     {% else %}
     {% if post.status == 'ready' %}
     {% if judge == False %}

@@ -13,7 +13,7 @@ def home(request):
     judge=False
     if request.user.is_superuser == True:
         judge=True
-    print(judge)
+    
     completed_posts = Post.objects.filter(status='completed')
     mission_completed = completed_posts.count()
     recent_posts=[]

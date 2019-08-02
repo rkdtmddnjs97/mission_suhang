@@ -79,7 +79,8 @@ def create(request):
         tmp.money=tmp3
         tmp.save()
     else:
-        return redirect('request')
+        error='금액이 부족합니다'
+        return render(request,'new.html',{'error':error})
     new_post = Post()
     writer = request.user.username
     new_post.writer = writer
