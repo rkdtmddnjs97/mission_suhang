@@ -126,7 +126,10 @@ def scrap(request, profile_id):
     return render(request, 'scrap.html', {'scraped_post':my_scraped_post, 'profile':profile})
 
 def myProfile(request, profile_id):
-    user_profile=Profile.objects.get(profile_id=request.user.username)
+    if request.user.is_authenticated: 
+        user_profile=Profile.objects.get(profile_id=request.user.username)
+    else:
+         user_profile=None
     my_profile = Profile.objects.get(profile_id=profile_id)
     tag_list = my_profile.hashtag.all()
     review_object=Review.objects.filter(review_fk=my_profile.id)
