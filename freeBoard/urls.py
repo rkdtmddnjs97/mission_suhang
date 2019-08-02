@@ -16,5 +16,5 @@ urlpatterns = [
     path('modify/<int:comment_id>', freeBoard.views.modify, name="b_modify"),
     path('like/<int:post_id>', freeBoard.views.like, name="b_like"),
     path('tag_post/<int:tag_id>', freeBoard.views.tag_post, name="b_tag_post"),
-   
+    path('like_more/<int:post_id>', freeBoard.views.like_more, name='like_more'),
 ]

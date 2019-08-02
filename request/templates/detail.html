@@ -26,21 +26,29 @@
             <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
     </p>
+    {% if user.is_authenticated %}
     <form action="{% url 'scrap' post.id%}" method="get">
         <input type="hidden" name = 'scrap' value="{{user}}">
         <button type="submit">scrap</button>
     </form>
-    
+    {% endif %}
     <br>
     <a href="{% url 'request' %}"> Go list </a>
     <br>
     
     
     {% if user.username == post.writer %}
-        {% if post.status != 'running' and post.status != 'completed' %}
-            <a href="{% url 'edit' post.id %}">수정하기</a>
-            <a href="{% url 'delete' post.id %}">삭제하기</a>    
-        {% endif %}
+
+    {% if post.status != 'running' and post.status != 'completed' %}
+    <a href="{% url 'edit' post.id %}">수정하기</a>
+    <a href="{% url 'delete' post.id %}">삭제하기</a>
+    
+    {% endif %}
+    {% else %}
+    {% if user.is_authenticated %}
+    {% if post.status == 'ready' %}
+    {% if judge == False %}
+    <a href="{% url 'missionApply' post.id %}">의뢰 신청</a>
     {% else %}
         {% if post.status == 'ready' %}    
             {% if judge == False %}
@@ -50,15 +58,20 @@
             {% endif %}
         {% endif %}
     {% endif %}
+    {% endif %}
    
     <hr>
+
+
     <h3>comments</h3>
+  
     {% for comment in comments %}
    
     <p>작성자: <a href="{% url 'profile' comment.writer %}">{{comment.writer}}</a> </p>
     
     <p>comment:{{comment.content}}</p>
     <hr>
+    {% if user.is_authenticated %}
     {% if user.username == comment.writer %}
     <a href="{% url 'comment_delete' comment.id %}">삭제하기</a>
     <details>
@@ -75,8 +88,9 @@
     </details>
     {% endif %}
     
-    
+    {% endif %}
     {% endfor %}
+    {% if user.is_authenticated %}
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}
         작성자 :<p> {{user.username}}</p>
@@ -92,5 +106,6 @@
     <br>
     <br>
     <br>
+    {% endif %}
 </div>
 {%endblock%}

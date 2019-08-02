@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <h1>Detail Post</h1>
 
 <p>이 글을 '좋아요'하는 사람</p>
-{% for user in blog.user.all %}
-{{user}}
 
-{% endfor %}
-{{like_count}}
+<button class="nav" href="#" rel="popover" data-trigger="focus" data-placement="bottom"
+data-popover-content="#list-popover">({{like_count}})</button>
+<div id="list-popover" style="display:none">
+<ul class="ul">
+    {% for user in blog.user.all %}
+   
+   <li> {{user}}</li>
+    {% endfor %}
+    <li><a href="{% url 'like_more' blog.id   %}">더보기</a> </li>
+    
+</ul>
+</div>
+
 <hr>
 <p>  
     <h2>제목 : {{blog.title}}</h2>
@@ -23,11 +33,12 @@
             <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
 </p>
-
+{% if user.is_authenticated %}
 <form action="{% url 'b_like' blog.id %}" method="get">
     <input type="hidden" name = 'like' value="{{user}}">
     <button type="submit">좋아요</button>
 </form>
+{% endif %}
 <br>
 
 <a href="{% url 'board' %}"> home </a>
@@ -43,6 +54,7 @@
 <br>
 {{comment.content}}
 <hr>
+{% if user.is_authenticated %}
 {% if user.username == comment.writer %}
 <a href="{% url 'b_comment_delete' comment.id %}">삭제하기</a>
 <details>
@@ -58,7 +70,9 @@
     </form>
 </details>
 {% endif %}
+{% endif %}
 {% endfor%}
+{% if user.is_authenticated %}
 <form action="{% url 'b_new_comment' blog.id %}" method="POST">
     {% csrf_token %}
     작성자 :<p> {{user.username}}</p>
@@ -66,6 +80,7 @@
     내용 : <textarea name="content" id="" cols="30" rows="10"></textarea>
     <input type="submit">
 </form>
+{% endif %}
 </div>
 <br>
 <a href="{% url 'board' %}">뒤로가기 </a>
