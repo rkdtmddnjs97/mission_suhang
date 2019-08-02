@@ -10,11 +10,12 @@ def get(request):
     
     return render(request, 'notifications.html', {'notifications':notifications})
 
-def create_notification(creator, to, notification_type, comment=None):
+def create_notification(creator, to, notification_type, comment=None, post_id=None):
     notification = Notification.objects.create(
         creator=creator,
         to=to,
         notification_type=notification_type,
-        notifi_comment=comment
+        notifi_comment=comment,
+        notifi_post_id=post_id
     )
     notification.save()

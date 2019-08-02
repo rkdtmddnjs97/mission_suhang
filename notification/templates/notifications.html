@@ -2,7 +2,7 @@
 
 {% for notification in notifications %}
     {% if notification.notification_type == 'comment' %}
-        {{notification.creator}}가 당신에게 "{{notification.notifi_comment}}"라고 댓글을 달았습니다.
+        {{notification.creator}}가 당신에게 "{{notification.notifi_comment}}"라고 댓글을 달았습니다. <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
 
     {% elif notification.notification_type == 'mission_apply' %}
         {{notification.creator}}가 당신의 의뢰글에 대해 미션 신청을 하였습니다.

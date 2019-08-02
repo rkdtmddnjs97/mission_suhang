@@ -22,8 +22,6 @@ class Profile(models.Model):
     money=models.IntegerField(default=0)
     connector=models.IntegerField(null=True)
     mission_count=models.IntegerField(default=0)
-    
-    
 
     def __str__(self):
         return str(self.user)

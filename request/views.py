@@ -149,7 +149,8 @@ def new_comment(request, post_id):
     post = Post.objects.get(pk=post_id)
     creator = request.user.profile
     to = Profile.objects.get(profile_id=post.writer)
-    create_notification(creator, to, 'comment', comment.content)
+
+    create_notification(creator, to, 'comment', comment.content, comment.post)
 
     return redirect('detail', post_id)
 
