@@ -55,10 +55,12 @@
                             <input type="submit" value="Logout">
                         </form>
                     </li>
+                    {% if request.user.is_superuser == False %}
                     <li class="nav-item active">
                         <a class="nav-link" href="{% url 'profile' user.profile.profile_id %}">Mypage (
                             {{user.username}} ) </a>
                     </li>
+                    {% endif %}
                     <li class="nav-item active">
                         <a class="nav-link" href="#" rel="popover" data-trigger="focus" data-placement="bottom"
                             data-popover-content="#list-popover">알림({{notifi_count}})</a>
