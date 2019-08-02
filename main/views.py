@@ -37,14 +37,15 @@ def home(request):
             ready_number+=1
         elif post.status =='running':
             running_number+=1
-    if request.user.is_anonymous:
+            #:
+    if request.user.is_anonymous or request.user.is_superuser:
         return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge })
     else:
         recommend_post = recommend_request(request)
         recommend_post_list = list(recommend_post)
 
         return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge, 'recommend_post':recommend_post, 'recommend_post_list':recommend_post_list})
-        
+
 def recommend_request(request):
     my_profile = Profile.objects.get(profile_id=request.user.username)
     my_hashtag = Hashtag.objects.filter(my_tag=my_profile)
