@@ -67,7 +67,7 @@
                         <div id="list-popover" style="display:none">
                             <ul class="ul-popover">
                                 {% for notification in notification_list %}
-                                    <li>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</li>
+                                    <li><a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a></li>
                                 {% endfor %}
                                 <li><a href="{% url 'notifications' %}">see all</a></li>
                             </ul>

@@ -9,6 +9,7 @@ def add_variable_to_context(request):
     elif request.user.is_anonymous:
         return {}
     else:
+        # if Profile.objects.get(profile_id=request.user.username).exist:
         user = Profile.objects.get(profile_id=request.user.username)
         notifications = Notification.objects.filter(to=user)
         notifi_count = notifications.count()
