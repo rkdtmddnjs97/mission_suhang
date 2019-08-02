@@ -7,6 +7,7 @@ from mypage.models import complaint
 from .models import Announcement
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+from hashtag.models import Hashtag
 
 # Create your views here.
 def home(request):
@@ -36,9 +37,27 @@ def home(request):
             ready_number+=1
         elif post.status =='running':
             running_number+=1
-    
 
-    return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number,'judge':judge})
+    recommend_post = recommend_request(request)
+    recommend_post_list = list(recommend_post)
+
+    return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge, 'recommend_post':recommend_post, 'recommend_post_list':recommend_post_list})
+
+def recommend_request(request):
+    my_profile = Profile.objects.get(profile_id=request.user.username)
+    my_hashtag = Hashtag.objects.filter(my_tag=my_profile)
+
+    recommend_post = {}
+    tmp_post = []
+    for tag in my_hashtag:
+        posts = Post.objects.filter(hashtag=tag)
+        for post in posts:
+            tmp_post.append(Post.objects.get(title=post))
+        recommend_post[tag] = tmp_post
+
+    
+    
+    return recommend_post
 
 def dissatisfication(request):
     complaints=complaint.objects.all()
