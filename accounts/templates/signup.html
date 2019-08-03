@@ -44,6 +44,10 @@
         <hr>   
         프로필 사진 : <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img">
         <hr>
+        {% if error3 %}
+{{error3}}
+<br>
+{% endif %}
         대학교 : <input type="text" name="university">
         <hr>
         학과 : <input type="text" name="department">
@@ -58,9 +62,13 @@
             <!-- <a href="">{{tag}}</a> -->
             {% endfor %}
         <hr>
-        이메일: <input type="text" name="email"> 
-        {% if error1 %}
-{{error2}}
+        이메일: <input type="email" name="email"> 
+        {% if error4 %}
+        {{error4}}
+        <br>
+        {% endif %}
+        {% if error2 %}
+        {{error2}}
 <br>
 {% endif %}
         <hr>

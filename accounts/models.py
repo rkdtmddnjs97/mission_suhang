@@ -14,7 +14,7 @@ class Profile(models.Model):
     name=models.CharField(max_length=200,null=True)
     hashtag=models.ManyToManyField(Hashtag, related_name="my_tag")
     introduction=models.TextField(null=True)
-    email=models.CharField(max_length=200,null=True)
+    email=models.CharField(max_length=200,null=True,unique=True)
     approval=models.BooleanField(default=False)
     ssn=models.CharField(max_length=200,null=True)
     profile_id=models.CharField(unique=True,max_length=200,null=True)
