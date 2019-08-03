@@ -26,12 +26,11 @@
             <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
     </p>
-    {% if user.is_authenticated %}
     <form action="{% url 'scrap' post.id%}" method="get">
         <input type="hidden" name = 'scrap' value="{{user}}">
         <button type="submit">scrap</button>
     </form>
-    {% endif %}
+    
     <br>
     <a href="{% url 'request' %}"> Go list </a>
     <br>
@@ -61,7 +60,6 @@
     
     <p>comment:{{comment.content}}</p>
     <hr>
-    {% if user.is_authenticated %}
     {% if user.username == comment.writer %}
     <a href="{% url 'comment_delete' comment.id %}">삭제하기</a>
     <details>
@@ -76,11 +74,9 @@
             
     </form>
     </details>
-    {% endif %}
-    {% endif %}
 
+    {% endif %}
     {% endfor %}
-    {% if user.is_authenticated %}
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}
         작성자 :<p> {{user.username}}</p>
@@ -96,6 +92,5 @@
     <br>
     <br>
     <br>
-    {% endif %}
 </div>
 {%endblock%}

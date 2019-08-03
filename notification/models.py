@@ -12,7 +12,8 @@ class Notification(models.Model):
         ('mission_reject', 'Mission_reject'),
         ('mision_submit', 'Mission_submit'),
         ('mission_complete', 'Mission_complete'),
-        ('chat', 'Chat')
+        ('chat', 'Chat'),
+        ('report', 'Report')
     )
 
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, related_name='creator')
@@ -20,5 +21,11 @@ class Notification(models.Model):
 
     notifi_comment = models.TextField(null=True, blank=True)
     notifi_post_id = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, blank=True, related_name='notifi_post')
+    notifi_date = models.DateTimeField(auto_now_add=True, null=True)
 
     notification_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    confirmation = models.BooleanField(default=False) #알림 확인여부
+
+    
+    def __str__(self):
+        return str(self.notification_type)

@@ -37,7 +37,7 @@ def home(request):
             ready_number+=1
         elif post.status =='running':
             running_number+=1
-            #:
+            
     if request.user.is_anonymous or request.user.is_superuser:
         return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge })
     else:

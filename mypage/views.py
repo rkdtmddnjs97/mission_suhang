@@ -279,13 +279,16 @@ def commission_end(request,profile_id):
         if n.status == 'completed':
             blocked_posts.append(n)
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
+
 def submit_result(request,post_id):
     form_result=submit_form.objects.get(submit=post_id)
     return render(request,'submit_result.html',{'form_result':form_result})
+
 def delete_final(request, post_id,app_id):
     delete_post=Post.objects.get(id=post_id)
     delete_post.delete()
     return redirect('performing_end',app_id)
+
 def complain(request,profile_id):
     prey_profile=Profile.objects.get(id=profile_id)
     complainer_profile=Profile.objects.get(profile_id=request.user.username)
@@ -294,5 +297,10 @@ def complain(request,profile_id):
     complaints.prey=prey_profile
     complaints.casuse=request.POST['complain_content']
     complaints.save()
+    
+    creator = Profile.objects.get(profile_id=request.user.username)
+    to = Profile.objects.get(profile_id='admin')
+    create_notification(creator, to, 'report', complaints.casuse)
+
     return redirect('profile',prey_profile.profile_id)
 

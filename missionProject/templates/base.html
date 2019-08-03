@@ -67,7 +67,11 @@
                         <div id="list-popover" style="display:none">
                             <ul class="ul-popover">
                                 {% for notification in notification_list %}
-                                    <li><a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a></li>
+                                    {% if notification.notification_type == 'comment' %}
+                                        <li><a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a></li>
+                                    {% else %}
+                                        <li>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</li>
+                                    {% endif %}
                                 {% endfor %}
                                 <li><a href="{% url 'notifications' %}">see all</a></li>
                             </ul>
@@ -82,25 +86,27 @@
 
                 
 
-    <form action="{% url 'search' %}" method="GET">      
-            
-        <div class="container">
-                <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판 <br>
-                <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
+
+
+    <form action="{% url 'search' %}" method="GET" >      
+        <span class="search_menu">
+            <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판 <br>
+            <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
+        </span>
+        <span class="search_menu">
                 <select class="form-control"  name ="input_type" >
                   <option name="input_type" value ="title" selected>title</option>
                   <option name="input_type" value ="hashtag">hashtag</option>
                   <option name="input_type" value ="writer">writer</option>
                   <option name="input_type" value ="body">Context</option>
                 </select>
-        </div>
-
-    <span class='green_window'>
-        <input type="text" name='input_data' class='input_text'>
-    </span>
-    &nbsp;
-    <button type='submit' class='sch_smit'>검색</button>
-</form>
+        </span>
+        <span class='green_window'>
+            <input type="text" name='input_data' class='input_text'>
+        </span>
+        &nbsp;
+        <button type='submit' class='sch_smit'>검색</button>
+    </form>
 
            
             </div>
@@ -126,6 +132,9 @@
 
     .pont {
         font-family: 'Do Hyeon', sans-serif;
+    }
+    .search_menu {
+        display: inline-block;
     }
 
     .green_window {
