@@ -3,12 +3,21 @@ from .models import Notification
 from django.contrib.auth.models import User
 # Create your views here.
 
-def get(request):
+def notifications(request):
     user = request.user.profile
-
     notifications = Notification.objects.filter(to=user)
-    
+
+    for noti in notifications:
+        noti.confirmation = True
+        noti.save()
+
     return render(request, 'notifications.html', {'notifications':notifications})
+
+def confirm_notification(request, noti_id):
+    notification = Notification.objects.get(id=noti_id)
+    notification.confirmation = True
+
+    return {}
 
 def create_notification(creator, to, notification_type, comment=None, post_id=None):
     notification = Notification.objects.create(
