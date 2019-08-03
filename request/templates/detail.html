@@ -35,7 +35,7 @@
     <a href="{% url 'request' %}"> Go list </a>
     <br>
     
-    
+    {% if user.is_authenticated %}
     {% if user.username == post.writer %}
     {% if post.status != 'running' and post.status != 'completed' %}
     <a href="{% url 'edit' post.id %}">수정하기</a>
@@ -51,7 +51,7 @@
     {% endif %}
     {% endif %}
     {% endif %}
-   
+   {% endif %}
     <hr>
     <h3>comments</h3>
     {% for comment in comments %}
@@ -75,8 +75,7 @@
     </form>
     </details>
     {% endif %}
-    
-    
+    {% endif %}
     {% endfor %}
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}
