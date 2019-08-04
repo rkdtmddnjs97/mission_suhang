@@ -6,7 +6,7 @@
 <br>
 
 {% for post in tag_posts %}
-    <a href="{% url 'detail' post.id %}">{{post.title}}</a>
+    <a href="{% url 'detail' post.id %}">{{post.title}} / {{post.writer}} / {{post.pub_date}}</a><br>
 {% endfor %}
 
 

@@ -51,11 +51,12 @@ def recommend_request(request):
     my_hashtag = Hashtag.objects.filter(my_tag=my_profile)
 
     recommend_post = {}
-    tmp_post = []
+    
     for tag in my_hashtag:
+        tmp_post = []
         posts = Post.objects.filter(hashtag=tag)
         for post in posts:
-            tmp_post.append(Post.objects.get(title=post))
+            tmp_post.append(post)
         recommend_post[tag] = tmp_post
 
     return recommend_post

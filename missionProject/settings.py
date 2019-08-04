@@ -151,4 +151,4 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-DEFAULT_IMAGE_PATH = 'django_fields/no_image.png'
+#DEFAULT_IMAGE_PATH = 'django_fields/no_image.png'
