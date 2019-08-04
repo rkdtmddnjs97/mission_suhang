@@ -5,16 +5,15 @@
 
 <p>이 글을 '좋아요'하는 사람</p>
 
-<button class="nav" href="#" rel="popover" data-trigger="focus" data-placement="bottom"
-data-popover-content="#list-popover">({{like_count}})</button>
-<div id="list-popover" style="display:none">
-<ul class="ul">
+<button class="nav" href="#" rel="popover_like" data-trigger="focus" data-placement="bottom"
+data-popover-content="#like-popover">({{like_count}})</button>
+<div id="like-popover" style="display:none">
+<ul class="ul-popover">
     {% for user in blog.user.all %}
-   
-   <li> {{user}}</li>
+        <li><a href="{% url 'profile' user %}">{{user}}</a></li>
     {% endfor %}
-    <li><a href="{% url 'like_more' blog.id   %}">더보기</a> </li>
-    
+    ----------------
+    <li><a href="{% url 'like_more' blog.id %}">see all</a> </li>
 </ul>
 </div>
 
