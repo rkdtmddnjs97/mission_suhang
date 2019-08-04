@@ -90,7 +90,8 @@ def signup(request):
             email.send()
             judge='False'
             left_time=180
-            return render(request, 'approval.html',{'judge':judge,'left_time':left_time})
+            e_flag='False'
+            return render(request, 'approval.html',{'judge':judge,'left_time':left_time,'e_flag':e_flag})
         else:
               error='비밀번호가 일치하지 않습니다.'
               return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error})
@@ -119,8 +120,9 @@ def approve(request):
          else:
             error='인증번호가 틀립니다.'
             left_time=request.POST['time']
-            judge='False'            
-            return render(request,'approval.html',{'error':error,'left_time':left_time,'judge':judge})
+            judge='False'   
+            e_flag='True'         
+            return render(request,'approval.html',{'error':error,'left_time':left_time,'judge':judge,'e_flag':e_flag})
 
 
 def login(request):
