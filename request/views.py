@@ -82,16 +82,18 @@ def create(request):
     new_post.pub_date = timezone.datetime.now()
 
     new_post.attached_img = request.FILES.get('attached_img')
+    new_post.attached_file = request.FILES.get('attached_file')
     new_post.deposit=int(tmp1)
-    if request.FILES.get('attached_img') is None:
-        new_post.attached_img = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
-    else:
-        new_post.attached_img = request.FILES.get('attached_img')
+    
+    # if request.FILES.get('attached_img') is None:
+    #     new_post.attached_img = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
+    # else:
+    #     new_post.attached_img = request.FILES.get('attached_img')
 
-    if request.FILES.get('attached_file') is None:
-        new_post.attached_file = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
-    else:
-        new_post.attached_file = request.FILES.get('attached_file')
+    # if request.FILES.get('attached_file') is None:
+    #     new_post.attached_file = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
+    # else:
+    #     new_post.attached_file = request.FILES.get('attached_file')
     new_post.save()
     
     applyMission = ApplyMission()
