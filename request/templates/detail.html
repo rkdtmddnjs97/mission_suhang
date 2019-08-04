@@ -15,11 +15,19 @@
         <p>
             본문
             <br>
-            <img src="{{post.attached_img.url}}" alt=""><br>
+            {% if post.attached_img == 'images/no_image.png' %}                
+            {% else %}
+                <img src="{{post.attached_img.url}}" alt=""><br>
+            {% endif %}
             {{post.body}}
             <br>
-            첨부파일 : 
-            <a href="{{post.attached_file.url}}" download="">{{post.attached_file}}</a>
+             
+            {% if post.attached_file == 'files/dummy.txt' %}
+                (첨부된 파일이 없습니다)
+            {% else %}
+                첨부파일 :
+                <a href="{{post.attached_file.url}}" download="">{{post.attached_file}}</a>
+            {% endif %}
         </p>
         해시태그<br>
         {% for tag in hashtag.all %}

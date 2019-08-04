@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from hashtag.models import Hashtag
+from django_fields import DefaultStaticImageField
 
 
 
@@ -18,7 +19,7 @@ class Profile(models.Model):
     approval=models.BooleanField(default=False)
     ssn=models.CharField(max_length=200,null=True)
     profile_id=models.CharField(unique=True,max_length=200,null=True)
-    profile_img=models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    profile_img=DefaultStaticImageField(upload_to='profile_img/', blank=True, default_image_path='images/no_image.png')
     money=models.IntegerField(default=0)
     connector=models.IntegerField(null=True)
     mission_count=models.IntegerField(default=0)
