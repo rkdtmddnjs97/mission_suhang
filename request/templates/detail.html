@@ -17,7 +17,7 @@
             <br>
             {% if post.attached_img == 'images/no_image.png' %}                
             {% else %}
-                <img src="{{post.attached_img.url}}" alt=""><br>
+                <img src="{{post.attached_img.url}}" width="200px" height="200px" alt=""><br>
             {% endif %}
             {{post.body}}
             <br>

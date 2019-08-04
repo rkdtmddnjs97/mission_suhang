@@ -126,6 +126,12 @@ def update(request, post_id):
         pass
     else:
         update_post.attached_img = request.FILES.get('attached_img')
+
+    if request.FILES.get('attached_file') is None:
+        pass
+    else:
+        update_post.attached_file = request.FILES.get('attached_file')
+        
     update_post.save()
     return redirect('request')
 

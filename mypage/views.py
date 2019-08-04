@@ -145,7 +145,7 @@ def myProfile(request, profile_id):
         average_rate=0
     review_objects=[]
     for review in review_object:
-        if (review.reviews != '' and review.ratings <= 0) or (review.reviews == '' and review.ratings < 0):
+        if (review.reviews != None and review.ratings > 0) or (review.reviews == None and review.ratings == 0):
             review_objects.append(review)
     return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number,'user_profile':user_profile})
 
