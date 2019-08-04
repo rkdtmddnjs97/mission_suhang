@@ -17,6 +17,7 @@
     {% endif %}
           <form method="POST" action="{% url 'approve'%}" name='submitForm'>
               {% csrf_token %}
+              <input type="hidden" id='error_flag' name="error_flag" value='{{e_flag}}'>
               <input type="hidden" id='tmp' name="flag" value='{{judge}}'>
               <input type="hidden" id='time' name="time" value='{{left_time}}'>
              인증번호 <input type="text" name="ssn"  placeholder="Your ssn">
@@ -27,8 +28,14 @@
         <script type="text/javascript">
 
           var timerId;
-          var timerSec = 180;
-          
+          var timerSec;
+          if ((document.getElementById('error_flag').value=='False')&&(document.getElementById("tmp").value == 'False')){
+            timerSec=180;
+          }
+          else if ((document.getElementById('error_flag').value=='True')&&(document.getElementById("tmp").value == 'False')){
+            timerSec=document.getElementById("time").value;
+            
+          } 
         
           
             window.onload= function() {
@@ -40,10 +47,7 @@
           
       
           function timer() {
-            if ((document.getElementById("error").innerHTML =='인증번호가 틀립니다.' )&&(document.getElementById("tmp").value == 'False')){
-            timerSec=document.getElementById("time").value;
-            
-          } 
+           
       
             var min = Math.floor(timerSec / 60)
       
@@ -55,7 +59,7 @@
       
             timerSec--;
 
-            document.getElementById("time").value--
+            document.getElementById("time").value=timerSec
             
       
             if (timerSec < 0) { /* time End*/
