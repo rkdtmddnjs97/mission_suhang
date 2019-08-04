@@ -11,9 +11,14 @@
 
     <h1>이메일 인증</h1>
     
-      
+    {% if error %}
+    <p id='error'>{{error}}</p>
+    <br>
+    {% endif %}
           <form method="POST" action="{% url 'approve'%}" name='submitForm'>
               {% csrf_token %}
+              <input type="hidden" id='tmp' name="flag" value='{{judge}}'>
+              <input type="hidden" id='time' name="time" value='{{left_time}}'>
              인증번호 <input type="text" name="ssn"  placeholder="Your ssn">
              <input type="submit" value="인증" >
         </form>
@@ -22,12 +27,11 @@
         <script type="text/javascript">
 
           var timerId;
-      
           var timerSec = 180;
-      
           
-      
-          window.onload= function() {
+        
+          
+            window.onload= function() {
       
             timerId = setInterval('timer()', 1000);
       
@@ -36,6 +40,10 @@
           
       
           function timer() {
+            if ((document.getElementById("error").innerHTML =='인증번호가 틀립니다.' )&&(document.getElementById("tmp").value == 'False')){
+            timerSec=document.getElementById("time").value;
+            
+          } 
       
             var min = Math.floor(timerSec / 60)
       
@@ -46,7 +54,8 @@
             var msg = (min < 10 ? "0"+ min : min) + ":" + (sec < 10 ? "0"+ sec : sec);
       
             timerSec--;
-      
+
+            document.getElementById("time").value--
             
       
             if (timerSec < 0) { /* time End*/
@@ -54,6 +63,8 @@
               msg += "<br>Timer End!"
       
               clearInterval(timerId);
+              document.getElementById("tmp").value ='True';
+                
               document.submitForm.submit()
       
             }
