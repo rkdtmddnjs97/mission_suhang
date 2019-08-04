@@ -32,7 +32,7 @@ class submit_form(models.Model):
     writer=models.CharField(max_length=200,null=True)
     pub_date=models.DateTimeField('Date published',null=True)
     body=models.TextField(null=True)
-    attachment=models.FileField(upload_to='submit_file/', null=True, blank=True)
+    attachment=DefaultStaticImageField(upload_to='submit_file/', null=True, blank=True, default_image_path='files/dummy.txt')
     submit=models.OneToOneField(Post,on_delete=models.CASCADE, null=True)
 
 class Comment(models.Model):

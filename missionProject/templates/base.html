@@ -49,8 +49,8 @@
                   
                     {% else %}
                     {% if request.user.profile.approval == True or request.user.is_superuser == True %}
-                    <li class="nav-item">
-                        <form id="logout" class="nav-link" method="POST" action="{% url 'logout' %}">
+                    <li class="nav-item" id="logout_btn">
+                        <form class="nav-link" method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}
                             <input type="submit" value="Logout">
                         </form>
@@ -124,11 +124,9 @@
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 
-    input:not(#tag_box){
+    input:not(#tag_box, #submission_result_form, #logout_btn){
         all: unset;
     }
-
-
 
     .pont {
         font-family: 'Do Hyeon', sans-serif;

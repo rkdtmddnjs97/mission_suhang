@@ -1,4 +1,5 @@
-
+{% extends 'base.html'%}
+{% block content %}
 <h1> 제출결과물 </h1>
 <br>
 
@@ -8,14 +9,18 @@
 <br>
 본문:{{submission_result.body}}
 <br>
-첨부파일 :
-<a href="{{submission_result.attachment.url}}" download="">{{submission_result.attachment}}</a>
+{% if submission_result.attachment == 'files/dummy.txt' %}
+    첨부된 파일이 없습니다.
+{% else %}
+    첨부파일 :
+    <a href="{{submission_result.attachment.url}}" download="">{{submission_result.attachment}}</a>
+{% endif %}
 <br>
 {% if post.writer == user.username %}
 {% if post.status == 'running' %}
 <details>
     <summary>제출 완료</summary>
-    <form action="{% url 'end' post.id %}" method="POST">
+    <form action="{% url 'end' post.id %}" method="POST" id="submission_result_form">
         {% csrf_token %}
       <p>평점:</p>
        <input type="radio" name="rating" value="1">1
@@ -37,11 +42,12 @@
 {% if submission_result.writer == user.username %}
 <details>
 <summary>제출 수정</summary>
-<form action="{% url 'submission_edit' submission_id=submission_result.id postId=post.id %}" method="POST">
+<form action="{% url 'submission_edit' submission_id=submission_result.id postId=post.id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-  
       <textarea name= 'content' id="" cols="30" rows="10" placeholder="write your content" >{{submission_result.body}}</textarea>
-    <br>
+      <br>
+      <input type="file" name="attachment">
+      <br>
     <input type="submit" value='수정'>
     
 </form>
@@ -49,3 +55,4 @@
 
 {% endif %}
 
+{% endblock %}

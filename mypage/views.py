@@ -205,7 +205,7 @@ def submit_send(request,post_id):
     form.title=request.POST['title']
     form.body=request.POST['body']
     if request.FILES.get('attachment') is None:
-        form.attachment = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
+        pass
     else:
         form.attachment = request.FILES.get('attachment')
         
@@ -252,6 +252,10 @@ def mission_quit(request,post_id):
 def submission_edit(request,submission_id,postId):
     tmp=submit_form.objects.get(id=submission_id)
     tmp.body=request.POST['content']
+    if request.FILES.get('attachment') is None:
+        pass
+    else:
+        tmp.attachment = request.FILES.get('attachment')
     tmp.save()
     return redirect('submission', postId)
     # def submission(request,post_id):
