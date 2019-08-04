@@ -88,7 +88,9 @@ def signup(request):
             email = EmailMultiAlternatives('인증 메일', message, to=[request.POST['email']])
             email.attach_alternative(html_content, "text/html")
             email.send()
-            return render(request, 'approval.html')
+            judge='False'
+            left_time=180
+            return render(request, 'approval.html',{'judge':judge,'left_time':left_time})
         else:
               error='비밀번호가 일치하지 않습니다.'
               return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error})
@@ -96,15 +98,29 @@ def signup(request):
 
 
 def approve(request):
-    if request.user.profile.ssn == request.POST['ssn']:
-        if request.user.profile.approval == False:
-            request.user.profile.approval = True
-            if request.user.profile.email.split('@')[1]=='likelion.org':
-                request.user.profile.money=4000
-            request.user.profile.save()
-    else:
-        request.user.delete()
-    return redirect('home')
+    if request.POST['flag']=='True':       
+        if request.user.profile.ssn == request.POST['ssn']:
+            if request.user.profile.approval == False:
+                request.user.profile.approval = True
+                if request.user.profile.email.split('@')[1]=='likelion.org':
+                    request.user.profile.money=4000
+                request.user.profile.save()
+        else:
+            request.user.delete()
+        return redirect('home')
+    elif request.POST['flag']=='False':
+         if request.user.profile.ssn == request.POST['ssn']:
+            if request.user.profile.approval == False:
+                request.user.profile.approval = True
+                if request.user.profile.email.split('@')[1]=='likelion.org':
+                    request.user.profile.money=4000
+                request.user.profile.save()
+                return redirect('home')
+         else:
+            error='인증번호가 틀립니다.'
+            left_time=request.POST['time']
+            judge='False'            
+            return render(request,'approval.html',{'error':error,'left_time':left_time,'judge':judge})
 
 
 def login(request):
