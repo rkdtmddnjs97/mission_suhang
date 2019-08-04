@@ -19,17 +19,17 @@
 {% if post.writer == user.username %}
 {% if post.status == 'running' %}
 <details>
-    <summary>제출 완료</summary>
+    <summary>미션 완료</summary>
     <form action="{% url 'end' post.id %}" method="POST" id="submission_result_form">
         {% csrf_token %}
-      <p>평점:</p>
+      <span>평점</span><br>
        <input type="radio" name="rating" value="1">1
        <input type="radio" name="rating" value="2">2
        <input type="radio" name="rating" value="3">3
        <input type="radio" name="rating" value="4">4
        <input type="radio" name="rating" value="5">5
     <br>
-    <p>후기</p>
+    <span>후기</span><br>
     <textarea name= 'review_content' id="" cols="30" rows="10" placeholder="write your review" ></textarea>
 
         <br>
