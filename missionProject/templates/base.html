@@ -84,7 +84,7 @@
 
                 </ul>
 
-    <form action="{% url 'search' %}" method="GET" >      
+    <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">      
         <span class="search_menu">
             <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판 <br>
             <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
@@ -101,7 +101,8 @@
             <input type="text" name='input_data' class='input_text'>
         </span>
         &nbsp;
-        <button type='submit' class='sch_smit'>검색</button>
+        <button type='submit' class='sch_smit' id='search_submit'>검색</button>
+
     </form>
 
            
@@ -208,6 +209,21 @@
     }).click(function (e) {
         e.preventDefault();
     });
+
+    function check() {
+        var chkbox = document.getElementsByName('input_board');
+        var chk = false;
+        for(var i =0; i<chkbox.length; i++) {
+            if(chkbox[i].checked) { chk = true; }
+            else { chk = false; }
+        }
+        if (chk == false) {
+            alert("검색 할 게시판을 선택해주세요!");
+            return false;
+        }
+        else { return true; } 
+    }
+    
 </script>
 
 
