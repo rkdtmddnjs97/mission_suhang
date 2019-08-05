@@ -20,6 +20,10 @@ def board(request):
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
+    blog_like=[]
+    for index,i in enumerate(blog.user.all()):
+        if index != 5:
+            blog_like.append(i)
     comments_list = B_Comment.objects.filter(post = post_id)
     paginator = Paginator(comments_list,10)
     page = request.GET.get('page')
@@ -29,7 +33,7 @@ def detail(request,post_id):
         reversed_comments.append(comment)
     reversed_comments.reverse()
     hashtag = Hashtag.objects.filter(freeboard_tag=post_id)
-    return render(request, 'b_detail.html', {'blog':blog,'comments':reversed_comments,'hashtag':hashtag,'like_count':blog.total_likes})
+    return render(request, 'b_detail.html', {'blog':blog,'comments':reversed_comments,'hashtag':hashtag,'like_count':blog.total_likes,'blog_like':blog_like})
 
 def new(request):
     user = request.user

@@ -34,11 +34,14 @@
             <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
     </p>
+    {% if user.is_authenticated %}
+    {% if user.username != post.writer %}
     <form action="{% url 'scrap' post.id%}" method="get">
         <input type="hidden" name = 'scrap' value="{{user}}">
         <button type="submit">scrap</button>
     </form>
-    
+    {% endif %}
+    {% endif %}
     <br>
     <a href="{% url 'request' %}"> Go list </a>
     <br>
