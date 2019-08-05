@@ -10,7 +10,7 @@ from django.db import IntegrityError
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.exceptions import ObjectDoesNotExist
-
+import ast
 
 def signup(request):
     all_hashtag = Hashtag.objects.all()
@@ -59,29 +59,24 @@ def signup(request):
                 result+=random.choice(string_pool)
                  # 랜덤한 문자열 하나 선택
             try:
-                 user = User.objects.create_user(
-                 username=request.POST['username'], password=request.POST['password1'])
-                 auth.login(request, user)
-            except IntegrityError:
+                User.objects.get(username=request.POST['username'])
                 error1='아이디가 이미 존재합니다.'
                 return render(request, 'signup.html', {'hashtag': all_hashtag,'error1':error1})
+            except ObjectDoesNotExist:
+                pass
             
-
-            user.profile.university = request.POST['university']
-            user.profile.department = request.POST['department']
-            user.profile.name = request.POST['name']
-            user.profile.introduction = request.POST['introduction']
-            user.profile.email = request.POST['email']
-            user.profile.profile_id = request.POST['username']
-            user.profile.ssn = result
-            user.profile.profile_img = request.FILES.get('pofile_img')
-                
-            tag_list = request.POST.getlist('hashtag')
-            for tag in tag_list:
-                input_tag = Hashtag.objects.get(name=tag.upper())
-                user.profile.hashtag.add(input_tag)
-
-            user.profile.save()
+            private=[]
+            private.append(request.POST['username'])#0
+            private.append(request.POST['password1'])#1
+            private.append(request.POST['university'])#2
+            private.append(request.POST['department'])#3
+            private.append(request.POST['name'])#4
+            private.append(request.POST['introduction'])#5
+            private.append(request.POST['email'])#6
+            private.append(result)#7
+            private.append(request.FILES.get('pofile_img'))#8
+            private.append(request.POST.getlist('hashtag'))#9
+            
         
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)
@@ -91,38 +86,78 @@ def signup(request):
             judge='False'
             left_time=180
             e_flag='False'
-            return render(request, 'approval.html',{'judge':judge,'left_time':left_time,'e_flag':e_flag})
+            sn=result
+            return render(request, 'approval.html',{'judge':judge,'left_time':left_time,'e_flag':e_flag,'sn':sn,'private':private})
         else:
               error='비밀번호가 일치하지 않습니다.'
               return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error})
     return render(request, 'signup.html', {'hashtag': all_hashtag})
 
 
-def approve(request):
+def approve(request,profile_dic):
+    profile_dic=ast.literal_eval(profile_dic)
     if request.POST['flag']=='True':       
-        if request.user.profile.ssn == request.POST['ssn']:
-            if request.user.profile.approval == False:
-                request.user.profile.approval = True
-                if request.user.profile.email.split('@')[1]=='likelion.org':
-                    request.user.profile.money=4000
-                request.user.profile.save()
+        if request.POST['sn'] == request.POST['ssn']:
+                 user = User.objects.create_user(
+                 username=profile_dic[0], password=profile_dic[1])
+                 auth.login(request, user)
+                 user.profile.approval = True
+                 user.profile.university = profile_dic[2]
+                 user.profile.department = profile_dic[3]
+                 user.profile.name = profile_dic[4]
+                 user.profile.introduction = profile_dic[5]
+                 user.profile.email = profile_dic[6]
+                 user.profile.profile_id = profile_dic[0]
+        
+                 user.profile.profile_img = profile_dic[8]
+                 user.profile.save()
+                 tag_list = profile_dic[9]
+                 if tag_list is None:
+                     pass
+                 else:
+                    for tag in tag_list:
+                        input_tag = Hashtag.objects.get(name=tag.upper())
+                        user.profile.hashtag.add(input_tag)
+                 if profile_dic[6].split('@')[1]=='likelion.org':
+                        user.profile.money=4000
+                        user.profile.save()
         else:
-            request.user.delete()
+            pass
         return redirect('home')
     elif request.POST['flag']=='False':
-         if request.user.profile.ssn == request.POST['ssn']:
-            if request.user.profile.approval == False:
-                request.user.profile.approval = True
-                if request.user.profile.email.split('@')[1]=='likelion.org':
-                    request.user.profile.money=4000
-                request.user.profile.save()
-                return redirect('home')
+         if request.POST['sn'] == request.POST['ssn']:
+                
+                 user = User.objects.create_user(
+                 username=profile_dic[0], password=profile_dic[1])
+                 auth.login(request, user)
+                 user.profile.approval = True
+                 user.profile.university = profile_dic[2]
+                 user.profile.department = profile_dic[3]
+                 user.profile.name = profile_dic[4]
+                 user.profile.introduction = profile_dic[5]
+                 user.profile.email = profile_dic[6]
+                 user.profile.profile_id = profile_dic[0]
+        
+                 user.profile.profile_img = profile_dic[8]
+                 user.profile.save()
+                 tag_list = profile_dic[9]
+                 if tag_list is None:
+                     pass
+                 else:
+                    for tag in tag_list:
+                        input_tag = Hashtag.objects.get(name=tag.upper())
+                        user.profile.hashtag.add(input_tag)
+                 if profile_dic[6].split('@')[1]=='likelion.org':
+                    user.profile.money=4000
+                    user.profile.save()
+                 return redirect('home')
          else:
             error='인증번호가 틀립니다.'
             left_time=request.POST['time']
             judge='False'   
-            e_flag='True'         
-            return render(request,'approval.html',{'error':error,'left_time':left_time,'judge':judge,'e_flag':e_flag})
+            e_flag='True'     
+            sn=profile_dic[7]    
+            return render(request,'approval.html',{'error':error,'left_time':left_time,'judge':judge,'e_flag':e_flag,'private':profile_dic,'sn':sn})
 
 
 def login(request):
