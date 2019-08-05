@@ -197,6 +197,17 @@
     }).click(function (e) {
         e.preventDefault();
     });
+
+    $('[rel="popover_scrap"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
 </script>
 
 

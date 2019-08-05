@@ -41,18 +41,24 @@ def detail(request,post_id):
     comments_list = Comment.objects.filter(post = post_id)
     paginator = Paginator(comments_list,10)
     page = request.GET.get('page')
+
     comments = paginator.get_page(page)
     reversed_comment=[]
     for comment in comments:
         reversed_comment.append(comment)
     reversed_comment.reverse()
+
     hashtag = Hashtag.objects.filter(post_tag=post_id)
     A_M=ApplyMission.objects.filter(post=post_id)
     judge=False
     for a_m in A_M:
         if a_m.applier == request.user:
             judge=True
-    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge})
+    
+    scrap_users = post.user.all()
+    total_scrap_user = scrap_users.count()
+
+    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge, 'total_scrap_user':total_scrap_user})
 
 def new(request):
     user = request.user
