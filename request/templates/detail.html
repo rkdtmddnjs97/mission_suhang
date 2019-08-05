@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <div class="container">
     <h1>Detail Post</h1>
-    <p>이 임무를 노리는 사람</p>
-    {% for user in post.user.all %}
-    {{user}}
-    {% endfor %}
+    <span>이 임무를 '스크랩'한 사람</span>
+    <button class="nav" href="#" rel="popover_scrap" data-trigger="focus" data-placement="bottom"
+        data-popover-content="#scrap-popover">({{total_scrap_user}})</button>
+    <div id="scrap-popover" style="display:none">
+        <ul class="ul-popover">
+            {% for user in post.user.all %}
+                <li><a href="{% url 'profile' user %}">{{user}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <hr>
+
     <p>
         <h2>제목 : {{post.title}}</h2>
         <p>작성자 : <a href="{% url 'profile' post.writer %}">{{post.writer}}</a> </p>
