@@ -20,7 +20,7 @@ data-popover-content="#like-popover">({{like_count}})</button>
 <hr>
 <p>  
     <h2>제목 : {{blog.title}}</h2>
-    <p>작성자 : {{blog.writer}}</p>
+    <a href="{% url 'profile' blog.writer %}"> <p>작성자 : {{blog.writer}}</p></a>
     <p>발행일: {{blog.pub_date}}</p>
 
     
@@ -42,7 +42,7 @@ data-popover-content="#like-popover">({{like_count}})</button>
 {% endif %}
 <br>
 
-<a href="{% url 'board' %}"> home </a>
+<a href="{% url 'board' %}"> go list</a>
 <br>
 {% if user.username == blog.writer %}
 <a href="{% url 'b_edit' blog.id %}">수정하기</a>
@@ -84,6 +84,5 @@ data-popover-content="#like-popover">({{like_count}})</button>
 {% endif %}
 </div>
 <br>
-<a href="{% url 'board' %}">뒤로가기 </a>
 
 {% endblock %}
