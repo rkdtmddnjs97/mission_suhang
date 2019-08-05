@@ -8,9 +8,11 @@ from accounts.models import Profile
 
 
 def search(request):
+
     input_data = request.GET['input_data']
     input_type = request.GET['input_type']
     input_board = request.GET['input_board']
+
     if input_board == 'missionboard':
           if input_type == 'hashtag':
                try:
@@ -39,10 +41,14 @@ def search(request):
                   return render(request, 'search_result.html', {'input_data': input_data, 'results': results, 'result_flag':result_flag})
           elif input_type == 'title':
                try:
-                  results = Post.objects.filter(title=input_data)
-                  search_type = 'Title'
-                  result_flag = True
-                  return render(request, 'search_result.html', {'input_data': input_data, 'results': results, 'result_flag':result_flag , 'search_type ':search_type,'input_board':input_board })
+                    search_type = 'Title'
+                    result_flag = True
+                    results=[]
+                    for post in Post.objects.all():
+                         if input_data in post.title:
+                              results.append(post)
+                    
+                    return render(request, 'search_result.html', {'input_data': input_data, 'results': results, 'result_flag':result_flag , 'search_type ':search_type,'input_board':input_board })
 
                except ObjectDoesNotExist:
                   results = '검색 결과가 없습니다^^'
