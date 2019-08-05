@@ -17,7 +17,6 @@ class Profile(models.Model):
     introduction=models.TextField(null=True)
     email=models.CharField(max_length=200,null=True,unique=True)
     approval=models.BooleanField(default=False)
-    ssn=models.CharField(max_length=200,null=True)
     profile_id=models.CharField(unique=True,max_length=200,null=True)
     profile_img=DefaultStaticImageField(upload_to='profile_img/', blank=True, default_image_path='images/no_image.png')
     money=models.IntegerField(default=0)
