@@ -9,8 +9,8 @@
 data-popover-content="#like-popover">({{like_count}})</button>
 <div id="like-popover" style="display:none">
 <ul class="ul-popover">
-    {% for user in blog.user.all %}
-        <li><a href="{% url 'profile' user %}">{{user}}</a></li>
+    {% for blog_user in blog_like %}
+        <li><a href="{% url 'profile' blog_user %}">{{blog_user}}</a></li>
     {% endfor %}
     ----------------
     <li><a href="{% url 'like_more' blog.id %}">see all</a> </li>
@@ -33,10 +33,12 @@ data-popover-content="#like-popover">({{like_count}})</button>
         {% endfor %}
 </p>
 {% if user.is_authenticated %}
+{% if user.username != blog.writer %}
 <form action="{% url 'b_like' blog.id %}" method="get">
     <input type="hidden" name = 'like' value="{{user}}">
     <button type="submit">좋아요</button>
 </form>
+{% endif %}
 {% endif %}
 <br>
 
