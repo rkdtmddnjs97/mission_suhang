@@ -1,17 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment,ApplyMission
-from hashtag.models import Hashtag
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from accounts.models import Profile
+from hashtag.models import Hashtag
 from mypage.models import MTM_chat,chatting,Review
 from notification.views import create_notification
 from django.core.exceptions import ObjectDoesNotExist
 from notification.views import create_notification
 from django.utils.datastructures import MultiValueDictKeyError
-
-
 
 
 
@@ -80,20 +78,17 @@ def create(request):
     new_post.title=request.POST['title']
     new_post.body=request.POST['body']
     new_post.pub_date = timezone.datetime.now()
-
-    new_post.attached_img = request.FILES.get('attached_img')
-    new_post.attached_file = request.FILES.get('attached_file')
     new_post.deposit=int(tmp1)
     
-    # if request.FILES.get('attached_img') is None:
-    #     new_post.attached_img = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
-    # else:
-    #     new_post.attached_img = request.FILES.get('attached_img')
+    if request.FILES.get('attached_img') is None:
+        pass
+    else:
+        new_post.attached_img = request.FILES.get('attached_img')
+    if request.FILES.get('attached_file') is None:
+        pass
+    else:
+        new_post.attached_file = request.FILES.get('attached_file')
 
-    # if request.FILES.get('attached_file') is None:
-    #     new_post.attached_file = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
-    # else:
-    #     new_post.attached_file = request.FILES.get('attached_file')
     new_post.save()
     
     applyMission = ApplyMission()
@@ -116,12 +111,26 @@ def create(request):
 
 def edit(request, post_id):
     edit_post = Post.objects.get(id=post_id)
-    return render(request, 'edit.html', {'post':edit_post})
+    post_tag = Hashtag.objects.filter(post_tag=post_id)
+    all_tag = Hashtag.objects.all()
+
+    checked_tag = []
+    unchecked_tag = []
+    for checked in post_tag:
+        checked_tag.append(checked)
+    for unchecked in all_tag:
+        if unchecked in checked_tag:
+            pass
+        else:
+            unchecked_tag.append(unchecked)
+
+    return render(request, 'edit.html', {'post':edit_post, 'checked_tag':checked_tag, 'unchecked_tag':unchecked_tag})
 
 def update(request, post_id):
     update_post = Post.objects.get(id=post_id)
     update_post.title = request.POST['title']
     update_post.body = request.POST['body']
+
     if request.FILES.get('attached_img') is None: #프로필 사진 form이 입력되지 않았을 시.
         pass
     else:
@@ -131,6 +140,28 @@ def update(request, post_id):
         pass
     else:
         update_post.attached_file = request.FILES.get('attached_file')
+
+    # Hashtag
+    tag_list = request.POST.getlist('hashtag')
+    add_hash_list = request.POST['add_hashtag'].split('#')
+    update_post.hashtag.clear()
+    
+    for index,hsTag in enumerate(add_hash_list):
+        if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
+            pass
+        else:
+            if hsTag.upper() in tag_list:
+                pass
+            else:
+                tag_list.append(hsTag.upper())
+
+    for tag in tag_list:
+        if Hashtag.objects.filter(name=tag).exists():
+            input_tag = Hashtag.objects.get(name=tag)
+            update_post.hashtag.add(input_tag)
+        else:
+            input_tag = Hashtag.objects.create(name=tag)
+            update_post.hashtag.add(input_tag)
 
     update_post.save()
     return redirect('request')

@@ -156,16 +156,16 @@ def editProfile(request, profile_id):
         my_tag = userProfile.hashtag.all()
         all_tag = Hashtag.objects.all()
         checked_tag = []
-        uncheked_tag = []
+        unchecked_tag = []
         for checked in my_tag:
             checked_tag.append(checked)
         for unchecked in all_tag:
             if unchecked in checked_tag:
                 pass
             else:
-                uncheked_tag.append(unchecked)
+                unchecked_tag.append(unchecked)
         
-        return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'unchecked_tag':uncheked_tag})
+        return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'unchecked_tag':unchecked_tag})
     else:
         print("본인 계정이 아니면 접근할 수 없습니다.") #나중에 html 경고창 띄우게 수정하면 참 좋을 듯ㅎㅎ
         return redirect('profile', profile_id=profile_id)

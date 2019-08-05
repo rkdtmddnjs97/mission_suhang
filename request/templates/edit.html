@@ -3,23 +3,46 @@
 <h1>글을 수정중입니다.</h1>
 <form action="{% url 'update' post.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+
         제목 : <input type="text" name='title' value="{{post.title}}">
         <br>
         <br>
+
         작성자 : {{post.writer}}
         <br>
         <br>
+
         본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" >{{post.body}}</textarea>
         <br>
         <br>
+
+        #해시태그<br>
+        {% for tag in checked_tag %}
+                <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}" checked="checked">#{{tag}}    
+        {% endfor %}
+        <details>
+                <summary>모든 해시태그</summary>
+                        {% for tag in unchecked_tag %}
+                                <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}}
+                        {% endfor %}
+        </details>
+        <br>
+        #해시태그 생성
+        <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
+        -> <input type="text" name='add_hashtag'>
+        
+        <br><br>
+
         사진첨부<br>
         <img src="{{post.attached_img.url}}" width="100px" height="100px" alt=""><br>
         <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
         <br>
         <br>
+
         파일첨부<br>
         <input type="file" name="attached_file">
         <br><br>
+
         <button type='submit'>작성하기</button>
 </form>
 <a href="{% url 'detail' post.id %}">취소 </a>
