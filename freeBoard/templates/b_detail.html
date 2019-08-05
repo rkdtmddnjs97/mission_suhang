@@ -49,7 +49,8 @@ data-popover-content="#like-popover">({{like_count}})</button>
 <a href="{%url 'b_delete' blog.id %}">삭제하기</a>
 {% endif %}
 <hr>
-<h2>comments</h2>
+<details>
+<summary>comments</summary>
 {% for comment in comments %}
 {{comment.writer}}
 <br>
@@ -86,6 +87,7 @@ data-popover-content="#like-popover">({{like_count}})</button>
     <a href="?page={{comments.next_page_number}}">Next</a>
     <a href="?page={{comments.paginator.num_pages}}">Last</a>
     {%endif%}
+    </details> 
     <br>
 {% if user.is_authenticated %}
 <form action="{% url 'b_new_comment' blog.id %}" method="POST">

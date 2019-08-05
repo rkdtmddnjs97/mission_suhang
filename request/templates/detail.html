@@ -73,7 +73,8 @@
     {% endif %}
    {% endif %}
     <hr>
-    <h3>comments</h3>
+    <details>
+    <summary>comments</summary>
     {% for comment in comments %}
    
     <p>작성자: <a href="{% url 'profile' comment.writer %}">{{comment.writer}}</a> </p>
@@ -97,7 +98,7 @@
 
     {% endif %}
     {% endfor %}
-    
+
     {%if comments.has_previous%}
     <a href="?page=1">First</a>
     <a href="?page={{comments.previous_page_number}}">Previous</a>
@@ -111,17 +112,19 @@
     <a href="?page={{comments.next_page_number}}">Next</a>
     <a href="?page={{comments.paginator.num_pages}}">Last</a>
     {%endif%}
+</details>
     <br>
-    
+    {% if user.is_authenticated %}
     <form action="{% url 'new_comment' post.id %}" method="POST">
         {% csrf_token %}
-        작성자 :<p> {{user.username}}</p>
+        작성자 :{{user.username}}
         <br>
         내용 :<br> <textarea name="content" id="" cols="30" rows="10"></textarea>
         <br>
         <input type="submit">
         <br>
     </form>
+    {% endif %}
     <br>
     <br>
     <br>
