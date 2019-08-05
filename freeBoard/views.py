@@ -7,16 +7,14 @@ from django.core.paginator import Paginator
 # Create your views here.
 def board(request):
     Blogs = B_Blog.objects.all()
-    paginator = Paginator(Blogs,5)
     page = request.GET.get('page')
-    blogs = paginator.get_page(page)
     reverse_blog = []
-
-    for blog in blogs:
+    for blog in Blogs:
         reverse_blog.append(blog)
-
-    reverse_blog.reverse()     
-    return render(request, 'board.html', {'blogs':blogs,'reverse_blog':reverse_blog })
+    reverse_blog.reverse() 
+    paginator = Paginator(reverse_blog,3)
+    reverse_blog = paginator.get_page(page)  
+    return render(request, 'board.html', { 'blogs':reverse_blog })
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
@@ -24,14 +22,14 @@ def detail(request,post_id):
     for index,i in enumerate(blog.user.all()):
         if index != 5:
             blog_like.append(i)
-    comments_list = B_Comment.objects.filter(post = post_id)
-    paginator = Paginator(comments_list,10)
+    comments = B_Comment.objects.filter(post = post_id)
     page = request.GET.get('page')
-    comments = paginator.get_page(page)
     reversed_comments = []
     for comment in comments:
         reversed_comments.append(comment)
     reversed_comments.reverse()
+    paginator = Paginator(reversed_comments,2)
+    reversed_comments = paginator.get_page(page)
     hashtag = Hashtag.objects.filter(freeboard_tag=post_id)
     return render(request, 'b_detail.html', {'blog':blog,'comments':reversed_comments,'hashtag':hashtag,'like_count':blog.total_likes,'blog_like':blog_like})
 

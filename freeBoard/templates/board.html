@@ -6,7 +6,7 @@
     <a href="{% url 'b_new'%}">새 글 작성하기 </a>
     {% endif %}
     <h2>블로그 글 목록</h2>
-    {% for blog in reverse_blog %}
+    {% for blog in blogs %}
     <div class="card">
     <div class="card-body">
     <a href="{% url 'b_detail' blog.id %}">
