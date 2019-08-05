@@ -9,11 +9,12 @@ from accounts.models import Profile
 
 def search(request):
 
-    input_data = request.GET['input_data']
-    input_type = request.GET['input_type']
-    input_board = request.GET['input_board']
+     input_data = request.GET['input_data']
+     input_type = request.GET['input_type']
+     input_board = request.GET['input_board']
 
-    if input_board == 'missionboard':
+          
+     if input_board == 'missionboard':
           if input_type == 'hashtag':
                try:
                    tag = Hashtag.objects.get(name=input_data.upper())
@@ -70,7 +71,7 @@ def search(request):
                     results = '검색 결과가 없습니다^^'
                     result_flag = False
                     return render(request, 'search_result.html', {'input_data': input_data, 'results': results, 'result_flag':result_flag})
-    elif input_board=="freeboard":
+     elif input_board=="freeboard":
           if input_type == 'hashtag':
                try:
                    tag = Hashtag.objects.get(name=input_data.upper())
