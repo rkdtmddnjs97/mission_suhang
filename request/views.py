@@ -16,6 +16,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 def request_home(request):
     post_list=[]
     tmp= Post.objects.all()
+    page = request.GET.get('page')
     for n in tmp:
         if n.status != 'completed' and n.status != 'running':
             post_list.append(n)
@@ -26,28 +27,22 @@ def request_home(request):
         
     else:
         my_scrap_post = None
+    post_list.reverse()
     paginator = Paginator(post_list, 3)
-    page = request.GET.get('page')
-    blogs = paginator.get_page(page)
-    reversed_blogs= []
-    for blog in blogs:
-        reversed_blogs.append(blog)
-    reversed_blogs.reverse()
-    return render(request, 'request_home.html', {'blogs':blogs,'scrap_post':my_scrap_post,'reversed_blogs':reversed_blogs})
+    post_list = paginator.get_page(page)
+    return render(request, 'request_home.html', {'blogs':post_list,'scrap_post':my_scrap_post})
                                         
 
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
-    comments_list = Comment.objects.filter(post = post_id)
-    paginator = Paginator(comments_list,10)
+    comments = Comment.objects.filter(post = post_id)
     page = request.GET.get('page')
-
-    comments = paginator.get_page(page)
     reversed_comment=[]
     for comment in comments:
         reversed_comment.append(comment)
     reversed_comment.reverse()
-
+    paginator = Paginator(reversed_comment,2)
+    reversed_comment = paginator.get_page(page)
     hashtag = Hashtag.objects.filter(post_tag=post_id)
     A_M=ApplyMission.objects.filter(post=post_id)
     judge=False

@@ -18,7 +18,7 @@
     <h1>Misson list</h1>
     <hr>
     <div class="row">
-        {% for post in reversed_blogs %}
+        {% for post in blogs %}
         <div class="col-4">
             <div class="card">
                 <a href="{% url 'detail' post.id %}">
