@@ -16,6 +16,10 @@
 <br>
 <a href="{% url 'announcement_board' %}">공지사항</a>
 <br>
+<p>최근 공지사항</p>
+{% for announcemnt in recent_announcements %}
+<a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
+{% endfor %}
 <br>
 <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
 <span>Hot 수행자 : </span>
