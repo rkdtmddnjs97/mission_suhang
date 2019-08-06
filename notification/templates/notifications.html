@@ -97,30 +97,36 @@
 
         {% for notification in notifications %}
         {% if notification.notification_type == 'comment' %}
-            {{notification.creator}}가 당신에게 "{{notification.notifi_comment}}"라고 댓글을 달았습니다. <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
-
+            <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게 "{{notification.notifi_comment}}"라고 댓글을 달았습니다.
+            <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
+            
         {% elif notification.notification_type == 'mission_apply' %}
-            {{notification.creator}}가 당신의 의뢰글에 대해 미션 신청을 하였습니다.
+            <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 의뢰글에 대해 미션 신청을 하였습니다.
+            <a href="{% url 'commissioned' notification.to %}">보러가기</a>
 
         {% elif notification.notification_type == 'mission_accept' %}
-            {{notification.creator}}가 당신의 미션신청을 승낙하였습니다.
+            <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 미션신청을 승낙하였습니다.
 
         {% elif notification.notification_type == 'mission_reject' %}
-            너무 슬퍼마세요... <br>
-            {{notification.creator}}가 당신의 미션신청을 거절하였습니다.
+            <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 미션신청을 거절하였습니다. 너무 슬퍼마세요...
 
         {% elif notification.notification_type == 'mision_submit' %}
-            {{notification.creator}}가 당신의 의뢰글에 대한 제출물을 제출하였습니다.
+            <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 의뢰글에 대한 제출물을 제출하였습니다.
 
         {% elif notification.notification_type == 'mission_complete' %}
             축하합니다!<br>
-            의뢰자 {{notification.creator}}님의 미션을 완료하셨습니다.
+            의뢰자 <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>님의 미션을 완료하셨습니다.
 
         {% elif notification.notification_type == 'chat' %}
-            {{notification.creator}}가 당신에게 "{{notification.notifi_comment}}"라고 쪽지를 보냈습니다.
+            <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게 "{{notification.notifi_comment}}"라고 쪽지를 보냈습니다.
+            <a href="#" onclick="window.open('{% url 'chat' app_id=notification.to.id request_id=notification.creator.id   %}','채팅창','width=500,height=700')">채팅</a>
 
         {% elif notification.notification_type == 'report' %}
-            {{notification.creator}}가 "{{notification.notifi_comment}}"라고 신고를 하였습니다.
+            <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 "{{notification.notifi_comment}}"라고 신고를 하였습니다.
+
+        {% elif notification.notification_type == 'scrap' %}
+            <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 게시물 '{{notification.notifi_post_id.title}}'을(를) 스크랩하였습니다. 
+            <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
 
         
     {% endif %}

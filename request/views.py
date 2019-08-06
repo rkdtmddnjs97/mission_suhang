@@ -8,7 +8,6 @@ from hashtag.models import Hashtag
 from mypage.models import MTM_chat,chatting,Review
 from notification.views import create_notification
 from django.core.exceptions import ObjectDoesNotExist
-from notification.views import create_notification
 from django.utils.datastructures import MultiValueDictKeyError
 
 
@@ -196,10 +195,18 @@ def modify(request,comment_id):
 def scrap(request,post_id):
     post=get_object_or_404(Post, pk = post_id)
     if post.user.filter(username=request.user.username).exists():
-        post.user.remove(request.user)    
+        post.user.remove(request.user)
     else:
         post.user.add(request.user)
+        creator = Profile.objects.get(profile_id=request.user.username)
+        to = Profile.objects.get(profile_id=post.writer)
+        create_notification(creator, to, 'scrap', post_id=post)
     post.save()
+
+    creator = Profile.objects.get(profile_id=request.user.username)
+    to = Profile.objects.get(profile_id=post.writer)
+    create_notification(creator, to, 'scrap', post_id=post)
+    
     return redirect('detail', post_id)
 
 #수행자가 의뢰자의 미션 신청
@@ -213,7 +220,7 @@ def apply(request,post_id):
 
     creator = Profile.objects.get(profile_id=request.user.username)
     to = Profile.objects.get(profile_id=post.writer)
-    create_notification(creator, to, 'mission_apply')
+    create_notification(creator, to, 'mission_apply', post_id=post)
 
     return redirect('detail', post_id)
 
