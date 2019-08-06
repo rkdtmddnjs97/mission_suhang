@@ -220,7 +220,7 @@ def apply(request,post_id):
 
     creator = Profile.objects.get(profile_id=request.user.username)
     to = Profile.objects.get(profile_id=post.writer)
-    create_notification(creator, to, 'mission_apply')
+    create_notification(creator, to, 'mission_apply', post_id=post)
 
     return redirect('detail', post_id)
 

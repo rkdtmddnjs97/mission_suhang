@@ -3,10 +3,8 @@
 
 <h2>comments</h2>
 {% for chat_object in chat_objects %}
-{{chat_object.writer}}
+{{chat_object.writer}} : {{chat_object.content}}
 <br>
-{{chat_object.content}}
-<hr>
 {% if chat_object.writer == user.username %}
 <a href="{% url 'chat_delete' chat_id=chat_object.id appId=app_id requestId=request_id %}">삭제</a>
 <details>
@@ -22,6 +20,7 @@
 </form>
 </details>
 {% endif %}
+<hr>
 {% endfor %}
 <br>
 
