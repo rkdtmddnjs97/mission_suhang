@@ -68,6 +68,19 @@ def signup(request):
             except ObjectDoesNotExist:
                 pass
             
+            input_hash = request.POST['add_hashtag'].split('#')
+            # hash_list = []
+            # for index,hashtag in enumerate(input_hash):
+            #     if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
+            #         pass
+            #     else:
+            #         if Hashtag.objects.filter(name=hashtag.upper()).exists():
+            #             tag = Hashtag.objects.get(name=hashtag.upper())
+            #             hash_list.append(tag)
+            #         else:
+            #             tag = Hashtag.objects.create(name=hashtag.upper())
+            #             hash_list.append(tag)
+
             private=[]
             private.append(request.POST['username'])#0
             private.append(request.POST['password1'])#1
@@ -77,7 +90,7 @@ def signup(request):
             private.append(request.POST['introduction'])#5
             private.append(request.POST['email'])#6
             private.append(result)#7
-            private.append(request.POST.getlist('hashtag'))#8
+            private.append(input_hash)#8
             picture=Picture()
             picture.tmp_img = request.FILES.get('pofile_img')
             picture.save()
@@ -122,8 +135,7 @@ def approve(request,profile_dic,tmp_pic):
                      pass
                  else:
                     for tag in tag_list:
-                        input_tag = Hashtag.objects.get(name=tag.upper())
-                        user.profile.hashtag.add(input_tag)
+                        user.profile.hashtag.add(tag)
                  if profile_dic[6].split('@')[1]=='likelion.org':
                         user.profile.money=4000
                         user.profile.save()
@@ -146,13 +158,25 @@ def approve(request,profile_dic,tmp_pic):
         
                  user.profile.profile_img=tmp_picture.tmp_img
                  user.profile.save()
-                 tag_list = profile_dic[8]
-                 if tag_list is None:
+
+                # hashtag
+                 input_hash = profile_dic[8]
+                 hash_list = []
+                 if input_hash is None:
                      pass
                  else:
-                    for tag in tag_list:
-                        input_tag = Hashtag.objects.get(name=tag.upper())
-                        user.profile.hashtag.add(input_tag)
+                    for index,hashtag in enumerate(input_hash):
+                        if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
+                            pass
+                        else:
+                            if Hashtag.objects.filter(name=hashtag.upper()).exists():
+                                tag = Hashtag.objects.get(name=hashtag.upper())
+                                user.profile.hashtag.add(tag)
+                            else:
+                                tag = Hashtag.objects.create(name=hashtag.upper())
+                                user.profile.hashtag.add(tag)
+                 user.profile.save()
+
                  if profile_dic[6].split('@')[1]=='likelion.org':
                     user.profile.money=4000
                     user.profile.save()

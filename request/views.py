@@ -116,16 +116,10 @@ def edit(request, post_id):
     all_tag = Hashtag.objects.all()
 
     checked_tag = []
-    unchecked_tag = []
     for checked in post_tag:
         checked_tag.append(checked)
-    for unchecked in all_tag:
-        if unchecked in checked_tag:
-            pass
-        else:
-            unchecked_tag.append(unchecked)
 
-    return render(request, 'edit.html', {'post':edit_post, 'checked_tag':checked_tag, 'unchecked_tag':unchecked_tag})
+    return render(request, 'edit.html', {'post':edit_post, 'checked_tag':checked_tag, 'all_tag':all_tag})
 
 def update(request, post_id):
     update_post = Post.objects.get(id=post_id)
