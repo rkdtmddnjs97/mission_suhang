@@ -156,16 +156,12 @@ def editProfile(request, profile_id):
         my_tag = userProfile.hashtag.all()
         all_tag = Hashtag.objects.all()
         checked_tag = []
-        unchecked_tag = []
+
         for checked in my_tag:
             checked_tag.append(checked)
-        for unchecked in all_tag:
-            if unchecked in checked_tag:
-                pass
-            else:
-                unchecked_tag.append(unchecked)
         
-        return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'unchecked_tag':unchecked_tag})
+        
+        return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'all_tag':all_tag})
     else:
         print("본인 계정이 아니면 접근할 수 없습니다.") #나중에 html 경고창 띄우게 수정하면 참 좋을 듯ㅎㅎ
         return redirect('profile', profile_id=profile_id)
@@ -183,12 +179,27 @@ def updateProfile(request, profile_id):
     else:
         update_profile.profile_img = request.FILES.get('pofile_img')
 
+    # Hashtag
     tag_list = request.POST.getlist('hashtag')
+    add_hash_list = request.POST['add_hashtag'].split('#')
     update_profile.hashtag.clear()
 
+    for index,hsTag in enumerate(add_hash_list):
+        if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
+            pass
+        else:
+            if hsTag.upper() in tag_list:
+                pass
+            else:
+                tag_list.append(hsTag.upper())
+
     for tag in tag_list:
-        input_tag = Hashtag.objects.get(name=tag.upper())
-        update_profile.hashtag.add(input_tag)
+        if Hashtag.objects.filter(name=tag).exists():
+            input_tag = Hashtag.objects.get(name=tag)
+            update_profile.hashtag.add(input_tag)
+        else:
+            input_tag = Hashtag.objects.create(name=tag)
+            update_profile.hashtag.add(input_tag)
 
     update_profile.save()
 

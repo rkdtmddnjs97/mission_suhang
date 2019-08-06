@@ -27,11 +27,9 @@
 
     해시태그<br>
     해시태그 검색<br>
-    <input type="text" name='search_tag_data' id='search_tag'>
+    <input type="text" name='search_tag_data' id='search_tag'><br><br>
     {% for tag in hashtag %}
-    <div>
         <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
-    </div>
     {% endfor %}
     
     <p>* 해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</p>
