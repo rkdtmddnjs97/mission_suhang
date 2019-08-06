@@ -76,7 +76,9 @@ def signup(request):
             private.append(result)#7
             private.append(request.FILES.get('pofile_img'))#8
             private.append(request.POST.getlist('hashtag'))#9
-            
+            print('해당 이미지파일은 -> ')
+            print(request.FILES.get('pofile_img'))
+            print(type(request.FILES.get('pofile_img')))
         
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)

@@ -177,6 +177,8 @@
 
 <script type="text/javascript">
 
+    $('.result_tag').hide();
+
     $('[rel="popover"]').popover({
         container: 'body',
         html: true,
@@ -223,6 +225,25 @@
         }
         else { return true; } 
     }
+
+    jQuery(function($) {
+        $('#search_tag').keyup(function(event) {
+            var val = $(this).val();
+            if (val == "") {
+                $('.result_tag').hide();
+            } else {
+                $('.result_tag').hide();
+                $(".result_tag:contains('"+val+"')").show();
+            }
+        });
+    });
+
+    function input_hashtag(val){
+        var tag = "#"+val;
+        tag = $('#new_hashtag').val() + tag;
+        $('#new_hashtag').val(tag);
+    }
+
     
 </script>
 
