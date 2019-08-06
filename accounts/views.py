@@ -11,6 +11,10 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.exceptions import ObjectDoesNotExist
 import ast
+from email.mime.image import MIMEImage
+from django.contrib.staticfiles import finders
+
+
 
 def signup(request):
     all_Pictrue=Picture.objects.all()
@@ -98,6 +102,14 @@ def signup(request):
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)
             email = EmailMultiAlternatives('인증 메일', message, to=[request.POST['email']])
+            # email.attach(logo_data())
+            email.mixed_subtype = 'related'
+           
+            fp = open(finders.find('../static/logo.png'), 'rb')
+            msg_img = MIMEImage(fp.read())
+            fp.close()
+            msg_img.add_header('Content-ID', '<{}>'.format('logo.png'))
+            email.attach(msg_img)
             email.attach_alternative(html_content, "text/html")
             email.send()
             judge='False'
@@ -110,6 +122,15 @@ def signup(request):
               return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error})
     return render(request, 'signup.html', {'hashtag': all_hashtag})
 
+
+# def logo_data():
+
+#     with open(finders.find('../static/logo.jpeg'), 'rb') as f:
+#         logo_data = f.read()
+#     logo = MIMEImage(logo_data,_subtype="jpeg")
+#     logo.add_header('Content-ID', '<logo>')
+    
+#     return logo
 
 def approve(request,profile_dic,tmp_pic):
     profile_dic=ast.literal_eval(profile_dic)
