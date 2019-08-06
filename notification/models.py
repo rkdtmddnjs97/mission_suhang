@@ -13,7 +13,8 @@ class Notification(models.Model):
         ('mision_submit', 'Mission_submit'),
         ('mission_complete', 'Mission_complete'),
         ('chat', 'Chat'),
-        ('report', 'Report')
+        ('report', 'Report'),
+        ('scrap', 'Scrap')
     )
 
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, related_name='creator')

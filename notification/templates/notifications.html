@@ -122,6 +122,9 @@
         {% elif notification.notification_type == 'report' %}
             {{notification.creator}}가 "{{notification.notifi_comment}}"라고 신고를 하였습니다.
 
+        {% elif notification.notification_type == 'scrap' %}
+            {{notification.creator}}가 당신의 게시물 '{{notification.notifi_post_id.title}}'을(를) 스크랩하였습니다. <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
+
         
     {% endif %}
     <br><hr>
