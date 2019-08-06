@@ -13,7 +13,8 @@
 </head>
 
 <body>
-
+        
+        {% load staticfiles %}
     <!-- bootstrap js -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -26,88 +27,7 @@
         crossorigin="anonymous"></script>
 
     <div class='pont'>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{% url 'home' %}">Mission Complete</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signup' %}">Signup</a>
-                    </li>
-                  
-                    {% else %}
-                    {% if request.user.profile.approval == True or request.user.is_superuser == True %}
-                    <li class="nav-item" id="logout_btn">
-                        <form class="nav-link" method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <input type="submit" value="Logout">
-                        </form>
-                    </li>
-                    {% if request.user.is_superuser == False %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'profile' user.profile.profile_id %}">Mypage (
-                            {{user.username}} ) </a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#" rel="popover" data-trigger="focus" data-placement="bottom"
-                            data-popover-content="#list-popover">알림({{notifi_count}})</a>
-                        <div id="list-popover" style="display:none">
-                            <ul class="ul-popover">
-                                {% for notification in notification_list %}
-                                    {% if notification.notification_type == 'comment' %}
-                                        <li><a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a></li>
-                                    {% else %}
-                                        <li>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</li>
-                                    {% endif %}
-                                {% endfor %}
-                                <li><a href="{% url 'notifications' %}">see all</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    {% endif %}
-                    {% endif %}
-                    </li>
-
-                </ul>
-
-    <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">      
-        <span class="search_menu">
-            <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판 <br>
-            <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
-        </span>
-        <span class="search_menu">
-                <select class="form-control"  name ="input_type" >
-                  <option name="input_type" value ="title" selected>title</option>
-                  <option name="input_type" value ="hashtag">hashtag</option>
-                  <option name="input_type" value ="writer">writer</option>
-                  <option name="input_type" value ="body">Context</option>
-                </select>
-        </span>
-        <span class='green_window'>
-            <input type="text" name='input_data' class='input_text'>
-        </span>
-        &nbsp;
-        <button type='submit' class='sch_smit' id='search_submit'>검색</button>
-
-    </form>
-
-           
-            </div>
-        </nav>
 
 
         <div class="container">
@@ -116,8 +36,101 @@
             {% endblock %}
         </div>
     </div>
-</body>
 
+    <div class="sidenav" style="width: 300px;">
+        <br>
+        <br>
+        <a href="">ABOUT<br> MISSION</a><br>
+        <a href="">수행중인 미션</a><br>
+        <a href="">수행완료된 미션</a><br>
+        <a href="">의뢰중인 미션</a><br>
+        <a href="">의뢰완료된 미션</a><br>
+        <a href="">스크랩한 미션</a>
+      </div>
+      <a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="400px;" style="position: fixed; top:0px; right:0px;"></a>
+  
+      <div class="sidenav_2" style="width: 400px; position: fixed; top:111px; right:0px; ">
+            <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">      
+                    <span class="search_menu">
+                        <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판 <br>
+                        <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
+                    </span>
+                    <span class="search_menu">
+                            <select class="form-control"  name ="input_type" >
+                              <option name="input_type" value ="title" selected>title</option>
+                              <option name="input_type" value ="hashtag">hashtag</option>
+                              <option name="input_type" value ="writer">writer</option>
+                              <option name="input_type" value ="body">Context</option>
+                            </select>
+                    </span>
+                    <span class='green_window'>
+                        <input type="text" name='input_data' class='input_text'>
+                    </span>
+                    &nbsp;
+                    <button type='submit' class='sch_smit' id='search_submit'>검색</button>
+            
+                </form>
+          <div class="container">
+                {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+                {% else %}
+                {% if request.user.profile.approval == True or request.user.is_superuser == True %}
+               <a id="logout_btn">
+                    <form class="nav-link" method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <input style="all:unset; color: white;" type="submit" value="Logout" >
+                    </form>
+                </a>
+                {% if request.user.is_superuser == False %}
+                    <a class="nav-link" href="{% url 'profile' user.profile.profile_id %}">Mypage (
+                        {{user.username}} ) </a>
+                    
+                {% endif %}
+               
+                    <a href="#" rel="popover" data-trigger="focus" data-placement="bottom"
+                        data-popover-content="#list-popover">알림({{notifi_count}})</a>
+                    <div id="list-popover" style="display:none">
+                        <a class="ul-popover">
+                            {% for notification in notification_list %}
+                                {% if notification.notification_type == 'comment' %}
+                                   <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a>
+                                {% else %}
+                                  <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a> 
+                                {% endif %}
+                            {% endfor %}
+                            <a href="{% url 'notifications' %}">see all</a>
+                        </a>
+
+
+
+                    
+                    </div>
+             
+            
+                {% endif %}
+                {% endif %}
+               
+               </div>
+            
+          <p >KOOKMIN UNIVERSITY
+          <br>
+          LIKE LION 7th</p>
+        </div>
+  
+       
+      <script>
+        function openNav() {
+          document.getElementById('mysidenav').style.width = '300px';
+        }
+  
+      </script>
+    </div>
+    <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
+    </div>
+    
+</body>
+</html>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 
@@ -173,6 +186,71 @@
         margin: 0;
         padding: 0;
     }
+
+    /* 사이드바 스타일 */
+  .sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(0, 0, 0);
+    overflow-x: hidden;
+    padding-top: 60px;
+  }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 27px;
+    color: #fff;
+    display: block;
+  }
+
+  .sidenav a:hover,
+  .offcanvas a:focus {
+    color: rgb(241, 81, 81);
+  }
+
+  .openmenu>i {
+    font-size: 30px;
+  }
+
+   /* 사이드바 스타일1 */
+   .sidenav_2 {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color:  rgb(83, 177, 156);
+    overflow-x: hidden;
+    padding-top: 60px;
+  }
+  .sidenav_2 a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 27px;
+    color: #fff;
+    display: block;
+  }
+  .sidenav_2 p{
+    all:unset;
+    text-align: left;
+    font-size: 27px;
+    color: #fff;
+    position: fixed; bottom:5px; right:55px;
+  }
+  .sidenav a:hover,
+  .offcanvas a:focus {
+    color: rgb(241, 81, 81);
+  }
+
+  .openmenu>i {
+    font-size: 30px;
+  }
 </style>
 
 <script type="text/javascript">
