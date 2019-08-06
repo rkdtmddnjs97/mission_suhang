@@ -77,10 +77,8 @@
     <summary>comments</summary>
     {% for comment in comments %}
    
-    <p>작성자: <a href="{% url 'profile' comment.writer %}">{{comment.writer}}</a> </p>
-    
-    <p>comment:{{comment.content}}</p>
-    <hr>
+    <a href="{% url 'profile' comment.writer %}">{{comment.writer}}</a> : {{comment.content}}
+    <br><br>
     {% if user.username == comment.writer %}
     <a href="{% url 'comment_delete' comment.id %}">삭제하기</a>
     <details>
@@ -97,6 +95,7 @@
     </details>
 
     {% endif %}
+    <br><hr>
     {% endfor %}
 
     {%if comments.has_previous%}

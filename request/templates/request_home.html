@@ -4,16 +4,18 @@
 
 <div class="container">
     <!-- <img src="{% static 'likelion2.png' %}" alt=""> -->
-    <h1>의뢰하실?</h1>
+    <h1>의뢰게시판</h1>
     {% if user.is_authenticated %}
+        <h4><a href="{% url 'new'%}">의뢰게시물 작성</a></h4>
+        <br><br>
 
-    <a href="{% url 'new'%}">의뢰 하기 </a>
-    <ul>your scraped missons</ul>
-    {%for post in scrap_post %}
-    <a href="{% url 'detail' post.id %}">
-        <li>{{post.title}}</li>
-    </a>
-     {%endfor%}
+        내가 스크랩한 의뢰
+        {% for post in scrap_post %}
+        <a href="{% url 'detail' post.id %}">
+            <li>{{post.title}} / {{post.writer}}</li>
+        </a>
+        {% endfor %}
+        <br><br>
     {% endif %}
     <h1>Misson list</h1>
     <hr>

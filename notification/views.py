@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Notification
 from django.contrib.auth.models import User
 # Create your views here.
@@ -28,3 +28,8 @@ def create_notification(creator, to, notification_type, comment=None, post_id=No
         notifi_post_id=post_id
     )
     notification.save()
+
+def delete_notification(request, notification_id):
+    del_notifi = Notification.objects.get(id=notification_id)
+    del_notifi.delete()
+    return redirect('notifications')
