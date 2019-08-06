@@ -36,6 +36,7 @@ urlpatterns = [
     path('request/', include('request.urls')),
     path('search_result/', search.views.search, name="search"),
     path('notifications/', notification.views.notifications, name="notifications"),
+    path('notifications/delete/<int:notification_id>', notification.views.delete_notification, name="delete_notification"),
     path('main/', include('main.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
