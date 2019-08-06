@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 
 {% block content %}
-
+{% load staticfiles %}
 <h1>메인 페이지입니당</h1>
 <br>
 {% if judge == True %}
@@ -55,5 +55,5 @@
     <br>
 {% endfor %}
 
-
+<div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
 {% endblock %}
