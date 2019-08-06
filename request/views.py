@@ -29,8 +29,23 @@ def request_home(request):
         my_scrap_post = None
     post_list.reverse()
     paginator = Paginator(post_list, 3)
-    post_list = paginator.get_page(page)
-    return render(request, 'request_home.html', {'blogs':post_list,'scrap_post':my_scrap_post})
+    total_len = len(post_list)
+    try:
+       post_list = paginator.get_page(page)
+    except PageNotAnInterger:
+       post_list = paginator.page(1)
+    except EmptyPage:
+        post_list = paginator.page(paginator.num_pages) 
+    index = post_list.number -1
+    max_index = len(paginator.page_range)
+    start_index = index -2 if index >= 2 else 0
+    if index <2:
+        end_index = 5 - start_index
+    else:
+        end_index = index+3 if index <= max_index - 3 else max_index
+    page_range = list(paginator.page_range[start_index:end_index])
+
+    return render(request, 'request_home.html', {'blogs':post_list,'scrap_post':my_scrap_post, 'page_range':page_range, 'total_len':total_len,'max_index':max_index-2})
                                         
 
 def detail(request,post_id):
