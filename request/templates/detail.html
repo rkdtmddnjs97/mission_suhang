@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
+<head>
+    <meta charset="utf-8">
+    <title>jquery DOM</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+<script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();    
+      $('#btn1').on("click",function () {
+        $('#scr').attr({"title":"Scrapped"});
+    });
+    });
+ 
+</script>
 
 <div class="container">
     <h1>Detail Post</h1>
@@ -46,8 +61,8 @@
     {% if user.is_authenticated %}
     {% if user.username != post.writer %}
     <form action="{% url 'scrap' post.id%}" method="get">
-        <input type="hidden" name = 'scrap' value="{{user}}">
-        <button type="submit">scrap</button>
+        <input type="hidden" name = 'scrap' value="{{user}}" data-toggle = "tooltip" title = "Scrap this?" id="scr">
+        <button type="submit" id =btn1 >scrap</button>
     </form>
     {% endif %}
     {% endif %}
@@ -131,4 +146,5 @@
     <br>
     <br>
 </div>
+</body>
 {%endblock%}

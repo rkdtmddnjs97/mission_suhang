@@ -35,19 +35,47 @@
 
         {% endfor %}
     </div>
-    {%if blogs.has_previous%}
-    <a href="?page=1">First</a>
-    <a href="?page={{blogs.previous_page_number}}">Previous</a>
-    {%endif%}
+    <!-- 아래 개극혐 페이지네이터 코드 -->
+    {% if blogs.has_other_pages %}
+     <ul class="pagination"> 
+         {% if blogs.has_previous %}
+          <li>
+              <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
+        </li>
+         {% else %} 
+         <li class="disabled">
+            <span>&laquo;</span>
+        </li> 
+        {% endif %} {% if blogs.number > 2 %}
+         <li>
+             <a href="?page={{ 1 }}"> 1 </a>
+        </li>
+        <li><span>...<span class="sr-only">...</span></span>
+        </li>
+        {% endif %} {% for i in page_range %}
+        {% if blogs.number == i %}
+        <li class="active">
+            <span>{{ i }} <span class="sr-only">(current)</span></span>
+        </li>
+         {% else %}
+          <li><a href="?page={{ i }}">{{ i }}</a></li> 
+          {% endif %} 
+          {% endfor %}
+        {% if blogs.number < max_index %} 
+        <li><span>...<span class="sr-only">...</span></span></li>
+        <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
+         {% endif %}
+        {% if blogs.has_next %} 
+        <li><a href="?page={{ blogs.next_page_number }}">&raquo;</a></li>
+         {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+         {%endif %}
+         </ul>
+         {%endif%}
+     <!-- 여기까지 페이지네이터 코드임 -->
 
-    <span>{{blogs.number}}</span>
-    <span>of</span>
-    <span>{{blogs.paginator.num_pages}}</span>
 
-    {%if blogs.has_next%}
-    <a href="?page={{blogs.next_page_number}}">Next</a>
-    <a href="?page={{blogs.paginator.num_pages}}">Last</a>
-    {%endif%}
+
 </div>
 
 
