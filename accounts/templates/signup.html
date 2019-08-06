@@ -48,11 +48,11 @@
 {{error3}}
 <br>
 {% endif %}
-        대학교 : <input type="text" name="university">
+        대학교 : <input type="text" name="university" required="required">
         <hr>
-        학과 : <input type="text" name="department">
+        학과 : <input type="text" name="department" required="required">
         <hr>
-        이름 : <input type="text" name="name">
+        이름 : <input type="text" name="name" required="required">
         <hr>
         자기소개 : <textarea name="introduction" id="" cols="30" rows="10" placeholder="write your content"></textarea>
         <hr>
@@ -62,7 +62,7 @@
             <!-- <a href="">{{tag}}</a> -->
             {% endfor %}
         <hr>
-        이메일: <input type="email" name="email"> 
+        이메일: <input type="email" name="email" required="required"> 
         {% if error4 %}
         {{error4}}
         <br>

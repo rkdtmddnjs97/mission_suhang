@@ -29,7 +29,11 @@ def home(request):
         if index != 5:
             if profile.mission_count != 0:
                  hot_users.append(profile)
-                
+    recent_announcements=[]
+    tmp_announcements=Announcement.objects.order_by('-pub_date')  
+    for index,tmp_announcement in enumerate(tmp_announcements):
+        if index != 5:
+            recent_announcements.append(tmp_announcement)          
     ready_number=0
     running_number=0
     for index,post in enumerate(posts):
@@ -39,12 +43,12 @@ def home(request):
             running_number+=1
             
     if request.user.is_anonymous or request.user.is_superuser:
-        return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge })
+        return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge,'recent_announcements':recent_announcements })
     else:
         recommend_post = recommend_request(request)
         recommend_post_list = list(recommend_post)
 
-        return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge, 'recommend_post':recommend_post, 'recommend_post_list':recommend_post_list})
+        return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge, 'recommend_post':recommend_post, 'recommend_post_list':recommend_post_list,'recent_announcements':recent_announcements})
 
 def recommend_request(request):
     my_profile = Profile.objects.get(profile_id=request.user.username)

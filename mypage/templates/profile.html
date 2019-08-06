@@ -45,7 +45,7 @@
     <form action="{% url 'complain' my_profile.id %}" method="POST">
         {% csrf_token %}
       
-          사유:<textarea name= 'complain_content' id="" cols="30" rows="10" placeholder="write your complain" ></textarea>
+          사유:<textarea name= 'complain_content' id="" cols="30" rows="10" placeholder="write your complain" required="required"></textarea>
           <input type="submit" value='신고'>
    </form>
   </details>
@@ -68,7 +68,7 @@
     <form action="{% url 'recharge' my_profile.id %}" method="POST">
         {% csrf_token %}
       
-          충전금액:<input type="text" name='charge_money'>
+          충전금액:<input type="text" name='charge_money' required="required">
           <input type="submit" value='확인'>
    
         

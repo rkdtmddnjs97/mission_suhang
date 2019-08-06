@@ -4,7 +4,7 @@
 <form action="{% url 'update' post.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        제목 : <input type="text" name='title' value="{{post.title}}">
+        제목 : <input type="text" name='title' value="{{post.title}}" >
         <br>
         <br>
 

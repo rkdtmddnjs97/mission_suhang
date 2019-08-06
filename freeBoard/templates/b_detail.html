@@ -99,7 +99,7 @@ data-popover-content="#like-popover">({{like_count}})</button>
     {% csrf_token %}
     작성자 :<p> {{user.username}}</p>
     <br>
-    내용 : <textarea name="content" id="" cols="30" rows="10"></textarea>
+    내용 : <textarea name="content" id="" cols="30" rows="10" required='required'></textarea>
     <input type="submit">
 </form>
 {% endif %}
