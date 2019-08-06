@@ -2,7 +2,7 @@
 {% block content %}
 <h1>새 글을 작성해주세요</h1>
 
-<form action="{%url 'b_create' %}" method="POST">
+<form action="{%url 'b_create' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     제목 : <input type="text" name='title'>
     <br>
@@ -11,6 +11,13 @@
     <br>
     <br>
     본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content"></textarea>
+    <br>
+    <br>
+    사진첨부<br>
+    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
+    <br>
+    파일첨부<br>
+    <input type="file" name="attached_file">
     <br>
     {% for tag in hashtag %}
     <!-- <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}} -->
