@@ -81,8 +81,6 @@ def signup(request):
             picture=Picture()
             picture.tmp_img = request.FILES.get('pofile_img')
             picture.save()
-
-            
         
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)
