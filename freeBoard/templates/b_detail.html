@@ -27,7 +27,20 @@ data-popover-content="#like-popover">({{like_count}})</button>
     
         본문
         <br>
-        <p> {{blog.body}}</p>
+        <br>
+            {% if blog.attached_img == 'images/no_image.png' %}                
+            {% else %}
+                <img src="{{blog.attached_img.url}}" width="200px" height="200px" alt=""><br>
+            {% endif %}
+            <p>{{blog.body}}</p>
+            <br>
+             
+            {% if blog.attached_file == 'files/dummy.txt' %}
+                (첨부된 파일이 없습니다)
+            {% else %}
+                첨부파일 :
+                <a href="{{blog.attached_file.url}}" download="">{{blog.attached_file}}</a>
+            {% endif %}
         해시태그<br>
         {% for tag in hashtag.all %}
             <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>

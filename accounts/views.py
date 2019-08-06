@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .models import Profile
+from .models import Profile,Picture
 from hashtag.models import Hashtag
 import string
 import random
@@ -13,6 +13,9 @@ from django.core.exceptions import ObjectDoesNotExist
 import ast
 
 def signup(request):
+    all_Pictrue=Picture.objects.all()
+    for one in all_Pictrue:
+        one.delete()
     all_hashtag = Hashtag.objects.all()
     if request.method == 'POST':
         if request.POST['password1'] == request.POST['password2']:
@@ -74,11 +77,10 @@ def signup(request):
             private.append(request.POST['introduction'])#5
             private.append(request.POST['email'])#6
             private.append(result)#7
-            private.append(request.FILES.get('pofile_img'))#8
-            private.append(request.POST.getlist('hashtag'))#9
-            print('해당 이미지파일은 -> ')
-            print(request.FILES.get('pofile_img'))
-            print(type(request.FILES.get('pofile_img')))
+            private.append(request.POST.getlist('hashtag'))#8
+            picture=Picture()
+            picture.tmp_img = request.FILES.get('pofile_img')
+            picture.save()
         
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)
@@ -89,17 +91,18 @@ def signup(request):
             left_time=180
             e_flag='False'
             sn=result
-            return render(request, 'approval.html',{'judge':judge,'left_time':left_time,'e_flag':e_flag,'sn':sn,'private':private})
+            return render(request, 'approval.html',{'judge':judge,'left_time':left_time,'e_flag':e_flag,'sn':sn,'private':private,'picture_id':picture.id})
         else:
               error='비밀번호가 일치하지 않습니다.'
               return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error})
     return render(request, 'signup.html', {'hashtag': all_hashtag})
 
 
-def approve(request,profile_dic):
+def approve(request,profile_dic,tmp_pic):
     profile_dic=ast.literal_eval(profile_dic)
     if request.POST['flag']=='True':       
         if request.POST['sn'] == request.POST['ssn']:
+                 tmp_picture=Picture.objects.get(id=tmp_pic)
                  user = User.objects.create_user(
                  username=profile_dic[0], password=profile_dic[1])
                  auth.login(request, user)
@@ -110,10 +113,11 @@ def approve(request,profile_dic):
                  user.profile.introduction = profile_dic[5]
                  user.profile.email = profile_dic[6]
                  user.profile.profile_id = profile_dic[0]
+                 user.profile.profile_img=tmp_picture.tmp_img
         
-                 user.profile.profile_img = profile_dic[8]
+
                  user.profile.save()
-                 tag_list = profile_dic[9]
+                 tag_list = profile_dic[8]
                  if tag_list is None:
                      pass
                  else:
@@ -128,7 +132,7 @@ def approve(request,profile_dic):
         return redirect('home')
     elif request.POST['flag']=='False':
          if request.POST['sn'] == request.POST['ssn']:
-                
+                 tmp_picture=Picture.objects.get(id=tmp_pic)
                  user = User.objects.create_user(
                  username=profile_dic[0], password=profile_dic[1])
                  auth.login(request, user)
@@ -140,9 +144,9 @@ def approve(request,profile_dic):
                  user.profile.email = profile_dic[6]
                  user.profile.profile_id = profile_dic[0]
         
-                 user.profile.profile_img = profile_dic[8]
+                 user.profile.profile_img=tmp_picture.tmp_img
                  user.profile.save()
-                 tag_list = profile_dic[9]
+                 tag_list = profile_dic[8]
                  if tag_list is None:
                      pass
                  else:

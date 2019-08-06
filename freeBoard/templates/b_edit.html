@@ -2,7 +2,7 @@
 {% block content %}
 
 <h1>글을 수정중입니다.</h1>
-<form action="{% url 'b_update' blog.id %}" method="POST">
+<form action="{% url 'b_update' blog.id %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         제목 : <input type="text" name='title' value="{{blog.title}}">
         <br>
@@ -13,6 +13,16 @@
         본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" >{{blog.body}}</textarea>
         <br>
         <br>
+
+        사진첨부<br>
+        <img src="{{post.attached_img.url}}" width="100px" height="100px" alt=""><br>
+        <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
+        <br>
+        <br>
+
+        파일첨부<br>
+        <input type="file" name="attached_file">
+        <br><br>
         <button type='submit'>작성하기</button>
 
 

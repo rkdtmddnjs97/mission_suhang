@@ -47,8 +47,17 @@ def create(request):
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
     #list에 해시태그 분할저장
+   
+    if request.FILES.get('attached_img') is None:
+        pass
+    else:
+        new_post.attached_img = request.FILES.get('attached_img')
+    if request.FILES.get('attached_file') is None:
+        pass
+    else:
+        new_post.attached_file = request.FILES.get('attached_file')
+    new_post.save()
     hash_list = request.POST['hashtag'].split('#')
-
     for index,hash in enumerate(hash_list):
         if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
             pass
@@ -72,6 +81,16 @@ def update(request, post_id):
     update_post = B_Blog.objects.get(id=post_id)
     update_post.title = request.POST['title']
     update_post.body = request.POST['body']
+    if request.FILES.get('attached_img') is None: #프로필 사진 form이 입력되지 않았을 시.
+        pass
+    else:
+        update_post.attached_img = request.FILES.get('attached_img')
+
+    if request.FILES.get('attached_file') is None:
+        pass
+    else:
+        update_post.attached_file = request.FILES.get('attached_file')
+    
     update_post.save()
     return redirect('board')
 

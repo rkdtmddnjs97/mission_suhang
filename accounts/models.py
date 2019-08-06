@@ -35,3 +35,5 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+class Picture(models.Model):
+        tmp_img=DefaultStaticImageField(upload_to='tmp_img/', blank=True, default_image_path='images/no_image.png')

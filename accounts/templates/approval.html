@@ -15,7 +15,7 @@
     <p id='error'>{{error}}</p>
     <br>
     {% endif %}
-          <form method="POST" action="{% url 'approve' profile_dic=private %}" name='submitForm'>
+          <form method="POST" action="{% url 'approve' profile_dic=private tmp_pic=picture_id %}" name='submitForm'>
               {% csrf_token %}
               <input type="hidden" id='error_flag' name="error_flag" value='{{e_flag}}'>
               <input type="hidden" id='tmp' name="flag" value='{{judge}}'>
