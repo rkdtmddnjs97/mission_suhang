@@ -34,21 +34,21 @@ def home(request):
         all_free_title.append(post_title.title)
 
     for index,post in enumerate(posts):
-        if index != 5:
+        if index < 5:
              if post.status == 'ready':
                 recent_posts.append(post)
     hot_users=[]
     profiles=Profile.objects.order_by('-mission_count')
 
     for index,profile in enumerate(profiles):
-        if index != 5:
+        if index < 5:
             if profile.mission_count != 0:
                  hot_users.append(profile)
     recent_announcements=[]
     tmp_announcements=Announcement.objects.order_by('-pub_date') 
 
     for index,tmp_announcement in enumerate(tmp_announcements):
-        if index != 5:
+        if index < 5:
             recent_announcements.append(tmp_announcement)
     recent_freeboard=[]      
     tmp_freeboards = B_Blog.objects.order_by('-pub_date')  
@@ -77,8 +77,8 @@ def home(request):
     # hot 의뢰 글
     scrap_list={}
     for post in Post.objects.all():
-        like_list[post] = post.user.count()
-    datas= sorted(like_list.items(), key=operator.itemgetter(1), reverse = True)
+        scrap_list[post] = post.user.count()
+    datas= sorted(scrap_list.items(), key=operator.itemgetter(1), reverse = True)
     datas = datas[0:5]
     scrap_lists =[]
     for datt in datas:
