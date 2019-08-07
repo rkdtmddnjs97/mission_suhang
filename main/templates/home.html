@@ -9,8 +9,14 @@
 <a href="{% url 'dissatisfication'%}">민원사항</a>
 {% endif %}
 <br>
-<a href="{% url 'board'%}">자유게시판</a>
+<a href="{% url 'board'%}">자유게시판</a><br>
+{%for  recent_free in recent_freeboard %}
+    
+     <a href="{% url 'detail' recent_free.id%}">{{recent_free.title}}</a><br>
+   
+{% endfor %}
 <br>
+
 <a href="{% url 'request'%}">의뢰게시판</a>
 
 
@@ -29,6 +35,13 @@
     <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
 
     {% endfor %}
+<br>
+<span>인기 글</span>
+  <!-- {% for liked in many_like %}
+     {{liked}}
+  {%endfor%} -->
+<br>
+<span>인기 의뢰 글 </span>
 <br><br>
 <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
 <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
@@ -54,6 +67,7 @@
     <a href="{% url 'detail' post.id %}">{{post}}</a>
     {% endfor %}
     <br>
+
 {% endfor %}
 
 <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
