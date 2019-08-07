@@ -1,3 +1,4 @@
+{% load staticfiles %}
 
 <!doctype html>
 <html lang="kr">
@@ -5,10 +6,165 @@
 <head>
   <meta charset="UTF-8">
   <title>login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
-<body>
 
+<body>
+  <div class="apont">
+    <div class="container"><br><br>
+      <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+      <br><br><br>
+
+
+
+      <form method="POST" action="{% url 'approve'%}" name='submitForm'>
+        {% csrf_token %}
+        <div class="form-group row">
+          <label for="inputSsn" class="col-sm-2 col-form-label">인증번호</label>
+          <div class="col-sm-9">
+            <input class="form-control" name="ssn">
+
+          </div>
+        </div>
+        <br><br>
+        <h4>
+          <div id="timerTxt"></div>
+        </h4>
+        <br>
+        <br>
+        <input class="btn btn-dark" type="submit" value="인증">
+
+      </form>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+
+    var timerId;
+
+    var timerSec = 180;
+
+
+
+    window.onload = function () {
+
+      timerId = setInterval('timer()', 1000);
+
+    }
+
+
+
+    function timer() {
+
+      var min = Math.floor(timerSec / 60)
+
+      var sec = timerSec % 60;
+
+
+
+      var msg = (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+
+      timerSec--;
+
+
+
+      if (timerSec < 0) { /* time End*/
+
+        msg += "<br>Timer End!"
+
+        clearInterval(timerId);
+        document.submitForm.submit()
+
+      }
+
+
+
+      document.getElementById("timerTxt").innerHTML = msg;
+
+
+
+    }
+
+  </script>
+
+
+
+
+<<<<<<< HEAD
+</body>
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+  .apont {
+    font-family: 'Do Hyeon', sans-serif;
+  }
+
+  div {
+    text-align: center;
+  }
+
+  .form-group {
+    text-align: center;
+  }
+
+
+  .form-control {
+    resize: none;
+  }
+
+  .submit-wrap {
+    text-align: center;
+
+
+  }
+  #timerTxt{
+    color: red;
+
+  }
+
+
+
+
+
+
+
+  @media screen and (max-width:400px) {
+    div {
+      text-align: center;
+    }
+
+    .col-sm-9_h {
+
+      margin-left: 70px;
+    }
+  }
+
+  @media screen and (min-width: 1000px) {
+    div {
+      text-align: center;
+    }
+
+    .whole {
+      width: 700px;
+      text-align: center;
+      margin-left: 190px;
+    }
+
+    .col-sm-9_h {
+      margin-right: 70px;
+      margin-left: 20px;
+
+    }
+
+
+  }
+</style>
+=======
     <h1>이메일 인증</h1>
     
     {% if error %}
@@ -89,3 +245,4 @@
      
 </body>
 
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
