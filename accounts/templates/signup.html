@@ -1,14 +1,6 @@
 {% load staticfiles %}
 {% block content %}
-{% if error %}
-{{ error }}
-<br>
-<br>
-{% endif %}
-{% if error1 %}
-{{error1}}
-<br>
-{% endif %}
+
 
 
 
@@ -57,7 +49,6 @@
                             <div class="col-sm-9">
                                 <input type="text" name="username" id="email" class="inpt" required="required"
                                     placeholder="Your id" required='required'>
-
                             </div>
                         </div>
                         {% if error1 %}
@@ -67,17 +58,14 @@
                         <div class="form-group row">
                             <label for="password" class="col-sm-2 col-form-label">Password</label>
                             <div class="col-sm-9">
-
                                 <input type="password" name="password1" id="password" class="inpt" required="required"
                                     placeholder="password" required='required'>
-
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="password" class="col-sm-2 col-form-label">Confirm Password</label>
                             <div class="col-sm-9">
-
                                 <input type="password" name="password2" id="password" class="inpt" required="required"
                                     placeholder="confirm password" required='required'>
 
@@ -102,13 +90,10 @@
                             <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
                             <div class="col-sm-9">
                                 <input class="form-control" name="university" placeholder="write your university"
+                                    id='search_school' required='required'> 
+                                    <br> <p style="color:crimson;">검색하고 학교이름을 '꼭' 클릭해주세요</p><br>
 
-                                    id='search_school' required='required'>
-                                <br> <p style="color:crimson;">검색하고 학교이름을 '꼭' 클릭해주세요</p><br>
-
-                                     
                                 <br>
-
                                 {% for sch_name, e_mail in school.items %}
                                 <a class="result_school"
                                     onclick="input_school($(this).attr('key'),$(this).attr('value'))" key="{{sch_name}}"
