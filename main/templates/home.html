@@ -33,6 +33,12 @@
 <br>
 <a href="{% url 'board'%}">자유게시판</a>
 <br>
+  {% for recent_free in recent_freeboard %}
+
+      <a href="{% url 'b_detail' recent_free.id%}">{{recent_free.title}}</a><br>
+
+{% endfor %}
+<br>
 <a href="{% url 'request'%}">의뢰게시판</a>
 
 
@@ -78,8 +84,8 @@
     {% endfor %}
 <br><br>
 <!-- 인기 게시글과 hot 의뢰글 -->
-<!-- 
-<span>인기 게시판</span>
+
+<p>인기 게시판</p>
   {% for liked in like_lists %} 
     {% for entry in liked %}
         {% if forloop.counter0 == 0 %}
@@ -90,7 +96,7 @@
     {% endfor %}  
   {% endfor %}
 <br>
-<span>HOT 의뢰  </span>
+<p>HOT 의뢰  </p>
 {% for liked in scrap_lists %} 
    {% for entry in liked %}
       {% if forloop.counter0 == 0 %}
@@ -102,7 +108,7 @@
     {% endfor %}  
 {% endfor %}
 <br>
-<br><br>  -->
+<br><br> 
 
 <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
 <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
