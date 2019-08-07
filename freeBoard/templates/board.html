@@ -68,11 +68,13 @@
         </div>
 
         <!-- 새사이드네브 -->
+        {% if user.is_authenticated %}
         <div id="mysidenav" class="sidenav d-none d-sm-block">
             <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a>
             <a style="font-size:45px;" href="">MY MISSION</a><br>
             <br>
             <br>
+          
             <a style="font-size:35px;" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
             <a style="font-size:35px;" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
             <a style="font-size:35px;" href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
@@ -82,7 +84,7 @@
 
         <span class="openmenu d-none d-sm-block" onclick='openNav()'><i class="fa fa-angle-double-left fa-5"
                 aria-hidden="true"></i> <a style="font-size:40px;float:left;">◀Open Mission</a></span>
-
+                {% endif %}
         <script>
             function openNav() {
                 document.getElementById('mysidenav').style.width = '300px';
@@ -97,7 +99,9 @@
         <br><br><br><br>
         <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="280;" height="170;"></div>
         <br>
+        {% if user.is_authenticated %}
         <a class="btn btn-dark" href="{% url 'b_new'%}">작성하기</a>
+        {% endif %}
         <br><br>
         <br>
 
