@@ -5,21 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-
 <body>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-
         {% load staticfiles %}
         <div class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="750px"></div>
 
@@ -27,17 +14,11 @@
 <div class="pont">
 <br>
 {% if judge == True %}
-    <a href="{% url 'dissatisfication'%}">민원사항</a>
+<a href="{% url 'dissatisfication'%}">민원사항</a>
 {% endif %}
-    <br>
-    <a href="{% url 'board'%}">자유게시판</a><br>
-{%for  recent_free in recent_freeboard %}
-    
-     <a href="{% url 'detail' recent_free.id%}">{{recent_free.title}}</a><br>
-   
-{% endfor %}
 <br>
-
+<a href="{% url 'board'%}">자유게시판</a>
+<br>
 <a href="{% url 'request'%}">의뢰게시판</a>
 
 
@@ -46,9 +27,10 @@
 <br>
 <p>최근 공지사항</p>
 {% for announcemnt in recent_announcements %}
-    <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
+<a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
 {% endfor %}
 <br>
+
 
 
 
@@ -72,6 +54,7 @@
 
 
 
+
 <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
 <span>Hot 수행자 : </span>
 {% for hot_user in hot_users %}
@@ -79,29 +62,6 @@
     <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
 
     {% endfor %}
-<br>
-<span>인기 글</span>
-  {% for liked in like_lists %} 
-    {% for entry in liked %}
-        {% if forloop.counter0 == 0 %}
-            {{entry.title}}
-        {% else %}
-            {{entry}}
-        {% endif %}
-    {% endfor %}  
-  {% endfor %}
-<br>
-<span>인기 의뢰 글 </span>
-{% for liked in scrap_lists %} 
-   {% for entry in liked %}
-      {% if forloop.counter0 == 0 %}
-          {{entry.title}}
-       {% else %}
-          {{entry}}
-      {% endif %}
-    {% endfor %}  
-{% endfor %}
-<br>
 <br><br>
 <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
 <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
@@ -127,7 +87,6 @@
     <a href="{% url 'detail' post.id %}">{{post}}</a>
     {% endfor %}
     <br>
-
 {% endfor %}
 
 <!--  뿌야-->
@@ -139,7 +98,7 @@
 <a id="logout_btn">
 <form method="POST" action="{% url 'logout' %}">
     {% csrf_token %}
-    <input style="all:unset; color: white;" type="submit" value="Logout" >
+    <input style="all:unset; color: rgb(0, 0, 0);" type="submit" value="Logout" >
 </form>
 </a>
 {% if request.user.is_superuser == False %}
@@ -154,13 +113,18 @@
     <a class="ul-popover">
         {% for notification in notification_list %}
             {% if notification.notification_type == 'comment' %}
-               <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a><br>
+               <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a>
             {% else %}
-              <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a><br>
+              <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a> 
             {% endif %}
         {% endfor %}
         <a href="{% url 'notifications' %}">see all</a>
     </a> 
+
+
+
+
+
 
 {% endif %}
 {% endif %}
