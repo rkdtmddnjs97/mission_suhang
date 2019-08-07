@@ -2,40 +2,50 @@
 
 {% block content %}
 
-<h1>회원정보</h1> 
-{% if request.user.username == my_profile.profile_id %}
-<a href="{% url 'editProfile' my_profile.profile_id %}">회원정보 수정</a>
-{% else %}
-<h6>--유저 본인이 아닙니다.--</h6>
-{% endif %}
-<h1></h1>
-<br><br>
-회원사진<br>
-<img src="{{ my_profile.profile_img.url }}" width="200px" height="200px">
-<br><br>
-아이디 : {{my_profile.profile_id}}
-<br>
-이름 : {{my_profile.name}}
-<br>
-학교 : {{my_profile.university}}
-<br>
-전공 : {{my_profile.department}}
-<br>
-평균 평점 : {{average_rate}}
-<br>
-총 클리어한 미션 : {{number}}
-<p>간단한 본인소개</p>
-{{my_profile.introduction}}
-<br>
-<details>
-  <summary>후기</summary>
-  <hr>
-  {% for review in review_objects %}
-  의뢰자 : {{review.writer}}<br>
-  평점 : {{review.ratings}}<br>
-  후기 : {{review.reviews}}<br>
-  <hr>
-  {% endfor %}
+<div class="pont">
+    <a class="title" style="text-decoration: underline;">MY ACCOUNT</a>
+    <div class="box">
+      {% if request.user.username == my_profile.profile_id %}
+      <a class="edit_my" href="{% url 'editProfile' my_profile.profile_id %}">/회원정보 수정</a>
+      {% else %}
+      <h6>--유저 본인이 아닙니다.--</h6>
+      {% endif %}
+      <br><br>
+      <div class="picture"><img class="a" src="{{ my_profile.profile_img.url }}"><br>회원사진</div>
+      <br>
+      ID : {{my_profile.profile_id}}
+      <br>
+      Name : {{my_profile.name}}
+      <br>
+      School : {{my_profile.university}}
+      <br>
+      Major : {{my_profile.department}}
+      <br>
+      Average Score :{{average_rate}}
+      <br>
+      Total Clear Mission:{{number}}
+      <p>Introduce Myself</p>
+      <br>
+      {{my_profile.introduction}}
+      <br>
+      <details>
+        <summary>Review</summary>
+        {% for review in review_objects %}
+        의뢰자:{{review.writer}}<br>
+        평점:{{review.ratings}}<br>
+        후기:{{review.reviews}}<br>
+        <hr>
+        {% endfor %}
+      </details>
+      <br>
+
+
+      
+      </details>
+      <br>
+
+    
+    </div>
 </details>
   <br>
   {% if user.is_authenticated %}
@@ -87,5 +97,227 @@
  .mnav {
         font-family: 'Do Hyeon', sans-serif;
     }
+
+
+
+
+
+
+
+
+
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+.money_in {
+  font-family: 'Do Hyeon', sans-serif;
+  width: 120px;
+  height: 35px;
+  
+}
+input{
+  all:unset;
+  border-bottom: #000000 2px solid;
+
+}
+
+.plus {
+  font-family: 'Do Hyeon', sans-serif;
+  background-color: rgb(255, 255, 255);
+  
+}
+.plus:hover{
+  color:rgb(50, 161, 137);
+  text-decoration: underline;
+}
+
+.edit_my {
+  all: unset;
+}
+
+.edit_my:hover {
+  color: rgb(50, 161, 137);
+
+}
+
+.login_title {
+  margin: 0rem 0 0 25rem;
+}
+
+.a {
+  float: left;
+}
+
+img {
+  float: right;
+
+}
+.pont {
+  font-family: 'Do Hyeon', sans-serif;
+
+}
+
+/* 사이드바 스타일 */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(0, 0, 0);
+  overflow-x: hidden;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 27px;
+  color: #fff;
+  display: block;
+}
+
+.sidenav a:hover,
+.offcanvas a:focus {
+  color: rgb(241, 81, 81);
+}
+
+.openmenu>i {
+  font-size: 30px;
+}
+
+ /* 사이드바 스타일1 */
+ .sidenav_2 {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color:  rgb(83, 177, 156);
+  overflow-x: hidden;
+  padding-top: 60px;
+}
+.sidenav_2 a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 27px;
+  color: #fff;
+  display: block;
+}
+.sidenav_2 p{
+  all:unset;
+  text-align: left;
+  font-size: 27px;
+  color: #fff;
+  position: fixed; bottom:5px; right:55px;
+}
+.sidenav a:hover,
+.offcanvas a:focus {
+  color: rgb(241, 81, 81);
+}
+
+.openmenu>i {
+  font-size: 30px;
+}
+
+/* 모바일 네브바 */
+.dropdown-item:hover {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  ;
+  background: rgb(247, 68, 74);
+  ;
+
+}
+
+
+.holder::placeholder {
+  color: rgb(255, 255, 255);
+}
+
+.holder:hover {
+  text-decoration: none;
+  color: rgb(50, 161, 137);
+}
+
+.logout {
+  all: unset;
+}
+
+.navbar-brand {
+  all: unset;
+  color: white;
+  text-align: right;
+  font-family: 'Do Hyeon', sans-serif;
+  font-size: 1.5rem;
+}
+.navbar-brand:hover{
+  color:  rgb(50, 161, 137); 
+}
+#dropdownMenuLink{
+  font-size: 1.4rem;
+   color :white;
+}
+#dropdownMenuLink:hover{
+  color :rgb(247, 68, 74);
+}
+
+/* 미디어쿼리 적용 */
+@media screen and (max-width:600px) {
+
+  .box {
+    font-size: 20px;
+  }
+
+  .title {
+    font-size: 30px;
+    margin: 0rem 0 0 1rem;
+  }
+
+  .login_title {
+    display: none;
+
+  }
+
+  .top {
+    width: 40px;
+  }
+ .money_in{
+   font-size: 20px;
+ }
+ .plus{
+  font-size: 20px;
+ }
+
+}
+
+@media screen and (min-width: 500px) and (max-width:200px) {}
+
+@media screen and (min-width: 1000px) {
+  .box {
+  
+    font-size: 30px;
+  }
+
+  .title {
+    font-size: 60px;
+  }
+
+  .title_nav {
+    display: none;
+  }
+
+  .top {
+    width: 70px;
+  }
+  .money_in{
+   font-size: 30px;
+ }
+ .plus{
+  font-size: 30px;
+ }
+}
+</style>
  </style>
 {% endblock %}

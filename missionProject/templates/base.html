@@ -28,10 +28,7 @@
   
      <div class='pont'>
     <div class='pont'>
-          <div class="container">
-            {% block content %}
-            {% endblock %}
-           </div>
+         
 <!-- 여기가 모바일 -->
   <div class="mnav">
         <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
@@ -165,6 +162,10 @@
         }
   
       </script>
+       <div class="container">
+            {% block content %}
+            {% endblock %}
+           </div>
     </div>
     <div style="position: fixed; bottom:5px; right:405px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
     </div>
@@ -190,10 +191,7 @@
     .holder{
        margin: 3px 0 0 0;
     } 
-    .container{ 
-        margin:3rem 0 0 20rem;
-
-    }
+  
     
     .sch_smit {
         width: 54px;
@@ -364,6 +362,7 @@
         .login_title{
             display: none;
         }
+        
 
     }
 
@@ -391,6 +390,10 @@
         .mnav{
             display: none;
         } 
+        .container{ 
+        margin:3rem 0 0 20rem;
+
+    }
     }
 </style>
 </style>
