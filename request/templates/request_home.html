@@ -3,6 +3,7 @@
 {% block content %}
 
 <div class="container">
+<<<<<<< HEAD
     <br><br>
     <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
 
@@ -64,10 +65,40 @@
                 <div class="col-sm-b" style="color:#8E8D8B;">
                     <h6>{{post.pub_date}}</h6>
                 </div>
+=======
+    <!-- <img src="{% static 'likelion2.png' %}" alt=""> -->
+    <h1>의뢰게시판</h1>
+    {% if user.is_authenticated %}
+        <h4><a href="{% url 'new'%}">의뢰게시물 작성</a></h4>
+        <br><br>
+
+        내가 스크랩한 의뢰
+        {% for post in scrap_post %}
+        <a href="{% url 'detail' post.id %}">
+            <li>{{post.title}} / {{post.writer}}</li>
+        </a>
+        {% endfor %}
+        <br><br>
+    {% endif %}
+    <h1>Misson list</h1>
+    <hr>
+    <div class="row">
+        {% for post in blogs %}
+        <div class="col-4">
+            <div class="card">
+                <a href="{% url 'detail' post.id %}">
+                    <b>제목 : {{post.title}}</b>
+                </a>
+                <hr>
+                작성자 : {{post.writer}}
+                <hr>
+                {{post.pub_date}}
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
             </div>
         </div>
 
     </div>
+<<<<<<< HEAD
     {% endfor %}
     <br><br><br>
     {%if blogs.has_previous%}
@@ -82,6 +113,48 @@
                 <a class="btn btn-dark" href="?page={{blogs.paginator.num_pages}}" role="button">>></a>
                 {%endif%}
                 <br><br>
+=======
+    <!-- 아래 개극혐 페이지네이터 코드 -->
+    {% if blogs.has_other_pages %}
+     <ul class="pagination"> 
+         {% if blogs.has_previous %}
+          <li>
+              <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
+        </li>
+         {% else %} 
+         <li class="disabled">
+            <span>&laquo;</span>
+        </li> 
+        {% endif %} {% if blogs.number > 2 %}
+         <li>
+             <a href="?page={{ 1 }}"> 1 </a>
+        </li>
+        <li><span>...<span class="sr-only">...</span></span>
+        </li>
+        {% endif %} {% for i in page_range %}
+        {% if blogs.number == i %}
+        <li class="active">
+            <span>{{ i }} <span class="sr-only">(current)</span></span>
+        </li>
+         {% else %}
+          <li><a href="?page={{ i }}">{{ i }}</a></li> 
+          {% endif %} 
+          {% endfor %}
+        {% if blogs.number < max_index %} 
+        <li><span>...<span class="sr-only">...</span></span></li>
+        <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
+         {% endif %}
+        {% if blogs.has_next %} 
+        <li><a href="?page={{ blogs.next_page_number }}">&raquo;</a></li>
+         {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+         {%endif %}
+         </ul>
+         {%endif%}
+     <!-- 여기까지 페이지네이터 코드임 -->
+
+
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 
 </div>
 <style>

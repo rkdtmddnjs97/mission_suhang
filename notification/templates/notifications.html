@@ -1,5 +1,220 @@
-알림 창<br>
-{% for notification in notifications %}
-{{notification.creator}}가 당신({{notification.to}})에게 "{{notification.notifi_comment}}"라고 {{notification.notification_type}}하였습니다.
-<br>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>미션수행</title>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <div class='pont'>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="{% url 'home' %}">Mission Complete</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+                    </li>
+                  
+                    {% else %}
+                    {% if request.user.profile.approval == True or request.user.is_superuser == True %}
+                    <li class="nav-item">
+                        <form id="logout" class="nav-link" method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <input type="submit" value="Logout">
+                        </form>
+                    </li>
+                    {% if request.user.is_superuser == False %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'profile' user.profile.profile_id %}">Mypage (
+                            {{user.username}} ) </a>
+                    </li>
+                    {% endif %}
+
+                    {% endif %}
+                    {% endif %}
+                    </li>
+
+                </ul>
+
+                
+
+    <form action="{% url 'search' %}" method="GET" class="search_bar">
+        <span class="search_menu">
+                <select class="form-control"  name ="input_type" >
+                  <option name="input_type" value ="title" selected>title</option>
+                  <option name="input_type" value ="hashtag">hashtag</option>
+                  <option name="input_type" value ="writer">writer</option>
+                  <option name="input_type" value ="body">Context</option>
+                </select>
+        </span>
+        <span class='green_window'>
+            <input type="text" name='input_data' class='input_text'>
+        </span>
+        &nbsp;
+        <button type='submit' class='sch_smit'>검색</button>
+    </form>
+
+           
+            </div>
+        </nav>
+
+
+        <div class="container">
+
+        알림 센터<br><hr><br>
+
+        {% for notification in notifications %}
+            {% if notification.notification_type == 'comment' %}
+                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게 "{{notification.notifi_comment}}"라고 댓글을 달았습니다.
+                <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+                
+            {% elif notification.notification_type == 'mission_apply' %}
+                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 의뢰글에 대해 미션 신청을 하였습니다.
+                <a href="{% url 'commissioned' notification.to %}">보러가기</a>
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
+            {% elif notification.notification_type == 'mission_accept' %}
+                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 미션신청을 승낙하였습니다.
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
+            {% elif notification.notification_type == 'mission_reject' %}
+                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 미션신청을 거절하였습니다. 너무 슬퍼마세요...
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
+            {% elif notification.notification_type == 'mision_submit' %}
+                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 의뢰글에 대한 제출물을 제출하였습니다.
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
+            {% elif notification.notification_type == 'mission_complete' %}
+                축하합니다!<br>
+                의뢰자 <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>님의 미션을 완료하셨습니다.
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
+            {% elif notification.notification_type == 'chat' %}
+                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게 "{{notification.notifi_comment}}"라고 쪽지를 보냈습니다.
+                <a href="#" onclick="window.open('{% url 'chat' app_id=notification.to.id request_id=notification.creator.id   %}','채팅창','width=500,height=700')">채팅</a>
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
+            {% elif notification.notification_type == 'report' %}
+                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 "{{notification.notifi_comment}}"라고 신고를 하였습니다.
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
+            {% elif notification.notification_type == 'scrap' %}
+                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 게시물 '{{notification.notifi_post_id.title}}'을(를) 스크랩하였습니다. 
+                <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
+                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
+            {% endif %}
+
+            <br><hr>
+        {% endfor %}
+        </div>
+    </div>
+</body>
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+    input:not(#tag_box) {
+        all: unset;
+    }
+
+    .pont {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+    .search_menu {
+        display: inline-block;
+    }
+
+    .green_window {
+        display: inline-block;
+        width: 366px;
+        height: 34px;
+        border: 3px solid #7c817b;
+        background: white;
+    }
+
+    .input_text {
+        width: 348px;
+        height: 21px;
+        margin: 6px 0 0 9px;
+        border: 0;
+        line-height: 21px;
+        font-weight: bold;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .sch_smit {
+        width: 54px;
+        height: 35px;
+        margin: 0;
+        border: 0;
+        vertical-align: top;
+        background: rgb(108, 114, 106);
+        color: white;
+        font-weight: bold;
+        border-radius: 1px;
+        cursor: pointer;
+    }
+
+    .sch_smit:hover {
+        background: rgb(120, 121, 119);
+    }
+
+    .ul-popover {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+</script>
+
+
+</html>

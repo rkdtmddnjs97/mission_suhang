@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 {% load staticfiles %}
+=======
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 
 <!doctype html>
 <html lang="kr">
@@ -95,6 +98,7 @@
 
 
 
+<<<<<<< HEAD
 </body>
 <style>
   @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
@@ -163,3 +167,85 @@
 
   }
 </style>
+=======
+    <h1>이메일 인증</h1>
+    
+    {% if error %}
+    <p id='error'>{{error}}</p>
+    <br>
+    {% endif %}
+          <form method="POST" action="{% url 'approve' profile_dic=private tmp_pic=picture_id %}" name='submitForm'>
+              {% csrf_token %}
+              <input type="hidden" id='error_flag' name="error_flag" value='{{e_flag}}'>
+              <input type="hidden" id='tmp' name="flag" value='{{judge}}'>
+              <input type="hidden"  name="sn" value='{{sn}}'>
+              <input type="hidden" id='time' name="time" value='{{left_time}}'>
+             인증번호 <input type="text" name="ssn"  placeholder="Your ssn">
+             <input type="submit" value="인증" >
+        </form>
+        <div id="timerTxt"></div>
+
+        <script type="text/javascript">
+
+          var timerId;
+          var timerSec;
+          if ((document.getElementById('error_flag').value=='False')&&(document.getElementById("tmp").value == 'False')){
+            timerSec=180;
+          }
+          else if ((document.getElementById('error_flag').value=='True')&&(document.getElementById("tmp").value == 'False')){
+            timerSec=document.getElementById("time").value;
+            
+          } 
+        
+          
+            window.onload= function() {
+      
+            timerId = setInterval('timer()', 1000);
+      
+          }
+      
+          
+      
+          function timer() {
+           
+      
+            var min = Math.floor(timerSec / 60)
+      
+            var sec = timerSec % 60;
+      
+            
+      
+            var msg = (min < 10 ? "0"+ min : min) + ":" + (sec < 10 ? "0"+ sec : sec);
+      
+            timerSec--;
+
+            document.getElementById("time").value=timerSec
+            
+      
+            if (timerSec < 0) { /* time End*/
+      
+              msg += "<br>Timer End!"
+      
+              clearInterval(timerId);
+              document.getElementById("tmp").value ='True';
+                
+              document.submitForm.submit()
+      
+            }
+      
+            
+      
+            document.getElementById("timerTxt").innerHTML = msg;
+      
+            
+      
+          }
+      
+        </script>
+      
+      
+      
+     
+</body>
+
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>민원사항</h1>
+{% for complaint in complaints %}
+가해자:{{complaint.prey.profile_id}}<br>
+신고한 시람:{{complaint.complainer.profile_id}}<br>
+신고사유:{{complaint.cause}}<br>
+<a href="{% url 'requisition' complaint.id %}">해결</a>
+<hr>
+<br>
+
+
+{% endfor %}
+{% endblock %}

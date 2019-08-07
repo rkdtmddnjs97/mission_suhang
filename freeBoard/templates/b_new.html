@@ -3,9 +3,36 @@
 {% block content %}
 
 
+<<<<<<< HEAD
 <form action="{%url 'b_create' %}" method="POST">
     <br><br><br>
     <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+=======
+<form action="{%url 'b_create' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    제목 : <input type="text" name='title' required="required">
+    <br>
+    <br>
+    작성자 : {{user.username}}
+    <br>
+    <br>
+    본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" required="required"></textarea>
+    <br>
+    <br>
+    사진첨부<br>
+    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
+    <br>
+    파일첨부<br>
+    <input type="file" name="attached_file">
+    <br>
+    {% for tag in hashtag %}
+    <!-- <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}} -->
+    <a href="">{{tag}}</a>
+    {% endfor %}
+    <br>
+    <p>* 해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</p>
+    -> <input type="text" name='hashtag'>
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
     <br><br>
     {% csrf_token %}
     <div class="card">
@@ -49,6 +76,7 @@
     <button class="btn btn-dark" type='submit'>작성하기</button>
     <br><br><br><br>
 </form>
+<<<<<<< HEAD
 <style>
     .card {
         text-align: center;
@@ -80,4 +108,8 @@
 </style>
 
 
+=======
+<br>
+<a href="{% url 'board' %}">취소 </a>
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 {% endblock %}

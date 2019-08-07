@@ -1,32 +1,60 @@
 {% extends 'base.html'%}
 
 {% block content %}
+{% load staticfiles %}
+
 <h1>메인 페이지입니당</h1>
 <br>
-{% if user.is_authenticated %}
-<a href="{% url 'board'%}">자유게시판</a>
-<br><br>
-<a href="{% url 'request'%}">의뢰게시판</a>
+{% if judge == True %}
+<a href="{% url 'dissatisfication'%}">민원사항</a>
 {% endif %}
-<br><br>
-<!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
-<p>Hot 수행자</p>
-{% for hot_user in hot_users %}
-{{hot_user.profile_id}}
+<br>
+<a href="{% url 'board'%}">자유게시판</a>
+<br>
+<a href="{% url 'request'%}">의뢰게시판</a>
+
+
+<br>
+<a href="{% url 'announcement_board' %}">공지사항</a>
+<br>
+<p>최근 공지사항</p>
+{% for announcemnt in recent_announcements %}
+<a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
 {% endfor %}
+<br>
+<!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
+<span>Hot 수행자 : </span>
+{% for hot_user in hot_users %}
+
+    <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
+
+    {% endfor %}
+<br><br>
 <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
-<p>현재 미션수행이 완료된 갯수는 {{mission_completed}}개 입니다.</p>
+<p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
 
 <!-- 최근 올라온 의뢰글 표시 -->
-<p>현재까지의 진행전 의뢰 개수는{{ready_number}} 개 입니다.</p>
-<p>현재까지의 진행중인 의뢰 개수는{{running_number}} 개 입니다.</p>
-<p>최신 의뢰</p>
+<p>진행되지 않은 의뢰는 {{ready_number}}건 입니다.</p>
+
+<p>현재 진행 중인 의뢰는 {{running_number}}건 입니다.</p>
+
+<span>최신 의뢰</span><br>
 {% for recent_post in recent_posts %}
-{{recent_post.title}}
+    
+    <a href="{% url 'detail' recent_post.id%}">{{recent_post.title}}</a><br>
+   
 {% endfor %}
+<br>
 
 <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
 <p>추천 의뢰</p>
+{% for tag, posts in recommend_post.items %}
+    #{{tag}}와 관련된 게시물
+    {% for post in posts %}
+    <a href="{% url 'detail' post.id %}">{{post}}</a>
+    {% endfor %}
+    <br>
+{% endfor %}
 
-
+<div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
 {% endblock %}

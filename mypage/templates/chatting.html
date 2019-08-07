@@ -1,40 +1,108 @@
-{% extends 'base.html' %}
-{% block content %}
 
-<h2>comments</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    {% load staticfiles %}
+<div class="pont">
+<h2 class="title"> chatting</h2>
+<div class="chat-box" >
+<br>
 {% for chat_object in chat_objects %}
+<a style="color: rgb(50, 161, 137);">
 {{chat_object.writer}}
+</a>
 <br>
 {{chat_object.content}}
-<hr>
-<a href="{% url 'chat_delete' chat_id=chat_object.id appId=app_id requestId=request_id %}">삭제</a>
 <details>
-    <summary>수정하기</summary>
-    <form action="{% url 'chat_edit' chat_id=chat_object.id appId=app_id requestId=request_id %}" method="POST">
+    <summary>수정하기&nbsp<a>/</a>&nbsp<a  class="delete" href="{% url 'chat_delete' chat_id=chat_object.id appId=app_id requestId=request_id  %}" onclick="func_confirm()" > 삭제</a><hr></summary>
+    <form action="{% url 'chat_edit' chat_id=chat_object.id appId=app_id requestId=request_id %}" method="POST" >
         {% csrf_token %}
       
-          <textarea name= 'modify_chat' id="" cols="30" rows="10" placeholder="write your content" >{{chat_object.content}}</textarea>
+          <textarea name= 'modify_chat' id="" cols="50" rows="5" placeholder="수정한 내용을 입력해 주세요"style="border : 2px black;">{{chat_object.content}}</textarea>
         <br>
         <br>
-        <input type="submit" value='수정'>
+        <input type="submit" value='수정완료'  class="submit_bt"  style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
+      
         
 </form>
 </details>
+<div class="line"></div>
+<!-- <input type="button" value="삭" onclick="func_confirm()"/> -->
+            <script type="text/javascript">
+                function func_confirm() {
+                    if (confirm('삭제하시겠습니까?')) {
+                        alert("제출되었습니다.");
+                        window.close();
+                    } else {
+                        alert.close();
+                    }
+                }
+            </script>
 {% endfor %}
-<br>
-
-<hr>
 
 <form action="{% url 'new_chat' chat_id %}" method="POST">
     {% csrf_token %}
     <input name="app_id"type="hidden" value='{{app_id}}'>
     <input name="request_id" type="hidden" value='{{request_id}}'>
-    작성자 : <input name="writer" type="text" value='{{request.user.username}}'>
-    <br>
-    내용 : <textarea name="content" id="" cols="30" rows="10"></textarea>
-    <input type="submit">
+   <div class="id"> 작성자 : <input name="writer" type="text" value='{{request.user.username}}' style="width: 20rem; border: 1px white;" ></div>
+   <textarea name="content" id="" cols="50rem" rows="7rem" placeholder="내용을 입력하세요"></textarea>
+   <br>
+    <input  class="submit_bt" type="submit"value="작성하기" style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
 
 </form>
-  
+  <br>
+</div>
+<div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img src="{% static 'top.png' %}" style="width: 70px;" ></a></div>
+</div>
+</body>
+</html>
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+.pont{
+  font-family: 'Do Hyeon', sans-serif;
+}
+.line{
 
-{%endblock%}
+}
+.title{
+  font-size: 50px;
+  margin: 0 auto;
+  /* background-color: black; */
+  color:white;
+  text-align: center;
+}
+.submit_bt:hover{
+  color: rgb(247, 68, 74);
+  border-bottom: rgb(247, 68, 74);
+}
+hr { 
+  border-top:1px solid rgb(253, 253, 253); border-bottom:2px solid rgb(78, 37, 37); 
+  }
+h2{
+  background-color: rgb(0, 0, 0);
+}
+.chat-box{
+  margin:0 1rem 0 1rem;
+  font-size: 22px;
+}
+.delete{
+  all:unset;
+}
+.delete:hover{
+  color:rgb(247, 68, 74);
+  text-decoration: none;
+}
+textarea{
+ all:unset;
+}
+</style>

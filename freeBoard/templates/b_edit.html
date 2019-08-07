@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block content %}
 
+<<<<<<< HEAD
 
 <form action="{% url 'b_update' blog.id %}" method="POST">
         <br><br><br>
@@ -10,6 +11,31 @@
         {% csrf_token %}
         <div class="card">
 
+=======
+<h1>글을 수정중입니다.</h1>
+<form action="{% url 'b_update' blog.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        제목 : <input type="text" name='title' value="{{blog.title}}">
+        <br>
+        <br>
+        작성자 : {{blog.writer}}
+        <br>
+        <br>
+        본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" >{{blog.body}}</textarea>
+        <br>
+        <br>
+
+        사진첨부<br>
+        <img src="{{post.attached_img.url}}" width="100px" height="100px" alt=""><br>
+        <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
+        <br>
+        <br>
+
+        파일첨부<br>
+        <input type="file" name="attached_file">
+        <br><br>
+        <button type='submit'>작성하기</button>
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 
                 <br><br>
                 {% csrf_token %}
@@ -54,6 +80,7 @@
         <br><br><br><br>
 
 </form>
+<<<<<<< HEAD
 <style>
         .card {
                 text-align: center;
@@ -85,3 +112,7 @@
 </style>
 
 {% endblock %}
+=======
+<a href="{% url 'b_detail' blog.id %}">취소</a>
+{% endblock %}
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff

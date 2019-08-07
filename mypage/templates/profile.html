@@ -11,7 +11,7 @@
 <h1></h1>
 <br><br>
 회원사진<br>
-<img src="{{ my_profile.profile_img.url }}">
+<img src="{{ my_profile.profile_img.url }}" width="200px" height="200px">
 <br><br>
 아이디 : {{my_profile.profile_id}}
 <br>
@@ -21,21 +21,40 @@
 <br>
 전공 : {{my_profile.department}}
 <br>
-평균 평점 :{{average_rate}}
+평균 평점 : {{average_rate}}
 <br>
-총 클리어한 미션:{{number}}
+총 클리어한 미션 : {{number}}
 <p>간단한 본인소개</p>
 {{my_profile.introduction}}
 <br>
 <details>
   <summary>후기</summary>
+  <hr>
   {% for review in review_objects %}
-  의뢰자:{{review.writer}}<br>
-  평점:{{review.ratings}}<br>
-  후기:{{review.reviews}}<br>
+  의뢰자 : {{review.writer}}<br>
+  평점 : {{review.ratings}}<br>
+  후기 : {{review.reviews}}<br>
   <hr>
   {% endfor %}
 </details>
+  <br>
+  {% if user.is_authenticated %}
+  {% if request.user.username != my_profile.profile_id %}
+  <details>
+    <summary>신고하기</summary>
+    <form action="{% url 'complain' my_profile.id %}" method="POST">
+        {% csrf_token %}
+      
+          사유:<textarea name= 'complain_content' id="" cols="30" rows="10" placeholder="write your complain" required="required"></textarea>
+          <input type="submit" value='신고'>
+   </form>
+  </details>
+  <br>
+
+  <a href="#" onclick="window.open('{% url 'chat' app_id=my_profile.id request_id=user_profile.id   %}','채팅창','width=500,height=700')">채팅</a>
+
+  {% endif %}
+  {% endif %}
 <br>
 {% for tag in tag_list %}
  <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
@@ -49,7 +68,7 @@
     <form action="{% url 'recharge' my_profile.id %}" method="POST">
         {% csrf_token %}
       
-          충전금액:<input type="text" name='charge_money'>
+          충전금액:<input type="text" name='charge_money' required="required">
           <input type="submit" value='확인'>
    
         

@@ -4,8 +4,9 @@ from accounts.models import Profile
 from django.utils import timezone
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
-from .models import MTM_chat,chatting,Review
+from .models import MTM_chat,chatting,Review,complaint
 from django.core.exceptions import ObjectDoesNotExist
+from notification.views import create_notification
 
 
 def chat(request,app_id,request_id):
@@ -16,10 +17,13 @@ def chat(request,app_id,request_id):
         chat_objects=chatting.objects.filter(chatting_fk=chat_room.id)
     
     except ObjectDoesNotExist:
-        chat_room=MTM_chat()
-        chat_room.profile_fk=Profile.objects.get(id=app_id)
-        chat_room.request_fk=Profile.objects.get(id=request_id)
-        chat_room.save()
+        try:
+             chat_room=MTM_chat.objects.get(profile_fk=request_id,request_fk=app_id)
+        except ObjectDoesNotExist:
+             chat_room=MTM_chat()
+             chat_room.profile_fk=Profile.objects.get(id=request_id)
+             chat_room.request_fk=Profile.objects.get(id=app_id)
+             chat_room.save()
 
         chat_objects=chatting.objects.filter(chatting_fk=chat_room.id)
     
@@ -33,23 +37,44 @@ def new_chat(request,chat_id):
     tmp.save()
     app_id=request.POST['app_id']
     request_id=request.POST['request_id']
+
+    request_user = Profile.objects.get(id=request_id)
+    app_user = Profile.objects.get(id=app_id)
+
+    if tmp.writer == request_user.profile_id:
+        creator = request_user
+        to = app_user
+        create_notification(creator, to, 'chat', tmp.content)
+    else:
+        creator = app_user
+        to = request_user
+        create_notification(creator, to, 'chat', tmp.content)
+
     return redirect('chat',app_id,request_id)
 
 def chat_delete(request,chat_id,appId,requestId):
     tmp=chatting.objects.get(id=chat_id)
     tmp.delete()
     return redirect('chat',appId,requestId)
+
 def chat_edit(request,chat_id,appId,requestId):
     tmp=chatting.objects.get(id=chat_id)
     tmp.content=request.POST['modify_chat']
     tmp.save()
     return redirect('chat',appId,requestId)
 
+#의뢰자가 수행자의 미션신청을 거절
 def disagree(request,post_id,app_id):
-    tmp=User.objects.get(username=app_id)
-    eleminate=ApplyMission.objects.get( user=request.user,post=post_id,applier=tmp.id)
+    apply=User.objects.get(username=app_id)
+    eleminate=ApplyMission.objects.get(user=request.user, post=post_id, applier=apply.id)
     eleminate.delete()
-    return redirect('commissioned')
+
+    creator = Profile.objects.get(profile_id=request.user.username) 
+    to = Profile.objects.get(profile_id=apply.username)
+    create_notification(creator, to, 'mission_reject')
+
+    return redirect('commissioned', profile_id=request.user.username)
+
 def commissioned(request, profile_id):
     user = User.objects.get(username=profile_id)
     commissioned_post=ApplyMission.objects.filter(user=user)
@@ -101,20 +126,28 @@ def scrap(request, profile_id):
     return render(request, 'scrap.html', {'scraped_post':my_scraped_post, 'profile':profile})
 
 def myProfile(request, profile_id):
+    if request.user.is_authenticated: 
+        user_profile=Profile.objects.get(profile_id=request.user.username)
+    else:
+         user_profile=None
     my_profile = Profile.objects.get(profile_id=profile_id)
     tag_list = my_profile.hashtag.all()
-    review_objects=Review.objects.filter(review_fk=my_profile.id)
+    review_object=Review.objects.filter(review_fk=my_profile.id)
     
-    number=review_objects.count()
+    number=review_object.count()
    
     average_rate=0
-    for rate in review_objects:
+    for rate in review_object:
         average_rate+=rate.ratings
     try:
         average_rate/=number
     except ZeroDivisionError:
         average_rate=0
-    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number})
+    review_objects=[]
+    for review in review_object:
+        if (review.reviews != None and review.ratings > 0) or (review.reviews == None and review.ratings == 0):
+            review_objects.append(review)
+    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number,'user_profile':user_profile})
 
 
 def editProfile(request, profile_id):
@@ -123,16 +156,12 @@ def editProfile(request, profile_id):
         my_tag = userProfile.hashtag.all()
         all_tag = Hashtag.objects.all()
         checked_tag = []
-        uncheked_tag = []
+
         for checked in my_tag:
             checked_tag.append(checked)
-        for unchecked in all_tag:
-            if unchecked in checked_tag:
-                pass
-            else:
-                uncheked_tag.append(unchecked)
         
-        return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'unchecked_tag':uncheked_tag})
+        
+        return render(request, 'editProfile.html', {'userProfile': userProfile, 'checked_tag':checked_tag, 'all_tag':all_tag})
     else:
         print("본인 계정이 아니면 접근할 수 없습니다.") #나중에 html 경고창 띄우게 수정하면 참 좋을 듯ㅎㅎ
         return redirect('profile', profile_id=profile_id)
@@ -150,12 +179,27 @@ def updateProfile(request, profile_id):
     else:
         update_profile.profile_img = request.FILES.get('pofile_img')
 
+    # Hashtag
     tag_list = request.POST.getlist('hashtag')
+    add_hash_list = request.POST['add_hashtag'].split('#')
     update_profile.hashtag.clear()
 
+    for index,hsTag in enumerate(add_hash_list):
+        if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
+            pass
+        else:
+            if hsTag.upper() in tag_list:
+                pass
+            else:
+                tag_list.append(hsTag.upper())
+
     for tag in tag_list:
-        input_tag = Hashtag.objects.get(name=tag.upper())
-        update_profile.hashtag.add(input_tag)
+        if Hashtag.objects.filter(name=tag).exists():
+            input_tag = Hashtag.objects.get(name=tag)
+            update_profile.hashtag.add(input_tag)
+        else:
+            input_tag = Hashtag.objects.create(name=tag)
+            update_profile.hashtag.add(input_tag)
 
     update_profile.save()
 
@@ -172,7 +216,7 @@ def submit_send(request,post_id):
     form.title=request.POST['title']
     form.body=request.POST['body']
     if request.FILES.get('attachment') is None:
-        form.attachment = "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjauuWnxtXjAhXELqYKHf6tADQQjRx6BAgBEAU&url=http%3A%2F%2Fwww.sacscn.org.in%2FStaff.aspx&psig=AOvVaw1k5N6_SPjUTLxRWthDGbKQ&ust=1564332356410156"
+        pass
     else:
         form.attachment = request.FILES.get('attachment')
         
@@ -181,6 +225,11 @@ def submit_send(request,post_id):
     post=Post.objects.get(id=post_id)
     post.s_flag=True
     post.save()
+
+    creator = Profile.objects.get(profile_id=request.user.username) 
+    to = Profile.objects.get(profile_id=post.writer)
+    create_notification(creator, to, 'mission_submit')
+
     return redirect('performing', profile_id=request.user.username)
 
 def submission(request,post_id):
@@ -189,7 +238,10 @@ def submission(request,post_id):
     return render(request,'submission.html',{'submission_result':submission_result,'post':post})
 
 def recharge(request,profile_id):
-    money=request.POST['charge_money']
+    if request.POST['charge_money'] == '':
+        money=0
+    else:
+        money=request.POST['charge_money']
     profile=profile_id
     return render(request,'charge.html',{'money':money,'profile':profile})
 
@@ -214,6 +266,10 @@ def mission_quit(request,post_id):
 def submission_edit(request,submission_id,postId):
     tmp=submit_form.objects.get(id=submission_id)
     tmp.body=request.POST['content']
+    if request.FILES.get('attachment') is None:
+        pass
+    else:
+        tmp.attachment = request.FILES.get('attachment')
     tmp.save()
     return redirect('submission', postId)
     # def submission(request,post_id):
@@ -241,10 +297,28 @@ def commission_end(request,profile_id):
         if n.status == 'completed':
             blocked_posts.append(n)
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
+
 def submit_result(request,post_id):
     form_result=submit_form.objects.get(submit=post_id)
     return render(request,'submit_result.html',{'form_result':form_result})
+
 def delete_final(request, post_id,app_id):
     delete_post=Post.objects.get(id=post_id)
     delete_post.delete()
     return redirect('performing_end',app_id)
+
+def complain(request,profile_id):
+    prey_profile=Profile.objects.get(id=profile_id)
+    complainer_profile=Profile.objects.get(profile_id=request.user.username)
+    complaints=complaint()
+    complaints.complainer=complainer_profile
+    complaints.prey=prey_profile
+    complaints.casuse=request.POST['complain_content']
+    complaints.save()
+    
+    creator = Profile.objects.get(profile_id=request.user.username)
+    to = Profile.objects.get(profile_id='admin')
+    create_notification(creator, to, 'report', complaints.casuse)
+
+    return redirect('profile',prey_profile.profile_id)
+

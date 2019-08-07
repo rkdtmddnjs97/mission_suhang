@@ -6,6 +6,10 @@
 <br>
 <br>
 {% endif %}
+{% if error1 %}
+{{error1}}
+<br>
+{% endif %}
 
 <!doctype html>
 <html lang="kr">
@@ -118,8 +122,14 @@
         <input type="submit" value='Sign Up!'  class="submit"  style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
         
 
+<<<<<<< HEAD
         <br><br><br>
     </form>
+=======
+        <label for="email">ID</label>
+       
+        <input type="text" name="username" id="email" class="inpt" required="required" placeholder="Your id">
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 
 </body>
 <style>
@@ -127,9 +137,55 @@
         text-align: center;
     }
 
+<<<<<<< HEAD
     .form-group {
         text-align: center;
     }
+=======
+        <label for="password">Confirm Password</label>
+        <input type="password" name="password2" id="password" class="inpt" required="required"
+            placeholder="confirm password">
+        
+        <hr>   
+        프로필 사진 : <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img">
+        <hr>
+        {% if error3 %}
+{{error3}}
+<br>
+{% endif %}
+        대학교 : <input type="text" name="university" required="required">
+        <hr>
+        학과 : <input type="text" name="department" required="required">
+        <hr>
+        이름 : <input type="text" name="name" required="required">
+        <hr>
+        자기소개 : <textarea name="introduction" id="" cols="30" rows="10" placeholder="write your content" required="required"></textarea>
+        <hr>
+        해시태그 : <br>
+
+        <input type="text" name='search_tag_data' id='search_tag'><br><br>
+        {% for tag in hashtag %}
+                <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
+        {% endfor %}
+        <br><br>
+        <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
+        -> <input type="text" name='add_hashtag' id="new_hashtag">
+        <br>
+        <hr>
+        이메일: <input type="email" name="email" required="required"> 
+        {% if error4 %}
+        {{error4}}
+        <br>
+        {% endif %}
+        {% if error2 %}
+        {{error2}}
+<br>
+{% endif %}
+        <hr>
+        
+        <div class="submit-wrap">
+            <input class="btn btn-primary" type="submit" value="Sign Up!" encoding="application/x-www-form-urlencoded">
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 
 
     .form-control {
@@ -176,10 +232,13 @@
 
         }
 
+<<<<<<< HEAD
 
     }
 </style>
 
 
 
+=======
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 {% endblock %}

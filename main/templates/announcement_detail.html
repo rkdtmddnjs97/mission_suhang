@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+제목:{{announcement.title}}<br>
+작성자:{{announcement.writer}}<br>
+본문:{{announcement.content}}<br>
+사진파일:<img src="{{announcement.announcement_img.url}}" alt=""><br>
+첨부파일:<a href="{{announcement.announcement_file.url}}" download="">{{announcement.announcement_file}}</a><br>
+
+{% if judge == True %}
+<a href="{% url 'announce_delete' announcement.id %}">삭제하기</a>
+
+<a href="{% url 'announce_edit' announcement.id %}">수정하기</a>
+{% endif %}
+{% endblock %}

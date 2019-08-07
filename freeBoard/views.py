@@ -12,23 +12,48 @@ def board(request):
     for blog in Blogs:
         reverse_blog.append(blog)
     reverse_blog.reverse() 
+<<<<<<< HEAD
     paginator = Paginator(reverse_blog,15)
     reverse_blog = paginator.get_page(page)  
     return render(request, 'board.html', { 'blogs':reverse_blog })
 
+=======
+    paginator = Paginator(reverse_blog, 3)
+    total_len = len(reverse_blog)
+    try:
+       reverse_blog = paginator.get_page(page)
+    except PageNotAnInterger:
+       reverse_blog = paginator.page(1)
+    except EmptyPage:
+        reverse_blog = paginator.page(paginator.num_pages) 
+    index = reverse_blog.number -1
+    max_index = len(paginator.page_range)
+    start_index = index -2 if index >= 2 else 0
+    if index <2:
+        end_index = 5 - start_index
+    else:
+        end_index = index+3 if index <= max_index - 3 else max_index
+    page_range = list(paginator.page_range[start_index:end_index])
+ 
+    return render(request, 'board.html', { 'blogs':reverse_blog, 'page_range':page_range, 'total_len':total_len,'max_index':max_index-2})
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
-    comments_list = B_Comment.objects.filter(post = post_id)
-    paginator = Paginator(comments_list,10)
+    blog_like=[]
+    for index,i in enumerate(blog.user.all()):
+        if index != 5:
+            blog_like.append(i)
+    comments = B_Comment.objects.filter(post = post_id)
     page = request.GET.get('page')
-    comments = paginator.get_page(page)
     reversed_comments = []
     for comment in comments:
         reversed_comments.append(comment)
     reversed_comments.reverse()
+    paginator = Paginator(reversed_comments,2)
+    reversed_comments = paginator.get_page(page)
     hashtag = Hashtag.objects.filter(freeboard_tag=post_id)
-    return render(request, 'b_detail.html', {'blog':blog,'comments':reversed_comments,'hashtag':hashtag,'like_count':blog.total_likes})
+    return render(request, 'b_detail.html', {'blog':blog,'comments':reversed_comments,'hashtag':hashtag,'like_count':blog.total_likes,'dislike_count':blog.total_dislikes,'blog_like':blog_like})
 
 def new(request):
     user = request.user
@@ -44,8 +69,17 @@ def create(request):
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
     #list에 해시태그 분할저장
+   
+    if request.FILES.get('attached_img') is None:
+        pass
+    else:
+        new_post.attached_img = request.FILES.get('attached_img')
+    if request.FILES.get('attached_file') is None:
+        pass
+    else:
+        new_post.attached_file = request.FILES.get('attached_file')
+    new_post.save()
     hash_list = request.POST['hashtag'].split('#')
-
     for index,hash in enumerate(hash_list):
         if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
             pass
@@ -69,6 +103,16 @@ def update(request, post_id):
     update_post = B_Blog.objects.get(id=post_id)
     update_post.title = request.POST['title']
     update_post.body = request.POST['body']
+    if request.FILES.get('attached_img') is None: #프로필 사진 form이 입력되지 않았을 시.
+        pass
+    else:
+        update_post.attached_img = request.FILES.get('attached_img')
+
+    if request.FILES.get('attached_file') is None:
+        pass
+    else:
+        update_post.attached_file = request.FILES.get('attached_file')
+    
     update_post.save()
     return redirect('board')
 
@@ -107,6 +151,19 @@ def like(request,post_id):
     post.save()
     return redirect('b_detail', post_id)
 
+def dislike(request,post_id):
+    post=get_object_or_404(B_Blog, pk = post_id)
+    if post.dislike.filter(username=request.user.username).exists():
+        post.dislike.remove(request.user)    
+    else:
+        post.dislike.add(request.user)
+       
+    post.save()
+    return redirect('b_detail', post_id)
+
 def tag_post(request, tag_id):
     tag_related_posts = B_Blog.objects.filter(hashtag = tag_id)
     return render(request, 'b_tag_post.html', {'b_tag_posts':tag_related_posts})
+def like_more(request,post_id):
+    blog = get_object_or_404(B_Blog, pk=post_id)
+    return render(request,'like_more.html',{'blog':blog})

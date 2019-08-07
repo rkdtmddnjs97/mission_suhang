@@ -72,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'main.context_processors.add_variable_to_context',
             ],
             
         },
@@ -148,3 +149,6 @@ EMAIL_HOST_PASSWORD = 'hjkhjk66'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+#DEFAULT_IMAGE_PATH = 'django_fields/no_image.png'

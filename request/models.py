@@ -1,10 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
+from django_fields import DefaultStaticImageField
 
 # Create your models here.
-
-
 class Post(models.Model):
     title=models.CharField(max_length=200,null=True)
     writer = models.CharField(max_length=200,null=True)
@@ -15,8 +14,8 @@ class Post(models.Model):
     hashtag = models.ManyToManyField(Hashtag, related_name="post_tag")
     approved_id=models.CharField(null=True,max_length=200)
     s_flag=models.BooleanField(default=False)
-    attached_img=models.ImageField(upload_to='attached_img/', null=True, blank=True)
-    attached_file=models.FileField(upload_to='attached_file/', null=True, blank=True)
+    attached_img=DefaultStaticImageField(upload_to='attached_img/', blank=True, default_image_path='images/no_image.png')
+    attached_file=DefaultStaticImageField(upload_to='attached_file/', blank=True, default_image_path='files/dummy.txt')
     deposit=models.IntegerField(default=0)
     
 
@@ -33,7 +32,7 @@ class submit_form(models.Model):
     writer=models.CharField(max_length=200,null=True)
     pub_date=models.DateTimeField('Date published',null=True)
     body=models.TextField(null=True)
-    attachment=models.FileField(upload_to='submit_file/', null=True, blank=True)
+    attachment=DefaultStaticImageField(upload_to='submit_file/', null=True, blank=True, default_image_path='files/dummy.txt')
     submit=models.OneToOneField(Post,on_delete=models.CASCADE, null=True)
 
 class Comment(models.Model):

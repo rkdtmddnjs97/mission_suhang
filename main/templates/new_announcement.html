@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>새 글을 작성해주세요</h1>
+
+<form action="{%url 'create_announcement' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    제목 : <input type="text" name='title' required='required'>
+    <br>
+    <br>
+    작성자 : {{user.username}}
+    <br>
+    <br>
+    본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" required='required'></textarea>
+    <br>
+    <br>
+    사진첨부<br>
+    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
+    <br>
+    파일첨부<br>
+    <input type="file" name="attached_file">
+    <br>
+    <button type='submit'>작성하기</button>
+</form>
+<a href="{% url 'announcement_board' %}">취소 </a>
+{%endblock%}
+
+

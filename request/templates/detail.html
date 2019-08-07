@@ -1,7 +1,24 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
+<head>
+    <meta charset="utf-8">
+    <title>jquery DOM</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+<script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();    
+      $('#btn1').on("click",function () {
+        $('#scr').attr({"title":"Scrapped"});
+    });
+    });
+ 
+</script>
+
 <div class="container">
+<<<<<<< HEAD
     <br><br><br>
     <div class="category">
         <h1>MISSION Request</h1>
@@ -98,6 +115,125 @@
             </div>
         </div>
 
+=======
+    <h1>Detail Post</h1>
+    <span>이 임무를 '스크랩'한 사람</span>
+    <button class="nav" href="#" rel="popover_scrap" data-trigger="focus" data-placement="bottom"
+        data-popover-content="#scrap-popover">({{total_scrap_user}})</button>
+    <div id="scrap-popover" style="display:none">
+        <ul class="ul-popover">
+            {% for user in post.user.all %}
+                <li><a href="{% url 'profile' user %}">{{user}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <hr>
+
+    <p>
+        <h2>제목 : {{post.title}}</h2>
+        <p>작성자 : <a href="{% url 'profile' post.writer %}">{{post.writer}}</a> </p>
+        <p>발행일 : {{post.pub_date}}</p>
+        <p>상태 : {{post.status}}</p>
+        <p>금액:{{post.deposit}}</p>
+        <p>
+            본문
+            <br>
+            {% if post.attached_img == 'images/no_image.png' %}                
+            {% else %}
+                <img src="{{post.attached_img.url}}" width="200px" height="200px" alt=""><br>
+            {% endif %}
+            {{post.body}}
+            <br>
+             
+            {% if post.attached_file == 'files/dummy.txt' %}
+                (첨부된 파일이 없습니다)
+            {% else %}
+                첨부파일 :
+                <a href="{{post.attached_file.url}}" download="">{{post.attached_file}}</a>
+            {% endif %}
+        </p>
+        해시태그<br>
+        {% for tag in hashtag.all %}
+            <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
+        {% endfor %}
+    </p>
+    {% if user.is_authenticated %}
+    {% if user.username != post.writer %}
+    <form action="{% url 'scrap' post.id%}" method="get">
+        <input type="hidden" name = 'scrap' value="{{user}}" data-toggle = "tooltip" title = "Scrap this?" id="scr">
+        <button type="submit" id =btn1 >scrap</button>
+    </form>
+    {% endif %}
+    {% endif %}
+    <br>
+    <a href="{% url 'request' %}"> Go list </a>
+    <br>
+    
+    {% if user.is_authenticated %}
+    {% if user.username == post.writer %}
+    {% if post.status != 'running' and post.status != 'completed' %}
+    <a href="{% url 'edit' post.id %}">수정하기</a>
+    <a href="{% url 'delete' post.id %}">삭제하기</a>
+    
+    {% endif %}
+    {% else %}
+    {% if post.status == 'ready' %}
+    {% if judge == False %}
+    <a href="{% url 'missionApply' post.id %}">의뢰 신청</a>
+    {% else %}
+    의뢰신청 완료
+    {% endif %}
+    {% endif %}
+    {% endif %}
+   {% endif %}
+    <hr>
+    <details>
+    <summary>comments</summary>
+    {% for comment in comments %}
+   
+    <a href="{% url 'profile' comment.writer %}">{{comment.writer}}</a> : {{comment.content}}
+    <br><br>
+    {% if user.username == comment.writer %}
+    <a href="{% url 'comment_delete' comment.id %}">삭제하기</a>
+    <details>
+        <summary>수정하기</summary>
+        <form action="{% url 'modify' comment.id %}" method="POST">
+            {% csrf_token %}
+          
+              <textarea name= 'modify_comment' id="" cols="30" rows="10" placeholder="write your content" >{{comment.content}}</textarea>
+            <br>
+            <br>
+            <input type="submit" value='수정'>
+            
+    </form>
+    </details>
+
+    {% endif %}
+    <br><hr>
+    {% endfor %}
+
+    {%if comments.has_previous%}
+    <a href="?page=1">First</a>
+    <a href="?page={{comments.previous_page_number}}">Previous</a>
+    {%endif%}
+    
+    <span>{{comments.number}}</span>
+    <span>of</span>
+    <span>{{comments.paginator.num_pages}}</span>
+    
+    {%if comments.has_next%}
+    <a href="?page={{comments.next_page_number}}">Next</a>
+    <a href="?page={{comments.paginator.num_pages}}">Last</a>
+    {%endif%}
+</details>
+    <br>
+    {% if user.is_authenticated %}
+    <form action="{% url 'new_comment' post.id %}" method="POST">
+        {% csrf_token %}
+        작성자 :{{user.username}}
+        <br>
+        내용 :<br> <textarea name="content" id="" cols="30" rows="10" required='required'></textarea>
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
         <br>
         <b>첨부파일</b><br><br>
         <div class="card" style="min-height:5rem;"><a href="{{post.attached_file.url}}"
@@ -136,6 +272,7 @@
 
         </div>
         <br>
+<<<<<<< HEAD
         <hr>
 
         <div class="buttonss" style="float:right;">
@@ -275,5 +412,16 @@
 <br>
 <br>
 <br>
+=======
+    </form>
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 </div>
+</body>
 {%endblock%}
