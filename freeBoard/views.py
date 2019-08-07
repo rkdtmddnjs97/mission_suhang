@@ -4,10 +4,14 @@ from django.utils import timezone
 from hashtag.models import Hashtag
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import Profile
 # Create your views here.
 def board(request):
-    my_profile = Profile.objects.get(profile_id=request.user.username)
+    try:
+        my_profile = Profile.objects.get(profile_id=request.user.username)
+    except ObjectDoesNotExist:
+        my_profile=None
     Blogs = B_Blog.objects.all()
     page = request.GET.get('page')
     reverse_blog = []
