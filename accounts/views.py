@@ -18,12 +18,7 @@ from django.contrib.staticfiles import finders
 
 def signup(request):
     all_Pictrue=Picture.objects.all()
-    for one in all_Pictrue:
-        one.delete()
-    all_hashtag = Hashtag.objects.all()
-    if request.method == 'POST':
-        if request.POST['password1'] == request.POST['password2']:
-            school={'국민대학교': 'kookmin.ac.kr','가천대학교':'gachon.ac.kr','경남대학교':'kangnam.ac.kr',
+    school={'국민대학교': 'kookmin.ac.kr','가천대학교':'gachon.ac.kr','경남대학교':'kangnam.ac.kr',
             '강원대학교':'kangwon.ac.kr','건국대학교':'konkuk.ac.kr','건양대학교':'konyang.ac.kr','경기대학교':'kyonggi.ac.kr',
             '경북대학교':'knu.ac.kr','경상대학교':'gnu.ac.kr','경성대학교':'ks.ac.kr','경희대학교':'khu.ac.kr',
             '고려대학교':'korea.ac.kr','광운대학교':'kw.ac.kr','남서울대학교':'nsu.ac.kr','단국대학교':'dankook.ac.kr',
@@ -39,13 +34,19 @@ def signup(request):
             '대구경북과학기술원':'dgist.ac.kr','울산과학기술원':'unist.ac.kr','계명대학교':'kmu.ac.kr','동신대학교':'dsu.ac.kr',
             '명지대학교':'mju.ac.kr','순천향대학교':'sch.ac.kr','한국교원대학교':'knue.ac.kr','한국교통대학교':'ut.ac.kr',
             '멋쟁이사자처럼':'likelion.org'}
+    for one in all_Pictrue:
+        one.delete()
+    all_hashtag = Hashtag.objects.all()
+    if request.method == 'POST':
+        if request.POST['password1'] == request.POST['password2']:
             try:
-                Profile.objects.get(email=request.POST['email'])
+                e_mail = request.POST['email'] + '@' + request.POST['domain']
+                Profile.objects.get(email=e_mail)
                 error4='이메일이 이미 존재합니다' 
                 return render(request,'signup.html', {'hashtag': all_hashtag,'error4':error4})
             except ObjectDoesNotExist:
                 pass
-            tmp=request.POST['email'].split('@')[1]
+            tmp=request.POST['domain']
             try:
                 tmp1=school[request.POST['university']] #해당 대학교가 없습니다
             except KeyError:
@@ -73,17 +74,6 @@ def signup(request):
                 pass
             
             input_hash = request.POST['add_hashtag'].split('#')
-            # hash_list = []
-            # for index,hashtag in enumerate(input_hash):
-            #     if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
-            #         pass
-            #     else:
-            #         if Hashtag.objects.filter(name=hashtag.upper()).exists():
-            #             tag = Hashtag.objects.get(name=hashtag.upper())
-            #             hash_list.append(tag)
-            #         else:
-            #             tag = Hashtag.objects.create(name=hashtag.upper())
-            #             hash_list.append(tag)
 
             private=[]
             private.append(request.POST['username'])#0
@@ -92,7 +82,7 @@ def signup(request):
             private.append(request.POST['department'])#3
             private.append(request.POST['name'])#4
             private.append(request.POST['introduction'])#5
-            private.append(request.POST['email'])#6
+            private.append(request.POST['email'] + '@' + request.POST['domain'])#6
             private.append(result)#7
             private.append(input_hash)#8
             picture=Picture()
@@ -101,14 +91,14 @@ def signup(request):
         
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)
-            email = EmailMultiAlternatives('인증 메일', message, to=[request.POST['email']])
+            email = EmailMultiAlternatives('인증 메일', message, to=[request.POST['email'] + '@' + request.POST['domain']])
             # email.attach(logo_data())
             email.mixed_subtype = 'related'
            
-            fp = open(finders.find('../static/logo.png'), 'rb')
-            msg_img = MIMEImage(fp.read())
+            fp = open(finders.find('../static/logo.jpeg'), 'rb')
+            msg_img = MIMEImage(fp.read(),_subtype="jpeg")
             fp.close()
-            msg_img.add_header('Content-ID', '<{}>'.format('logo.png'))
+            msg_img.add_header('Content-ID', '<{}>'.format('logo.jpeg'))
             email.attach(msg_img)
             email.attach_alternative(html_content, "text/html")
             email.send()
@@ -119,8 +109,8 @@ def signup(request):
             return render(request, 'approval.html',{'judge':judge,'left_time':left_time,'e_flag':e_flag,'sn':sn,'private':private,'picture_id':picture.id})
         else:
               error='비밀번호가 일치하지 않습니다.'
-              return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error})
-    return render(request, 'signup.html', {'hashtag': all_hashtag})
+              return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error, 'school': school})
+    return render(request, 'signup.html', {'hashtag': all_hashtag, 'school': school})
 
 
 # def logo_data():
@@ -198,6 +188,7 @@ def approve(request,profile_dic,tmp_pic):
                                 user.profile.hashtag.add(tag)
                  user.profile.save()
 
+                 #멋사 계정이면 꽁포인트 4000^^
                  if profile_dic[6].split('@')[1]=='likelion.org':
                     user.profile.money=4000
                     user.profile.save()
