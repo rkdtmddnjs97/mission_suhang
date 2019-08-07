@@ -1,6 +1,30 @@
 {% extends 'base.html'%}
 
 {% block content %}
+{% load staticfiles %}
+<!-- 새사이드네브 -->
+<div id="mysidenav" class="sidenav">
+        <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a>
+        <a style="font-size:45px;" href="">MY MISSION</a><br>
+        <br>
+        <br>
+        <a style="font-size:35px;" href="{% url 'performing' userProfile.profile_id %}">수행중인 미션</a><br>
+        <a style="font-size:35px;" href="{% url 'performing_end' userProfile.profile_id %}">수행완료된 미션</a><br>
+        <a style="font-size:35px;" href="{% url 'commissioned' userProfile.profile_id %}">의뢰중인 미션</a><br>
+        <a style="font-size:35px;" href="{% url 'commission_end' userProfile.profile_id %}">의뢰완료된 미션</a><br>
+        <a style="font-size:35px;" href="{% url 'scrap' userProfile.profile_id %}">스크랩한 미션</a>
+    </div>
+    
+    <span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true" ></i> <a style="font-size:40px;">◀Open Mission</a></span>
+    
+    <script>
+        function openNav() {
+            document.getElementById('mysidenav').style.width = '300px';
+        }
+        function closeNav() {
+            document.getElementById('mysidenav').style.width = '0';
+        }
+    </script>
 <div class="pont">
         <h2 class="title" style="text-decoration: underline;">Edit My Page</h2>
         <br>
@@ -16,14 +40,14 @@
     이름 : <input type="text" name="name" value="{{userProfile.name}}" style=" all:unset; border-bottom: #000000 2px solid;">
     <br><br>
 
-    학교 : <input type="text" name="university" value="{{userProfile.university}}"  style=" all:unset; border-bottom: #000000 2px solid;">
+    학교 : <input type="text" name="university" value="{{userProfile.university}}"  style=" all:unset; border-bottom: #000000 2px solid; ">
     <br><br>
 
     전공 : <input type="text" name="department" value="{{userProfile.department}}"  style=" all:unset; border-bottom: #000000 2px solid;">
     <br><br>
 
     간단한 본인소개 <br>
-    <input type="textarea" name="introduction" value="{{userProfile.introduction}}" style=" all:unset; border-bottom: #000000 2px solid;">
+   <input type="text" name="introduction" value="{{userProfile.introduction}}" class="my_box">
     <br><br>
 
             <br>
@@ -50,14 +74,25 @@
     <button  class="edit_bt" type="submit" >수정완료</button>&nbsp / &nbsp<a href="{% url 'profile' userProfile.profile_id %}" class="edit_bt" style="all:unset;">취소하기</a>
 
   </form>
-</div>
   
+</div>
+  </div>
+  <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a></div>
 </body>
 <style>
  @media screen and (max-width:600px) {
     .sidenav {
       display: none;
     }
+ .my_box{
+     all:unset;
+     width: 350px;
+     border-bottom: #000000 2px solid;
+
+ }
+ img{
+     width: 150px
+ }
 
     .box {
       margin: 0rem 0 0 1rem;
@@ -75,15 +110,24 @@
     }
 
     .top {
-      width: 40px;
+        display: 30px;
+
     }
   
+   
 
   }
 
   @media screen and (min-width: 500px) and (max-width:200px) {}
 
   @media screen and (min-width: 1000px) {
+    .my_box{
+     all:unset;
+     width: 800px;
+     border-bottom: #000000 2px solid;
+
+ }
+
     .box {
       margin: 1rem 0 0 18rem;
       font-size: 30px;
