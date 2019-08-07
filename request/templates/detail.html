@@ -132,31 +132,39 @@
         {% endfor %}
         <br><br><br><br>
         <div class="buttonss_h">
-            <form action="{% url 'scrap' post.id%}" method="get">
-                <input type="hidden" name='scrap' value="{{user}}">
-                <button class="btn btn-danger" type="submit">scrap</button>
                 {% if user.username == post.writer %}
                 {% else %}
+                    {% if isScraped == False %}
+                    <form action="{% url 'scrap' post.id %}" method="get">
+                        <input type="hidden" name='scrap' value="{{user}}">
+                        <button class="btn btn-danger" type="submit">scrap</button>
+                    </form>
+                    {% else %}
+                    <form action="{% url 'scrap' post.id %}" method="get">
+                        <input type="hidden" name='scrap' value="{{user}}">
+                        <button class="btn btn-danger" type="submit">scraped</button>
+                    </form>
+                    {% endif %}
                 {% if post.status == 'ready' %}
-                {% if judge == False %}
-                <button type="button" class="btn btn-danger" onclick="delUrl()">의뢰신청</a>
-                <script type="text/javascript">
-                    function delUrl() {
-                        var Del = confirm("신청하시겠습니까?")
-                        if (Del == true) {
-                            alert("신청되었습니다.")
-                            location.href = "{% url 'missionApply' post.id %}"
-                        } else {
-                            alert("취소되었습니다.")
-                            self.close()
+                    {% if judge == False %}
+                    <button type="button" class="btn btn-danger" onclick="delUrl()">의뢰신청</a>
+                    <script type="text/javascript">
+                        function delUrl() {
+                            var Del = confirm("신청하시겠습니까?")
+                            if (Del == true) {
+                                alert("신청되었습니다.")
+                                location.href = "{% url 'missionApply' post.id %}"
+                            } else {
+                                alert("취소되었습니다.")
+                                self.close()
+                            }
                         }
-                    }
 
-                </script>
-                {% else %}
+                    </script>
+                    {% else %}
+                    {% endif %}
                 {% endif %}
-                {% endif %}{% endif %}
-            </form>
+                {% endif %}
 
         </div>
         <br>
@@ -229,8 +237,6 @@
     <br>
         <form action="{% url 'new_comment' post.id %}" method="POST">
             {% csrf_token %}
-
-
 
             <br>
             <div class="form-group">

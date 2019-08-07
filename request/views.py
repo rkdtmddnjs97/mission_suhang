@@ -66,8 +66,9 @@ def detail(request,post_id):
     
     scrap_users = post.user.all()
     total_scrap_user = scrap_users.count()
+    isScraped = post.user.filter(username=request.user.username).exists()
 
-    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge, 'total_scrap_user':total_scrap_user})
+    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge, 'total_scrap_user':total_scrap_user, 'isScraped':isScraped})
 
 def new(request):
     user = request.user
@@ -217,10 +218,6 @@ def scrap(request,post_id):
         to = Profile.objects.get(profile_id=post.writer)
         create_notification(creator, to, 'scrap', post_id=post)
     post.save()
-
-    creator = Profile.objects.get(profile_id=request.user.username)
-    to = Profile.objects.get(profile_id=post.writer)
-    create_notification(creator, to, 'scrap', post_id=post)
     
     return redirect('detail', post_id)
 
