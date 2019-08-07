@@ -7,16 +7,15 @@ from django.core.paginator import Paginator
 # Create your views here.
 def board(request):
     Blogs = B_Blog.objects.all()
-    paginator = Paginator(Blogs,5)
     page = request.GET.get('page')
-    blogs = paginator.get_page(page)
     reverse_blog = []
-
-    for blog in blogs:
+    for blog in Blogs:
         reverse_blog.append(blog)
+    reverse_blog.reverse() 
+    paginator = Paginator(reverse_blog,15)
+    reverse_blog = paginator.get_page(page)  
+    return render(request, 'board.html', { 'blogs':reverse_blog })
 
-    reverse_blog.reverse()     
-    return render(request, 'board.html', {'blogs':blogs,'reverse_blog':reverse_blog })
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)

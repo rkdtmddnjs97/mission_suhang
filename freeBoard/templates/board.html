@@ -1,31 +1,148 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
+<br><br>
+<div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
 
-    <h1>Make Your Blog! </h1>
-    <a href="{% url 'b_new'%}">새 글 작성하기 </a>
-    <h2>블로그 글 목록</h2>
-    {% for blog in reverse_blog %}
-    <div class="card">
-    <div class="card-body">
-    <a href="{% url 'b_detail' blog.id %}">
-        <h5 class="card-title"> 제목 : {{blog.title}}</h5></a>
-    <p class ="card-subtitle mb-3 text-muted">작성자 : {{blog.writer}}</p>
-    <h6 class="card-subtitle mb-2 text-muted"> 작성일: {{blog.pub_date}}</h6>
-    </div>
-    </div>
-    {% endfor %}
-    {%if blogs.has_previous%}
-    <a href="?page=1">First</a>
-    <a href="?page={{blogs.previous_page_number}}">Previous</a>
-    {%endif%}
-    
-    <span>{{blogs.number}}</span>
-    <span>of</span>
-    <span>{{blogs.paginator.num_pages}}</span>
-    
-    {%if blogs.has_next%}
-    <a href="?page={{blogs.next_page_number}}">Next</a>
-    <a href="?page={{blogs.paginator.num_pages}}">Last</a>
-    {%endif%}
+<br>
+<a class="btn btn-dark" href="{% url 'b_new'%}">작성하기</a>
+<br><br>
+<br>
+<div class="d-none d-sm-block">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" class="tb">&nbsp;&nbsp;&nbsp;제목</th>
+                <th scope="col">&nbsp;&nbsp;작성자</th>
+                <th scope="col">작성일&nbsp;</th>
+            </tr>
+        </thead>
 
-{% endblock %}
+    </table>
+</div>
+
+{% for blog in blogs %}
+<div class="card d-none d-sm-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-h">
+                <a href="{% url 'b_detail' blog.id %}">
+                    <h5>{{blog.title}}</h5>
+                </a>
+            </div>
+            <div class="col-sm">
+                <p>{{blog.writer}}</p>
+            </div>
+            <div class="col-sm">
+                <h6>{{blog.pub_date}}</h6>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="card d-block d-sm-none">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-h">
+                <a href="{% url 'b_detail' blog.id %}">
+                    <b>
+                        <h3>{{blog.title}}</h3>
+                    </b>
+                </a>
+            </div>
+            <div class="col-sm">
+
+                <p>{{blog.body}}</p>
+
+            </div>
+            <div class="col-sm-a" style="color:#8E8D8B;">
+                <p>{{blog.writer}}&nbsp;&nbsp;|&nbsp;&nbsp;</p>
+            </div>
+            <div class="col-sm-b" style="color:#8E8D8B;">
+                <h6>{{blog.pub_date}}</h6>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endfor %}
+<br><br><br>
+{%if blogs.has_previous%}
+<a class="btn btn-dark" href="?page=1" role="button">
+    <<</a> <a class="btn btn-dark" href="?page={{blogs.previous_page_number}}" role="button">
+        <</a> {%endif%} <span>{{blogs.number}}</span>
+            <span>of</span>
+            <span>{{blogs.paginator.num_pages}}</span>
+
+            {%if blogs.has_next%}
+            <a class="btn btn-dark" href="?page={{blogs.next_page_number}}" role="button">></a>
+            <a class="btn btn-dark" href="?page={{blogs.paginator.num_pages}}" role="button">>></a>
+            {%endif%}
+            <br><br>
+            <style>
+                div {
+                    text-align: center;
+                }
+
+                .card {
+                    border-top: none;
+                    border-left: none;
+                    border-right: none;
+                    text-align: center;
+
+
+                }
+
+                .tb {
+                    width: 685px;
+                }
+
+                .col-sm-h {
+                    width: 700px;
+                }
+
+                .col-sm-a {
+                    padding-bottom: 0px;
+                    margin-left: 70px;
+                }
+
+                .col-sm-b {
+                    padding-top: 0px;
+
+                }
+
+                
+
+                @media screen and (max-width:600px) {
+                    .card {
+                        border-top: none;
+                        border-left: none;
+                        border-right: none;
+                        text-align: center;
+                        margin-bottom: 30px;
+                        
+
+                    }
+                    a {
+                    text-decoration: none;
+                    color: #3A6FAF;
+                }
+                }
+
+                @media screen and (min-width: 1000px) {
+                a {
+                    text-decoration: none;
+                    color: #8E8D8B
+                }
+                    .card {
+                        border-top: none;
+                        border-left: none;
+                        border-right: none;
+                        text-align: center;
+                        margin-bottom: 10px;
+
+                    }
+                }
+            </style>
+
+            {% endblock %}

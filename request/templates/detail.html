@@ -1,96 +1,279 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
 <div class="container">
-    <h1>Detail Post</h1>
-    <p>이 임무를 노리는 사람</p>
-    {% for user in post.user.all %}
-    {{user}}
-    {% endfor %}
-    <p>
-        <h2>제목 : {{post.title}}</h2>
-        <p>작성자 : {{post.writer}}</p>
-        <p>발행일 : {{post.pub_date}}</p>
-        <p>상태 : {{post.status}}</p>
-        <p>금액:{{post.deposit}}</p>
-        <p>
-            본문
-            <br>
-            <img src="{{post.attached_img.url}}" alt=""><br>
-            {{post.body}}
-            <br>
-            첨부파일 : 
-            <a href="{{post.attached_file.url}}" download="">{{post.attached_file}}</a>
-        </p>
-        해시태그<br>
-        {% for tag in hashtag.all %}
-            <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
-        {% endfor %}
-    </p>
-    <form action="{% url 'scrap' post.id%}" method="get">
-        <input type="hidden" name = 'scrap' value="{{user}}">
-        <button type="submit">scrap</button>
-    </form>
-    
-    <br>
-    <a href="{% url 'request' %}"> Go list </a>
-    <br>
-    
+    <br><br><br>
+    <div class="category">
+        <h1>MISSION Request</h1>
+    </div>
+    <br><br>
 
-    {% if user.username == post.writer %}
-    <a href="{% url 'edit' post.id %}">수정하기</a>
-    <a href="{% url 'delete' post.id %}">삭제하기</a>
-    
-    
-    {% else %}
-    {% if post.status == 'ready' %}
-    {% if judge == False %}
-    <a href="{% url 'missionApply' post.id %}">의뢰 신청</a>
-    {% else %}
-    의뢰신청 완료
-    {% endif %}
-    {% endif %}
-    {% endif %}
-   
+    <br>
     <hr>
-    <h3>comments</h3>
-    {% for comment in comments %}
-   
-    <p>작성자:{{comment.writer}}</p>
-    
-    <p>comment:{{comment.content}}</p>
+    <div class="d-block d-sm-none">
+        <table class="table table-borderless ">
+            <thead>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">&nbsp;제목</th>
+                    <td>{{post.title}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성자</th>
+                    <td>{{post.writer}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성일</th>
+                    <td>{{post.pub_date}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;상태</th>
+                    <td>{{post.status}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;금액</th>
+                    <td>{{post.deposit}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="d-none d-sm-block">
+        <table class="table table-borderless">
+            <thead>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">&nbsp;제목</th>
+                    <td>{{post.title}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성자</th>
+                    <td>{{post.writer}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;상태</th>
+                    <td>{{post.status}}</td>
+                    <td>&nbsp;<b>금액</b></td>
+                    <td>{{post.deposit}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="float:right;"><b>date</b> {{post.pub_date}} &nbsp;&nbsp;&nbsp;<b></b>
+                        &nbsp;</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <hr>
-    {% if user.username == comment.writer %}
-    <a href="{% url 'comment_delete' comment.id %}">삭제하기</a>
-    <details>
-        <summary>수정하기</summary>
-        <form action="{% url 'modify' comment.id %}" method="POST">
-            {% csrf_token %}
-          
-              <textarea name= 'modify_comment' id="" cols="30" rows="10" placeholder="write your content" >{{comment.content}}</textarea>
-            <br>
-            <br>
-            <input type="submit" value='수정'>
+
+
+    <p>
+        <br>
+        <div class="card" style="min-height:30rem;">
+            <div class="card-body">
+                <br>
+                <img src="{{post.attached_img.url}}" alt=""><br>
+                <p> {{post.body}}</p>
+                <br>
+
+            </div>
+        </div>
+
+        <br>
+        <b>첨부파일</b><br><br>
+        <div class="card" style="min-height:5rem;"><a href="{{post.attached_file.url}}"
+                download="">{{post.attached_file}}</a></div>
+        <br><br>
+        <b>#Hashtag</b> {% for tag in hashtag.all %}
+        <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
+        {% endfor %}
+        <br><br><br><br>
+        <div class="buttonss_h">
+            <form action="{% url 'scrap' post.id%}" method="get">
+                <input type="hidden" name='scrap' value="{{user}}">
+                <button class="btn btn-danger" type="submit">scrap</button>
+                {% if user.username == post.writer %}
+                {% else %}
+                {% if post.status == 'ready' %}
+                {% if judge == False %}
+                <button type="button" class="btn btn-danger" onclick="delUrl()">의뢰신청</a>
+                <script type="text/javascript">
+                    function delUrl() {
+                        var Del = confirm("신청하시겠습니까?")
+                        if (Del == true) {
+                            alert("신청되었습니다.")
+                            location.href = "{% url 'missionApply' post.id %}"
+                        } else {
+                            alert("취소되었습니다.")
+                            self.close()
+                        }
+                    }
+
+                </script>
+                {% else %}
+                {% endif %}
+                {% endif %}{% endif %}
+            </form>
+
+        </div>
+        <br>
+        <hr>
+
+        <div class="buttonss" style="float:right;">
+            <a class="btn btn-dark" href="{% url 'request' %}" role="button">목록</a>
+            {% if user.is_authenticated %}
+            {% if user.username == post.writer %}
+            {% if post.status != 'running' and post.status != 'completed' %}
             
-    </form>
-    </details>
-    {% endif %}
-    
-    
-    {% endfor %}
-    <form action="{% url 'new_comment' post.id %}" method="POST">
-        {% csrf_token %}
-        작성자 :<p> {{user.username}}</p>
-        <br>
-        내용 :<br> <textarea name="content" id="" cols="30" rows="10"></textarea>
-        <br>
-        <input type="submit">
-        <br>
-    </form>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+            <a class="btn btn-dark" href="{% url 'edit' post.id %}" role="button">수정</a>
+            <button type="button" class="btn btn-dark" role="button" onclick="delUrl()">삭제</a>
+                <script type="text/javascript">
+                    function delUrl() {
+                        var Del = confirm("삭제 하시겠습니까?")
+                        if (Del == true) {
+                            alert("삭제 되었습니다.")
+                            location.href = "{%url 'delete' post.id %}"
+
+                        } else {
+                            alert("취소 되었습니다.")
+                            self.close()
+                        }
+                    }
+
+                </script>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+        </div>
+        <br><br><br>
+
+        <br><br><br>
+        <h5><b>댓글</b></h5>
+        {% for comment in comments %}
+        <h5>{{comment.writer}} : {{comment.content}}</h5>
+        {% if user.username == comment.writer %}
+        <a class="btn btn-outline-dark" href="{% url 'comment_delete' comment.id %}" role="button">삭제</a>
+        <details>
+            <summary>수정하기</summary>
+            <form action="{% url 'modify' comment.id %}" method="POST">
+                {% csrf_token %}
+
+                <textarea name='modify_comment' id="" cols="30" rows="10"
+                    placeholder="write your content">{{comment.content}}</textarea>
+                <br>
+                <br>
+                <input type="submit" value='수정'>
+
+            </form>
+        </details>
+        <hr>
+
+        {% endif %}
+        {% endfor%}
+        <form action="{% url 'new_comment' post.id %}" method="POST">
+            {% csrf_token %}
+
+
+
+            <br>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">{{user.username}}</label>
+                <textarea name="content" class="form-control" id="" cols="30" rows="5"></textarea>
+                <br>
+                <h5><input class="btn btn-dark" type="submit" value="작성" style="float:right;"></h5>
+
+            </div>
+
+            <br><br>
+        </form>
+</div>
+</div>
+<style>
+    .form-control {
+        resize: none;
+    }
+
+    .card {
+        border-right: none;
+
+        border-left: none;
+
+        border-top: none;
+
+        border-bottom: none;
+
+
+
+
+
+    }
+
+    .bt {
+        all: unset;
+        color: rgb(0, 0, 0);
+        background-color: black;
+        padding: 2px;
+
+
+    }
+
+
+
+    @media screen and (max-width:600px) {
+        .category {
+
+            text-align: center;
+
+        }
+
+        .buttonss_h {
+            text-align: center;
+            display: inline;
+        }
+    }
+
+    @media screen and (min-width: 1000px) {
+        .category {
+
+            text-align: center;
+
+        }
+
+        .buttonss {
+            float: right;
+        }
+
+        .buttonss_h {
+            text-align: center;
+            display: inline;
+        }
+    }
+</style>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 </div>
 {%endblock%}

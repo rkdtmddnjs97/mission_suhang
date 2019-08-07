@@ -1,27 +1,100 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
-<h1>글을 수정중입니다.</h1>
-<form action="{% url 'update' post.id %}" method="POST" enctype="multipart/form-data">
+
+<form action="{% url 'update' blog.id %}" method="POST" enctype="multipart/form-data">
+        <br><br><br>
+        <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+        <br><br>
         {% csrf_token %}
-        제목 : <input type="text" name='title' value="{{post.title}}">
-        <br>
-        <br>
-        작성자 : {{post.writer}}
-        <br>
-        <br>
-        본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" >{{post.body}}</textarea>
-        <br>
-        <br>
-        사진첨부<br>
-        <img src="{{post.attached_img.url}}" alt="">
-        <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
-        <br>
-        <br>
-        <button type='submit'>작성하기</button>
+        <div class="card">
 
 
+                <br><br>
+                {% csrf_token %}
+                <div class="form-group row">
+                        <label for="staticUser" class="col-sm-2 col-form-label">제목</label>
+                        <div class="col-sm-8">
+                                <input type="text" name='title' value="{{post.title}}" readonly
+                                        class="form-control-plaintext">
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <label for="staticUser" class="col-sm-2 col-form-label">작성자</label>
+                        <div class="col-sm-8">
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail"
+                                        value="{{post.writer}}">
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label for="inputTitle" class="col-sm-2 col-form-label">내용</label>
+                        <div class="col-sm-8">
+                                <textarea class="form-control" name="body"
+                                        style="height:30rem;">{{post.body}}</textarea>
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <label for="inputTitle" class="col-sm-2 col-form-label">사진첨부</label>
+                        <div class="col-sm-8">
+                                <div class="custom-file">
+                                        <img src="{{post.attached_img.url}}" alt="">
+                                        <input type="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.gif"
+                                                name="attached_img">
+                                        <label class="custom-file-label" for="customFile">사진을 선택해주세요</label>
+                                </div>
+
+                        </div>
+                </div>
+                <br><br><br>
+        </div>
+        <br><br><br>
+        <button class="btn btn-dark" type='submit' onclick="func_confirm()">수정하기</button>
+        <script type="text/javascript">
+                function func_confirm() {
+                    if (confirm('수정하시겠습니까?')) {
+                        alert("수정되었습니다.");
+                        window.close();
+                        
+                    } else {
+                        alert.close();
+                    }
+                }
+            </script>
+        <br><br><br><br>
 
 </form>
+<style>
+        .card {
+                text-align: center;
+        }
+
+        form {
+                text-align: center;
+        }
+
+        .form-group {
+                text-align: center;
+        }
+
+        .form-control {
+                resize: none;
+        }
+
+        @media screen and (max-width:400px) {
+                div {
+                        text-align: center;
+                }
+        }
+
+        @media screen and (min-width: 1000px) {
+                div {
+                        text-align: center;
+                }
+        }
+</style>
+
+
+
 
 {%endblock%}
-    
