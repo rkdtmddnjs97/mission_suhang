@@ -153,64 +153,158 @@
 
 
 
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" name="university" placeholder="write your university" id='search_school'>
-                        {% for sch_name in school %}
-                            <a class="result_school" onclick="input_school($(this).attr('value'))" value="{{sch_name}}">{{sch_name}}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputDepartment" class="col-sm-2 col-form-label">학과</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" name="department" placeholder="write your department">
-
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputTitle" class="col-sm-2 col-form-label">프로필사진</label>
-                    <div class="col-sm-9_h">
-                        <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img">
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputTitle" class="col-sm-2 col-form-label">자기소개</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control" name="introduction" cols="30" rows="10"></textarea>
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputTitle" class="col-sm-2 col-form-label">해시태그</label>
-                    <div class="col-sm-9">
-                        해시태그 검색<br><br>
-                        <input type="text" name='search_tag_data' id='search_tag'><br><br>
-                        {% for tag in hashtag %}
-                            <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
-                        {% endfor %}
-                        <br><br>
-                        해시태그 추가<br>
-                        <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
-                        -> <input type="text" name='add_hashtag' id="new_hashtag">
-                    </div>
-                </div>
-                <hr>
+        </div>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
+            <div class="col-sm-9">
+                <input class="form-control" name="university" placeholder="write your university" id='search_school'>
+                {% for sch_name in school %}
+                <a class="result_school" onclick="input_school($(this).attr('value'))"
+                    value="{{sch_name}}">{{sch_name}}</a>
+                {% endfor %}
             </div>
-            <br><br>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <label for="inputDepartment" class="col-sm-2 col-form-label">학과</label>
+            <div class="col-sm-9">
+                <input class="form-control" name="department" placeholder="write your department">
+
+            </div>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <label for="inputTitle" class="col-sm-2 col-form-label">프로필사진</label>
+            <div class="col-sm-9_h">
+                <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img">
+            </div>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <label for="inputTitle" class="col-sm-2 col-form-label">자기소개</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" name="introduction" cols="30" rows="10"></textarea>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <label for="inputTitle" class="col-sm-2 col-form-label">해시태그</label>
+            <div class="col-sm-9">
+                해시태그 검색<br><br>
+                <input type="text" name='search_tag_data' id='search_tag'><br><br>
+                {% for tag in hashtag %}
+                <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))"
+                    tag="{{tag}}">#{{tag}}</a>
+                {% endfor %}
+                <br><br>
+                해시태그 추가<br>
+                <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
+                -> <input type="text" name='add_hashtag' id="new_hashtag">
+            </div>
+        </div>
+        <hr>
+        </div>
+        <br><br>
         </div>
 
         </div>
     </form>
 
 </body>
+<script type="text/javascript">
+
+    $('.result_tag').hide();
+    $('.result_school').hide();
+
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    $('[rel="popover_like"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    $('[rel="popover_scrap"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    function check() {
+        var chkbox = document.getElementsByName('input_board');
+        var chk = false;
+        for (var i = 0; i < chkbox.length; i++) {
+            if (chkbox[i].checked) { chk = true; }
+            else { chk = false; }
+        }
+        if (chk == false) {
+            alert("검색 할 게시판을 선택해주세요!");
+            return false;
+        }
+        else { return true; }
+    }
+
+    //해시태그 검색
+    jQuery(function ($) {
+        $('#search_tag').keyup(function (event) {
+            var val = $(this).val();
+            if (val == "") {
+                $('.result_tag').hide();
+            } else {
+                $('.result_tag').hide();
+                $(".result_tag:contains('" + val + "')").show();
+            }
+        });
+    });
+
+    function input_hashtag(val) {
+        var tag = "#" + val;
+        tag = $('#new_hashtag').val() + tag;
+        $('#new_hashtag').val(tag);
+    }
+
+    //대학교 검색
+    jQuery(function ($) {
+        $('#search_school').keyup(function (event) {
+            var name = $(this).val();
+            if (name == "") {
+                $('.result_school').hide();
+            } else {
+                $('.result_school').hide();
+                $(".result_school:contains('" + name + "')").show();
+            }
+        });
+    });
+
+    function input_school(val) {
+        var school = val;
+        $('#search_school').val(school);
+    }
+
+
+</script>
+
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 
