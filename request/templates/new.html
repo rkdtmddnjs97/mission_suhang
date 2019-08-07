@@ -4,8 +4,9 @@
 
 
 <form action="{%url 'create' %}" method="POST" enctype="multipart/form-data">
-    <br><br><br>
-    <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+    <br><br>
+    <h1 class="rb">Request Board</h1>
+    <!-- <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div> -->
     <br><br>
     {% csrf_token %}
     <div class="card">
@@ -16,7 +17,7 @@
         <div class="form-group row">
             <label for="staticUser" class="col-sm-2 col-form-label">작성자</label>
             <div class="col-sm-8">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{user.username}}">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{user.username}}" style="text-align: center;">
             </div>
         </div>
         <div class="form-group row">
@@ -76,14 +77,12 @@
     </div>
 
     <br><br><br>
-    <button class="btn btn-dark" type='submit'>작성하기</button>
+    <div class="bttnn">
+    <button class="btn btn-dark" type='submit'>작성하기</button></div>
     <br><br><br><br>
 </form>
 <style>
-    .card {
-        text-align: center;
-    }
-
+    
     form {
         text-align: center;
     }
@@ -103,8 +102,18 @@
     }
 
     @media screen and (min-width: 1000px) {
-        div {
-            text-align: center;
+        .bttnn {
+            margin-right: 18rem;
+        }
+
+        .card {
+            width: 50rem;
+
+        }
+
+        .rb {
+            margin-right: 52rem;
+
         }
     }
 </style>
