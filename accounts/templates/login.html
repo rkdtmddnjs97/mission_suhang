@@ -1,35 +1,348 @@
-{% if error %}
-{{ error }}
-<br>
-<br>
-{% endif %}
 
-<!doctype html>
-<html lang="kr">
+
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 
 <body>
+    {% load staticfiles %}
 
-      <h1>Login</h1>
-      <div class="tabs">
-        <span class="tab signin active"><a href="#signin">Sign in</a></span>
-            <form method="POST" action="{% url 'login'%}">
-                {% csrf_token %}
-            <input type="text" name="username" id="email" class="inpt" required="required" placeholder="Your id">
-            <label for="email">Your id</label>
-            <input type="password" name="password" id="password" class="inpt" required="required"
-              placeholder="Your password">
-            <label for="password">Your password</label>
-            <input type="checkbox" id="remember" class="checkbox" checked>
-            <label for="remember">Remember me</label>
-            <div class="submit-wrap">
-              <input type="submit" value="Sign in" class="submit">
-              <a href="{% url 'signup' %}" class="more"><input type="button" value="Sign Up" class="submit"></a>
+
+    <div class='pont'>
+        <div class="pont">
+
+        <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
+            <div class="dropdown">
+                <div class='pont'>
+                    <a class="navbar-brand">
+                        <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            style='font-size: 1.2rem;'>
+                            MY
+                        </a>
+
+
+                        <div class="dropdown-menu">
+                            {% if not user.is_authenticated %}
+                            <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                            <a class="dropdown-item" href="{% url 'signup' %}">Signup</a>
+
+                            {% else %}
+                            <form id="logout" class="dropdown-item" method="POST" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <input type="submit" value="Logout">
+                            </form>
+                            <a class="dropdown-item"  href="{% url 'profile' user.profile.profile_id %}">Mypage ( {{user.username}})</a>
+                            <a class="dropdown-item" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
             </div>
-          </form>
+            <div class="hh">
+                <a class="navbar-brand" href="{% url 'home' %}">Mission Suhang</a>
+            </div>
+
+
+
+
+            <div class="h">
+                <a class="navbar-brand" href="{% url 'home' %}">Mission Suhang</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                </button>
+            </div>
+
+            &nbsp &nbsp &nbsp
+
+            <div class="bignav">
+                {% if not user.is_authenticated %}
+
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                &nbsp
+
+
+                <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+                &nbsp
+
+                {% else %}
+
+                <form id="logout" class="nav-link" method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Logout">
+                </form>
+                &nbsp
+                <a class="nav-link"  href="{% url 'profile' user.profile.profile_id %}">Mypage ( {{user.username}})</a>
+                <a class="nav-link" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+
+                {% endif %}
+
+                &nbsp &nbsp
+             
+            </div>
+    </div>
+    </nav>
+  
+
+
+    <p ><a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}"  style="margin:  3rem 0 0 0;"></a></p>
+    
+    
+    <div class="tabs">
+      <!-- <span class="tab signin active"><a href="#signin">Sign in</a></span> -->
+      <div class="item1">
+        <hr>
+        <div class="log_top">Login</div>
+        <hr>
+          <form method="POST" action="{% url 'login'%}">
+              {% csrf_token %}
+          
+          <!-- <label for="email">Your id</label> -->
+          <input type="text" name="username" id="email" class="inpt" required="required" placeholder="Your id">
+          
+          <br>
+          <!-- <label for="password">Your password</label> -->
+          <input type="password" name="password" id="password" class="inpt" required="required"
+            placeholder="Your password">
+         
+         <br>
+         <br>
+        
+
+          <div class="submit-wrap">
+            <span class="more2"><input type="submit" value="Sign in" class="submit" class="more2"></span> <a>/</a>
+         <a href="{% url 'signup' %}" class="more"><input type="button" value="Sign Up" class="submit"></a></div>
+          </div>
+        </form>
+      
+
+
+
+  
+    </div>
+    </div>
+</div>
+
 </body>
 
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+    hr{
+    border: 1px solid rgb(255, 255, 255);
+  }
+  .log_top{
+    text-align: center;
+    text-decoration: underline;
+  }
+  .container{
+   
+
+  }
+  
+  .item1{
+    
+    
+    margin: 5rem auto;
+   
+  }
+  .more:hover {
+        text-decoration: none;
+        color: rgb(247, 68, 74);
+        
+    }
+  .more2:hover {
+        text-decoration: none;
+        color:   rgb(50, 161, 137);
+  }
+
+  .tabs{
+   
+    text-align: center;
+   
+  }
+  p{
+    text-align: center;
+  }
+  .container{
+   /* margin: 1rem; */
+  }
+  .more{
+    all: unset;
+  }
+    body {}
+
+    .dropdown-item:hover {
+        text-decoration: none;
+        color: rgb(0, 0, 0);
+        ;
+        background: rgb(247, 68, 74);
+        ;
+
+    }
+
+
+    .holder::placeholder {
+        color: rgb(255, 255, 255);
+    }
+
+    .holder:hover {
+        text-decoration: none;
+        color:  rgb(50, 161, 137);
+    }
+
+    input {
+        all: unset;
+    }
+
+    .pont {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
+    .pont_size {
+        font-size: 10%;
+    }
+
+    .navbar {
+        color: rgb(252, 252, 252);
+
+    }
+
+    .nav-link {
+        all: unset;
+        font-size: 1.5rem;
+    }
+
+    .nav-link:hover {
+        text-decoration: none;
+        color:  rgb(50, 161, 137);
+    }
+
+    .dropdown:hover {
+        text-decoration: none;
+        color:  rgb(50, 161, 137);
+    }
+
+
+    .nav-item {
+        font-size: 1.5rem;
+    }
+
+    .navbar-brand {
+        all: unset;
+        font-size: 1.8rem;
+    }
+
+    .navbar-brand:hover {
+        text-decoration: none;
+        color:  rgb(247, 68, 74);
+    }
+
+
+    @media screen and (max-width:400px) {
+        .a {
+            display: none;
+        }
+
+        .nav-item {
+            font-size: 1rem;
+        }
+
+        .holder {
+            display: none;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+        }
+
+        .bignav {
+            display: none;
+        }
+
+        .h {
+            display: none;
+        }
+        .item1{
+      text-align: center;
+      width:16rem;
+      height: 15rem;
+      font-size:1.4rem;
+      margin: 2rem auto;
+      border: 0.2rem solid rgb(0, 0, 0);
+     
+     
+    }
+    .login_title{
+     
+
+    }
+    .log_top{
+      font-size:2rem;
+     
+    }
+    hr{
+      border: 0.01px;
+    }
+    .login_title{
+      width: 10%;
+
+    }
+    img{
+      width:250px; 
+     
+    }
+
+    }
+
+    @media screen and (min-width: 500px) and (max-width:200px) {}
+
+    @media screen and (min-width: 1000px) {
+        .search {
+            display: none;
+        }
+
+        .side-pont {
+            font-size: 1.5rem;
+        }
+
+        .dropdown {
+            display: none;
+        }
+
+        .hh {
+            display: none;
+        }
+        .item1{
+          text-align: center;
+          width: 35rem;
+          height: 28rem;
+          font-size:2.5rem;
+          border: 0.5rem solid rgb(0, 0, 0);
+          
+        }
+        .log_top{
+      font-size:3.5rem;
+     
+    }
+    img{
+      width:22%; 
+      height:19%;
+    }
+    }
+</style>
+
+</html>
