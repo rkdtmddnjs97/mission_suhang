@@ -27,9 +27,46 @@
         crossorigin="anonymous"></script>
 
     <div class='pont'>
+<!-- 여기가 모바일 -->
+<div class="mnav">
+        <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
+          <div class="dropdown">
+            <div class='pont'>
+              <a class="navbar-brand">
+                <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  >
+                  MY▼
+                </a>
+    
+    
+                <div class="dropdown-menu">
+                  {% if not user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                  <a class="dropdown-item" href="{% url 'signup' %}">Signup</a>
+    
+                  {% else %}
+                  <form id="logout" class="dropdown-item" method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <input class="logout" type="submit" value="Logout">
+                  </form>
+                  <a class="dropdown-item" href="{% url 'profile' user.profile.profile_id %}">Mypage ({{user.username}})</a>
+                  <a class="dropdown-item" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+                  <!-- <a class="dropdown-item" href="">수행중인 미션</a>
+                  <a class="dropdown-item" href="">수행완료된 미션</a>
+                  <a class="dropdown-item" href="">의뢰중인 미션</a>
+                  <a class="dropdown-item" href="">의뢰완료된 미션</a>
+                  <a class="dropdown-item" href="">스크랩한 미션</a> -->
+                  {% endif %}
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="hh">
+            <a class="navbar-brand" href="{% url 'home' %}">Mission Suhang</a>
+          </div>
+      </div>
 
-
-
+<!-- 여기가 노트북 -->
         <div class="container">
 
             {% block content %}
@@ -50,10 +87,9 @@
       <a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="400px;" style="position: fixed; top:0px; right:0px;"></a>
   
       <div class="sidenav_2" style="width: 400px; position: fixed; top:111px; right:0px; ">
-            <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">      
+            <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
                     <span class="search_menu">
-                        <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판 <br>
-                        <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
+                      &nbsp&nbsp  <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판<input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
                     </span>
                     <span class="search_menu">
                             <select class="form-control"  name ="input_type" >
@@ -63,13 +99,15 @@
                               <option name="input_type" value ="body">Context</option>
                             </select>
                     </span>
-                    <span class='green_window'>
-                        <input type="text" name='input_data' class='input_text'>
-                    </span>
-                    &nbsp;
-                    <button type='submit' class='sch_smit' id='search_submit'>검색</button>
+                    
+                            <input type="text" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid; color:white;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
+                    <button type='submit' class='sch_smit' id='search_submit'><img class="image" src="{% static 'search.png' %}" width="37px;"></button>
             
                 </form>
+                <br>
+                <br>
+
+                
           <div class="container">
                 {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
                     <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -77,13 +115,13 @@
                 {% else %}
                 {% if request.user.profile.approval == True or request.user.is_superuser == True %}
                <a id="logout_btn">
-                    <form class="nav-link" method="POST" action="{% url 'logout' %}">
+                    <form method="POST" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <input style="all:unset; color: white;" type="submit" value="Logout" >
                     </form>
                 </a>
                 {% if request.user.is_superuser == False %}
-                    <a class="nav-link" href="{% url 'profile' user.profile.profile_id %}">Mypage (
+                    <a href="{% url 'profile' user.profile.profile_id %}">Mypage (
                         {{user.username}} ) </a>
                     
                 {% endif %}
@@ -126,7 +164,7 @@
   
       </script>
     </div>
-    <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
+    <div style="position: fixed; bottom:5px; right:405px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
     </div>
     
 </body>
@@ -144,42 +182,24 @@
     .search_menu {
         display: inline-block;
     }
+    .holder{
+       margin: 3px 0 0 0;
+    } 
 
-    .green_window {
-        display: inline-block;
-        width: 366px;
-        height: 34px;
-        border: 3px solid #7c817b;
-        background: white;
-    }
-
-    .input_text {
-        width: 348px;
-        height: 21px;
-        margin: 6px 0 0 9px;
-        border: 0;
-        line-height: 21px;
-        font-weight: bold;
-        font-size: 16px;
-        outline: none;
-    }
-
+    
     .sch_smit {
         width: 54px;
         height: 35px;
         margin: 0;
         border: 0;
         vertical-align: top;
-        background: rgb(108, 114, 106);
+        background:  rgb(83, 177, 156);
         color: white;
         font-weight: bold;
         border-radius: 1px;
         cursor: pointer;
     }
 
-    .sch_smit:hover {
-        background: rgb(120, 121, 119);
-    }
 
     .ul-popover {
         list-style-type: none;
@@ -251,6 +271,120 @@
   .openmenu>i {
     font-size: 30px;
   }
+ 
+ /* 모바일 네브바 */
+ .dropdown-item:hover {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    ;
+    background: rgb(247, 68, 74);
+    ;
+
+  }
+  button{
+      all:unset;
+  }
+ 
+  .edit_bt:hover{
+      all:unset;
+   color: rgb(247, 68, 74);
+  }
+
+
+  .holder::placeholder {
+    color: rgb(255, 255, 255);
+  }
+
+  .holder:hover {
+    text-decoration: none;
+    color: rgb(50, 161, 137);
+  }
+
+  .logout {
+    all: unset;
+  }
+
+  .navbar-brand {
+    all: unset;
+    color: white;
+    text-align: right;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 1.3rem;
+  }
+  .navbar-brand:hover{
+    color:  rgb(50, 161, 137); 
+  }
+  #dropdownMenuLink{
+    font-size: 1.5rem;
+     color :white;
+  }
+  #dropdownMenuLink:hover{
+    color :rgb(247, 68, 74);
+  }
+  
+
+    @media screen and (max-width:600px) {
+        .top{
+            width: 70px;
+        }
+        .a {
+            display: none;
+        }
+
+        .sidenav  {
+            display: none;
+        }
+        .sidenav_2{
+            display: none;
+        }
+
+        .holder {
+            display: none;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+        }
+
+        .bignav {
+            display: none;
+        }
+
+        .h {
+            display: none;
+        }
+        .login_title{
+            display: none;
+        }
+
+    }
+
+    @media screen and (min-width: 500px) and (max-width:200px) {}
+
+    @media screen and (min-width: 1000px) {
+        .top{
+            width: 100px;
+        }
+        .search {
+            display: none;
+        }
+
+        .side-pont {
+            font-size: 1.5rem;
+        }
+
+        .dropdown {
+            display: none;
+        }
+
+        .hh {
+            display: none;
+        }
+        .mnav{
+            display: none;
+        } 
+    }
+</style>
 </style>
 
 <script type="text/javascript">
