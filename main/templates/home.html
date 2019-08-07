@@ -14,10 +14,10 @@
 <div class="pont">
 <br>
 {% if judge == True %}
-<a href="{% url 'dissatisfication'%}">민원사항</a>
+    <a href="{% url 'dissatisfication'%}">민원사항</a>
 {% endif %}
-<br>
-<a href="{% url 'board'%}">자유게시판</a><br>
+    <br>
+    <a href="{% url 'board'%}">자유게시판</a><br>
 {%for  recent_free in recent_freeboard %}
     
      <a href="{% url 'detail' recent_free.id%}">{{recent_free.title}}</a><br>
@@ -33,7 +33,7 @@
 <br>
 <p>최근 공지사항</p>
 {% for announcemnt in recent_announcements %}
-<a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
+    <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
 {% endfor %}
 <br>
 
@@ -132,11 +132,6 @@
         {% endfor %}
         <a href="{% url 'notifications' %}">see all</a>
     </a> 
-
-
-
-
-
 
 {% endif %}
 {% endif %}
