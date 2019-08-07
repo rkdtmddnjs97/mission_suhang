@@ -1,30 +1,44 @@
 {% extends 'base.html'%}
 
 {% block content %}
-
-<h1>회원정보 수정 창</h1>
-
-
+<div class="pont">
+<div class="box">
+        <h2 class="title" style="text-decoration: underline;">Edit My Page</h2>
+        <br>
 <form action="{% url 'updateProfile' userProfile.profile_id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token%}
 
     프로필 사진<br>
-    <img src="{{userProfile.profile_img.url}}" alt=""><br>
-    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="">
+    <img src="{{userProfile.profile_img.url}}" alt="" ><br>
+    <input  type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="" >
     <br><br>
 
-    이름 : <input type="text" name="name" value="{{userProfile.name}}">
+    이름 : <input type="text" name="name" value="{{userProfile.name}}" style=" all:unset; border-bottom: #000000 2px solid;">
     <br><br>
 
-    학교 : <input type="text" name="university" value="{{userProfile.university}}">
+    학교 : <input type="text" name="university" value="{{userProfile.university}}"  style=" all:unset; border-bottom: #000000 2px solid;">
     <br><br>
 
-    전공 : <input type="text" name="department" value="{{userProfile.department}}">
+    전공 : <input type="text" name="department" value="{{userProfile.department}}"  style=" all:unset; border-bottom: #000000 2px solid;">
     <br><br>
 
     간단한 본인소개 <br>
-    <input type="textarea" name="introduction" value="{{userProfile.introduction}}">
+    <input type="textarea" name="introduction" value="{{userProfile.introduction}}"  style=" all:unset; border-bottom: #000000 2px solid;">
     <br><br>
+
+    #해시태그
+
+    {% for tag in checked_tag %}
+        <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}" checked="checked">#{{tag}}    
+    {% endfor %}
+
+    {% for tag in unchecked_tag %}
+        <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}}
+    {% endfor %}
+
+    <br>
+    <br>
+    <button  class="edit_bt" type="submit" >수정완료</button>&nbsp / &nbsp<a href="{% url 'profile' userProfile.profile_id %}" class="edit_bt" style="all:unset;">취소하기</a>
 
     #해시태그
 
@@ -44,9 +58,13 @@
 
     <br>
     <br>
-    <button type="submit">수정</button>
-    <a href="{% url 'profile' userProfile.profile_id %}">취소</a>
 
-</form>
-
+  </form>
+</div>
+</body>
+<style>
+.box{
+  
+}
+</style>
 {% endblock %}
