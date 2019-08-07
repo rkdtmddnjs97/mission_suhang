@@ -1,7 +1,211 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div class="container">
+<div class="container d-none d-sm-block" style="width: 50rem;
+margin-left: 0;padding-right:150px;">
+    <br><br>
+    <div class="category">
+        <h1>Free Board</h1>
+    </div>
+    <br><br>
+    <div class="d-block d-sm-none">
+        <table class="table table-borderless ">
+            <thead>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">&nbsp;제목</th>
+                    <td>{{blog.title}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성자</th>
+                    <td><a href="{% url 'profile' blog.writer  %}">{{blog.writer}}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성일</th>
+                    <td>{{blog.pub_date}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;좋아요</th>
+                    <td>{{like_count}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
+
+    <div class="d-none d-sm-block">
+        <table class="table table-borderless ">
+            <thead>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">&nbsp;제목</th>
+                    <td>{{blog.title}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성자</th>
+                    <td> <a href="{% url 'profile' blog.writer  %}">{{blog.writer}}</a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="float:right;"><b>date</b> {{blog.pub_date}} &nbsp;&nbsp;&nbsp;<b>like</b>
+                        &nbsp;{{like_count}}</td>
+
+                </tr>
+
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
+
+
+    <p>
+        <br>
+        <div class="card" style="min-height:30rem;">
+            <div class="card-body">
+                <p> {{blog.body}}</p>
+            </div>
+        </div>
+        <b>#Hashtag</b> {% for tag in hashtag.all %}
+        <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
+        {% endfor %}
+
+        <hr>
+        <div class="buttonss" style="float:right;">
+            <a class="btn btn-dark" href="{% url 'board' %}" role="button">목록</a>
+            {% if user.username == blog.writer %}
+            <a class="btn btn-dark" href="{% url 'b_edit' blog.id %}" role="button">수정</a>
+            <button type="button" class="btn btn-dark" role="button" onclick="delUrl()">삭제</a>
+                <script type="text/javascript">
+                    function delUrl() {
+                        var Del = confirm("삭제 하시겠습니까?")
+                        if (Del == true) {
+                            alert("삭제 되었습니다.")
+                            location.href = "{%url 'b_delete' blog.id %}"
+
+                        } else {
+                            alert("취소 되었습니다.")
+                            self.close()
+                        }
+                    }
+
+                </script>
+                {% endif %}
+        </div>
+
+    </p>
+
+    {% if user.is_authenticated %}
+    <form action="{% url 'b_like' blog.id %}" method="get">
+        <input type="hidden" name='like' value="{{user}}">
+        <button class="btn btn-dark" type="submit">좋아요</button>
+    </form>
+    {% endif %}
+
+    <hr>
+    <br>
+    <h5><b>댓글</b></h5>
+    <br>
+    {% for comment in comments %}
+    <h5>
+        <div class="rounded text-break" style="width: 40rem;min-height:2rem;border-color:#A6A6A7;">
+            <div class="row">
+                <div class="col-4" style="text-align: center;line-height:2rem;"> {{comment.writer}}&nbsp;&nbsp;</div>
+                <div class="col-8">{{comment.content}}</div>
+            </div>
+
+    </h5>
+
+    {% if user.is_authenticated %}
+    {% if user.username == comment.writer %}
+
+    <details>
+        <summary>수정하기&nbsp<a>/</a>&nbsp<a role="button" onclick="delUrll()"> 삭제</a>
+            <hr>
+        </summary>
+        <script type="text/javascript">
+            function delUrll() {
+                var Del = confirm("삭제 하시겠습니까?")
+                if (Del == true) {
+                    alert("삭제 되었습니다.")
+                    location.href = "{%url 'b_comment_delete' comment.id %}"
+
+                } else {
+                    alert("취소 되었습니다.")
+                    self.close()
+                }
+            }
+
+        </script>
+        <form action="{% url 'b_modify' comment.id %}" method="POST">
+            {% csrf_token %}
+
+            <textarea class="rounded" name='modify_comment' id="" cols="82"
+                placeholder="write your content">{{comment.content}}</textarea>
+            <br>
+            <br>
+            <input type="submit" value='수정완료' class="submit_bt"
+                style="rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
+
+
+        </form>
+    </details>
+    <hr>
+
+    {% endif %}
+    {% endif %}
+    {% endfor%}
+    {%if comments.has_previous%}
+    <a href="?page=1">First</a>
+    <a href="?page={{comments.previous_page_number}}">Previous</a>
+    {%endif%}
+
+    <span>{{comments.number}}</span>
+    <span>of</span>
+    <span>{{comments.paginator.num_pages}}</span>
+
+    {%if comments.has_next%}
+    <a href="?page={{comments.next_page_number}}">Next</a>
+    <a href="?page={{comments.paginator.num_pages}}">Last</a>
+    {%endif%}
+    <br>
+    {% if user.is_authenticated %}
+    <form action="{% url 'b_new_comment' blog.id %}" method="POST">
+        {% csrf_token %}
+
+
+
+        <br>
+
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">{{user.username}}</label>
+            <textarea name="content" class="form-control" id="" cols="30" rows="5"></textarea>
+            <br>
+            <h5><input class="btn btn-dark" type="submit" value="작성" style="float:right;"></h5>
+
+        </div>
+
+        <br><br>
+    </form>
+    {% endif %}
+</div>
+</div>
+<div class="container d-block d-sm-none">
     <br><br>
     <div class="category">
         <h1>Free Board</h1>
@@ -90,21 +294,21 @@
             {% if user.username == blog.writer %}
             <a class="btn btn-dark" href="{% url 'b_edit' blog.id %}" role="button">수정</a>
             <button type="button" class="btn btn-dark" role="button" onclick="delUrl()">삭제</a>
-            <script type="text/javascript">
-                function delUrl() {
-                    var Del = confirm("삭제 하시겠습니까?")
-                    if (Del == true) {
-                        alert("삭제 되었습니다.")
-                        location.href="{%url 'b_delete' blog.id %}"
+                <script type="text/javascript">
+                    function delUrl() {
+                        var Del = confirm("삭제 하시겠습니까?")
+                        if (Del == true) {
+                            alert("삭제 되었습니다.")
+                            location.href = "{%url 'b_delete' blog.id %}"
 
-                    } else {
-                        alert("취소 되었습니다.")
-                        self.close()
+                        } else {
+                            alert("취소 되었습니다.")
+                            self.close()
+                        }
                     }
-                }
 
-            </script>
-            {% endif %}
+                </script>
+                {% endif %}
         </div>
 
     </p>
@@ -114,28 +318,53 @@
         <input type="hidden" name='like' value="{{user}}">
         <button class="btn btn-dark" type="submit">좋아요</button>
     </form>
-{% endif %}
+    {% endif %}
 
     <hr>
     <br>
     <h5><b>댓글</b></h5>
     <br>
     {% for comment in comments %}
-    <h5>{{comment.writer}} : {{comment.content}}</h5>
+    <h5>
+        <div class="rounded text-break" style="width: 20rem;min-height:2rem;border-color:#A6A6A7;">
+            <div class="row">
+                <div class="col-4" style="text-align: center;line-height:2rem;"> {{comment.writer}}&nbsp;&nbsp;</div>
+                <div class="col-8">{{comment.content}}</div>
+            </div>
 
-{% if user.is_authenticated %}
+    </h5>
+
+    {% if user.is_authenticated %}
     {% if user.username == comment.writer %}
-    <a class="btn btn-outline-dark" href="{% url 'b_comment_delete' comment.id %}" role="button">삭제</a>
+
     <details>
-        <summary>수정하기</summary>
+        <summary>수정하기&nbsp<a>/</a>&nbsp<a class="btn btn-outline-dark" role="button" onclick="delUrll()"> 삭제</a>
+            <hr>
+        </summary>
+        <script type="text/javascript">
+            function delUrll() {
+                var Del = confirm("삭제 하시겠습니까?")
+                if (Del == true) {
+                    alert("삭제 되었습니다.")
+                    location.href = "{%url 'b_comment_delete' comment.id %}"
+
+                } else {
+                    alert("취소 되었습니다.")
+                    self.close()
+                }
+            }
+
+        </script>
         <form action="{% url 'b_modify' comment.id %}" method="POST">
             {% csrf_token %}
 
-            <textarea name='modify_comment' id="" cols="30" rows="10"
+            <textarea class="rounded" name='modify_comment' id="" cols="42"
                 placeholder="write your content">{{comment.content}}</textarea>
             <br>
             <br>
-            <input type="submit" value='수정'>
+            <input type="submit" value='수정완료' class="submit_bt"
+                style="rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
+
 
         </form>
     </details>
@@ -165,7 +394,7 @@
 
 
         <br>
-    
+
         <div class="form-group">
             <label for="exampleFormControlTextarea1">{{user.username}}</label>
             <textarea name="content" class="form-control" id="" cols="30" rows="5"></textarea>
@@ -199,7 +428,14 @@
 
     }
 
+    .text-break {
+        border: 1px solid #EAEDF0;
+        vertical-align: middle;
+    }
 
+    textarea {
+        resize: none;
+    }
 
     @media screen and (max-width:400px) {
         .category {
@@ -219,6 +455,11 @@
 
         .buttons {
             float: right;
+        }
+
+        .container {
+            width: 50rem;
+            margin-left: 0;
         }
     }
 </style>

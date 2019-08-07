@@ -7,15 +7,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
-<script>
+<!-- <script>
     $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();    
       $('#btn1').on("click",function () {
         $('#scr').attr({"title":"Scrapped"});
     });
     });
- 
-</script>
+</script> -->
 
 <div class="container">
     <br><br><br>
@@ -38,7 +37,7 @@
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td>{{post.writer}}</td>
+                    <td><a href="{% url 'profile' post.writer  %}">{{post.writer}}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성일</th>
@@ -72,7 +71,7 @@
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td>{{post.writer}}</td>
+                    <td><a href="{% url 'profile' post.writer  %}">{{post.writer}}</a></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -129,22 +128,23 @@
         <br><br><br><br>
         <div class="buttonss_h">
 
+            
+                
+        
+
             {% if user.is_authenticated %}
+            {% if user.username != post.writer %}
                 {% if isScraped == False %}
-                <form action="{% url 'scrap' post.id %}" method="get">
-                    <input type="hidden" name='scrap' value="{{user}}">
-                    <button class="btn btn-danger" type="submit">scrap</button>
-                </form>
+                    <form action="{% url 'scrap' post.id %}" method="get">
+                        <input type="hidden" name='scrap' value="{{user}}">
+                        <button class="btn btn-danger" type="submit">scrap</button>
+                    </form>
                 {% else %}
                     <form action="{% url 'scrap' post.id %}" method="get">
                         <input type="hidden" name='scrap' value="{{user}}">
                         <button class="btn btn-danger" type="submit">scraped</button>
                     </form>
                 {% endif %}
-            {% endif %}
-
-            {% if user.is_authenticated %}
-            {% if user.username != post.writer %}
             {% if post.status == 'ready' %}
             {% if judge == False %}
                 <button type="button" class="btn btn-danger" onclick="delUrl()">의뢰신청</a>

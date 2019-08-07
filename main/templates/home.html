@@ -56,18 +56,27 @@
 
 <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
         <span class="search_menu">
-            <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box >자유 게시판<br>
-            <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box >의뢰 게시판<br>
+            <input type = "checkbox" name = "input_board" value = "freeboard" id = "freeboard" class="chk_box" >자유 게시판<br>
+            <input type = "checkbox" name = "input_board" value = "missionboard" id = "missionboard" class="chk_box" >의뢰 게시판<br>
         </span>
         <span class="search_menu">
                 <select class="form-control"  name ="input_type" >
-                  <option name="input_type" value ="title" selected>title</option>
-                  <option name="input_type" value ="hashtag">hashtag</option>
-                  <option name="input_type" value ="writer">writer</option>
-                  <option name="input_type" value ="body">Context</option>
+                  <option name="input_type" value ="title" selected>제목</option>
+                  <option name="input_type" value ="writer">작성자</option>
+                  <option name="input_type" value ="body">내용</option>
+                  <option name="input_type" value ="hashtag">해시태그</option>
                 </select>
         </span>
-            <input type="text" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
+            <input type="text" id="search_data" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
+            <br>
+            <!-- for문 만들어서 출력 -->
+            <!-- <span>연관 검색어</span><br> -->
+            {% for req_title in all_request_title %}
+                <a class="request_title" onclick="search_title($(this).attr('value'))" value="{{req_title}}">{{req_title}}<br></a>
+            {% endfor %}
+            {% for fre_title in all_free_title %}
+                <a class="free_title" onclick="search_title($(this).attr('value'))" value="{{fre_title}}">{{fre_title}}<br></a>
+            {% endfor %}
         <button type='submit' class='sch_smit' id='search_submit'><img class="image" src="{% static 'search.png' %}" width="37px;"></button>
 
     </form>
@@ -169,10 +178,6 @@
     </a> 
 
 
-
-
-
-
 {% endif %}
 {% endif %}
 
@@ -183,7 +188,9 @@
 <script type="text/javascript">
 
     $('.result_tag').hide();
-
+    $('.request_title').hide();
+    $('.free_title').hide();
+    
     $('[rel="popover"]').popover({
         container: 'body',
         html: true,
@@ -231,23 +238,48 @@
         else { return true; }
     }
 
+    // 검색바 연관검색
     jQuery(function($) {
-        $('#search_tag').keyup(function(event) {
+        $('#search_data').on("propertychange change keyup paste input", function() {
             var val = $(this).val();
-            if (val == "") {
-                $('.result_tag').hide();
-            } else {
-                $('.result_tag').hide();
-                $(".result_tag:contains('"+val+"')").show();
+            var free = $('input:checkbox[id="freeboard"]').is(":checked") 
+            var mission = $('input:checkbox[id="missionboard"]').is(":checked")
+
+            if(free == true && mission == false) {
+                if (val == "") {
+                    $('.free_title').hide();
+                } else {
+                    $('.free_title').hide();
+                    $(".free_title:contains('"+val+"')").show();
+                }
+            } else if (free == false && mission == true) {
+                
+                if (val == "") {
+                    $('.request_title').hide();
+                } else {
+                    $('.request_title').hide();
+                    $(".request_title:contains('"+val+"')").show();
+                }
+            } else if (free == true && mission == true) {
+                if (val == "") {
+                    $('.free_title').hide();
+                    $('.request_title').hide();
+                } else {
+                    $('.free_title').hide();
+                    $('.request_title').hide();
+                    $(".free_title:contains('"+val+"')").show();
+                    $(".request_title:contains('"+val+"')").show();
+                }
             }
         });
     });
 
-    function input_hashtag(val){
-        var tag = "#"+val;
-        tag = $('#new_hashtag').val() + tag;
-        $('#new_hashtag').val(tag);
+    function search_title(val){
+        $('#search_data').val(val);
+        $('.request_title').hide();
+        $('.free_title').hide();
     }
+
 </script>
 
 </body>

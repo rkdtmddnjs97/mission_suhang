@@ -1,17 +1,149 @@
 {% extends 'base.html'%}
 
 {% block content %}
+{% load staticfiles %}
+
+
+<!-- 새사이드네브 -->
+<div id="mysidenav" class="sidenav">
+        <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a>
+        <a style="font-size:45px;" href="">MY MISSION</a><br>
+        <br>
+        <br>
+        <a style="font-size:35px;" href="">수행중인 미션</a><br>
+        <a style="font-size:35px;" href="">수행완료된 미션</a><br>
+        <a style="font-size:35px;" href="">의뢰중인 미션</a><br>
+        <a style="font-size:35px;" href="">의뢰완료된 미션</a><br>
+        <a style="font-size:35px;" href="">스크랩한 미션</a>
+    </div>
+    
+    <span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true" ></i> <a style="font-size:40px;">◀Open Mission</a></span>
+    
+    <script>
+        function openNav() {
+            document.getElementById('mysidenav').style.width = '300px';
+        }
+        function closeNav() {
+            document.getElementById('mysidenav').style.width = '0';
+        }
+    </script>
+<div class="title" >Complete Mission</div>
+<br>
 {% for blocked_post in blocked_posts%}
 <a href="{% url 'detail' blocked_post.id %}">
     {{blocked_post.title}} /
     {{blocked_post.writer}} /
-    {{blocked_post.body}} /
     {{blocked_post.pub_date}}
 </a>
 <br>
-<a href="{% url 'submit_result' blocked_post.id %}">최종제출물 확인</a> /
-<a href="{% url 'delete_final' post_id=blocked_post.id app_id=profile_id %}">삭제</a> /
+<a class="a1" href="{% url 'submit_result' blocked_post.id %}">최종제출물 확인</a> <a>/</a>&nbsp
+<a class="a1" href="{% url 'delete_final' post_id=blocked_post.id app_id=profile_id %}">삭제</a>
+<hr>
 {% endfor %}
-<a href="{% url 'profile' profile_id %}">뒤로가기</a>
+<div class="top4" ><a href="#"><img  src="{% static 'top.png' %}" width="50rem;"></a>
+    <div class="back2"><a href="{% url 'profile' profile_id %}"><img src="{% static '뒤5.png' %}" width="50rem;"></a></div>
+    <style>
+        a{
+            all:unset;
+        }
+        a:hover{
+            text-decoration: none;
+            color: rgb(50, 161, 137); 
+        }
+        hr{
+            border-top: white 1px solid;
+            border-bottom: #000000 2px solid;
+        }
+        .a1:hover{
+            color: rgb(247, 68, 74);
+        }
+        .title{
+            text-decoration: underline;
+        }
+    @media screen and (max-width:600px) {
+        hr{
+            width: 19rem;
+        }
+        a{
+            font-size: 1.2rem;
+        }
+        .top4{
+            position: fixed; 
+            bottom:0.5rem; 
+            right:0.3rem;
+        }
+        .back2{
+            position: fixed; 
+            bottom:0.5rem; 
+            right:2.5rem;
+        }
+    
+    
+        .title {
+          font-size: 30px;
+        }
+    
+    
+        .top {
+          width: 40px;
+        }
+      
+       h1{
+        font-size: 30px;
+        margin: 1rem 0 0 0;
+         }
+        .list{
+            font-size: 22px;
+        }
+        .list_title{
+            font-size: 22px;
+        }
+       
+    
+      }
+      @media screen and (min-width: 500px) and (max-width:200px) {}
+    
+      @media screen and (min-width: 1000px) {
+        hr{
+            width: 70rem;
+        }
+        a{
+            font-size: 2rem;
+        }
+        .top4{
+            position: fixed; 
+            bottom:0.5rem; 
+            right:23.5rem;
+        }
+        .back2{
+            position: fixed; 
+            bottom:0.5rem; 
+            right:25.5rem;
+        }
+    
+        .title {
+          font-size: 60px;
+        }
+    
+        .top {
+         display: none;
+        }
+       
+       .plus{
+        font-size: 33px;
+       }
+       h1{
+             font-size: 50px;
+         }
+        .list{
+            font-size: 33px;
+        }
+        .list_title{
+            font-size: 33px;
+        }
+      }
+        </style>
+    
+    </style>   
 {% endblock %}
 
