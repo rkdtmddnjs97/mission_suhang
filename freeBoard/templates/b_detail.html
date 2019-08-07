@@ -1,122 +1,204 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
+<div class="container">
+    <br><br>
+    <div class="category">
+        <h1>Free Board</h1>
+    </div>
+    <br><br>
+    <div class="d-block d-sm-none">
+        <table class="table table-borderless ">
+            <thead>
 
-<h1>Detail Post</h1>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">&nbsp;제목</th>
+                    <td>{{blog.title}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성자</th>
+                    <td>{{blog.writer}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성일</th>
+                    <td>{{blog.pub_date}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;좋아요</th>
+                    <td>{{like_count}}</td>
+                </tr>
 
-<p>이 글을 '좋아요'하는 사람</p>
+            </tbody>
+        </table>
+        <hr>
+    </div>
 
-<button class="nav" href="#" rel="popover_like" data-trigger="focus" data-placement="bottom"
-data-popover-content="#like-popover">({{like_count}})</button>
-<div id="like-popover" style="display:none">
-<ul class="ul-popover">
-    {% for blog_user in blog_like %}
-        <li><a href="{% url 'profile' blog_user %}">{{blog_user}}</a></li>
-    {% endfor %}
-    <li><a href="{% url 'like_more' blog.id %}">see all</a> </li>
-</ul>
-</div>
-<br>
-<p>이 글을 '싫어요'하는 사람</p>
-{{dislike_count}}
-<hr>
-<p>  
-    <h2>제목 : {{blog.title}}</h2>
-    <a href="{% url 'profile' blog.writer %}"> <p>작성자 : {{blog.writer}}</p></a>
-    <p>발행일: {{blog.pub_date}}</p>
 
-    
-        본문
+    <div class="d-none d-sm-block">
+        <table class="table table-borderless ">
+            <thead>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">&nbsp;제목</th>
+                    <td>{{blog.title}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+                    <th scope="row">&nbsp;작성자</th>
+                    <td>{{blog.writer}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="float:right;"><b>date</b> {{blog.pub_date}} &nbsp;&nbsp;&nbsp;<b>like</b>
+                        &nbsp;{{like_count}}</td>
+
+                </tr>
+
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
+
+
+    <p>
         <br>
-        <br>
-            {% if blog.attached_img == 'images/no_image.png' %}                
-            {% else %}
-                <img src="{{blog.attached_img.url}}" width="200px" height="200px" alt=""><br>
-            {% endif %}
-            <p>{{blog.body}}</p>
-            <br>
-             
-            {% if blog.attached_file == 'files/dummy.txt' %}
-                (첨부된 파일이 없습니다)
-            {% else %}
-                첨부파일 :
-                <a href="{{blog.attached_file.url}}" download="">{{blog.attached_file}}</a>
-            {% endif %}
-        해시태그<br>
-        {% for tag in hashtag.all %}
-            <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
+        <div class="card" style="min-height:30rem;">
+            <div class="card-body">
+                <p> {{blog.body}}</p>
+            </div>
+        </div>
+        <b>#Hashtag</b> {% for tag in hashtag.all %}
+        <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
-</p>
-{% if user.is_authenticated %}
-{% if user.username != blog.writer %}
-<form action="{% url 'b_like' blog.id %}" method="get">
-    <input type="hidden" name = 'like' value="{{user}}">
-    <button type="submit">좋아요</button>
-</form>
-<form action="{% url 'b_dislike' blog.id %}" method="get">
-    <input type="hidden" name = 'dislike' value="{{user}}">
-    <button type="submit">싫어요</button>
-</form>
-{% endif %}
-{% endif %}
-<br>
 
-<a href="{% url 'board' %}"> go list</a>
-<br>
-{% if user.username == blog.writer %}
-<a href="{% url 'b_edit' blog.id %}">수정하기</a>
-<a href="{%url 'b_delete' blog.id %}">삭제하기</a>
-{% endif %}
-<hr>
-<details>
-<summary>comments</summary>
-{% for comment in comments %}
-{{comment.writer}}
-<br>
-{{comment.content}}
-<hr>
-{% if user.is_authenticated %}
-{% if user.username == comment.writer %}
-<a href="{% url 'b_comment_delete' comment.id %}">삭제하기</a>
-<details>
-    <summary>수정하기</summary>
-    <form action="{% url 'b_modify' comment.id %}" method="POST">
-        {% csrf_token %}
-      
-          <textarea name= 'modify_comment' id="" cols="30" rows="10" placeholder="write your content" >{{comment.content}}</textarea>
-        <br>
-        <br>
-        <input type="submit" value='수정'>
-        
+        <hr>
+        <div class="buttonss" style="float:right;">
+            <a class="btn btn-dark" href="{% url 'board' %}" role="button">목록</a>
+            {% if user.username == blog.writer %}
+            <a class="btn btn-dark" href="{% url 'b_edit' blog.id %}" role="button">수정</a>
+            <button type="button" class="btn btn-dark" role="button" onclick="delUrl()">삭제</a>
+            <script type="text/javascript">
+                function delUrl() {
+                    var Del = confirm("삭제 하시겠습니까?")
+                    if (Del == true) {
+                        alert("삭제 되었습니다.")
+                        location.href="{%url 'b_delete' blog.id %}"
+
+                    } else {
+                        alert("취소 되었습니다.")
+                        self.close()
+                    }
+                }
+
+            </script>
+            {% endif %}
+        </div>
+
+    </p>
+
+    <form action="{% url 'b_like' blog.id %}" method="get">
+        <input type="hidden" name='like' value="{{user}}">
+        <button class="btn btn-dark" type="submit">좋아요</button>
     </form>
-</details>
-{% endif %}
-{% endif %}
-{% endfor%}
-{%if comments.has_previous%}
-    <a href="?page=1">First</a>
-    <a href="?page={{comments.previous_page_number}}">Previous</a>
-    {%endif%}
-    
-    <span>{{comments.number}}</span>
-    <span>of</span>
-    <span>{{comments.paginator.num_pages}}</span>
-    
-    {%if comments.has_next%}
-    <a href="?page={{comments.next_page_number}}">Next</a>
-    <a href="?page={{comments.paginator.num_pages}}">Last</a>
-    {%endif%}
-    </details> 
-    <br>
-{% if user.is_authenticated %}
-<form action="{% url 'b_new_comment' blog.id %}" method="POST">
-    {% csrf_token %}
-    작성자 :<p> {{user.username}}</p>
-    <br>
-    내용 : <textarea name="content" id="" cols="30" rows="10" required='required'></textarea>
-    <input type="submit">
-</form>
-{% endif %}
-</div>
-<br>
 
+
+    <hr>
+    <br>
+    <h5><b>댓글</b></h5>
+    <br>
+    {% for comment in comments %}
+    <h5>{{comment.writer}} : {{comment.content}}</h5>
+    {% if user.username == comment.writer %}
+    <a class="btn btn-outline-dark" href="{% url 'b_comment_delete' comment.id %}" role="button">삭제</a>
+    <details>
+        <summary>수정하기</summary>
+        <form action="{% url 'b_modify' comment.id %}" method="POST">
+            {% csrf_token %}
+
+            <textarea name='modify_comment' id="" cols="30" rows="10"
+                placeholder="write your content">{{comment.content}}</textarea>
+            <br>
+            <br>
+            <input type="submit" value='수정'>
+
+        </form>
+    </details>
+    <hr>
+
+    {% endif %}
+    {% endfor%}
+    <form action="{% url 'b_new_comment' blog.id %}" method="POST">
+        {% csrf_token %}
+
+
+
+        <br>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">{{user.username}}</label>
+            <textarea name="content" class="form-control" id="" cols="30" rows="5"></textarea>
+            <br>
+            <h5><input class="btn btn-dark" type="submit" value="작성" style="float:right;"></h5>
+
+        </div>
+
+        <br><br>
+    </form>
+</div>
+</div>
+<style>
+    .form-control {
+        resize: none;
+    }
+
+    .card {
+        border-right: none;
+
+        border-left: none;
+
+        border-top: none;
+
+        border-bottom: none;
+
+
+
+
+
+    }
+
+
+
+    @media screen and (max-width:400px) {
+        .category {
+
+            text-align: center;
+
+        }
+
+    }
+
+    @media screen and (min-width: 1000px) {
+        .category {
+
+            text-align: center;
+
+        }
+
+        .buttons {
+            float: right;
+        }
+    }
+</style>
 {% endblock %}

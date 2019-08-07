@@ -1,7 +1,11 @@
 {% extends 'base.html'%}
-
-
+{% load staticfiles %}
 {% block content %}
+<<<<<<< HEAD
+<div class="container">
+    <br><br><br>
+    <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+=======
 
 <h1>의뢰한 글</h1>
 {% for commission in applications %}
@@ -28,11 +32,22 @@
     <a href="#" onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">채팅</a>
     <a href="{% url 'disagree' post_id=commission.id app_id=applie.profile_id %}">거절</a>
 
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
     <br>
-    {% endif %}
- 
-    {% endfor %}
+    <h3>의뢰한 글</h3>
+    <hr>
+    {% for commission in applications %}
+    <div class="card">
+        <div class="container" style="border-color:black; height: 8rem;">
+            <div class="row">
+                <br>
+                <div class="col-4"><a href="{% url 'detail' commission.id %}">
 
+                        <br><b>{{commission.title}}</b>
+                    </a>
+
+<<<<<<< HEAD
+=======
 </details>
 {% else %}
 {% for applie in appliers%}
@@ -42,8 +57,99 @@
 {% if commission.s_flag == True %}
 <br>제출상태 : 제출완료<br>
 <a href="{% url 'commission_quit' commission.id %}">의뢰 포기</a>
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 <br>
+                    {{commission.pub_date}}</div>
+                <div class="col-6"> {% if commission.status == 'ready' %}
+                    <details>
+                        <br><summary>수행자들</summary>
 
+                        {% for applie in appliers%}
+                        {% if applie.connector == commission.id %}
+                        <a href="{% url 'profile' applie.profile_id%}">{{applie.profile_id}}</a>
+
+                        <form action="{% url 'start' post_id=commission.id app_id=applie.profile_id %}" method="POST">
+                            {% csrf_token%}
+
+                            <button type="submit">승낙</button>
+
+                        </form>
+                        <a href="#"
+                            onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">채팅</a>
+                        <a href="{% url 'disagree' post_id=commission.id app_id=applie.profile_id %}">거절</a>
+
+                        {% endif %}
+
+                        {% endfor %}
+
+                    </details>
+                    {% else %}
+                    {% for applie in appliers%}
+                    {% if applie.connector == commission.id %}
+                    {% if commission.approved_id == applie.profile_id%}
+                    <br>수행중인 계정:<a href="{% url 'profile' applie.profile_id%}">{{applie.profile_id}}</a>
+                    
+                    {% if commission.s_flag == True %}
+                    <br>제출상태:제출완료<br>
+                    <a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
+                    <br>
+
+                    <a href="{% url 'submission' commission.id %}">제출물 보기</a>
+                    {% else %}
+                    <br>제출상태:제출전
+                    <a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
+                    {% endif %}
+                    <a href="#"
+                        onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">채팅</a>
+                    {% endif %}
+                    {% endif %}
+
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+<<<<<<< HEAD
+    {% endfor %}
+    <br>
+    <a class="btn btn-dark" href="{% url 'profile' commission_user.profile_id%}" role="button">뒤로가기</a>
+</div>
+<style>
+    .card {
+        border-color: #C2D0E1;
+        text-align: center;
+        margin-bottom:30px;
+    }
+
+    .col-4 {
+        text-align: center;
+        padding-left:150px;
+        
+    }
+
+    .col-6 {
+        text-align: center;
+        padding-left:220px;
+    }
+
+    @media screen and (max-width:400px) {
+        div {
+            text-align: center;
+        }
+    }
+
+    @media screen and (min-width: 1000px) {
+        div {
+            text-align: center;
+        }
+    }
+</style>
+
+
+{% endblock %}
+=======
 <a href="{% url 'submission' commission.id %}">제출물 보기</a>
 {% else %}
 <br>제출상태 : 제출전<br>
@@ -66,3 +172,4 @@
 
 
 {% endblock %}`
+>>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
