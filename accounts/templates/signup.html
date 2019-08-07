@@ -152,25 +152,31 @@
                 style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
 
 
-
-        </div>
-        </div>
-        <hr>
-        <div class="form-group row">
-            <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
-            <div class="col-sm-9">
-                <input class="form-control" name="university" placeholder="write your university" id='search_school'>
-                {% for sch_name in school %}
-                <a class="result_school" onclick="input_school($(this).attr('value'))"
-                    value="{{sch_name}}">{{sch_name}}</a>
-                {% endfor %}
-            </div>
-        </div>
-        <hr>
-        <div class="form-group row">
-            <label for="inputDepartment" class="col-sm-2 col-form-label">학과</label>
-            <div class="col-sm-9">
-                <input class="form-control" name="department" placeholder="write your department">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="email" placeholder="write your email">@
+                        <input type="text" name="domain" id="selected_domain">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="university" placeholder="write your university" id='search_school'>
+                        {% for sch_name, e_mail in school.items %}
+                            <a class="result_school" onclick="input_school($(this).attr('key'),$(this).attr('value'))" key="{{sch_name}}" value="{{e_mail}}">{{sch_name}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    <label for="inputDepartment" class="col-sm-2 col-form-label">학과</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="department" placeholder="write your department">
 
             </div>
         </div>

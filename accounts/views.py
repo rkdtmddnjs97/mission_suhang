@@ -40,12 +40,13 @@ def signup(request):
     if request.method == 'POST':
         if request.POST['password1'] == request.POST['password2']:
             try:
-                Profile.objects.get(email=request.POST['email'])
+                e_mail = request.POST['email'] + '@' + request.POST['domain']
+                Profile.objects.get(email=e_mail)
                 error4='이메일이 이미 존재합니다' 
                 return render(request,'signup.html', {'hashtag': all_hashtag,'error4':error4})
             except ObjectDoesNotExist:
                 pass
-            tmp=request.POST['email'].split('@')[1]
+            tmp=request.POST['domain']
             try:
                 tmp1=school[request.POST['university']] #해당 대학교가 없습니다
             except KeyError:
@@ -73,17 +74,6 @@ def signup(request):
                 pass
             
             input_hash = request.POST['add_hashtag'].split('#')
-            # hash_list = []
-            # for index,hashtag in enumerate(input_hash):
-            #     if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
-            #         pass
-            #     else:
-            #         if Hashtag.objects.filter(name=hashtag.upper()).exists():
-            #             tag = Hashtag.objects.get(name=hashtag.upper())
-            #             hash_list.append(tag)
-            #         else:
-            #             tag = Hashtag.objects.create(name=hashtag.upper())
-            #             hash_list.append(tag)
 
             private=[]
             private.append(request.POST['username'])#0
@@ -92,7 +82,7 @@ def signup(request):
             private.append(request.POST['department'])#3
             private.append(request.POST['name'])#4
             private.append(request.POST['introduction'])#5
-            private.append(request.POST['email'])#6
+            private.append(request.POST['email'] + '@' + request.POST['domain'])#6
             private.append(result)#7
             private.append(input_hash)#8
             picture=Picture()
@@ -101,7 +91,7 @@ def signup(request):
         
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)
-            email = EmailMultiAlternatives('인증 메일', message, to=[request.POST['email']])
+            email = EmailMultiAlternatives('인증 메일', message, to=request.POST['email'] + '@' + request.POST['domain'])
             # email.attach(logo_data())
             email.mixed_subtype = 'related'
            
@@ -198,6 +188,7 @@ def approve(request,profile_dic,tmp_pic):
                                 user.profile.hashtag.add(tag)
                  user.profile.save()
 
+                 #멋사 계정이면 꽁포인트 4000^^
                  if profile_dic[6].split('@')[1]=='likelion.org':
                     user.profile.money=4000
                     user.profile.save()
