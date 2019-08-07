@@ -55,34 +55,44 @@
                         <div class="form-group row">
                             <label for="email" class="col-sm-2 col-form-label">ID</label>
                             <div class="col-sm-9">
-                                <input type="text" name="username" id="email" class="form-control" required="required"
-                                    placeholder="Your id">
+                                <input type="text" name="username" id="email" class="inpt" required="required"
+                                    placeholder="Your id" required='required'>
+
                             </div>
                         </div>
+                        {% if error1 %}
+                        {{error1}}
+                        {% endif %}
 
                         <div class="form-group row">
                             <label for="password" class="col-sm-2 col-form-label">Password</label>
                             <div class="col-sm-9">
-                                <input type="password" name="password1" id="password" class="form-control" required="required"
-                                    placeholder="password">
+
+                                <input type="password" name="password1" id="password" class="inpt" required="required"
+                                    placeholder="password" required='required'>
+
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="password" class="col-sm-2 col-form-label">Confirm Password</label>
                             <div class="col-sm-9">
-                                <input type="password" name="password2" id="password" class="form-control" required="required"
-                                    placeholder="confirm password">
+
+                                <input type="password" name="password2" id="password" class="inpt" required="required"
+                                    placeholder="confirm password" required='required'>
 
                             </div>
                         </div>
+                        {% if error %}
+                        {{error}}
+                        {% endif %}
                         <hr>
 
 
                         <div class="form-group row">
                             <label for="inputName" class="col-sm-2 col-form-label">이름</label>
                             <div class="col-sm-9">
-                                <input class="form-control" name="name" placeholder="write your name">
+                                <input class="form-control" name="name" placeholder="write your name" required='required'>
 
                             </div>
                         </div>
@@ -92,8 +102,13 @@
                             <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
                             <div class="col-sm-9">
                                 <input class="form-control" name="university" placeholder="write your university"
-                                    id='search_school'>
+
+                                    id='search_school' required='required'>
                                 <br> <p style="color:crimson;">검색하고 학교이름을 '꼭' 클릭해주세요</p><br>
+
+                                     
+                                <br>
+
                                 {% for sch_name, e_mail in school.items %}
                                 <a class="result_school"
                                     onclick="input_school($(this).attr('key'),$(this).attr('value'))" key="{{sch_name}}"
@@ -101,23 +116,33 @@
                                 {% endfor %}
                             </div>
                         </div>
+                        {% if error2 %}
+                        {{error2}}
+                        {% endif %}
+                        {% if error3 %}
+                        {{error3}}
+                        {% endif %}
+                        
                         <hr>
                         <div class="form-group row">
                             <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
                             <div class="form-inline">
                                 <div style="display:inline-block;">
                                     <input class="form-control" name="email" placeholder="write your email"
-                                        style="width:15rem; margin-left: 1rem;">&nbsp;@&nbsp;
+                                        style="width:15rem; margin-left: 1rem;" required='required'>&nbsp;@&nbsp;
                                     <input type="text" readonly class="form-control-plaintext" name="domain"
                                         id="selected_domain" value="yourschool.ac.kr" style="width:15rem;">
                                 </div>
                             </div>
                         </div>
+                        {% if error4 %}
+                        {{error4}}
+                        {% endif %}
                         <hr>
                         <div class="form-group row">
                             <label for="inputDepartment" class="col-sm-2 col-form-label">학과</label>
                             <div class="col-sm-9">
-                                <input class="form-control" name="department" placeholder="write your department">
+                                <input class="form-control" name="department" placeholder="write your department" required='required'>
 
                             </div>
                         </div>
@@ -138,7 +163,7 @@
                         </div>
                         <hr>
                         <div class="form-group row">
-                            <label for="inputTitle" class="col-sm-2 col-form-label">자기소개</label>
+                            <label for="inputTitle" class="col-sm-2 col-form-label" required='required'>자기소개</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" name="introduction" cols="30" rows="10"></textarea>
                             </div>
@@ -160,7 +185,6 @@
                                         <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요!<br> ex)
                                             #이렇게#태그걸어라#알겠냐</span><br>
                                         ↓<input class="form-control" type="text" name='add_hashtag' id="new_hashtag"></div>
-                                
                             </div>
                         </div>
                         <hr>
@@ -269,6 +293,7 @@
         });
     });
 
+
     function input_school(key, value) {
         var school = key;
         var email = value;
@@ -347,17 +372,6 @@
         .hash_s{
             margin-left:25rem;
         }
-<<<<<<< HEAD
-
-
-
-        /* .col-sm-9_h {
-            margin-right: 70px;
-            margin-left: 20px;
-
-        } */
-=======
->>>>>>> d950a6634d14133d5e4d4547dd6d9cf0be2f8b91
 
 
     }
