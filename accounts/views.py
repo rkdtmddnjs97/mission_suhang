@@ -105,10 +105,10 @@ def signup(request):
             # email.attach(logo_data())
             email.mixed_subtype = 'related'
            
-            fp = open(finders.find('../static/logo.png'), 'rb')
-            msg_img = MIMEImage(fp.read())
+            fp = open(finders.find('../static/logo.jpeg'), 'rb')
+            msg_img = MIMEImage(fp.read(),_subtype="jpeg")
             fp.close()
-            msg_img.add_header('Content-ID', '<{}>'.format('logo.png'))
+            msg_img.add_header('Content-ID', '<{}>'.format('logo.jpeg'))
             email.attach(msg_img)
             email.attach_alternative(html_content, "text/html")
             email.send()
