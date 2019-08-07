@@ -1,4 +1,3 @@
-{% extends 'base.html'%}
 {% load staticfiles %}
 {% block content %}
 {% if error %}
@@ -11,15 +10,32 @@
 <br>
 {% endif %}
 
-<!doctype html>
-<html lang="kr">
+
+
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Sign up</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>미션수행</title>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
 </head>
+
 
 <body>
 
@@ -29,49 +45,113 @@
     <form method="POST" action="{% url 'signup' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <br><br>
-        <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
-        <br><br><br>
-        <div>
-            <div class="whole">
-                <div class="form-group row">
-                    <label for="email" class="col-sm-2 col-form-label">ID</label>
-                    <div class="col-sm-9">
-                        <input type="text" name="username" id="email" class="inpt" required="required"
-                            placeholder="Your id">
+        <div class="ppontt">
+            <div class="wwhole">
+                <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="450;" height="150;"></div>
+                <br><br><br><br>
+
+                <div>
+                    <div class="whole">
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-2 col-form-label">ID</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="username" id="email" class="inpt" required="required"
+                                    placeholder="Your id">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" name="password1" id="password" class="inpt" required="required"
+                                    placeholder="password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label">Confirm Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" name="password2" id="password" class="inpt" required="required"
+                                    placeholder="confirm password">
+
+                            </div>
+                        </div>
+                        <hr>
+
+
+                        <div class="form-group row">
+                            <label for="inputName" class="col-sm-2 col-form-label">이름</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" name="name" placeholder="write your name">
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" name="email" placeholder="write your email">
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row">
+                            <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" name="university" placeholder="write your university">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row">
+                            <label for="inputDepartment" class="col-sm-2 col-form-label">학과</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" name="department" placeholder="write your department">
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row">
+                            <label for="inputTitle" class="col-sm-2 col-form-label">프로필사진</label>
+                            <div class="col-sm-9_h">
+                                <div class="input-group mb-3">
+                                    <div class="custom-file" style="width:69rem;margin-left:15px;">
+                                        <input type="file" class="custom-file-input" name="pofile_img"
+                                            id="inputGroupFile02" accept=".jpg,.jpeg,.png,.gif">
+                                        <label class="custom-file-label" for="inputGroupFile02"
+                                            aria-describedby="inputGroupFileAddon02"></label>
+                                    </div>
+                                </div>
+                                <!-- <input type="file"  > -->
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row">
+                            <label for="inputTitle" class="col-sm-2 col-form-label">자기소개</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" name="introduction" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row">
+                            <label for="inputTitle" class="col-sm-2 col-form-label">해시태그</label>
+                            <div class="col-sm-9">
+                                {% for tag in hashtag %}
+                                <input type="checkbox" name="hashtag" id="tag_box" class="tag_list"
+                                    value="{{tag}}">#{{tag}}
+                                <!-- <a href="">{{tag}}</a> -->
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <hr>
                     </div>
                 </div>
+            </div>
+            <br><br>
 
-                <div class="form-group row">
-                    <label for="password" class="col-sm-2 col-form-label">Password</label>
-                    <div class="col-sm-9">
-                        <input type="password" name="password1" id="password" class="inpt" required="required"
-                            placeholder="password">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="password" class="col-sm-2 col-form-label">Confirm Password</label>
-                    <div class="col-sm-9">
-                        <input type="password" name="password2" id="password" class="inpt" required="required"
-                            placeholder="confirm password">
-
-                    </div>
-                </div>
-                <hr>
+            <input type="submit" value='Sign Up!' class="submit"
+                style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
 
 
-                <div class="form-group row">
-                    <label for="inputName" class="col-sm-2 col-form-label">이름</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" name="name" placeholder="write your name">
-
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" name="email" placeholder="write your email">
 
                     </div>
                 </div>
@@ -126,15 +206,19 @@
             </div>
             <br><br>
         </div>
-        </div>
-        <input type="submit" value='Sign Up!'  class="submit"  style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
-        
 
-        <br><br><br>
+        </div>
     </form>
 
 </body>
 <style>
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+    .ppontt {
+        font-family: 'Do Hyeon', sans-serif;
+        text-align: center;
+    }
+
     div {
         text-align: center;
     }
@@ -154,6 +238,12 @@
 
     }
 
+    .whole {
+        margin-left: 50px;
+        margin-right: 50px;
+        text-align: center;
+
+    }
 
 
 
@@ -165,10 +255,10 @@
             text-align: center;
         }
 
-        .col-sm-9_h {
-            
+        /* .col-sm-9_h {
+
             margin-left: 70px;
-        }
+        } */
     }
 
     @media screen and (min-width: 1000px) {
@@ -176,17 +266,13 @@
             text-align: center;
         }
 
-        .whole {
-            width: 700px;
-            text-align: center;
-            margin-left: 190px;
-        }
 
-        .col-sm-9_h {
+
+        /* .col-sm-9_h {
             margin-right: 70px;
             margin-left: 20px;
 
-        }
+        } */
 
 
     }
