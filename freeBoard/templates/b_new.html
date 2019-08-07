@@ -36,19 +36,19 @@
         <div class="form-group row">
             <label for="inputTitle" class="col-sm-2 col-form-label">태그</label>
             <div class="col-sm-8">
-                <textarea class="form-control" name="hashtag" placeholder="#이렇게#작성해줘요#참쉽죠?"></textarea>
+                <textarea class="form-control" name="hashtag" placeholder="#이렇게#작성해줘요#참쉽죠?" id="new_hashtag"></textarea>
             </div>
         </div>
         <br>
         <div class="ht" style="display:inline;">
-        -MY TAG:{% for tag in hashtag %}
-        <!-- <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}} -->
-        <a href="">#{{tag}}</a>
-        {% endfor %} -</div>
-        <br><br><br>
-
-
-    </div>
+            ## SEARCH TAG ## <br>
+            <input type="text" name='search_tag_data' id='search_tag'><br><br>
+            {% for tag in hashtag %}
+            <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
+            {% endfor %}
+            <br><br><br>
+        </div>
+        
     <br><br><br>
     <div class="bttn">
         <button class="btn btn-dark" type='submit'>작성하기</button></div>
