@@ -9,14 +9,13 @@
     <a style="font-size:45px;" href="">MY MISSION</a><br>
     <br>
     <br>
-    <a style="font-size:35px;" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
-    <a style="font-size:35px;" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
-    <a style="font-size:35px;" href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
-    <a style="font-size:35px;" href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
-    <a style="font-size:35px;" href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
+    <a style="font-size:2.1rem;" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
+    <a style="font-size:2.1rem;" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
+    <a style="font-size:2.1rem;" href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
+    <a style="font-size:2.1rem;" href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
+    <a style="font-size:2.1rem;" href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
 </div>
-
-<span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true" ></i> <a style="font-size:40px;">◀Open Mission</a></span>
+<span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true" ></i> <a style="font-size:2rem;">◀Open Mission</a></span>
 
 <script>
     function openNav() {
@@ -45,8 +44,7 @@
 
       <div class="col-12 col-md-8">
           <br>
-        <br>
-        <a class="pro" style="color: rgb(50, 161, 137); text-decoration: underline;">ID : {{my_profile.profile_id}}</a>
+        <a class="pro2" style="color: rgb(50, 161, 137); text-decoration: underline;">ID : {{my_profile.profile_id}}</a>
         <br>
         <a class="pro2" >Name</a><a class="pro">: {{my_profile.name}}</a>
         <br>
@@ -134,6 +132,9 @@
     .mnav {
       font-family: 'Do Hyeon', sans-serif;
     }
+    .m2{
+      font-size: 2rem;
+    }
 
     .money_in {
       font-family: 'Do Hyeon', sans-serif;
@@ -142,19 +143,17 @@
 
     }
     .a{
-     width: 370px;
+     width: 220px;
     }
     .pro {
-      font-size: 45px;
+      font-size: 2rem;
     }
     .pro2{
      text-decoration: underline; 
-     font-size:45px;
+     font-size:2rem;
     }
 
-    .row {
-      border: #000000 7px solid;
-    }
+   
 
     input {
       all: unset;
@@ -203,6 +202,11 @@
 
     /* 미디어쿼리 적용 */
     @media screen and (max-width:600px) {
+      .row {
+      width: 20rem;
+      height: 21rem;
+      border: #000000 5px solid;
+    }
       .edit_my {
         font-size: 27px;
     }
@@ -245,7 +249,7 @@
       }
 
       .title {
-        font-size: 40px;
+        font-size: 2rem;
         margin: 0rem 0 0 0rem;
       }
 
@@ -255,6 +259,9 @@
       }
       .top1 {
         width: 50px;
+      }
+      .top{
+       display: none;
       }
 
       .money_in {
@@ -271,17 +278,22 @@
     @media screen and (min-width: 500px) and (max-width:200px) {}
 
     @media screen and (min-width: 1000px) {
+      .row {
+      width: 48rem;
+      height: 23rem;
+      border: #000000 5px solid;
+    }
       .edit_my {
-        font-size: 40px;
+        font-size: 2.5rem;
     }
       .e3{
-        font-size: 40px;
+        font-size: 2rem;
       }
       summary{
-        font-size: 45px;
+        font-size: 2rem;
       }
       p{
-        font-size: 45px;
+        font-size: 2rem;
       }
       .mb_mission{
         display: none;
@@ -295,7 +307,7 @@
       }
 
       .title {
-        font-size: 60px;
+        font-size: 3rem;
       }
 
       .title_nav {
@@ -303,7 +315,7 @@
       }
 
       .top {
-        width: 70px;
+        width:40px;
       }
 
       .money_in {
