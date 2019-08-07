@@ -2,75 +2,113 @@
 
 {% block content %}
 <div class="pont">
-    <div class="box">
         <h2 class="title" style="text-decoration: underline;">Edit My Page</h2>
         <br>
-        <form action="{% url 'updateProfile' userProfile.profile_id %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token%}
+<div class="form_">
+<form action="{% url 'updateProfile' userProfile.profile_id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token%}
 
-            프로필 사진<br>
-            <img src="{{userProfile.profile_img.url}}" alt=""><br>
-            <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="">
-            <br><br>
+    프로필 사진<br>
+    <img src="{{userProfile.profile_img.url}}" alt="" ><br>
+    <input  type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="" >
+    <br><br>
 
-            이름 : <input type="text" name="name" value="{{userProfile.name}}"
-                style=" all:unset; border-bottom: #000000 2px solid;">
-            <br><br>
+    이름 : <input type="text" name="name" value="{{userProfile.name}}" style=" all:unset; border-bottom: #000000 2px solid;">
+    <br><br>
 
-            학교 : <input type="text" name="university" value="{{userProfile.university}}"
-                style=" all:unset; border-bottom: #000000 2px solid;">
-            <br><br>
+    학교 : <input type="text" name="university" value="{{userProfile.university}}"  style=" all:unset; border-bottom: #000000 2px solid;">
+    <br><br>
 
-            전공 : <input type="text" name="department" value="{{userProfile.department}}"
-                style=" all:unset; border-bottom: #000000 2px solid;">
-            <br><br>
+    전공 : <input type="text" name="department" value="{{userProfile.department}}"  style=" all:unset; border-bottom: #000000 2px solid;">
+    <br><br>
 
-            간단한 본인소개 <br>
-            <input type="textarea" name="introduction" value="{{userProfile.introduction}}"
-                style=" all:unset; border-bottom: #000000 2px solid;">
-            <br><br>
-
-            #해시태그
-
-            {% for tag in checked_tag %}
-            <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}"
-                checked="checked">#{{tag}}
-            {% endfor %}
-
-            {% for tag in unchecked_tag %}
-            <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}}
-            {% endfor %}
+    간단한 본인소개 <br>
+    <input type="textarea" name="introduction" value="{{userProfile.introduction}}" style=" all:unset; border-bottom: #000000 2px solid;">
+    <br><br>
 
             <br>
             <br>
-            <button class="edit_bt" type="submit">수정완료</button>&nbsp / &nbsp<a
-                href="{% url 'profile' userProfile.profile_id %}" class="edit_bt" style="all:unset;">취소하기</a>
+           
+    #해시태그
 
-            #해시태그
+    {% for tag in checked_tag %}
+        <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}" checked="checked">#{{tag}}    
+    {% endfor %}
+    <br><br>
+    해시태그 검색<br>
+        <input type="text" name='search_tag_data' id='search_tag' style=" all:unset; border-bottom: #000000 2px solid;"><br><br>
+    {% for tag in all_tag %}
+        <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
+    {% endfor %}
+    <br><br>
+    해시태그 추가
+        <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
+        -> <input type="text" name='add_hashtag' id="new_hashtag" style=" all:unset; border-bottom: #000000 2px solid;">
 
-            {% for tag in checked_tag %}
-            <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}"
-                checked="checked">#{{tag}}
-            {% endfor %}
-            <br><br>
-            해시태그 검색<br>
-            <input type="text" name='search_tag_data' id='search_tag'><br><br>
-            {% for tag in all_tag %}
-            <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))"
-                tag="{{tag}}">#{{tag}}</a>
-            {% endfor %}
-            <br><br>
-            해시태그 추가
-            <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
-            -> <input type="text" name='add_hashtag' id="new_hashtag">
+    <br>
+    <br>
+    <button  class="edit_bt" type="submit" >수정완료</button>&nbsp / &nbsp<a href="{% url 'profile' userProfile.profile_id %}" class="edit_bt" style="all:unset;">취소하기</a>
 
-            <br>
-            <br>
+  </form>
+</div>
+  
+</body>
+<style>
+ @media screen and (max-width:600px) {
+    .sidenav {
+      display: none;
+    }
 
-        </form>
-    </div>
-    </body>
-    <style>
-        .box {}
-    </style>
-    {% endblock %}
+    .box {
+      margin: 0rem 0 0 1rem;
+      font-size: 20px;
+    }
+
+    .title {
+        font-size: 30px;
+      margin: 1rem 0 0 0rem;
+    }
+
+    .login_title {
+      display: none;
+
+    }
+
+    .top {
+      width: 40px;
+    }
+  
+
+  }
+
+  @media screen and (min-width: 500px) and (max-width:200px) {}
+
+  @media screen and (min-width: 1000px) {
+    .box {
+      margin: 1rem 0 0 18rem;
+      font-size: 30px;
+    }
+
+    .title {
+      font-size: 60px;
+      margin: 1rem 0 0 0rem;
+    }
+
+    .title_nav {
+      display: none;
+    }
+
+    .top {
+      width: 70px;
+    }
+    h2{
+        font-size: 60px;
+    }
+    .form_{
+        font-size: 30px;
+    }
+  
+   
+  }
+</style>
+{% endblock %}
