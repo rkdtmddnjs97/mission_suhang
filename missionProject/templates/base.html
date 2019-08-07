@@ -401,7 +401,8 @@
 <script type="text/javascript">
 
     $('.result_tag').hide();
-
+    $('.result_school').hide();
+    
     $('[rel="popover"]').popover({
         container: 'body',
         html: true,
@@ -449,6 +450,7 @@
         else { return true; } 
     }
 
+    //해시태그 검색
     jQuery(function($) {
         $('#search_tag').keyup(function(event) {
             var val = $(this).val();
@@ -460,11 +462,29 @@
             }
         });
     });
-
+    
     function input_hashtag(val){
         var tag = "#"+val;
         tag = $('#new_hashtag').val() + tag;
         $('#new_hashtag').val(tag);
+    }
+
+    //대학교 검색
+    jQuery(function($) {
+        $('#search_school').keyup(function(event) {
+            var name = $(this).val();
+            if (name == "") {
+                $('.result_school').hide();
+            } else {
+                $('.result_school').hide();
+                $(".result_school:contains('"+name+"')").show();
+            }
+        });
+    });
+    
+    function input_school(val){
+        var school = val;
+        $('#search_school').val(school);
     }
 
     
