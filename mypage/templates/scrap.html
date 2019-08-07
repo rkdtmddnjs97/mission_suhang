@@ -29,6 +29,7 @@
         <h1>▶Scrap Post</h1>
         {%for post in scraped_post %}
         <h2 class="list_title">-클릭하면 자세히 볼 수 있어요-</h2>
+       
         <a class="list" href="{% url 'detail' post.id %}">
          <li>{{post.title}}</li>
         </a>
@@ -36,8 +37,9 @@
         
         </div>
 
-<a class="back" href="{% url 'profile' profile %}">뒤로가기</a>
-<div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
+<div class="top4" ><a href="#"><img  src="{% static 'top.png' %}" width="50rem;"></a>
+<div class="back2"><a href="{% url 'profile' profile %}"><img src="{% static '뒤5.png' %}" width="50rem;"></a></div>
+
 </body>
 </html>
 <style>
@@ -46,6 +48,14 @@
         all:unset;
         
     }
+    .top{
+        display: none;
+    }
+    .back:hover{
+        all:unset;
+        color: rgb(247, 68, 74);
+    }
+
      .pont{
          font-family:  'Do Hyeon', sans-serif;
      }
@@ -60,11 +70,23 @@
       all:unset;
   }
   .list:hover{
+    all:unset;
       color: rgb(50, 161, 137); 
   }
   @media screen and (max-width:600px) {
+    .top4{
+        position: fixed; 
+        bottom:0.5rem; 
+        right:0.3rem;
+    }
+    .back2{
+        position: fixed; 
+        bottom:0.5rem; 
+        right:2.5rem;
+    }
+
     .scrap_box {
-      font-size: 20px;
+      font-size: 22px;
     }
 
     .title {
@@ -83,7 +105,7 @@
      font-size: 20px;
    }
    .plus{
-    font-size: 20px;
+    font-size: 22px;
    }
    h1{
     font-size: 30px;
@@ -93,18 +115,26 @@
         font-size: 22px;
     }
     .list_title{
-        font-size: 24px;
+        font-size: 22px;
     }
-    .back{
-        font-size: 20px;
-    }
+   
 
   }
   @media screen and (min-width: 500px) and (max-width:200px) {}
 
   @media screen and (min-width: 1000px) {
+    .top4{
+        position: fixed; 
+        bottom:0.5rem; 
+        right:23.5rem;
+    }
+    .back2{
+        position: fixed; 
+        bottom:0.5rem; 
+        right:25.5rem;
+    }
     .scrap_box {
-      font-size: 30px;
+      font-size: 33px;
     }
 
     .title {
@@ -120,19 +150,16 @@
     }
    
    .plus{
-    font-size: 30px;
+    font-size: 33px;
    }
    h1{
          font-size: 50px;
      }
     .list{
-        font-size: 40px;
+        font-size: 33px;
     }
     .list_title{
         font-size: 33px;
-    }
-    .back{
-        font-size: 30px;
     }
   }
     </style>
