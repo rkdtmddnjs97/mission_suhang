@@ -2,6 +2,29 @@
 
 {% block content %}
 {% load staticfiles %}
+<!-- 새사이드네브 -->
+<div id="mysidenav" class="sidenav">
+        <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a>
+        <a style="font-size:45px;" href="">MY MISSION</a><br>
+        <br>
+        <br>
+        <a style="font-size:35px;" href="{% url 'performing' profile %}">수행중인 미션</a><br>
+        <a style="font-size:35px;" href="{% url 'performing_end' profile %}">수행완료된 미션</a><br>
+        <a style="font-size:35px;" href="{% url 'commissioned' profile %}">의뢰중인 미션</a><br>
+        <a style="font-size:35px;" href="{% url 'commission_end' profile %}">의뢰완료된 미션</a><br>
+        <a style="font-size:35px;" href="{% url 'scrap' profile %}">스크랩한 미션</a>
+    </div>
+    
+    <span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true" ></i> <a style="font-size:40px;">◀Open Mission</a></span>
+    
+    <script>
+        function openNav() {
+            document.getElementById('mysidenav').style.width = '300px';
+        }
+        function closeNav() {
+            document.getElementById('mysidenav').style.width = '0';
+        }
+    </script>
 <div class="scrap_box">
         <h1>▶Scrap Post</h1>
         {%for post in scraped_post %}
