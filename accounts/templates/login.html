@@ -100,11 +100,7 @@
 
 
     <p ><a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}"  style="margin:  3rem 0 0 0;"></a></p>
-    {% if error %}
-{{ error }}
-<br>
-<br>
-{% endif %}
+
     
     <div class="tabs">
       <!-- <span class="tab signin active"><a href="#signin">Sign in</a></span> -->
@@ -112,8 +108,14 @@
         <hr>
         <div class="log_top">Login</div>
         <hr>
+        {% if error %}
+        <br>
+        {{ error }}
+        
+        {% endif %}
           <form method="POST" action="{% url 'login'%}">
               {% csrf_token %}
+            
           
           <!-- <label for="email">Your id</label> -->
           <input type="text" name="username" id="email" class="inpt" required="required" placeholder="Your id">
@@ -122,6 +124,7 @@
           <!-- <label for="password">Your password</label> -->
           <input type="password" name="password" id="password" class="inpt" required="required"
             placeholder="Your password">
+          
          
          <br>
          <br>

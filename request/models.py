@@ -9,7 +9,7 @@ class Post(models.Model):
     writer = models.CharField(max_length=200,null=True)
     pub_date = models.DateTimeField('Date published',null=True)
     body = models.TextField(null=True)
-    user = models.ManyToManyField(User, blank=True)
+    user = models.ManyToManyField(User, blank=True, related_name= 'scrapped')
     status=models.CharField(default='ready',max_length=200)
     hashtag = models.ManyToManyField(Hashtag, related_name="post_tag")
     approved_id=models.CharField(null=True,max_length=200)

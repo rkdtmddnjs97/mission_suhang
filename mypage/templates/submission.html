@@ -30,7 +30,7 @@
        <input type="radio" name="rating" value="5">5
     <br>
     <span>후기</span><br>
-    <textarea name= 'review_content' id="" cols="30" rows="10" placeholder="write your review" ></textarea>
+    <textarea name= 'review_content' id="" cols="30" rows="10" placeholder="write your review" required='required' ></textarea>
 
         <br>
         <input type="submit" value='미션완료'>
@@ -44,7 +44,7 @@
 <summary>제출 수정</summary>
 <form action="{% url 'submission_edit' submission_id=submission_result.id postId=post.id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-      <textarea name= 'content' id="" cols="30" rows="10" placeholder="write your content" >{{submission_result.body}}</textarea>
+      <textarea name= 'content' id="" cols="30" rows="10" placeholder="write your content" required='required'>{{submission_result.body}}</textarea>
       <br>
       <input type="file" name="attachment">
       <br>
