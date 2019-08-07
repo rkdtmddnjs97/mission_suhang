@@ -238,10 +238,9 @@ def submission(request,post_id):
     return render(request,'submission.html',{'submission_result':submission_result,'post':post})
 
 def recharge(request,profile_id):
-    if request.POST['charge_money'] == '':
-        money=0
-    else:
-        money=request.POST['charge_money']
+  
+    
+    money=request.POST['charge_money']
     profile=profile_id
     return render(request,'charge.html',{'money':money,'profile':profile})
 

@@ -93,7 +93,7 @@
                             <div class="col-sm-9">
                                 <input class="form-control" name="university" placeholder="write your university"
                                     id='search_school'>
-                                <br>
+                                <br> <p style="color:crimson;">검색하고 학교이름을 '꼭' 클릭해주세요</p><br>
                                 {% for sch_name, e_mail in school.items %}
                                 <a class="result_school"
                                     onclick="input_school($(this).attr('key'),$(this).attr('value'))" key="{{sch_name}}"
@@ -107,7 +107,7 @@
                             <div class="form-inline">
                                 <div style="display:inline-block;">
                                     <input class="form-control" name="email" placeholder="write your email"
-                                        style="width:15rem; margin-left: 1rem;">&nbsp;&nbsp;&nbsp;@&nbsp;&nbsp;&nbsp;
+                                        style="width:15rem; margin-left: 1rem;">&nbsp;@&nbsp;
                                     <input type="text" readonly class="form-control-plaintext" name="domain"
                                         id="selected_domain" value="yourschool.ac.kr" style="width:15rem;">
                                 </div>
@@ -347,6 +347,7 @@
         .hash_s{
             margin-left:25rem;
         }
+<<<<<<< HEAD
 
 
 
@@ -355,6 +356,8 @@
             margin-left: 20px;
 
         } */
+=======
+>>>>>>> d950a6634d14133d5e4d4547dd6d9cf0be2f8b91
 
 
     }
