@@ -106,6 +106,7 @@
   <details>
     <summary >충전하기</summary>
     <form action="{% url 'recharge' my_profile.id %}" method="POST">
+
       {% csrf_token %}
   <a style="font-size: 35px;">
       충전금액:<input type="text" name='charge_money' required="required">

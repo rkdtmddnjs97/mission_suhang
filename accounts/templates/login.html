@@ -100,7 +100,11 @@
 
 
     <p ><a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}"  style="margin:  3rem 0 0 0;"></a></p>
-    
+    {% if error %}
+{{ error }}
+<br>
+<br>
+{% endif %}
     
     <div class="tabs">
       <!-- <span class="tab signin active"><a href="#signin">Sign in</a></span> -->

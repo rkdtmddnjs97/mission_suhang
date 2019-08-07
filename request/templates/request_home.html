@@ -24,7 +24,7 @@
 
         </table>
     </div>
-    {% for post in reversed_blogs %}
+    {% for post in blogs %}
     <div class="card d-none d-sm-block">
         <div class="container">
             <div class="row">
@@ -59,7 +59,7 @@
 
                 </div>
                 <div class="col-sm-a" style="color:#8E8D8B;">
-                    <p>{{post.writer}}&nbsp;&nbsp;|&nbsp;&nbsp;</p>
+                    <p>{{.writer}}&nbsp;&nbsp;|&nbsp;&nbsp;</p>
                 </div>
                 <div class="col-sm-b" style="color:#8E8D8B;">
                     <h6>{{post.pub_date}}</h6>
@@ -72,8 +72,8 @@
     <br><br><br>
     {%if blogs.has_previous%}
     <a class="btn btn-dark" href="?page=1" role="button">
-        <<</a> <a class="btn btn-dark" href="?page={{blogs.previous_page_number}}" role="button">
-            <</a> {%endif%} <span>{{blogs.number}}</span>
+        </a> <a class="btn btn-dark" href="?page={{blogs.previous_page_number}}" role="button">
+            </a> {%endif%} <span>{{blogs.number}}</span>
                 <span>of</span>
                 <span>{{blogs.paginator.num_pages}}</span>
 
