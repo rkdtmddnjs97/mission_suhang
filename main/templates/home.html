@@ -54,7 +54,8 @@
 
 <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
         <span class="search_menu">
-          &nbsp&nbsp  <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판<input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
+            <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box >자유 게시판<br>
+            <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box >의뢰 게시판<br>
         </span>
         <span class="search_menu">
                 <select class="form-control"  name ="input_type" >
@@ -64,8 +65,7 @@
                   <option name="input_type" value ="body">Context</option>
                 </select>
         </span>
-        
-                <input type="text" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid; color:white;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
+            <input type="text" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
         <button type='submit' class='sch_smit' id='search_submit'><img class="image" src="{% static 'search.png' %}" width="37px;"></button>
 
     </form>
@@ -208,16 +208,16 @@
 
     function check() {
         var chkbox = document.getElementsByName('input_board');
-        var chk = false;
-        for(var i =0; i<chkbox.length; i++) {
-            if(chkbox[i].checked) { chk = true; }
+        var chk = true;
+        for(var i=0; i<chkbox.length; i++) {
+            if(chkbox[i].checked) { pass }
             else { chk = false; }
         }
         if (chk == false) {
             alert("검색 할 게시판을 선택해주세요!");
             return false;
         }
-        else { return true; } 
+        else { return true; }
     }
 
     jQuery(function($) {
