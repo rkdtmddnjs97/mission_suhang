@@ -20,7 +20,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-        
+
         {% load staticfiles %}
         <div class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="750px"></div>
 
@@ -127,9 +127,9 @@
     <a class="ul-popover">
         {% for notification in notification_list %}
             {% if notification.notification_type == 'comment' %}
-               <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a>
+               <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a><br>
             {% else %}
-              <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a> 
+              <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a><br>
             {% endif %}
         {% endfor %}
         <a href="{% url 'notifications' %}">see all</a>
