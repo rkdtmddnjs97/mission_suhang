@@ -4,15 +4,17 @@ from django.utils import timezone
 from hashtag.models import Hashtag
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from accounts.models import Profile
 # Create your views here.
 def board(request):
+    my_profile = Profile.objects.get(profile_id=request.user.username)
     Blogs = B_Blog.objects.all()
     page = request.GET.get('page')
     reverse_blog = []
     for blog in Blogs:
         reverse_blog.append(blog)
     reverse_blog.reverse() 
-    paginator = Paginator(reverse_blog, 3)
+    paginator = Paginator(reverse_blog, 9)
     total_len = len(reverse_blog)
     try:
        reverse_blog = paginator.get_page(page)
@@ -29,7 +31,7 @@ def board(request):
         end_index = index+3 if index <= max_index - 3 else max_index
     page_range = list(paginator.page_range[start_index:end_index])
 
-    return render(request, 'board.html', { 'blogs':reverse_blog, 'page_range':page_range, 'total_len':total_len,'max_index':max_index-2})
+    return render(request, 'board.html', { 'blogs':reverse_blog, 'page_range':page_range, 'total_len':total_len,'max_index':max_index-2, 'my_profile':my_profile})
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
