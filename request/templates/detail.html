@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td>{{post.writer}}</td>
+                    <td><a href="{% url 'profile' post.writer  %}">{{post.writer}}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성일</th>
@@ -72,7 +72,7 @@
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td>{{post.writer}}</td>
+                    <td><a href="{% url 'profile' post.writer  %}">{{post.writer}}</a></td>
                     <td></td>
                     <td></td>
                     <td></td>
