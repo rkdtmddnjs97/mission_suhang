@@ -3,10 +3,11 @@
 {% block content %}
 <br><br>
 <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
-
+{% if user.is_authenticated %}
 <br>
 <a class="btn btn-dark" href="{% url 'b_new'%}">작성하기</a>
 <br><br>
+{% endif %}
 <br>
 <div class="d-none d-sm-block">
     <table class="table">
