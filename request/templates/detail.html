@@ -44,10 +44,7 @@
                     <th scope="row">&nbsp;작성일</th>
                     <td>{{post.pub_date}}</td>
                 </tr>
-                <tr>
-                    <th scope="row">&nbsp;상태</th>
-                    <td>{{post.status}}</td>
-                </tr>
+               
                 <tr>
                     <th scope="row">&nbsp;금액</th>
                     <td>{{post.deposit}}</td>
@@ -85,8 +82,7 @@
 
                 </tr>
                 <tr>
-                    <th scope="row">&nbsp;상태</th>
-                    <td>{{post.status}}</td>
+                  
                     <td>&nbsp;<b>금액</b></td>
                     <td>{{post.deposit}}</td>
                     <td></td>
@@ -132,39 +128,46 @@
         {% endfor %}
         <br><br><br><br>
         <div class="buttonss_h">
-                {% if user.username == post.writer %}
-                {% else %}
-                    {% if isScraped == False %}
-                    <form action="{% url 'scrap' post.id %}" method="get">
-                        <input type="hidden" name='scrap' value="{{user}}">
+
+                {% if user.is_authenticated %}
+                {% if isScraped == False %}
+            <form action="{% url 'scrap' post.id %}" method="get">
+                    <input type="hidden" name='scrap' value="{{user}}">
                         <button class="btn btn-danger" type="submit">scrap</button>
-                    </form>
-                    {% else %}
+                 </form>
+              {% else %}
                     <form action="{% url 'scrap' post.id %}" method="get">
                         <input type="hidden" name='scrap' value="{{user}}">
                         <button class="btn btn-danger" type="submit">scraped</button>
                     </form>
-                    {% endif %}
-                {% if post.status == 'ready' %}
-                    {% if judge == False %}
-                    <button type="button" class="btn btn-danger" onclick="delUrl()">의뢰신청</a>
-                    <script type="text/javascript">
-                        function delUrl() {
-                            var Del = confirm("신청하시겠습니까?")
-                            if (Del == true) {
-                                alert("신청되었습니다.")
-                                location.href = "{% url 'missionApply' post.id %}"
-                            } else {
-                                alert("취소되었습니다.")
-                                self.close()
-                            }
+            {% endif %}
+            {% if user.is_authenticated %}
+            {% if user.username != post.writer %}
+            {% if post.status == 'ready' %}
+            {% if judge == False %}
+                <button type="button" class="btn btn-danger" onclick="delUrl()">의뢰신청</a>
+                <script type="text/javascript">
+                    function delUrl() {
+                        var Del = confirm("신청하시겠습니까?")
+                        if (Del == true) {
+                            alert("신청되었습니다.")
+                            location.href = "{% url 'missionApply' post.id %}"
+                        } else {
+                            alert("취소되었습니다.")
+                            self.close()
+
                         }
 
-                    </script>
-                    {% else %}
-                    {% endif %}
+
+                </script>
+                 {% endif %}
+                 {% endif %}
+                 {% endif %}
                 {% endif %}
-                {% endif %}
+         
+            
+
+
 
         </div>
         <br>
@@ -202,7 +205,8 @@
         <h5><b>댓글</b></h5>
         {% for comment in comments %}
         <h5>{{comment.writer}} : {{comment.content}}</h5>
-        {% if user.username == comment.writer %}
+        {% if user.is_authenticated %}
+    {% if user.username == comment.writer %}
         <a class="btn btn-outline-dark" href="{% url 'comment_delete' comment.id %}" role="button">삭제</a>
         <details>
             <summary>수정하기</summary>
@@ -217,9 +221,11 @@
 
             </form>
         </details>
+        {% endif %}
+        {% endif %}
         <hr>
 
-        {% endif %}
+       
         {% endfor%}
         {%if comments.has_previous%}
     <a href="?page=1">First</a>
@@ -235,6 +241,7 @@
     <a href="?page={{comments.paginator.num_pages}}">Last</a>
     {%endif%}
     <br>
+    {% if user.is_authenticated %}
         <form action="{% url 'new_comment' post.id %}" method="POST">
             {% csrf_token %}
 
@@ -249,6 +256,7 @@
 
             <br><br>
         </form>
+        {% endif %}
 </div>
 </div>
 <style>
