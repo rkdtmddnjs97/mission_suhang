@@ -109,11 +109,12 @@
 
     </p>
 
+    {% if user.is_authenticated %}
     <form action="{% url 'b_like' blog.id %}" method="get">
         <input type="hidden" name='like' value="{{user}}">
         <button class="btn btn-dark" type="submit">좋아요</button>
     </form>
-
+{% endif %}
 
     <hr>
     <br>
@@ -121,7 +122,8 @@
     <br>
     {% for comment in comments %}
     <h5>{{comment.writer}} : {{comment.content}}</h5>
-    
+
+{% if user.is_authenticated %}
     {% if user.username == comment.writer %}
     <a class="btn btn-outline-dark" href="{% url 'b_comment_delete' comment.id %}" role="button">삭제</a>
     <details>
@@ -140,6 +142,7 @@
     <hr>
 
     {% endif %}
+    {% endif %}
     {% endfor%}
     {%if comments.has_previous%}
     <a href="?page=1">First</a>
@@ -155,12 +158,14 @@
     <a href="?page={{comments.paginator.num_pages}}">Last</a>
     {%endif%}
     <br>
+    {% if user.is_authenticated %}
     <form action="{% url 'b_new_comment' blog.id %}" method="POST">
         {% csrf_token %}
 
 
 
         <br>
+    
         <div class="form-group">
             <label for="exampleFormControlTextarea1">{{user.username}}</label>
             <textarea name="content" class="form-control" id="" cols="30" rows="5"></textarea>
@@ -171,6 +176,7 @@
 
         <br><br>
     </form>
+    {% endif %}
 </div>
 </div>
 <style>

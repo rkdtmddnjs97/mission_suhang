@@ -20,14 +20,15 @@ def confirm_notification(request, noti_id):
     return {}
 
 def create_notification(creator, to, notification_type, comment=None, post_id=None):
-    notification = Notification.objects.create(
-        creator=creator,
-        to=to,
-        notification_type=notification_type,
-        notifi_comment=comment,
-        notifi_post_id=post_id
-    )
-    notification.save()
+    if creator != to:
+        notification = Notification.objects.create(
+            creator=creator,
+            to=to,
+            notification_type=notification_type,
+            notifi_comment=comment,
+            notifi_post_id=post_id
+        )
+        notification.save()
 
 def delete_notification(request, notification_id):
     del_notifi = Notification.objects.get(id=notification_id)

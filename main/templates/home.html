@@ -5,8 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
         {% load staticfiles %}
         <div class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="750px"></div>
 
@@ -34,6 +48,25 @@
 
 
 
+<form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
+        <span class="search_menu">
+            <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box >자유 게시판<br>
+            <input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box >의뢰 게시판<br>
+        </span>
+        <span class="search_menu">
+                <select class="form-control"  name ="input_type" >
+                  <option name="input_type" value ="title" selected>title</option>
+                  <option name="input_type" value ="hashtag">hashtag</option>
+                  <option name="input_type" value ="writer">writer</option>
+                  <option name="input_type" value ="body">Context</option>
+                </select>
+        </span>
+            <input type="text" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
+        <button type='submit' class='sch_smit' id='search_submit'><img class="image" src="{% static 'search.png' %}" width="37px;"></button>
+
+    </form>
+
+
 
 
 <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
@@ -44,6 +77,33 @@
 
     {% endfor %}
 <br><br>
+<!-- 인기 게시글과 hot 의뢰글 -->
+<!-- 
+<span>인기 게시판</span>
+  {% for liked in like_lists %} 
+    {% for entry in liked %}
+        {% if forloop.counter0 == 0 %}
+        <a href="{% url 'b_detail' entry.id %}">{{entry.title}}</a>:
+         {% else %}
+           {{entry}}
+        {% endif %}
+    {% endfor %}  
+  {% endfor %}
+<br>
+<span>HOT 의뢰  </span>
+{% for liked in scrap_lists %} 
+   {% for entry in liked %}
+      {% if forloop.counter0 == 0 %}
+      <a href="{% url 'detail' entry.id %}">{{entry.title}}</a>
+  
+       {% else %}
+         {{entry}}
+      {% endif %}
+    {% endfor %}  
+{% endfor %}
+<br>
+<br><br>  -->
+
 <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
 <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
 
@@ -94,9 +154,9 @@
     <a class="ul-popover">
         {% for notification in notification_list %}
             {% if notification.notification_type == 'comment' %}
-               <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a>
+               <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a><br>
             {% else %}
-              <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a> 
+              <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a><br>
             {% endif %}
         {% endfor %}
         <a href="{% url 'notifications' %}">see all</a>
@@ -153,16 +213,16 @@
 
     function check() {
         var chkbox = document.getElementsByName('input_board');
-        var chk = false;
-        for(var i =0; i<chkbox.length; i++) {
-            if(chkbox[i].checked) { chk = true; }
+        var chk = true;
+        for(var i=0; i<chkbox.length; i++) {
+            if(chkbox[i].checked) { pass }
             else { chk = false; }
         }
         if (chk == false) {
             alert("검색 할 게시판을 선택해주세요!");
             return false;
         }
-        else { return true; } 
+        else { return true; }
     }
 
     jQuery(function($) {
@@ -182,8 +242,6 @@
         tag = $('#new_hashtag').val() + tag;
         $('#new_hashtag').val(tag);
     }
-
-    
 </script>
 
 </body>
