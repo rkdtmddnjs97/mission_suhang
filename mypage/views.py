@@ -312,12 +312,12 @@ def complain(request,profile_id):
     complaints=complaint()
     complaints.complainer=complainer_profile
     complaints.prey=prey_profile
-    complaints.casuse=request.POST['complain_content']
+    complaints.cause=request.POST['complain_content']
     complaints.save()
     
     creator = Profile.objects.get(profile_id=request.user.username)
     to = Profile.objects.get(profile_id='admin')
-    create_notification(creator, to, 'report', complaints.casuse)
+    create_notification(creator, to, 'report', complaints.cause)
 
     return redirect('profile',prey_profile.profile_id)
 

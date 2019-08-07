@@ -88,7 +88,7 @@
     <form action="{% url 'complain' my_profile.id %}" method="POST">
       {% csrf_token %}
 
-      사유:<textarea name='complain_content' id="" cols="30" rows="10" placeholder="write your complain"
+      사유:<textarea name='complain_content' cols="30" rows="10" placeholder="write your complain"
         required="required"></textarea>
       <input type="submit" value='신고'>
     </form>
