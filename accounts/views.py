@@ -18,12 +18,7 @@ from django.contrib.staticfiles import finders
 
 def signup(request):
     all_Pictrue=Picture.objects.all()
-    for one in all_Pictrue:
-        one.delete()
-    all_hashtag = Hashtag.objects.all()
-    if request.method == 'POST':
-        if request.POST['password1'] == request.POST['password2']:
-            school={'국민대학교': 'kookmin.ac.kr','가천대학교':'gachon.ac.kr','경남대학교':'kangnam.ac.kr',
+    school={'국민대학교': 'kookmin.ac.kr','가천대학교':'gachon.ac.kr','경남대학교':'kangnam.ac.kr',
             '강원대학교':'kangwon.ac.kr','건국대학교':'konkuk.ac.kr','건양대학교':'konyang.ac.kr','경기대학교':'kyonggi.ac.kr',
             '경북대학교':'knu.ac.kr','경상대학교':'gnu.ac.kr','경성대학교':'ks.ac.kr','경희대학교':'khu.ac.kr',
             '고려대학교':'korea.ac.kr','광운대학교':'kw.ac.kr','남서울대학교':'nsu.ac.kr','단국대학교':'dankook.ac.kr',
@@ -39,6 +34,11 @@ def signup(request):
             '대구경북과학기술원':'dgist.ac.kr','울산과학기술원':'unist.ac.kr','계명대학교':'kmu.ac.kr','동신대학교':'dsu.ac.kr',
             '명지대학교':'mju.ac.kr','순천향대학교':'sch.ac.kr','한국교원대학교':'knue.ac.kr','한국교통대학교':'ut.ac.kr',
             '멋쟁이사자처럼':'likelion.org'}
+    for one in all_Pictrue:
+        one.delete()
+    all_hashtag = Hashtag.objects.all()
+    if request.method == 'POST':
+        if request.POST['password1'] == request.POST['password2']:
             try:
                 Profile.objects.get(email=request.POST['email'])
                 error4='이메일이 이미 존재합니다' 
@@ -119,8 +119,8 @@ def signup(request):
             return render(request, 'approval.html',{'judge':judge,'left_time':left_time,'e_flag':e_flag,'sn':sn,'private':private,'picture_id':picture.id})
         else:
               error='비밀번호가 일치하지 않습니다.'
-              return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error})
-    return render(request, 'signup.html', {'hashtag': all_hashtag})
+              return render(request, 'signup.html', {'hashtag': all_hashtag,'error':error, 'school': school})
+    return render(request, 'signup.html', {'hashtag': all_hashtag, 'school': school})
 
 
 # def logo_data():
