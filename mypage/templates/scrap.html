@@ -1,15 +1,118 @@
 {% extends 'base.html'%}
 
 {% block content %}
+{% load staticfiles %}
+<div class="scrap_box">
+        <h1>▶Scrap Post</h1>
+        {%for post in scraped_post %}
+        <h2 class="list_title">-클릭하면 자세히 볼 수 있어요-</h2>
+        <a class="list" href="{% url 'detail' post.id %}">
+         <li>{{post.title}}</li>
+        </a>
+        {%endfor%}
+        
+        </div>
 
-<h1>스크랩한 게시물</h1>
-<br>
-{%for post in scraped_post %}
-<a href="{% url 'detail' post.id %}">
-    <li>{{post.title}}</li>
-</a>
-{%endfor%}
+<a class="back" href="{% url 'profile' profile %}">뒤로가기</a>
+<div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
+</body>
+</html>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+    .back{
+        all:unset;
+        
+    }
+     .pont{
+         font-family:  'Do Hyeon', sans-serif;
+     }
+    
+     img{
+         float: right;
+     }
+     .login_title{
+    
+  }
+  .list{
+      all:unset;
+  }
+  .list:hover{
+      color: rgb(50, 161, 137); 
+  }
+  @media screen and (max-width:600px) {
+    .scrap_box {
+      font-size: 20px;
+    }
 
-<a href="{% url 'profile' profile %}">뒤로가기</a>
+    .title {
+      font-size: 30px;
+    }
 
+    .login_title {
+      display: none;
+
+    }
+
+    .top {
+      width: 40px;
+    }
+   .money_in{
+     font-size: 20px;
+   }
+   .plus{
+    font-size: 20px;
+   }
+   h1{
+    font-size: 30px;
+    margin: 1rem 0 0 0;
+     }
+    .list{
+        font-size: 22px;
+    }
+    .list_title{
+        font-size: 24px;
+    }
+    .back{
+        font-size: 20px;
+    }
+
+  }
+  @media screen and (min-width: 500px) and (max-width:200px) {}
+
+  @media screen and (min-width: 1000px) {
+    .scrap_box {
+      font-size: 30px;
+    }
+
+    .title {
+      font-size: 60px;
+    }
+
+    .title_nav {
+      display: none;
+    }
+
+    .top {
+      width: 70px;
+    }
+   
+   .plus{
+    font-size: 30px;
+   }
+   h1{
+         font-size: 50px;
+     }
+    .list{
+        font-size: 40px;
+    }
+    .list_title{
+        font-size: 33px;
+    }
+    .back{
+        font-size: 30px;
+    }
+  }
+    </style>
+
+</style>   
 {% endblock %}

@@ -29,6 +29,8 @@
      <div class='pont'>
     <div class='pont'>
          
+ 
+ <a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="400px;" style="position: fixed; top:0px; right:0px;"></a>
 <!-- 여기가 모바일 -->
   <div class="mnav">
         <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
@@ -73,19 +75,6 @@
            
         
     </div>
-
-    <div class="sidenav" style="width: 300px;">
-        <br>
-        <br>
-        <a href="">ABOUT<br> MISSION</a><br>
-        <a href="">수행중인 미션</a><br>
-        <a href="">수행완료된 미션</a><br>
-        <a href="">의뢰중인 미션</a><br>
-        <a href="">의뢰완료된 미션</a><br>
-        <a href="">스크랩한 미션</a>
-      </div>
-      <a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="400px;" style="position: fixed; top:0px; right:0px;"></a>
-  
       <div class="sidenav_2" style="width: 400px; position: fixed; top:111px; right:0px; ">
             <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
                     <span class="search_menu">
@@ -138,7 +127,7 @@
                                 {% endif %}
                             {% endfor %}
                             <a href="{% url 'notifications' %}">see all</a>
-                        </a>
+                        </a> 
 
 
 
@@ -213,35 +202,7 @@
         padding: 0;
     }
 
-    /* 사이드바 스타일 */
-  .sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: rgb(0, 0, 0);
-    overflow-x: hidden;
-    padding-top: 60px;
-  }
-
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 27px;
-    color: #fff;
-    display: block;
-  }
-
-  .sidenav a:hover,
-  .offcanvas a:focus {
-    color: rgb(241, 81, 81);
-  }
-
-  .openmenu>i {
-    font-size: 30px;
-  }
+    
 
    /* 사이드바 스타일1 */
    .sidenav_2 {
@@ -328,8 +289,66 @@
     color :rgb(247, 68, 74);
   }
   
+  	/* 사이드바 스타일 */
+      .sidenav {
+			height:100%;
+			width: 0;
+			position: fixed;
+			z-index:1;
+			top: 0;
+			left: 0;
+			background-color: rgb(0, 0, 0);
+			overflow-x: hidden;
+			transition:0.5s ease-in-out;
+			padding-top: 60px;
+		}
+		.sidenav a {
+			padding: 8px 8px 8px 32px;
+			text-decoration: none;
+			font-size: 25px;
+			color: #fff;
+			display: block;
+			transition: 0.2s ease-in-out;
+		}
+		.sidenav a:hover, .offcanvas a:focus {
+			color:  rgb(83, 177, 156);
+		}
+		.closebtn {
+			position: absolute;
+			top: 0;
+			right: 25px;
+			font-size: 36px !important;
+			margin-left: 50px;
+		}
+		.openmenu:hover {
+			color: rgb(83, 177, 156);
+			transition:0.5s ease-in-out;
+		}
+		.openmenu {
+			font-size: 25px;
+			cursor:pointer;
+			transition:0.5s ease-in-out;
+		}
+		.openmenu > i {
+			font-size: 30px;
+		}
+
+    	@media screen and (max-height:450px) {
+            .openmenu{
+                display: none;
+            }
+			.sidenav {
+				padding-top:15px;
+			}
+			.sidenav a {
+				font-size: 18px;
+			}
+		}
 
     @media screen and (max-width:600px) {
+        .openmenu{
+                display: none;
+            }
         .top{
             width: 70px;
         }
@@ -362,7 +381,9 @@
         .login_title{
             display: none;
         }
-        
+        .top{
+            width: 50px;
+        }
 
     }
 
@@ -391,7 +412,7 @@
             display: none;
         } 
         .container{ 
-        margin:3rem 0 0 20rem;
+        margin:1rem 0 0 20rem;
 
     }
     }

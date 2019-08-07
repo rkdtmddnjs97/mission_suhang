@@ -91,7 +91,7 @@ def signup(request):
         
             html_content=render_to_string('email_approval.html',{'result':result})
             message = strip_tags(html_content)
-            email = EmailMultiAlternatives('인증 메일', message, to=request.POST['email'] + '@' + request.POST['domain'])
+            email = EmailMultiAlternatives('인증 메일', message, to=[request.POST['email'] + '@' + request.POST['domain']])
             # email.attach(logo_data())
             email.mixed_subtype = 'related'
            
