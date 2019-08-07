@@ -2,311 +2,315 @@
 
 {% block content %}
 
+{% load staticfiles %}
+<!-- 새사이드네브 -->
+<div id="mysidenav" class="sidenav">
+    <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a>
+    <a style="font-size:45px;" href="">MY MISSION</a><br>
+    <br>
+    <br>
+    <a style="font-size:35px;" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
+    <a style="font-size:35px;" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
+    <a style="font-size:35px;" href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
+    <a style="font-size:35px;" href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
+    <a style="font-size:35px;" href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
+</div>
+
+<span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true" ></i> <a style="font-size:40px;">◀Open Mission</a></span>
+
+<script>
+    function openNav() {
+        document.getElementById('mysidenav').style.width = '300px';
+    }
+    function closeNav() {
+        document.getElementById('mysidenav').style.width = '0';
+    }
+</script>
 <div class="pont">
-    <a class="title" style="text-decoration: underline;">MY ACCOUNT</a>
-    <div class="box">
-      {% if request.user.username == my_profile.profile_id %}
-      <a class="edit_my" href="{% url 'editProfile' my_profile.profile_id %}">/회원정보 수정</a>
-      {% else %}
-      <h6>--유저 본인이 아닙니다.--</h6>
-      {% endif %}
-      <br><br>
-      <div class="picture"><img class="a" src="{{ my_profile.profile_img.url }}"></div>
-      <br>
-     <a  style="color: rgb(50, 161, 137); text-decoration: underline;">ID : {{my_profile.profile_id}}</a> 
-      <br>
-      <a >Name : {{my_profile.name}}</a>
-      <br>
-      <a >School : {{my_profile.university}}</a>
-      <br>
-      <a >Major : {{my_profile.department}}</a>
-      <br>
-      <a >Average Score :{{average_rate}}</a>
-      <br>
-      <a > Total Clear Mission:{{number}}</a>
-      <p>Introduce Myself</p>
-      <br>
-      {{my_profile.introduction}}
-      <br>
-      <details>
-        <summary>Review</summary>
-        {% for review in review_objects %}
-        의뢰자:{{review.writer}}<br>
-        평점:{{review.ratings}}<br>
-        후기:{{review.reviews}}<br>
-        <hr>
-        {% endfor %}
-      </details>
-      <br>
-
-
+  {% if request.user.username == my_profile.profile_id %}
+  <div class="title" style="text-decoration: underline;">MY ACCOUNT</div>
+  <a class="edit_my" href="{% url 'editProfile' my_profile.profile_id %}" >/회원정보 수정</a>
+  {% else %}
+  <a class="title" style="text-decoration: underline;">Other ACCOUNT</a>
+  <h6>--유저 본인이 아닙니다.--</h6>
+  {% endif %}
+  <div class="box">
       
-      </details>
-      <br>
+    <div class="row">
+      <div class="col-6 col-md-4">
+        <br>
+        <div class="picture"><img class="a" src="{{ my_profile.profile_img.url }}" width="350px;"></div><br>
+      </div>
 
-    
+      <div class="col-12 col-md-8">
+          <br>
+        <br>
+        <a class="pro" style="color: rgb(50, 161, 137); text-decoration: underline;">ID : {{my_profile.profile_id}}</a>
+        <br>
+        <a class="pro2" >Name</a><a class="pro">: {{my_profile.name}}</a>
+        <br>
+        <a class="pro2">School</a><a class="pro">: {{my_profile.university}}</a>
+        <br>
+        <a class="pro2">Major</a><a class="pro">: {{my_profile.department}}</a>
+        <br>
+        <a class="pro2">Average Score </a><a class="pro">:{{average_rate}}</a>
+        <br>
+        <a class="pro2"> Total Clear Mission</a><a class="pro">:{{number}}</a>
+        <br>
+        <br>
+        <br>
+      </div>
+
     </div>
-</details>
+    <p>▷Introduce</p>
+    <p>&nbsp {{my_profile.introduction}}</p>
+    <br>
+    {% for tag in tag_list %}
+    <a class="e3" href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
+    {% endfor %}
+  
+    <details>
+     <summary>Review</summary>
+      {% for review in review_objects %}
+      의뢰자:{{review.writer}}<br>
+      평점:{{review.ratings}}<br>
+      후기:{{review.reviews}}<br>
+      <hr>
+      {% endfor %}
+    </details>
+    <br>
+  </div>
+  </details>
   <br>
   {% if user.is_authenticated %}
   {% if request.user.username != my_profile.profile_id %}
   <details>
     <summary>신고하기</summary>
     <form action="{% url 'complain' my_profile.id %}" method="POST">
-        {% csrf_token %}
-      
-          사유:<textarea name= 'complain_content' id="" cols="30" rows="10" placeholder="write your complain" required="required"></textarea>
-          <input type="submit" value='신고'>
-   </form>
+      {% csrf_token %}
+
+      사유:<textarea name='complain_content' id="" cols="30" rows="10" placeholder="write your complain"
+        required="required"></textarea>
+      <input type="submit" value='신고'>
+    </form>
   </details>
   <br>
-
-  <a href="#" onclick="window.open('{% url 'chat' app_id=my_profile.id request_id=user_profile.id   %}','채팅창','width=500,height=700')">채팅</a>
+  <a href="#"
+    onclick="window.open('{% url 'chat' app_id=my_profile.id request_id=user_profile.id   %}','채팅창','width=500,height=700')">채팅</a>
 
   {% endif %}
   {% endif %}
-<br>
-{% for tag in tag_list %}
- <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
-{% endfor %}
-<br><br>
-
-{% if request.user.username == my_profile.profile_id %}
-충전된 금액:{{my_profile.money}}
-<details>
-    <summary>충전</summary>
+<a class="pro">
+  {% if request.user.username == my_profile.profile_id %}
+  충전된 금액:{{my_profile.money}}</a>
+  <details>
+    <summary >충전하기</summary>
     <form action="{% url 'recharge' my_profile.id %}" method="POST">
-        {% csrf_token %}
-      
-          충전금액:<input type="number" name='charge_money' required="required">
-          <input type="submit" value='확인'>
-   
-        
-</form>
-</details>
-<br>
-<a href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
-<a href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
-<a href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
-<a href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
-<a href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
-<br><br>
-{% endif %}
-<style>
- @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
- .mnav {
-        font-family: 'Do Hyeon', sans-serif;
+
+      {% csrf_token %}
+  <a style="font-size: 35px;">
+      충전금액:<input type="text" name='charge_money' required="required">
+      <input style="all:unset; border:1px;" type="submit" value='확인'>
+    </a>
+
+    </form>
+  </details>
+  <div class="mb_mission">
+  <br>
+  <a class="pro3">▶MY Mission</a><br>
+  <a class="m2" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
+  <a  class="m2" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
+  <a  class="m2" href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
+  <a  class="m2" href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
+  <a  class="m2" href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
+  <br><br>
+</div>
+  {% endif %}
+  <a href="#"><img style="position: fixed; bottom:5px; right:5px;" class="top1" src="{% static 'top.png' %}"></a>
+</body>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+    .mnav {
+      font-family: 'Do Hyeon', sans-serif;
     }
-.money_in {
-  font-family: 'Do Hyeon', sans-serif;
-  width: 120px;
-  height: 35px;
-  
-}
-input{
-  all:unset;
-  border-bottom: #000000 2px solid;
 
-}
+    .money_in {
+      font-family: 'Do Hyeon', sans-serif;
+      width: 120px;
+      height: 35px;
 
-.plus {
-  font-family: 'Do Hyeon', sans-serif;
-  background-color: rgb(255, 255, 255);
-  
-}
-.plus:hover{
-  color:rgb(50, 161, 137);
-  text-decoration: underline;
-}
+    }
+    .pro {
+      font-size: 45px;
+    }
+    .pro2{
+     text-decoration: underline; 
+     font-size:45px;
+    }
 
-.edit_my {
-  all: unset;
-}
+    .row {
+      border: #000000 7px solid;
+    }
 
-.edit_my:hover {
-  color: rgb(50, 161, 137);
+    input {
+      all: unset;
+      border-bottom: #000000 2px solid;
 
-}
+    }
 
-.login_title {
-  margin: 0rem 0 0 25rem;
-}
+    .plus {
+      font-family: 'Do Hyeon', sans-serif;
+      background-color: rgb(255, 255, 255);
 
-.a {
-  float: left;
-}
+    }
 
-img {
-  float: right;
+    .plus:hover {
+      color: rgb(50, 161, 137);
+      text-decoration: underline;
+    }
 
-}
-.pont {
-  font-family: 'Do Hyeon', sans-serif;
+    .edit_my {
+      all: unset;
+    }
 
-}
+    .edit_my:hover {
+      color: rgb(50, 161, 137);
 
-/* 사이드바 스타일 */
-.sidenav {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: rgb(0, 0, 0);
-  overflow-x: hidden;
-  padding-top: 60px;
-}
+    }
 
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 27px;
-  color: #fff;
-  display: block;
-}
+    .login_title {
+      margin: 0rem 0 0 25rem;
+    }
 
-.sidenav a:hover,
-.offcanvas a:focus {
-  color: rgb(241, 81, 81);
-}
+    .a {
+      float: left;
+    }
 
-.openmenu>i {
-  font-size: 30px;
-}
+    .pont {
+      font-family: 'Do Hyeon', sans-serif;
 
- /* 사이드바 스타일1 */
- .sidenav_2 {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  background-color:  rgb(83, 177, 156);
-  overflow-x: hidden;
-  padding-top: 60px;
-}
-.sidenav_2 a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 27px;
-  color: #fff;
-  display: block;
-}
-.sidenav_2 p{
-  all:unset;
-  text-align: left;
-  font-size: 27px;
-  color: #fff;
-  position: fixed; bottom:5px; right:55px;
-}
-.sidenav a:hover,
-.offcanvas a:focus {
-  color: rgb(241, 81, 81);
-}
+    }
+   
+    .openmenu>i {
+      font-size: 30px;
+    }
 
-.openmenu>i {
-  font-size: 30px;
-}
+    
 
-/* 모바일 네브바 */
-.dropdown-item:hover {
-  text-decoration: none;
-  color: rgb(255, 255, 255);
-  ;
-  background: rgb(247, 68, 74);
-  ;
+    /* 미디어쿼리 적용 */
+    @media screen and (max-width:600px) {
+      .edit_my {
+        font-size: 27px;
+    }
+      .e3{
+        font-size: 27px;
+      }
+      .m2:hover{
+        color:rgb(50, 161, 137);
+      }
+      
+      a{
+        all:unset;
+      }
 
-}
+      p{
+        font-size: 30px;
+      }
+      summary{
+        font-size: 30px;
+      }
+      .pro2{
+     text-decoration: underline; 
+     font-size:25px;
+    }
+    .pro{
+     font-size:27px;
+    }
+    .pro3{
+      font-size:30px;
+    }
+      .row {
+      border: #fffcfc 1px solid;
+    }
+      .mb_mission{
+        font-size: 25px;
+      }
+      
+      .box {
+        font-size: 20px;
+      }
 
+      .title {
+        font-size: 40px;
+        margin: 0rem 0 0 0rem;
+      }
 
-.holder::placeholder {
-  color: rgb(255, 255, 255);
-}
+      .login_title {
+        display: none;
 
-.holder:hover {
-  text-decoration: none;
-  color: rgb(50, 161, 137);
-}
+      }
+      .top1 {
+        width: 50px;
+      }
 
-.logout {
-  all: unset;
-}
+      .money_in {
+        font-size: 20px;
+      }
 
-.navbar-brand {
-  all: unset;
-  color: white;
-  text-align: right;
-  font-family: 'Do Hyeon', sans-serif;
-  font-size: 1.5rem;
-}
-.navbar-brand:hover{
-  color:  rgb(50, 161, 137); 
-}
-#dropdownMenuLink{
-  font-size: 1.4rem;
-   color :white;
-}
-#dropdownMenuLink:hover{
-  color :rgb(247, 68, 74);
-}
+      .plus {
+        font-size: 20px;
+      }
+      
 
-/* 미디어쿼리 적용 */
-@media screen and (max-width:600px) {
+    }
 
-  .box {
-    font-size: 20px;
-  }
+    @media screen and (min-width: 500px) and (max-width:200px) {}
 
-  .title {
-    font-size: 30px;
-    margin: 0rem 0 0 1rem;
-  }
+    @media screen and (min-width: 1000px) {
+      .edit_my {
+        font-size: 40px;
+    }
+      .e3{
+        font-size: 40px;
+      }
+      summary{
+        font-size: 45px;
+      }
+      p{
+        font-size: 45px;
+      }
+      .mb_mission{
+        display: none;
+      }
+      .top1{
+        display: none;
+      }
+      .box {
 
-  .login_title {
-    display: none;
+        font-size: 30px;
+      }
 
-  }
+      .title {
+        font-size: 60px;
+      }
 
-  .top {
-    width: 40px;
-  }
- .money_in{
-   font-size: 20px;
- }
- .plus{
-  font-size: 20px;
- }
+      .title_nav {
+        display: none;
+      }
 
-}
+      .top {
+        width: 70px;
+      }
 
-@media screen and (min-width: 500px) and (max-width:200px) {}
+      .money_in {
+        font-size: 30px;
+      }
 
-@media screen and (min-width: 1000px) {
-  .box {
-  
-    font-size: 30px;
-  }
-
-  .title {
-    font-size: 60px;
-  }
-
-  .title_nav {
-    display: none;
-  }
-
-  .top {
-    width: 70px;
-  }
-  .money_in{
-   font-size: 30px;
- }
- .plus{
-  font-size: 30px;
- }
-}
-</style>
- </style>
-{% endblock %}
+      .plus {
+        font-size: 30px;
+      }
+    }
+  </style>
+  </style>
+  {% endblock %}
