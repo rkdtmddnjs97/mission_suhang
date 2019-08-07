@@ -198,8 +198,9 @@ def approve(request,profile_dic,tmp_pic):
             left_time=request.POST['time']
             judge='False'   
             e_flag='True'     
-            sn=profile_dic[7]    
-            return render(request,'approval.html',{'error':error,'left_time':left_time,'judge':judge,'e_flag':e_flag,'private':profile_dic,'sn':sn})
+            sn=profile_dic[7] 
+            picture_id=tmp_pic      
+            return render(request,'approval.html',{'error':error,'left_time':left_time,'judge':judge,'e_flag':e_flag,'private':profile_dic,'sn':sn,'picture_id':picture_id})
 
 
 def login(request):
