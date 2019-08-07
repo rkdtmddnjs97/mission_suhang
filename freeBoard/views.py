@@ -12,31 +12,10 @@ def board(request):
     for blog in Blogs:
         reverse_blog.append(blog)
     reverse_blog.reverse() 
-<<<<<<< HEAD
     paginator = Paginator(reverse_blog,15)
     reverse_blog = paginator.get_page(page)  
     return render(request, 'board.html', { 'blogs':reverse_blog })
 
-=======
-    paginator = Paginator(reverse_blog, 3)
-    total_len = len(reverse_blog)
-    try:
-       reverse_blog = paginator.get_page(page)
-    except PageNotAnInterger:
-       reverse_blog = paginator.page(1)
-    except EmptyPage:
-        reverse_blog = paginator.page(paginator.num_pages) 
-    index = reverse_blog.number -1
-    max_index = len(paginator.page_range)
-    start_index = index -2 if index >= 2 else 0
-    if index <2:
-        end_index = 5 - start_index
-    else:
-        end_index = index+3 if index <= max_index - 3 else max_index
-    page_range = list(paginator.page_range[start_index:end_index])
- 
-    return render(request, 'board.html', { 'blogs':reverse_blog, 'page_range':page_range, 'total_len':total_len,'max_index':max_index-2})
->>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 
 def detail(request,post_id):
     blog = get_object_or_404(B_Blog, pk=post_id)
