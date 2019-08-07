@@ -81,6 +81,28 @@ margin-left: 200px;padding-right:80px;">
                 <p> {{blog.body}}</p>
             </div>
         </div>
+        <div class="card" style="min-height:30rem;">
+            <div class="card-body">
+                <br>
+                {% if blog.attached_img == 'images/no_image.png' %}
+                {% else %}
+                <img src="{{blog.attached_img.url}}" alt=""><br>
+                {% endif %}
+                <br>
+
+            </div>
+        </div>
+
+        <br>
+        {% if blog.attached_file == 'files/dummy.txt' %}
+                (첨부된 파일이 없습니다)
+                <br><br>
+        {% else %}
+            <b>첨부파일</b><br><br>
+            <div class="card" style="min-height:5rem;"><a href="{{blog.attached_file.url}}"
+                    download="">{{blog.attached_file}}</a></div>
+            <br><br>
+        {% endif %}
         <b>#Hashtag</b> {% for tag in hashtag.all %}
         <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
