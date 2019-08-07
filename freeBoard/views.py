@@ -68,7 +68,6 @@ def create(request):
     new_post.pub_date = timezone.datetime.now()
     new_post.save()
     #list에 해시태그 분할저장
-   
     if request.FILES.get('attached_img') is None:
         pass
     else:
@@ -78,7 +77,9 @@ def create(request):
     else:
         new_post.attached_file = request.FILES.get('attached_file')
     new_post.save()
+
     hash_list = request.POST['hashtag'].split('#')
+
     for index,hash in enumerate(hash_list):
         if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
             pass
@@ -89,14 +90,18 @@ def create(request):
             else:
                 tag = Hashtag.objects.create(name=hash.upper())
                 new_post.hashtag.add(tag)
-
-            # tag = Hashtag.objects.create(name=hash.upper())
-            # new_post.hashtag.add(tag)
     return redirect('board')
 
 def edit(request, post_id):
     edit_post = B_Blog.objects.get(id=post_id)
-    return render(request, 'b_edit.html', {'blog':edit_post})
+    post_tag = Hashtag.objects.filter(freeboard_tag=post_id)
+    all_tag = Hashtag.objects.all()
+
+    checked_tag = []
+    for checked in post_tag:
+        checked_tag.append(checked)
+
+    return render(request, 'b_edit.html', {'edit_post':edit_post, 'checked_tag':checked_tag, 'all_tag':all_tag })
 
 def update(request, post_id):
     update_post = B_Blog.objects.get(id=post_id)
@@ -111,9 +116,31 @@ def update(request, post_id):
         pass
     else:
         update_post.attached_file = request.FILES.get('attached_file')
+
+    # Hashtag
+    tag_list = request.POST.getlist('hashtag')
+    add_hash_list = request.POST['add_hashtag'].split('#')
+    update_post.hashtag.clear()
+    
+    for index,hsTag in enumerate(add_hash_list):
+        if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
+            pass
+        else:
+            if hsTag.upper() in tag_list:
+                pass
+            else:
+                tag_list.append(hsTag.upper())
+
+    for tag in tag_list:
+        if Hashtag.objects.filter(name=tag).exists():
+            input_tag = Hashtag.objects.get(name=tag)
+            update_post.hashtag.add(input_tag)
+        else:
+            input_tag = Hashtag.objects.create(name=tag)
+            update_post.hashtag.add(input_tag)
     
     update_post.save()
-    return redirect('board')
+    return redirect('b_detail', post_id)
 
 def delete(request, post_id):
     delete_post=B_Blog.objects.get(id=post_id)
