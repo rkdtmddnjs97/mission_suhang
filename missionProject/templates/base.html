@@ -30,7 +30,7 @@
     <div class='pont'>
          
  
- <a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="400px;" style="position: fixed; top:0px; right:0px;"></a>
+ <a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="370rem;" style="position: fixed; top:0px; right:0px;"></a>
 <!-- 여기가 모바일 -->
   <div class="mnav">
         <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
@@ -75,7 +75,7 @@
            
         
     </div>
-      <div class="sidenav_2" style="width: 400px; position: fixed; top:111px; right:0px; ">
+      <div class="sidenav_2" style="width: 23.1rem; position: fixed; top:6.35rem; right:0px; ">
             <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
                     <span class="search_menu">
                       &nbsp&nbsp  <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판<input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
@@ -89,7 +89,7 @@
                             </select>
                     </span>
                     
-                            <input type="text" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid; color:white;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
+                            <input type="text" name='input_data' style=" all:unset; font-size: 1.5rem; width: 18rem; border-bottom: #ffffff 2px solid; color:white;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
                     <button type='submit' class='sch_smit' id='search_submit'><img class="image" src="{% static 'search.png' %}" width="37px;"></button>
             
                 </form>
@@ -156,7 +156,7 @@
             {% endblock %}
            </div>
     </div>
-    <div style="position: fixed; bottom:5px; right:405px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
+    <div style="position: fixed; bottom:0.3rem; right:23.5rem"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
     </div>
    </div>
 </body>
@@ -391,7 +391,7 @@
 
     @media screen and (min-width: 1000px) {
         .top{
-            width: 100px;
+            width: 70px;
         }
         .search {
             display: none;
@@ -412,7 +412,7 @@
             display: none;
         } 
         .container{ 
-        margin:1rem 0 0 20rem;
+        margin:0rem 0 0 20rem;
 
     }
     }
@@ -422,7 +422,6 @@
 <script type="text/javascript">
 
     $('.result_tag').hide();
-    $('.result_school').hide();
 
     $('[rel="popover"]').popover({
         container: 'body',
@@ -471,7 +470,6 @@
         else { return true; } 
     }
 
-    //해시태그 검색
     jQuery(function($) {
         $('#search_tag').keyup(function(event) {
             var val = $(this).val();
@@ -483,31 +481,11 @@
             }
         });
     });
-    
+
     function input_hashtag(val){
         var tag = "#"+val;
         tag = $('#new_hashtag').val() + tag;
         $('#new_hashtag').val(tag);
-    }
-
-    //대학교 검색
-    jQuery(function($) {
-        $('#search_school').keyup(function(event) {
-            var name = $(this).val();
-            if (name == "") {
-                $('.result_school').hide();
-            } else {
-                $('.result_school').hide();
-                $(".result_school:contains('"+name+"')").show();
-            }
-        });
-    });
-    
-    function input_school(key, value){
-        var school = key;
-        var email = value;
-        $('#search_school').val(school);
-        $('#selected_domain').val(email);
     }
 
     
