@@ -3,7 +3,7 @@
 {% block content %}
 
 
-<form action="{%url 'b_update' edit_post.id %}" method="POST" id="free_update" >
+<form action="{%url 'b_update' edit_post.id %}" method="POST" id="free_update" enctype="multipart/form-data">
         <br><br>
         <h1 class="fr">Free Board</h1>
         <!-- <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div> -->
@@ -34,6 +34,25 @@
                         <div class="col-sm-8">
                                 <textarea class="form-control" name="body"
                                         style="height:30rem;" required='required'>{{edit_post.body}}</textarea>
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <label for="inputTitle" class="col-sm-2 col-form-label">사진첨부</label>
+                        <div class="col-sm-8">
+                                <div class="custom-file">
+                                        <input type="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.gif"
+                                                name="attached_img">
+                                        <label class="custom-file-label" for="customFile">사진을 선택해주세요</label>
+                                </div>
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <label for="inputTitle" class="col-sm-2 col-form-label">파일첨부</label>
+                        <div class="col-sm-8">
+                                <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="attached_file">
+                                <label class="custom-file-label" for="customFile">파일을 선택해주세요</label>
+                                </div>
                         </div>
                 </div>
                 <div>
