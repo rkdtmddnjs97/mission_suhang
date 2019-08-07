@@ -4,44 +4,10 @@
 {% if error %}
 {{error}}
 {% endif %}
-<<<<<<< HEAD
 
 <form action="{%url 'create' %}" method="POST" enctype="multipart/form-data">
     <br><br><br>
     <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
-=======
-<h1>새 글을 작성해주세요</h1>
-
-<form action="{%url 'create' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    제목 : <input type="text" name='title' required="required">
-    <br>
-    <br>
-    작성자 : {{user.username}}
-    <br>
-    <br>
-    본문 : <textarea name="body" id="" cols="30" rows="10" placeholder="write your content" required="required"></textarea>
-    <br>
-    <br>
-    사진첨부<br>
-    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
-    <br>
-    파일첨부<br>
-    <input type="file" name="attached_file">
-    <br>
-    금액 : <input type="number" name='price'>
-    <br>
-
-    해시태그<br>
-    해시태그 검색<br>
-    <input type="text" name='search_tag_data' id='search_tag'><br><br>
-    {% for tag in hashtag %}
-        <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
-    {% endfor %}
-    
-    <p>* 해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</p>
-    -> <input type="text" name='hashtag' id="new_hashtag">
->>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
     <br><br>
     {% csrf_token %}
     <div class="card">
@@ -111,7 +77,6 @@
     <button class="btn btn-dark" type='submit'>작성하기</button>
     <br><br><br><br>
 </form>
-<<<<<<< HEAD
 <style>
     .card {
         text-align: center;
@@ -124,10 +89,6 @@
     .form-group {
         text-align: center;
     }
-=======
-<a href="{% url 'request' %}">취소 </a>
-{%endblock%}
->>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
 
     .form-control {
         resize: none;

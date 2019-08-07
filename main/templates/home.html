@@ -1,9 +1,17 @@
-{% extends 'base.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        {% load staticfiles %}
+        <div class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="750px"></div>
 
-{% block content %}
-{% load staticfiles %}
 
-<h1>메인 페이지입니당</h1>
+<div class="pont">
 <br>
 {% if judge == True %}
 <a href="{% url 'dissatisfication'%}">민원사항</a>
@@ -22,6 +30,29 @@
 <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
 {% endfor %}
 <br>
+
+
+
+<form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
+        <span class="search_menu">
+          &nbsp&nbsp  <input type = "checkbox" name = "input_board" value = "freeboard" id = tag_box > 자유 게시판<input type = "checkbox" name = "input_board" value = "missionboard" id = tag_box > 의뢰 게시판 <br>
+        </span>
+        <span class="search_menu">
+                <select class="form-control"  name ="input_type" >
+                  <option name="input_type" value ="title" selected>title</option>
+                  <option name="input_type" value ="hashtag">hashtag</option>
+                  <option name="input_type" value ="writer">writer</option>
+                  <option name="input_type" value ="body">Context</option>
+                </select>
+        </span>
+        
+                <input type="text" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid; color:white;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
+        <button type='submit' class='sch_smit' id='search_submit'><img class="image" src="{% static 'search.png' %}" width="37px;"></button>
+
+    </form>
+
+
+
 <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
 <span>Hot 수행자 : </span>
 {% for hot_user in hot_users %}
@@ -56,5 +87,133 @@
     <br>
 {% endfor %}
 
-<div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
-{% endblock %}
+<!--  뿌야-->
+{% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
+<a class="nav-link" href="{% url 'login' %}">Login</a>
+<a class="nav-link" href="{% url 'signup' %}">Signup</a>
+{% else %}
+{% if request.user.profile.approval == True or request.user.is_superuser == True %}
+<a id="logout_btn">
+<form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <input style="all:unset; color: white;" type="submit" value="Logout" >
+</form>
+</a>
+{% if request.user.is_superuser == False %}
+<a href="{% url 'profile' user.profile.profile_id %}">Mypage (
+    {{user.username}} ) </a>
+
+{% endif %}
+
+<a href="#" rel="popover" data-trigger="focus" data-placement="bottom"
+    data-popover-content="#list-popover">알림({{notifi_count}})</a>
+<div id="list-popover" style="display:none">
+    <a class="ul-popover">
+        {% for notification in notification_list %}
+            {% if notification.notification_type == 'comment' %}
+               <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a>
+            {% else %}
+              <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a> 
+            {% endif %}
+        {% endfor %}
+        <a href="{% url 'notifications' %}">see all</a>
+    </a> 
+
+
+
+
+
+
+{% endif %}
+{% endif %}
+
+
+
+<div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}" width="50px;"></a>
+</div>
+<script type="text/javascript">
+
+    $('.result_tag').hide();
+
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    $('[rel="popover_like"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    $('[rel="popover_scrap"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    function check() {
+        var chkbox = document.getElementsByName('input_board');
+        var chk = false;
+        for(var i =0; i<chkbox.length; i++) {
+            if(chkbox[i].checked) { chk = true; }
+            else { chk = false; }
+        }
+        if (chk == false) {
+            alert("검색 할 게시판을 선택해주세요!");
+            return false;
+        }
+        else { return true; } 
+    }
+
+    jQuery(function($) {
+        $('#search_tag').keyup(function(event) {
+            var val = $(this).val();
+            if (val == "") {
+                $('.result_tag').hide();
+            } else {
+                $('.result_tag').hide();
+                $(".result_tag:contains('"+val+"')").show();
+            }
+        });
+    });
+
+    function input_hashtag(val){
+        var tag = "#"+val;
+        tag = $('#new_hashtag').val() + tag;
+        $('#new_hashtag').val(tag);
+    }
+
+    
+</script>
+
+</body>
+</html>
+<style>
+ @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+ .pont{
+    font-family: 'Do Hyeon', sans-serif;
+ }
+ .box{
+     text-align: center;
+     margin: 5rem 0 0 0;
+ }
+ 
+
+</style>
