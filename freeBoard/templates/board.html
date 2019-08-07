@@ -4,7 +4,6 @@
 <br><br>
 <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
 
-<<<<<<< HEAD
 <br>
 <a class="btn btn-dark" href="{% url 'b_new'%}">작성하기</a>
 <br><br>
@@ -147,59 +146,3 @@
             </style>
 
             {% endblock %}
-=======
-    <h1>Make Your Blog! </h1>
-    {% if user.is_authenticated %}
-    <a href="{% url 'b_new'%}">새 글 작성하기 </a>
-    {% endif %}
-    <h2>블로그 글 목록</h2>
-    {% for blog in blogs %}
-    <div class="card">
-    <div class="card-body">
-    <a href="{% url 'b_detail' blog.id %}">
-        <h5 class="card-title"> 제목 : {{blog.title}}</h5></a>
-    <p class ="card-subtitle mb-3 text-muted">작성자 : {{blog.writer}}</p>
-    <h6 class="card-subtitle mb-2 text-muted"> 작성일: {{blog.pub_date}}</h6>
-    </div>
-    {% endfor %}
-    </div>
-    <!-- 아래는 페이지네이터 코드 개극혐 -->
-    {% if blogs.has_other_pages %}
-     <ul class="pagination"> 
-         {% if blogs.has_previous %}
-          <li>
-              <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
-        </li>
-         {% else %} 
-         <li class="disabled">
-            <span>&laquo;</span>
-        </li> 
-        {% endif %} {% if blogs.number > 2 %}
-         <li>
-             <a href="?page={{ 1 }}"> 1 </a>
-        </li>
-        <li><span>...<span class="sr-only">...</span></span>
-        </li>
-        {% endif %} {% for i in page_range %}
-        {% if blogs.number == i %}
-        <li class="active">
-            <span>{{ i }} <span class="sr-only">(current)</span></span>
-        </li>
-         {% else %}
-          <li><a href="?page={{ i }}">{{ i }}</a></li> 
-          {% endif %} 
-          {% endfor %}
-        {% if blogs.number < max_index %} 
-        <li><span>...<span class="sr-only">...</span></span></li>
-        <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
-         {% endif %}
-        {% if blogs.has_next %} 
-        <li><a href="?page={{ blogs.next_page_number }}">&raquo;</a></li>
-         {% else %}
-        <li class="disabled"><span>&raquo;</span></li>
-         {%endif %}
-         </ul>
-         {%endif%}
-         <!-- 여기까지가 페이지네이터 코드임  -->
-{% endblock %}
->>>>>>> 9f0c6c9fae86079f4dda49de218c0ff655209eff
