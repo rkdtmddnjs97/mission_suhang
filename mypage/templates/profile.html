@@ -27,6 +27,7 @@
     }
 </script>
 <div class="pont">
+  
   {% if request.user.username == my_profile.profile_id %}
   <div class="title" style="text-decoration: underline;">MY ACCOUNT</div>
   <a class="edit_my" href="{% url 'editProfile' my_profile.profile_id %}" >/회원정보 수정</a>
@@ -39,7 +40,7 @@
     <div class="row">
       <div class="col-6 col-md-4">
         <br>
-        <div class="picture"><img class="a" src="{{ my_profile.profile_img.url }}" width="350px;"></div><br>
+        <div><img class="a" src="{{ my_profile.profile_img.url }}"></div><br>
       </div>
 
       <div class="col-12 col-md-8">
