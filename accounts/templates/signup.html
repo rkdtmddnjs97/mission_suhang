@@ -47,7 +47,7 @@
         <br><br>
         <div class="ppontt">
             <div class="wwhole">
-                <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="450;" height="150;"></div>
+                <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="360;" height="150;"></div>
                 <br><br><br><br>
 
                 <div>
@@ -87,18 +87,30 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" name="email" placeholder="write your email">
 
+                        <div class="form-group row">
+                            <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" name="university" placeholder="write your university"
+                                    id='search_school'>
+                                <br>
+                                {% for sch_name, e_mail in school.items %}
+                                <a class="result_school"
+                                    onclick="input_school($(this).attr('key'),$(this).attr('value'))" key="{{sch_name}}"
+                                    value="{{e_mail}}">{{sch_name}}</a>
+                                {% endfor %}
                             </div>
                         </div>
                         <hr>
                         <div class="form-group row">
-                            <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
-                            <div class="col-sm-9">
-                                <input class="form-control" name="university" placeholder="write your university">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
+                            <div class="form-inline">
+                                <div style="display:inline-block;">
+                                    <input class="form-control" name="email" placeholder="write your email"
+                                        style="width:15rem; margin-left: 1rem;">&nbsp;@&nbsp;
+                                    <input type="text" readonly class="form-control-plaintext" name="domain"
+                                        id="selected_domain" value="yourschool.ac.kr" style="width:15rem;">
+                                </div>
                             </div>
                         </div>
                         <hr>
@@ -114,7 +126,7 @@
                             <label for="inputTitle" class="col-sm-2 col-form-label">프로필사진</label>
                             <div class="col-sm-9_h">
                                 <div class="input-group mb-3">
-                                    <div class="custom-file" style="width:69rem;margin-left:15px;">
+                                    <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="pofile_img"
                                             id="inputGroupFile02" accept=".jpg,.jpeg,.png,.gif">
                                         <label class="custom-file-label" for="inputGroupFile02"
@@ -133,13 +145,22 @@
                         </div>
                         <hr>
                         <div class="form-group row">
-                            <label for="inputTitle" class="col-sm-2 col-form-label">해시태그</label>
+                            
                             <div class="col-sm-9">
-                                {% for tag in hashtag %}
-                                <input type="checkbox" name="hashtag" id="tag_box" class="tag_list"
-                                    value="{{tag}}">#{{tag}}
-                                <!-- <a href="">{{tag}}</a> -->
-                                {% endfor %}
+                                <div class="hash_s" style="display:inline-block;">
+                                    
+                                        해시태그 검색<br><br>
+                                        <input class="form-control" type="text" name='search_tag_data' id='search_tag'><br><br>
+                                        {% for tag in hashtag %}
+                                        <a class="result_tag" id="result_tag"
+                                            onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
+                                        {% endfor %}
+                                    
+                                        해시태그 추가<br>
+                                        <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요!<br> ex)
+                                            #이렇게#태그걸어라#알겠냐</span><br>
+                                        ↓<input class="form-control" type="text" name='add_hashtag' id="new_hashtag"></div>
+                                
                             </div>
                         </div>
                         <hr>
@@ -152,65 +173,10 @@
                 style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
 
 
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" name="email" placeholder="write your email">@
-                        <input type="text" name="domain" id="selected_domain">
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" name="university" placeholder="write your university" id='search_school'>
-                        {% for sch_name, e_mail in school.items %}
-                            <a class="result_school" onclick="input_school($(this).attr('key'),$(this).attr('value'))" key="{{sch_name}}" value="{{e_mail}}">{{sch_name}}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <label for="inputDepartment" class="col-sm-2 col-form-label">학과</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" name="department" placeholder="write your department">
+        </div>
+        </div>
 
-            </div>
-        </div>
-        <hr>
-        <div class="form-group row">
-            <label for="inputTitle" class="col-sm-2 col-form-label">프로필사진</label>
-            <div class="col-sm-9_h">
-                <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img">
-            </div>
-        </div>
-        <hr>
-        <div class="form-group row">
-            <label for="inputTitle" class="col-sm-2 col-form-label">자기소개</label>
-            <div class="col-sm-9">
-                <textarea class="form-control" name="introduction" cols="30" rows="10"></textarea>
-            </div>
-        </div>
-        <hr>
-        <div class="form-group row">
-            <label for="inputTitle" class="col-sm-2 col-form-label">해시태그</label>
-            <div class="col-sm-9">
-                해시태그 검색<br><br>
-                <input type="text" name='search_tag_data' id='search_tag'><br><br>
-                {% for tag in hashtag %}
-                <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))"
-                    tag="{{tag}}">#{{tag}}</a>
-                {% endfor %}
-                <br><br>
-                해시태그 추가<br>
-                <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
-                -> <input type="text" name='add_hashtag' id="new_hashtag">
-            </div>
-        </div>
-        <hr>
+
         </div>
         <br><br>
         </div>
@@ -303,7 +269,7 @@
         });
     });
 
-    function input_school(key, value){
+    function input_school(key, value) {
         var school = key;
         var email = value;
         $('#search_school').val(school);
@@ -356,6 +322,13 @@
         div {
             text-align: center;
         }
+        .custom-file{
+            width:5rem;
+            margin-left:15px;
+        }
+        .form-control-plaintext{
+            margin-left:5rem;
+        }        
 
         /* .col-sm-9_h {
 
@@ -366,6 +339,13 @@
     @media screen and (min-width: 1000px) {
         div {
             text-align: center;
+        }
+        .custom-file{
+            width:69rem;
+            margin-left:15px;
+        }
+        .hash_s{
+            margin-left:25rem;
         }
 
 
