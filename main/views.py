@@ -49,31 +49,32 @@ def home(request):
             ready_number+=1
         elif post.status =='running':
             running_number+=1
-    like_list={}
-    for post in B_Blog.objects.all():
-        like_list[post] = post.user.count()
-
-    data= sorted(like_list.items(), key=operator.itemgetter(1), reverse = True)
-    data = data[0:5]
-    like_lists =[]
-    for dat in data:
-        like_lists.append(list(dat))
-    scrap_list={}
-    for post in Post.objects.all():
-        like_list[post] = post.user.count()
-    data= sorted(like_list.items(), key=operator.itemgetter(1), reverse = True)
-    data = data[0:5]
-    scrap_lists =[]
-    for datt in data:
-        scrap_lists.append(list(datt))  
+# # 인기 게시판
+#     like_list={}
+#     for post in B_Blog.objects.all():
+#         like_list[post] = post.user.count()
+#     data= sorted(like_list.items(), key=operator.itemgetter(1), reverse = True)
+#     data = data[0:5]
+#     like_lists =[]
+#     for dat in data:
+#         like_lists.append(list(dat))
+#     # hot 의뢰 글
+#     scrap_list={}
+#     for post in Post.objects.all():
+#         like_list[post] = post.user.count()
+#     datas= sorted(like_list.items(), key=operator.itemgetter(1), reverse = True)
+#     datas = datas[0:5]
+#     scrap_lists =[]
+#     for datt in datas:
+#         scrap_lists.append(list(datt))  
     
     if request.user.is_anonymous or request.user.is_superuser:
-        return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge,'recent_announcements':recent_announcements, 'recent_freeboard': recent_freeboard, "like_lists":like_lists,"scrap_lists":scrap_lists })
+        return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge,'recent_announcements':recent_announcements, 'recent_freeboard': recent_freeboard})
     else:
         recommend_post = recommend_request(request)
         recommend_post_list = list(recommend_post)
 
-        return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge, 'recommend_post':recommend_post, 'recommend_post_list':recommend_post_list,'recent_announcements':recent_announcements, 'recent_freeboard': recent_freeboard, "like_list":like_list})
+        return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge, 'recommend_post':recommend_post, 'recommend_post_list':recommend_post_list,'recent_announcements':recent_announcements, 'recent_freeboard': recent_freeboard})
 
 def recommend_request(request):
     my_profile = Profile.objects.get(profile_id=request.user.username)

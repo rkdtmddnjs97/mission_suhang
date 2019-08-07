@@ -128,11 +128,18 @@
         {% endfor %}
         <br><br><br><br>
         <div class="buttonss_h">
+
                 {% if user.is_authenticated %}
-            <form action="{% url 'scrap' post.id%}" method="get">
-                <input type="hidden" name='scrap' value="{{user}}">
-                <button class="btn btn-danger" type="submit">scrap</button>
-            </form>
+                {% if isScraped == False %}
+            <form action="{% url 'scrap' post.id %}" method="get">
+                    <input type="hidden" name='scrap' value="{{user}}">
+                        <button class="btn btn-danger" type="submit">scrap</button>
+                 </form>
+              {% else %}
+                    <form action="{% url 'scrap' post.id %}" method="get">
+                        <input type="hidden" name='scrap' value="{{user}}">
+                        <button class="btn btn-danger" type="submit">scraped</button>
+                    </form>
             {% endif %}
             {% if user.is_authenticated %}
             {% if user.username != post.writer %}
@@ -148,8 +155,9 @@
                         } else {
                             alert("취소되었습니다.")
                             self.close()
+
                         }
-                    }
+
 
                 </script>
                  {% endif %}
@@ -158,6 +166,8 @@
                 {% endif %}
          
             
+
+
 
         </div>
         <br>
@@ -234,8 +244,6 @@
     {% if user.is_authenticated %}
         <form action="{% url 'new_comment' post.id %}" method="POST">
             {% csrf_token %}
-
-
 
             <br>
             <div class="form-group">

@@ -33,7 +33,7 @@
     {% csrf_token%}
 
     프로필 사진<br>
-    <img src="{{userProfile.profile_img.url}}" alt="" ><br>
+    <img class="im" src="{{userProfile.profile_img.url}}" alt="" ><br>
     <input  type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="" >
     <br><br>
 
@@ -66,7 +66,7 @@
     {% endfor %}
     <br><br>
     해시태그 추가
-        <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
+        <span class="ex_hashtag" style="color: crimson"><br>*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
         -> <input type="text" name='add_hashtag' id="new_hashtag" style=" all:unset; border-bottom: #000000 2px solid;">
 
     <br>
@@ -77,7 +77,7 @@
   
 </div>
   </div>
-  <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a></div>
+  <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top1" src="{% static 'top.png' %}"></a></div>
 </body>
 <style>
  @media screen and (max-width:600px) {
@@ -91,7 +91,7 @@
 
  }
  img{
-     width: 150px
+     width: 10rem;
  }
 
     .box {
@@ -100,7 +100,7 @@
     }
 
     .title {
-        font-size: 30px;
+        font-size: 2rem;
       margin: 1rem 0 0 0rem;
     }
 
@@ -109,9 +109,12 @@
 
     }
 
-    .top {
-        display: 30px;
+    .top1 {
+        width: 50px;
 
+    }
+    .top{
+        display:none;
     }
   
    
@@ -127,6 +130,9 @@
      border-bottom: #000000 2px solid;
 
  }
+ .im{
+     width: 16rem;
+ }
 
     .box {
       margin: 1rem 0 0 18rem;
@@ -134,7 +140,7 @@
     }
 
     .title {
-      font-size: 60px;
+      font-size: 3rem;
       margin: 1rem 0 0 0rem;
     }
 
