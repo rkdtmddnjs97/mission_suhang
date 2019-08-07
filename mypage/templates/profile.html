@@ -11,19 +11,19 @@
       <h6>--유저 본인이 아닙니다.--</h6>
       {% endif %}
       <br><br>
-      <div class="picture"><img class="a" src="{{ my_profile.profile_img.url }}"><br>회원사진</div>
+      <div class="picture"><img class="a" src="{{ my_profile.profile_img.url }}"></div>
       <br>
-      ID : {{my_profile.profile_id}}
+     <a  style="color: rgb(50, 161, 137); text-decoration: underline;">ID : {{my_profile.profile_id}}</a> 
       <br>
-      Name : {{my_profile.name}}
+      <a >Name : {{my_profile.name}}</a>
       <br>
-      School : {{my_profile.university}}
+      <a >School : {{my_profile.university}}</a>
       <br>
-      Major : {{my_profile.department}}
+      <a >Major : {{my_profile.department}}</a>
       <br>
-      Average Score :{{average_rate}}
+      <a >Average Score :{{average_rate}}</a>
       <br>
-      Total Clear Mission:{{number}}
+      <a > Total Clear Mission:{{number}}</a>
       <p>Introduce Myself</p>
       <br>
       {{my_profile.introduction}}
@@ -78,7 +78,7 @@
     <form action="{% url 'recharge' my_profile.id %}" method="POST">
         {% csrf_token %}
       
-          충전금액:<input type="text" name='charge_money' required="required">
+          충전금액:<input type="number" name='charge_money' required="required">
           <input type="submit" value='확인'>
    
         
@@ -97,17 +97,6 @@
  .mnav {
         font-family: 'Do Hyeon', sans-serif;
     }
-
-
-
-
-
-
-
-
-
-    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
-
 .money_in {
   font-family: 'Do Hyeon', sans-serif;
   width: 120px;

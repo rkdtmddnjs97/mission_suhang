@@ -303,9 +303,11 @@
         });
     });
 
-    function input_school(val) {
-        var school = val;
+    function input_school(key, value){
+        var school = key;
+        var email = value;
         $('#search_school').val(school);
+        $('#selected_domain').val(email);
     }
 
 
