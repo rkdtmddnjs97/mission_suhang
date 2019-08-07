@@ -129,19 +129,20 @@
         <br><br><br><br>
         <div class="buttonss_h">
 
-                {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
                 {% if isScraped == False %}
-            <form action="{% url 'scrap' post.id %}" method="get">
+                <form action="{% url 'scrap' post.id %}" method="get">
                     <input type="hidden" name='scrap' value="{{user}}">
-                        <button class="btn btn-danger" type="submit">scrap</button>
-                 </form>
-              {% else %}
+                    <button class="btn btn-danger" type="submit">scrap</button>
+                </form>
+                {% else %}
                     <form action="{% url 'scrap' post.id %}" method="get">
                         <input type="hidden" name='scrap' value="{{user}}">
                         <button class="btn btn-danger" type="submit">scraped</button>
                     </form>
+                {% endif %}
             {% endif %}
-            {% endif %}
+
             {% if user.is_authenticated %}
             {% if user.username != post.writer %}
             {% if post.status == 'ready' %}
@@ -149,27 +150,23 @@
                 <button type="button" class="btn btn-danger" onclick="delUrl()">의뢰신청</a>
                 <script type="text/javascript">
                     function delUrl() {
-                        var Del = confirm("신청하시겠습니까?")
+                        var Del = confirm("신청하시겠습니까?");
                         if (Del == true) {
-                            alert("신청되었습니다.")
-                            location.href = "{% url 'missionApply' post.id %}"
+                            alert("신청되었습니다.");
+                            location.href = "{% url 'missionApply' post.id %}";
                         } else {
-                            alert("취소되었습니다.")
-                            self.close()
-
+                            alert("취소되었습니다.");
+                            self.close();
                         }
-
-
+                    }
                 </script>
-                 {% endif %}
-                 {% endif %}
-                 {% endif %}
-                {% endif %}
+
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
          
             
-
-
-
         </div>
         <br>
         <hr>
@@ -187,7 +184,7 @@
                         var Del = confirm("삭제 하시겠습니까?")
                         if (Del == true) {
                             alert("삭제 되었습니다.")
-                            location.href = "{%url 'delete' post.id %}"
+                            location.href = "{% url 'delete' post.id %}"
 
                         } else {
                             alert("취소 되었습니다.")
@@ -267,17 +264,9 @@
 
     .card {
         border-right: none;
-
         border-left: none;
-
         border-top: none;
-
         border-bottom: none;
-
-
-
-
-
     }
 
     .bt {
@@ -285,17 +274,13 @@
         color: rgb(0, 0, 0);
         background-color: black;
         padding: 2px;
-
-
     }
 
 
 
     @media screen and (max-width:600px) {
         .category {
-
             text-align: center;
-
         }
 
         .buttonss_h {
@@ -306,9 +291,7 @@
 
     @media screen and (min-width: 1000px) {
         .category {
-
             text-align: center;
-
         }
 
         .buttonss {
@@ -328,6 +311,8 @@
 <br>
 <br>
 <br>
+
 </div>
 </body>
+
 {%endblock%}
