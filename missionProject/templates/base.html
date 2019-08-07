@@ -29,26 +29,7 @@
      <div class='pont'>
     <div class='pont'>
          
- <!-- 새사이드네브 -->
- <div id="mysidenav" class="sidenav">
-        <a href="#" class="closebtn" onclick='closeNav()'>x</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
-        <a href="#">Portfolio</a>
-    </div>
-    
-    <span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true"></i> ◀open side</span>
-
-    <script>
-        function openNav() {
-            document.getElementById('mysidenav').style.width = '250px';
-        }
-        function closeNav() {
-            document.getElementById('mysidenav').style.width = '0';
-        }
-    </script>
+ 
  <a class="login_title" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="400px;" style="position: fixed; top:0px; right:0px;"></a>
 <!-- 여기가 모바일 -->
   <div class="mnav">
@@ -400,7 +381,9 @@
         .login_title{
             display: none;
         }
-        
+        .top{
+            width: 50px;
+        }
 
     }
 
@@ -429,7 +412,7 @@
             display: none;
         } 
         .container{ 
-        margin:3rem 0 0 20rem;
+        margin:1rem 0 0 20rem;
 
     }
     }
