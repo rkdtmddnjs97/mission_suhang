@@ -31,30 +31,26 @@
 <div class="pont">
 <br>
 {% if judge == True %}
-<a href="{% url 'dissatisfication'%}">민원사항</a>
+    <a href="{% url 'dissatisfication'%}">민원사항</a>
 {% endif %}
 <br>
 <a href="{% url 'board'%}">자유게시판</a>
 <br>
-  {% for recent_free in recent_freeboard %}
-
-      <a href="{% url 'b_detail' recent_free.id%}">{{recent_free.title}}</a><br>
-
-{% endfor %}
-<br>
 <a href="{% url 'request'%}">의뢰게시판</a>
-
-
 <br>
 <a href="{% url 'announcement_board' %}">공지사항</a>
-<br>
-<p>최근 공지사항</p>
+<br><br>
+
+<span>최근 공지사항</span><br>
 {% for announcemnt in recent_announcements %}
 <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
 {% endfor %}
-<br>
-
-
+<br><br>
+<span>자유게시판 최근 게시물</span><br>
+{% for recent_free in recent_freeboard %}
+    <a href="{% url 'b_detail' recent_free.id%}">{{recent_free.title}}</a><br>
+{% endfor %}
+<br><br>
 
 
 <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
@@ -72,7 +68,6 @@
         </span>
             <input type="text" id="search_data" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
             <br>
-            <!-- for문 만들어서 출력 -->
             <!-- <span>연관 검색어</span><br> -->
             {% for req_title in all_request_title %}
                 <a class="request_title" onclick="search_title($(this).attr('value'))" value="{{req_title}}">{{req_title}}<br></a>
