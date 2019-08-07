@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-{% if error %}
-{{error}}
-{% endif %}
+
 
 <form action="{%url 'create' %}" method="POST" enctype="multipart/form-data">
     <br><br><br>
@@ -40,6 +38,9 @@
                 
             </div>
         </div>
+        {% if error %}
+        {{error}}
+        {% endif %}
         <div class="form-group row">
             <label for="inputTitle" class="col-sm-2 col-form-label">사진첨부</label>
             <div class="col-sm-8">
