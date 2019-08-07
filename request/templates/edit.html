@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block content %}
 
-<form action="{% url 'update' blog.id %}" method="POST" enctype="multipart/form-data">
+<form action="{% url 'update' post.id %}" method="POST" enctype="multipart/form-data">
         <br><br><br>
         <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
         <br><br>
@@ -15,8 +15,7 @@
                 <div class="form-group row">
                         <label for="staticUser" class="col-sm-2 col-form-label">제목</label>
                         <div class="col-sm-8">
-                                <input type="text" name='title' value="{{post.title}}" readonly
-                                        class="form-control-plaintext">
+                                <input type="text" name='title' value="{{post.title}}" class="form-control-plaintext">
                         </div>
                 </div>
                 <div class="form-group row">
@@ -38,7 +37,7 @@
                         <label for="inputTitle" class="col-sm-2 col-form-label">사진첨부</label>
                         <div class="col-sm-8">
                                 <div class="custom-file">
-                                        <img src="{{post.attached_img.url}}" alt="">
+                                        <!-- <img src="{{post.attached_img.url}}" alt=""> -->
                                         <input type="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.gif"
                                                 name="attached_img">
                                         <label class="custom-file-label" for="customFile">사진을 선택해주세요</label>
@@ -46,6 +45,30 @@
 
                         </div>
                 </div>
+                <br>
+                <div>
+                        <label for="inputTitle" class="col-sm-2 col-form-label">#TAG</label>
+                        {% for tag in checked_tag %}
+                                <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}" checked="checked">#{{tag}}    
+                        {% endfor %}
+                        <br>
+                        
+                        <div class="col-sm-8">
+                                <textarea class="form-control" name='add_hashtag' id="new_hashtag" placeholder="#이렇게#작성해줘요#참쉽죠?"></textarea>
+                        </div>
+                        
+                        <br>
+                        ##SEARCH TAG## <br>
+                        <input type="text" name='search_tag_data' id='search_tag'><br><br>
+                        클릭해주세용 <br>
+                        {% for tag in all_tag %}
+                                <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}" style="color: blue">#{{tag}}</a>
+                        {% endfor %}
+                        <br><br>
+                        
+                        <br><br>
+                </div>
+                
                 <br><br><br>
         </div>
         <br><br><br>
