@@ -8,7 +8,7 @@ class B_Blog(models.Model):
     writer=models.CharField(max_length=200)
     body=models.TextField()
     pub_date = models.DateTimeField('Date published',null=True)
-    user = models.ManyToManyField(User, blank=True,related_name='user')
+    user = models.ManyToManyField(User, blank=True, related_name='user')
     dislike=models.ManyToManyField(User, blank=True,related_name='dislike')
     hashtag = models.ManyToManyField(Hashtag, related_name="freeboard_tag")
     attached_img=DefaultStaticImageField(upload_to='attached_img/', blank=True, default_image_path='images/no_image.png')
