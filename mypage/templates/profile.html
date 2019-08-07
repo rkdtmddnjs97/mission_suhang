@@ -39,7 +39,7 @@
     <div class="row">
       <div class="col-6 col-md-4">
         <br>
-        <div><img class="a" src="{{ my_profile.profile_img.url }}"></div><br>
+        <div><img  src="{{ my_profile.profile_img.url }}"></div>
       </div>
 
       <div class="col-12 col-md-8">
@@ -202,9 +202,12 @@
 
     /* 미디어쿼리 적용 */
     @media screen and (max-width:600px) {
+      img{
+       width:  10rem;
+      }
       .row {
       width: 20rem;
-      height: 21rem;
+      height: 35rem;
       border: #000000 5px solid;
     }
       .edit_my {
