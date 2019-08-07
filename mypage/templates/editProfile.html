@@ -2,6 +2,31 @@
 
 {% block content %}
 <div class="pont">
+<<<<<<< HEAD
+<div class="box">
+        <h2 class="title" style="text-decoration: underline;">Edit My Page</h2>
+        <br>
+<form action="{% url 'updateProfile' userProfile.profile_id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token%}
+
+    프로필 사진<br>
+    <img src="{{userProfile.profile_img.url}}" alt="" ><br>
+    <input  type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="" >
+    <br><br>
+
+    이름 : <input type="text" name="name" value="{{userProfile.name}}" style=" all:unset; border-bottom: #000000 2px solid;">
+    <br><br>
+
+    학교 : <input type="text" name="university" value="{{userProfile.university}}"  style=" all:unset; border-bottom: #000000 2px solid;">
+    <br><br>
+
+    전공 : <input type="text" name="department" value="{{userProfile.department}}"  style=" all:unset; border-bottom: #000000 2px solid;">
+    <br><br>
+
+    간단한 본인소개 <br>
+    <input type="textarea" name="introduction" value="{{userProfile.introduction}}"  style=" all:unset; border-bottom: #000000 2px solid;">
+    <br><br>
+=======
     <div class="box">
         <h2 class="title" style="text-decoration: underline;">Edit My Page</h2>
         <br>
@@ -40,12 +65,55 @@
             {% for tag in unchecked_tag %}
             <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}}
             {% endfor %}
+>>>>>>> e5c9f461b2532a0c5032ed93aa09fe5213a492c1
 
             <br>
             <br>
             <button class="edit_bt" type="submit">수정완료</button>&nbsp / &nbsp<a
                 href="{% url 'profile' userProfile.profile_id %}" class="edit_bt" style="all:unset;">취소하기</a>
 
+<<<<<<< HEAD
+    {% for tag in checked_tag %}
+        <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}" checked="checked">#{{tag}}    
+    {% endfor %}
+
+    {% for tag in unchecked_tag %}
+        <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}}
+    {% endfor %}
+
+    <br>
+    <br>
+    <button  class="edit_bt" type="submit" >수정완료</button>&nbsp / &nbsp<a href="{% url 'profile' userProfile.profile_id %}" class="edit_bt" style="all:unset;">취소하기</a>
+
+    #해시태그
+
+    {% for tag in checked_tag %}
+        <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}" checked="checked">#{{tag}}    
+    {% endfor %}
+    <br><br>
+    해시태그 검색<br>
+        <input type="text" name='search_tag_data' id='search_tag'><br><br>
+    {% for tag in all_tag %}
+        <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
+    {% endfor %}
+    <br><br>
+    해시태그 추가
+        <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요! ex) #이렇게#태그걸어라#알겠냐</span><br>
+        -> <input type="text" name='add_hashtag' id="new_hashtag">
+
+    <br>
+    <br>
+
+  </form>
+</div>
+</body>
+<style>
+.box{
+  
+}
+</style>
+{% endblock %}
+=======
             #해시태그
 
             {% for tag in checked_tag %}
@@ -74,3 +142,4 @@
         .box {}
     </style>
     {% endblock %}
+>>>>>>> e5c9f461b2532a0c5032ed93aa09fe5213a492c1

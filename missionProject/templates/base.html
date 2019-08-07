@@ -9,26 +9,31 @@
     <!-- bootstrap css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+          <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 
 </head>
 
 <body>
         
         {% load staticfiles %}
-    <!-- bootstrap js -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-
+  
+     <div class='pont'>
     <div class='pont'>
+          <div class="container">
+            {% block content %}
+            {% endblock %}
+           </div>
 <!-- 여기가 모바일 -->
-<div class="mnav">
+  <div class="mnav">
         <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
           <div class="dropdown">
             <div class='pont'>
@@ -67,11 +72,9 @@
       </div>
 
 <!-- 여기가 노트북 -->
-        <div class="container">
-
-            {% block content %}
-            {% endblock %}
-        </div>
+       
+           
+        
     </div>
 
     <div class="sidenav" style="width: 300px;">
@@ -108,7 +111,7 @@
                 <br>
 
                 
-          <div class="container">
+         
                 {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
                     <a class="nav-link" href="{% url 'login' %}">Login</a>
                     <a class="nav-link" href="{% url 'signup' %}">Signup</a>
@@ -143,8 +146,7 @@
 
 
                     
-                    </div>
-             
+                 
             
                 {% endif %}
                 {% endif %}
@@ -166,7 +168,7 @@
     </div>
     <div style="position: fixed; bottom:5px; right:405px;"><a href="#"><img class="top" src="{% static 'top.png' %}"></a>
     </div>
-    
+   </div>
 </body>
 </html>
 <style>
@@ -174,6 +176,9 @@
 
     input:not(#tag_box, #submission_result_form, #logout_btn){
         all: unset;
+    }
+    .mnav {
+        font-family: 'Do Hyeon', sans-serif;
     }
 
     .pont {
@@ -185,7 +190,10 @@
     .holder{
        margin: 3px 0 0 0;
     } 
+    .container{ 
+        margin:3rem 0 0 20rem;
 
+    }
     
     .sch_smit {
         width: 54px;
