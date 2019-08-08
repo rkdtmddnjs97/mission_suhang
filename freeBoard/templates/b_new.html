@@ -3,7 +3,7 @@
 {% block content %}
 
 
-<form action="{%url 'b_create' %}" method="POST">
+<form action="{%url 'b_create' %}" method="POST" enctype="multipart/form-data">
     <br><br>
     <!-- <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div> -->
     <h1 class="fr">Free Board</h1>
@@ -34,21 +34,40 @@
             </div>
         </div>
         <div class="form-group row">
+            <label for="inputTitle" class="col-sm-2 col-form-label">사진첨부</label>
+            <div class="col-sm-8">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
+                    <label class="custom-file-label" for="customFile">사진을 선택해주세요</label>
+                </div>
+    
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputTitle" class="col-sm-2 col-form-label">파일첨부</label>
+            <div class="col-sm-8">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="attached_file">
+                    <label class="custom-file-label" for="customFile">파일을 선택해주세요</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="inputTitle" class="col-sm-2 col-form-label">태그</label>
             <div class="col-sm-8">
-                <textarea class="form-control" name="hashtag" placeholder="#이렇게#작성해줘요#참쉽죠?"></textarea>
+                <textarea class="form-control" name="hashtag" placeholder="#이렇게#작성해줘요#참쉽죠?" id="new_hashtag"></textarea>
             </div>
         </div>
         <br>
         <div class="ht" style="display:inline;">
-        -MY TAG:{% for tag in hashtag %}
-        <!-- <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}">#{{tag}} -->
-        <a href="">#{{tag}}</a>
-        {% endfor %} -</div>
-        <br><br><br>
-
-
-    </div>
+            ## SEARCH TAG ## <br>
+            <input type="text" name='search_tag_data' id='search_tag'><br><br>
+            {% for tag in hashtag %}
+            <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
+            {% endfor %}
+            <br><br><br>
+        </div>
+        
     <br><br><br>
     <div class="bttn">
         <button class="btn btn-dark" type='submit'>작성하기</button></div>

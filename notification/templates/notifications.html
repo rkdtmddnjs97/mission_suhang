@@ -95,7 +95,7 @@
 
         알림 센터<br><hr><br>
 
-        {% for notification in notifications %}
+        {% for notification in notifications reversed %}
             {% if notification.notification_type == 'comment' %}
                 <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게 "{{notification.notifi_comment}}"라고 댓글을 달았습니다.<br>
                 <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>

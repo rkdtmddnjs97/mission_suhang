@@ -114,6 +114,7 @@ def performing(request, profile_id):
     perform_profiles=[]
     for perform in performing_post:
         perform_profiles.append(Profile.objects.get(profile_id=perform.writer))
+    perform_profiles=list(set(perform_profiles))
     perform_user=Profile.objects.get(profile_id=user.username)
     
     return render(request, 'performing.html',{'performing_post':performing_post,'perform_profiles':perform_profiles,'perform_user':perform_user})
@@ -237,9 +238,7 @@ def submission(request,post_id):
     submission_result=submit_form.objects.get(submit=post_id)
     return render(request,'submission.html',{'submission_result':submission_result,'post':post})
 
-def recharge(request,profile_id):
-  
-    
+def recharge(request,profile_id):  
     money=request.POST['charge_money']
     profile=profile_id
     return render(request,'charge.html',{'money':money,'profile':profile})
