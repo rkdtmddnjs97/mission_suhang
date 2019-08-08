@@ -33,8 +33,9 @@
     {% csrf_token%}
 
     프로필 사진<br>
-    <img class="im" src="{{userProfile.profile_img.url}}" alt="" ><br>
-    <input  type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="" >
+    <img class="im" src="{{userProfile.profile_img.url}}" alt=""><br>
+    <input type="file" accept=".jpg,.jpeg,.png,.gif" name="pofile_img" value="" ><br>
+    <input type="checkbox" name="use_default_img" value="checked_default">기본 이미지 사용
     <br><br>
 
     이름 : <input type="text" name="name" value="{{userProfile.name}}" style=" all:unset; border-bottom: #000000 2px solid;">

@@ -16,6 +16,7 @@ from django.contrib.staticfiles import finders
 
 
 
+
 def signup(request):
     all_Pictrue=Picture.objects.all()
     school={'국민대학교': 'kookmin.ac.kr','가천대학교':'gachon.ac.kr','경남대학교':'kangnam.ac.kr',
