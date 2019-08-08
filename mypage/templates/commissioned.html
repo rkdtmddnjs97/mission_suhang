@@ -18,7 +18,8 @@
                     </a>
 
 <br>
-                    {{commission.pub_date}}</div>
+                    {{commission.pub_date}}</div><br>
+                    <a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
                 <div class="col-6"> {% if commission.status == 'ready' %}
                     <details>
                         <br><summary>수행자들</summary>

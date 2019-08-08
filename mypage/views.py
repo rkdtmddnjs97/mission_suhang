@@ -114,6 +114,7 @@ def performing(request, profile_id):
     perform_profiles=[]
     for perform in performing_post:
         perform_profiles.append(Profile.objects.get(profile_id=perform.writer))
+    perform_profiles=list(set(perform_profiles))
     perform_user=Profile.objects.get(profile_id=user.username)
     
     return render(request, 'performing.html',{'performing_post':performing_post,'perform_profiles':perform_profiles,'perform_user':perform_user})
