@@ -11,7 +11,7 @@ class B_Blog(models.Model):
     user = models.ManyToManyField(User, blank=True, related_name='user')
     dislike=models.ManyToManyField(User, blank=True,related_name='dislike')
     hashtag = models.ManyToManyField(Hashtag, related_name="freeboard_tag")
-    attached_img=DefaultStaticImageField(upload_to='attached_img/', blank=True, default_image_path='images/no_image.png')
+    attached_img=DefaultStaticImageField(upload_to='attached_img/', blank=True, default_image_path='images/default_free_img.png')
     attached_file=DefaultStaticImageField(upload_to='attached_file/', blank=True, default_image_path='files/dummy.txt')
     
 

@@ -19,7 +19,7 @@
 <div class="container">
     <br><br><br>
     <div class="category">
-        <h1>MISSION Request</h1>
+        <a href="{% url 'request' %}"><h1>MISSION Request</h1></a>
     </div>
     <br><br>
 
@@ -102,10 +102,7 @@
         <div class="card" style="min-height:30rem;">
             <div class="card-body">
                 <br>
-                {% if post.attached_img == 'images/no_image.png' %}
-                {% else %}
-                <img src="{{post.attached_img.url}}" alt=""><br>
-                {% endif %}
+                <img src="{{post.attached_img.url}}" alt="" width="500px" height="300px"><br>
                 <p> {{post.body}}</p>
                 <br>
 
