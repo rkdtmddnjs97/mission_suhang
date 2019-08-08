@@ -38,15 +38,14 @@
 <p>{{post.pub_date}}
 {% for perform_profile in perform_profiles %}
 {% if perform_profile.profile_id == post.writer %}
-<br><a href="#" onclick="window.open('{% url 'chat' app_id=perform_profile.id request_id=perform_user.id   %}','채팅창','width=500,height=700')">채팅</a>
-&nbsp 
-<a href="{% url 'mission_quit'  post.id %}">수행포기</a>
+<br><a href="#" onclick="window.open('{% url 'chat' app_id=perform_profile.id request_id=perform_user.id   %}','채팅창','width=500,height=700')">채팅 </a>  <a>/</a>
+<a href="{% url 'mission_quit'  post.id %}">수행포기</a>  <a>/</a>
 {% if post.approved_id == request.user.username %}
 {% if post.s_flag == False %}
 <a href="{% url 'submit_page' post.id %}">제출 페이지</a>
 {% else %}
-제출완료
-<a href="{% url 'submission' post.id %}">제출 결과</a>
+<a style="color:rgb(247, 68, 74); ">&nbsp(제출완료)</a>
+<a href="{% url 'submission' post.id %}">  <a>/</a> 제출 결과</a>
 {% endif %}
 {% else %}
 <a style="color:rgb(247, 68, 74); ">&nbsp(수락 대기)</a>
