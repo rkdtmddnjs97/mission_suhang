@@ -39,7 +39,7 @@
     <div class="row">
       <div class="col-6 col-md-4">
         <br>
-        <div><img style="width: 13.5rem;" src="{{ my_profile.profile_img.url }}"></div>
+        <div><img style="width: 13.5rem; height: 18rem;" src="{{ my_profile.profile_img.url }}"></div>
       </div>
 
       <div class="col-12 col-md-8">
@@ -124,7 +124,8 @@
   <br><br>
 </div>
   {% endif %}
-  <a href="#"><img style="position: fixed; bottom:5px; right:5px;" class="top1" src="{% static 'top.png' %}"></a>
+  <a href="#"><img src="{% static 'top.png' %}" style="position: fixed; bottom:5px; right:5px;" class="top1" ></a>
+  
 </body>
   <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
@@ -202,6 +203,7 @@
     @media screen and (max-width:600px) {
       img{
        width:  5rem;
+       height: 8rem;
       }
       .row {
       width: 20rem;
@@ -260,6 +262,7 @@
       }
       .top1 {
         width: 50px;
+        height: 50px;
       }
       .top{
        display: none;

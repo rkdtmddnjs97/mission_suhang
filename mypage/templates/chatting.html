@@ -29,11 +29,8 @@
     <summary>수정하기&nbsp<a>/</a>&nbsp<a  class="delete" href="{% url 'chat_delete' chat_id=chat_object.id appId=app_id requestId=request_id  %}" onclick="func_confirm()" > 삭제</a></summary>
     <form action="{% url 'chat_edit' chat_id=chat_object.id appId=app_id requestId=request_id %}" method="POST" >
         {% csrf_token %}
-      
-          <textarea name= 'modify_chat' id="" cols="50" rows="5" placeholder="수정한 내용을 입력해 주세요"style="border : 2px black;">{{chat_object.content}}</textarea>
-        <br>
-        <br>
-        <input type="submit" value='수정완료'  class="submit_bt"  style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">    
+          <textarea name= 'modify_chat' id="" cols="50" rows="1" placeholder="수정한 내용을 입력해 주세요"style="border : 2px black;">{{chat_object.content}}</textarea>
+        <input type="submit" value='수정완료'  class="submit_bt"  style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 1.7px solid  rgb(12, 12, 12); font-size: 0.8rem;">    
     </form>
 </details>
 {% endif %}
@@ -57,9 +54,9 @@
     <input name="app_id"type="hidden" value='{{app_id}}'>
     <input name="request_id" type="hidden" value='{{request_id}}'>
    <div class="id"> 작성자 : <input name="writer" type="text" value='{{request.user.username}}' style="width: 20rem; border: 1px white; display: inline;"></div>
-   <textarea name="content" id="" cols="50rem" rows="7rem" placeholder="내용을 입력하세요" required='required'></textarea>
+   <textarea name="content" id="" cols="50rem" rows="4rem" placeholder="내용을 입력하세요" required='required'></textarea>
    <br>
-    <input  class="submit_bt" type="submit"value="작성하기" style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
+    <input  class="submit_bt" type="submit"value="작성하기" style="background: rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12); font-size: 1.2rem;">
 
 </form>
   <br>
@@ -75,6 +72,9 @@
 }
 .line{
 
+}
+summary{
+  font-size: 0.8rem;
 }
 .title{
   font-size: 50px;
