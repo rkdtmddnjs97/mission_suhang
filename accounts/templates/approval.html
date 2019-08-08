@@ -5,22 +5,73 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>미션수행</title>
   <!-- bootstrap css -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- bootstrap js -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 
 </head>
 
 <body>
+
   <div class="apont">
+    <!-- 여기가 모바일 -->
+    <div class="mnav d-block d-sm-none">
+      <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
+        <div class="dropdown">
+          <div class='pont'>
+            <a class="navbar-brand">
+              <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                MY▼
+              </a>
+
+
+              <div class="dropdown-menu">
+                {% if not user.is_authenticated %}
+                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                <a class="dropdown-item" href="{% url 'signup' %}">Signup</a>
+
+                {% else %}
+                <form id="logout" class="dropdown-item" method="POST" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <input class="logout" type="submit" value="Logout">
+                </form>
+                <a class="dropdown-item" href="{% url 'profile' user.profile.profile_id %}">Mypage
+                  ({{user.username}})</a>
+                <a class="dropdown-item" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+                <!-- <a class="dropdown-item" href="">수행중인 미션</a>
+                <a class="dropdown-item" href="">수행완료된 미션</a>
+                <a class="dropdown-item" href="">의뢰중인 미션</a>
+                <a class="dropdown-item" href="">의뢰완료된 미션</a>
+                <a class="dropdown-item" href="">스크랩한 미션</a> -->
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="hh">
+          <a class="navbar-brand" href="{% url 'home' %}">Mission Suhang</a>
+        </div>
+    </div>
+
     <div class="container">
-      <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+      <br><br><br><br>
+      <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="280;" height="170;"></div>
       {% if error %}
       <p id='error'>{{error}}</p>
-      <br>
+      <br><br><br>
       {% endif %}
       <form method="POST" action="{% url 'approve' profile_dic=private tmp_pic=picture_id %}" name='submitForm'>
         {% csrf_token %}
@@ -28,6 +79,9 @@
         <input type="hidden" id='tmp' name="flag" value='{{judge}}'>
         <input type="hidden" name="sn" value='{{sn}}'>
         <input type="hidden" id='time' name="time" value='{{left_time}}'>
+        <br>
+
+        <br><br><br>
         <div class="form-group row">
           <label for="inputSsn" class="col-sm-2 col-form-label">인증번호</label>
           <div class="col-sm-9">
@@ -35,10 +89,14 @@
           </div>
         </div>
 
-        <input class="btn btn-dark" type="submit" value="인증">
+        <input class="btn btn-dark" type="submit" value="인증" width="50;">
       </form>
-      <div id="timerTxt"></div>
-      
+      <br>
+      <h2>
+        <div id="timerTxt"></div>
+      </h2>
+      <br><br>
+
     </div>
   </div>
   <script type="text/javascript">
@@ -105,9 +163,14 @@
 </body>
 <style>
   @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
-  #error{
-    color:red;
-    font-size:1rem;}
+  .mnav {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+  #error {
+    color: red;
+    font-size: 1rem;
+  }
+
   .apont {
     font-family: 'Do Hyeon', sans-serif;
   }
@@ -124,10 +187,64 @@
     resize: none;
   }
 
-  
+
 
   #timerTxt {
     color: red;
+  }
+
+  /* 모바일 네브바 */
+  .dropdown-item:hover {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    ;
+    background: rgb(247, 68, 74);
+    ;
+
+  }
+
+  button {
+    all: unset;
+  }
+
+  .edit_bt:hover {
+    all: unset;
+    color: rgb(247, 68, 74);
+  }
+
+
+  .holder::placeholder {
+    color: rgb(255, 255, 255);
+  }
+
+  .holder:hover {
+    text-decoration: none;
+    color: rgb(50, 161, 137);
+  }
+
+  .logout {
+    all: unset;
+  }
+
+  .navbar-brand {
+    all: unset;
+    color: white;
+    text-align: right;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 1.3rem;
+  }
+
+  .navbar-brand:hover {
+    color: rgb(50, 161, 137);
+  }
+
+  #dropdownMenuLink {
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  #dropdownMenuLink:hover {
+    color: rgb(247, 68, 74);
   }
 
   @media screen and (max-width:400px) {
@@ -135,7 +252,7 @@
       text-align: center;
     }
 
-    
+
   }
 
   @media screen and (min-width: 1000px) {
@@ -143,5 +260,5 @@
       text-align: center;
     }
 
-    
+
   }
