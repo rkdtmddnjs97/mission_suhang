@@ -97,7 +97,11 @@
         <br><br>
         <div class="bttn">
                 <button class="btn btn-dark" onclick="func_confirm()" type="button">수정하기</button>
-                <button onclick="location.href ='{% url 'b_detail' edit_post.id %}'" class="btn btn-dark">돌아가기</button>
+
+                <button onclick = "location.href ='{% url 'b_detail' edit_post.id %}'" class="btn btn-dark">돌아가기</button></div>
+
+        </div>
+
         <script type="text/javascript">
                 function func_confirm() {
                         if (confirm('수정하시겠습니까?')) {
@@ -110,10 +114,16 @@
                                 cancel();
                         }
                 }
+
                 function cancel() {
                         window.history.back();
                 }
         </script>
+
+                
+</form>
+
+
         
         </div>
         <br><br>

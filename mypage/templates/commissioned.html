@@ -41,7 +41,7 @@
     <br>제목 : {{commission.title}}
 </a>
 <p>{{commission.pub_date}}</p>
-<p><a href="{% url 'commission_quit' commission.id %}">의뢰포기 </a></p>
+<p><a href="{% url 'commission_quit' commission.id %}">의뢰포기 / </a></p>
 
 {% if commission.status == 'ready' %}
 <details>
