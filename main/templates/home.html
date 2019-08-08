@@ -97,29 +97,9 @@
                     <a href="{% url 'dissatisfication'%}">민원사항</a>
                     <br>
                     {% endif %}
-<<<<<<< HEAD
 
                   
                     <br>
-=======
-                    
-                    <a href="{% url 'announcement_board' %}">공지사항</a>
-                    <br><hr>
-                    <div>
-                    <p>최근 공지사항</p>
-                    {% for announcemnt in recent_announcements %}
-                        <img src="{{announcemnt.announcement_img.url}}" alt="" width="50px" height="50px">
-                        <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a><br>
-                    {% endfor %}
-                    <hr>
-                </div>
-                <div>
-                    <p>NEW 자유게시판</p>
-                    {% for recent_free in recent_freeboard %}
-                        <img src="{{recent_free.attached_img.url}}" alt="" width="50px" height="50px">
-                        <a href="{% url 'b_detail' recent_free.id %}">{{recent_free.title}}</a><br>
-                    {% endfor %}
->>>>>>> ca52b389eaa7801b062a27fc6e50d2349910584e
                     <hr>
                     <div>
                        <div class="f4">
@@ -185,8 +165,6 @@
                     <br>
                     <span style="color:white; font-size:2rem;"> ▶Request Board</span><br>
 
-
-
                     <p>의뢰게시판 HOT 게시물</p>
                     {% for liked in scrap_lists %}
                     {% for entry in liked %}
@@ -250,17 +228,6 @@
                         <br>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
