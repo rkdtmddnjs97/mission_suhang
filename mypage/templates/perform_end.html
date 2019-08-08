@@ -40,6 +40,44 @@
 <a class="a1" href="{% url 'delete_final' post_id=blocked_post.id app_id=profile_id %}">삭제</a>
 <hr>
 {% endfor %}
+{% if blocked_posts.has_other_pages %}
+            <ul class="pagination">
+                {% if blocked_posts.has_previous %}
+                <div class="lil">
+                    <li>
+                        <a href="?page={{ blocked_posts.previous_page_number }}">&laquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="disabled">
+                        <span>&laquo;</span>
+                    </li>
+                    {% endif %} {% if blocked_posts.number > 2 %}
+                    <li>
+                        <a href="?page={{ 1 }}"> 1 </a>
+                    </li>
+                    <li><span>...<span class="sr-only">...</span></span>
+                    </li>
+                    {% endif %} {% for i in page_range %}
+                    {% if blocked_posts.number == i %}
+                    <li class="active">
+                        <span>{{ i }} <span class="sr-only">(current)</span></span>
+                    </li>
+                    {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if blocked_posts.number < max_index %}
+                    <li><span>...<span class="sr-only">...</span></span></li>
+                    <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
+                    {% endif %}
+                    {% if blocked_posts.has_next %}
+                    <li><a href="?page={{ blocked_posts.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                    <li class="disabled"><span>&raquo;</span></li>
+                    {%endif %}
+                </div>
+            </ul>
+            {%endif%}
 <div class="top4" ><a href="#"><img  src="{% static 'top.png' %}" width="50rem;"></a>
     <div class="back2"><a href="{% url 'profile' profile_id %}"><img src="{% static '뒤5.png' %}" width="50rem;"></a></div>
     <style>

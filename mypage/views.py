@@ -7,6 +7,7 @@ from hashtag.models import Hashtag
 from .models import MTM_chat,chatting,Review,complaint
 from django.core.exceptions import ObjectDoesNotExist
 from notification.views import create_notification
+from django.core.paginator import Paginator
 
 
 def chat(request,app_id,request_id):
@@ -281,20 +282,54 @@ def commission_quit(request,post_id):
 
 def performing_end(request,profile_id):
     tmp=Post.objects.filter(approved_id=profile_id)
+    page = request.GET.get('page')
     blocked_posts=[]
     for n in tmp:
         if n.status == 'completed':
             blocked_posts.append(n)
-
-
-    return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
+    blocked_posts.reverse()
+    paginator = Paginator(blocked_posts, 2)
+    total_len = len(blocked_posts)
+    try:
+       blocked_posts = paginator.get_page(page)
+    except PageNotAnInterger:
+       blocked_posts = paginator.page(1)
+    except EmptyPage:
+        blocked_posts = paginator.page(paginator.num_pages) 
+    index = blocked_posts.number -1
+    max_index = len(paginator.page_range)
+    start_index = index -2 if index >= 2 else 0
+    if index <2:
+        end_index = 5 - start_index
+    else:
+        end_index = index+3 if index <= max_index - 3 else max_index
+    page_range = list(paginator.page_range[start_index:end_index]) 
+    return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id,'page_range':page_range, 'total_len':total_len,'max_index':max_index-2, })
 def commission_end(request,profile_id):
     tmp=Post.objects.filter(writer=request.user.username)
+    page = request.GET.get('page')
     blocked_posts=[]
     for n in tmp:
         if n.status == 'completed':
             blocked_posts.append(n)
-    return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id})
+    blocked_posts.reverse() 
+    paginator = Paginator(blocked_posts, 2)
+    total_len = len(blocked_posts)
+    try:
+       blocked_posts = paginator.get_page(page)
+    except PageNotAnInterger:
+       blocked_posts = paginator.page(1)
+    except EmptyPage:
+        blocked_posts = paginator.page(paginator.num_pages) 
+    index = blocked_posts.number -1
+    max_index = len(paginator.page_range)
+    start_index = index -2 if index >= 2 else 0
+    if index <2:
+        end_index = 5 - start_index
+    else:
+        end_index = index+3 if index <= max_index - 3 else max_index
+    page_range = list(paginator.page_range[start_index:end_index])
+    return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id,'page_range':page_range, 'total_len':total_len,'max_index':max_index-2, })
 
 def submit_result(request,post_id):
     form_result=submit_form.objects.get(submit=post_id)
