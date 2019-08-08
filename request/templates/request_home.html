@@ -101,7 +101,7 @@
 
 
         <br><br><br><br>
-        <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="280;" height="170;"></div>
+        <div><a href="{% url 'home' %}"><img class="image_h" src="{% static '진짜.png' %}" alt="" width="280;" height="170;"></a></div>
 
         <br>
         {% if user.is_authenticated %}
