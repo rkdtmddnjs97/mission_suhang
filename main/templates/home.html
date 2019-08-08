@@ -22,28 +22,34 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    
+
     {% load staticfiles %}
     <div class="pont">
         <div class="container">
             <div class="row">
                 <div class="col" style="background: black;">
                     <!-- 왼쪽 -->
-                   <br>
+                    <br>
+
                     <a href="{% url 'board'%}" style="color:white; font-size:2rem;">▶Free Board </a>
                     <br>
                     <p>자유게시판 HOT 게시물</p>
-                    {% for liked in like_lists %} 
-                        {% for entry in liked %}
-                            {% if forloop.counter0 == 0 %}
-                                <a href="{% url 'b_detail' entry.id %}">
-                                  &nbsp   <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
-                                 &nbsp <a style="color: white;">  {{entry.title}} /
-                            {% else %} ♡ : {{entry}}</a><br>
-                            {% endif %}
-                            
-                        {% endfor %}
-                        <br>  
+                    {% for liked in like_lists %}
+                    {% for entry in liked %}
+                    {% if forloop.counter0 == 0 %}
+                    <a href="{% url 'b_detail' entry.id %}">
+                        &nbsp <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
+                    &nbsp <a style="color: white;"> {{entry.title}} /
+                        {% else %} ♡ : {{entry}}</a><br>
+                    {% endif %}
+
+                    {% endfor %}
+                    <br>
+                    {% endfor %}
+                    <hr>
+                    <p>NEW 자유게시판</p>
+                    {% for recent_free in recent_freeboard %}
+                    <a href="{% url 'b_detail' recent_free.id %}">{{recent_free.title}}</a><br>
                     {% endfor %}
                     <hr>
                 </div>
@@ -58,7 +64,8 @@
                                 class="chk_box">의뢰 게시판
                         </span>
                         <span class="search_menu">
-                          <select class="form-control" name="input_type" style=" border:1px; border-bottom: #000000 2px solid; width: 25rem; margin:  0 0 0 0.7rem ;">
+                            <select class="form-control" name="input_type"
+                                style=" border:1px; border-bottom: #000000 2px solid; width: 25rem; margin:  0 0 0 0.7rem ;">
                                 <option name="input_type" value="title" selected>제목</option>
                                 <option name="input_type" value="writer">작성자</option>
                                 <option name="input_type" value="body">내용</option>
@@ -69,7 +76,7 @@
                             style=" all:unset; font-size: 1.5rem; width: 40rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px ;"
                             placeholder="Search" class="holder">
                         <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
-                            src="{% static 'search1.png' %}" width="37px;"></button>
+                                src="{% static 'search1.png' %}" width="37px;"></button>
                         <br>
                         <!-- 연관 검색어 -->
                         {% for req_title in all_request_title %}
@@ -80,33 +87,41 @@
                         <a class="free_title" onclick="search_title($(this).attr('value'))"
                             value="{{fre_title}}">{{fre_title}}<br></a>
                         {% endfor %}
-                        
+
 
                     </form>
-                    <a class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜2.png' %}" width="755rem"></a>
+                    <a class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜2.png' %}"
+                            width="755rem"></a>
                     <br>
                     {% if judge == True %}
-                        <a href="{% url 'dissatisfication'%}">민원사항</a>
-                        <br>
+                    <a href="{% url 'dissatisfication'%}">민원사항</a>
+                    <br>
                     {% endif %}
-                    
-                    <a href="{% url 'announcement_board' %}">공지사항</a>
-                    <br><hr>
+
+                  
+                    <br>
+                    <hr>
                     <div>
-                    <p>최근 공지사항</p>
-                    {% for announcemnt in recent_announcements %}
-                        <img src="{{announcemnt.announcement_img.url}}" alt="" width="50px" height="50px">
-                        <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a><br>
-                    {% endfor %}
-                    <hr>
-                </div>
-                <div>
-                    <p>NEW 자유게시판</p>
-                    {% for recent_free in recent_freeboard %}
-                        <a href="{% url 'b_detail' recent_free.id %}">{{recent_free.title}}</a><br>
-                    {% endfor %}
-                    <hr>
-                </div>
+                       <div class="f4">
+                        <table>
+                            <tr>
+                                <td style="text-align: center; border-bottom: 2px solid #444444; "><a href="{% url 'announcement_board' %}" style="all:unset; color:rgb(247, 68, 74); font-size: 1.3rem;">Announcement</a></td>
+                            </tr>
+                            {% for announcemnt in recent_announcements %}
+                            <tr>
+                                <td>&nbsp -<a href="{% url 'announcement_detail' announcemnt.id %}"
+                                        style="border-bottom: #000000 2px solid; border:5rem;">{{announcemnt.title}}<br></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            
+                        </table>
+                        
+                    </div>
+                    </div>
+                    <div>
+
+                    </div>
                     <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
                     <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
 
@@ -118,33 +133,19 @@
 
                     <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
                     <span>Hot 수행자 : </span>
-                        {% for hot_user in hot_users %}
-                            <a href="{% url 'profile' hot_user.profile_id %}">
-                                <img src="{{hot_user.profile_img.url}}" alt="" width="50px" height="50px">
-                                {{hot_user.profile_id}}
-                            </a>
-                        {% endfor %}
+                    {% for hot_user in hot_users %}
+                    <a href="{% url 'profile' hot_user.profile_id %}">
+                        <img src="{{hot_user.profile_img.url}}" alt="" width="50px" height="50px">
+                        {{hot_user.profile_id}}
+                    </a>
+                    {% endfor %}
                     <hr>
 
                     <!-- 인기 게시글과 hot 의뢰글 -->
-                   
-                    <p>의뢰게시판 HOT 게시물</p>
-                    {% for liked in scrap_lists %} 
-                        {% for entry in liked %}
-                            {% if forloop.counter0 == 0 %}
-                                <a href="{% url 'detail' entry.id %}">
-                                    <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
-                                    {{entry.title}} /
-                                </a>
-                            {% else %}
-                                스크랩 개수 : {{entry}}
-                            {% endif %}
-                        {% endfor %}
-                        <br>
-                    {% endfor %}
-                    <hr> 
 
-                    
+
+
+
                     <hr>
                     <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
                     <p>추천 의뢰글</p>
@@ -159,16 +160,36 @@
                     <br>
                     {% endfor %}
                 </div>
-                <div class="col"  style="background: black; color:white;">
+                <div class="col" style="background: black; color:white;">
                     <!-- 가생이 오른쪽 -->
                     <br>
                     <span style="color:white; font-size:2rem;"> ▶Request Board</span><br>
-                        {% for recent_post in recent_posts %}
-                            <a href="{% url 'detail' recent_post.id%}">
-                                <img src="{{recent_post.attached_img.url}}" alt="" width="340rem;">
-                                <a style="color:white;">{{recent_post.title}} / {{recent_post.writer}}</a>
-                            </a><br>
-                        {% endfor %}
+
+
+
+                    <p>의뢰게시판 HOT 게시물</p>
+                    {% for liked in scrap_lists %}
+                    {% for entry in liked %}
+                    {% if forloop.counter0 == 0 %}
+                    <a href="{% url 'detail' entry.id %}">
+                        <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
+                        {{entry.title}} /
+                    </a>
+                    {% else %}
+                    스크랩 개수 : {{entry}}
+                    {% endif %}
+                    {% endfor %}
+                    <br>
+                    {% endfor %}
+                    <hr>
+
+
+                    {% for recent_post in recent_posts %}
+                    <a href="{% url 'detail' recent_post.id%}">
+                        <img src="{{recent_post.attached_img.url}}" alt="" width="340rem;">
+                        <a style="color:white;">{{recent_post.title}} / {{recent_post.writer}}</a>
+                    </a><br>
+                    {% endfor %}
                     <br>
                     <a href="{% url 'request'%}">의뢰게시판</a>
                     {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
@@ -185,9 +206,9 @@
                     {% if request.user.is_superuser == False %}
                     <a href="{% url 'profile' user.profile.profile_id %}">Mypage (
                         {{user.username}} ) </a>
-        
+
                     {% endif %}
-        
+
                     <a href="#" rel="popover" data-trigger="focus" data-placement="bottom"
                         data-popover-content="#list-popover">알림({{notifi_count}})</a>
                     <div id="list-popover" style="display:none">
@@ -202,13 +223,13 @@
                             {% endfor %}
                             <a href="{% url 'notifications' %}">see all</a>
                         </a>
-        
-        
+
+
                         {% endif %}
 
-                    <br>
+                        <br>
+                    </div>
                 </div>
-            </div>
 
 
 
@@ -224,8 +245,8 @@
 
 
 
-            <!--  뿌야-->
-          
+                <!--  뿌야-->
+
                 {% endif %}
 
 
@@ -234,13 +255,36 @@
                             src="{% static 'top.png' %}" width="50px;"></a>
                 </div>
                 <style>
+                    /* 표 */
+                    table {
+                        width: 90%;
+                        border-collapse: collapse;
+                       margin: 1rem 1rem 1.5rem 1rem;
+                    }
+                    .f4{
+                        width: 50%;
+                        /* border: 1px solid #444444; */
+                        border-radius: 10px;
+                        background-color: #f0f0f0;
+                        border: 2px solid #444444;
+
+                    }
+                  
+
+                    th,
+                    td {
+                        border-bottom: 2px solid #444444;
+                       
+                    }
+
                     .container {
                         all: unset;
                         width: 100rem;
                     }
-                    a{
-                        all:unset;
-                        color:rgb(75, 57, 57);
+
+                    a {
+                        all: unset;
+                        color: rgb(75, 57, 57);
                     }
                 </style>
                 <script type="text/javascript">
