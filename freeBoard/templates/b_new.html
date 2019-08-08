@@ -40,7 +40,7 @@
                     <input type="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.gif" name="attached_img">
                     <label class="custom-file-label" for="customFile">사진을 선택해주세요</label>
                 </div>
-    
+
             </div>
         </div>
         <div class="form-group row">
@@ -52,25 +52,35 @@
                 </div>
             </div>
         </div>
+
         <div class="form-group row">
-            <label for="inputTitle" class="col-sm-2 col-form-label">태그</label>
+            <label for="inputTitle" class="col-sm-2 col-form-label">해시태그검색</label>
             <div class="col-sm-8">
-                <textarea class="form-control" name="hashtag" placeholder="#이렇게#작성해줘요#참쉽죠?" id="new_hashtag"></textarea>
+                <input type="text" class="form-control" name='search_tag_data' id='search_tag'>
+            </div>
+            <br>
+        </div>↓ 클릭해주세용 ↓<br>
+        {% for tag in all_tag %}
+        <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}"
+            style="color: blue">#{{tag}}</a>
+        {% endfor %}
+        <br>
+        <div class="form-group row">
+            <label for="inputTitle" class="col-sm-2 col-form-label">해시태그</label>
+            <div class="col-sm-8">
+                <textarea class="form-control" name="hashtag" placeholder="#없는건#이렇게#직접넣어주세요"
+                    id="new_hashtag"></textarea>
             </div>
         </div>
         <br>
-        <div class="ht" style="display:inline;">
-            ## SEARCH TAG ## <br>
-            <input type="text" name='search_tag_data' id='search_tag'><br><br>
-            {% for tag in hashtag %}
-            <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
-            {% endfor %}
-            <br><br><br>
-        </div>
-        
+        <br>
+    </div>
+
     <br><br><br>
     <div class="bttn">
-        <button class="btn btn-dark" type='submit'>작성하기</button></div>
+        <button class="btn btn-dark" type='submit'>작성하기</button>
+        <a class="btn btn-dark" href="{% url 'board'%}" role="button">돌아가기</a>
+    </div>
     <br><br><br>
 
 </form>
