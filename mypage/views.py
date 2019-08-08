@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from request.models import Post,ApplyMission,submit_form
-from accounts.models import Profile
+from accounts.models import Profile, DefaultImg
 from django.utils import timezone
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from notification.views import create_notification
 from django.core.paginator import Paginator
 from django.utils import timezone
+from django.templatetags.static import static
 
 
 def chat(request,app_id,request_id):
@@ -179,11 +180,18 @@ def updateProfile(request, profile_id):
     update_profile.department=request.POST['department']
     update_profile.name=request.POST['name']
     update_profile.introduction=request.POST['introduction']
+    default_img = DefaultImg()
     
-    if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
-        pass
-    else:
-        update_profile.profile_img = request.FILES.get('pofile_img')
+    
+    #기본프로필 이미지 사용 체크
+    if request.POST.getlist('use_default_img') == []:
+        if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
+            pass
+        else:
+            update_profile.profile_img = request.FILES.get('pofile_img')
+    else:    
+        update_profile.profile_img = default_img.image
+        
 
     # Hashtag
     tag_list = request.POST.getlist('hashtag')
