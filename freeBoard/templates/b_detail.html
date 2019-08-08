@@ -5,7 +5,9 @@
 margin-left: 200px;padding-right:80px;">
     <br><br>
     <div class="category">
-        <a href="{% url 'board' %}"><h1>Free Board</h1></a>
+        <a class="b" href="{% url 'board' %}">
+            <h1>Free Board</h1>
+        </a>
     </div>
     <br><br>
     <div class="d-block d-sm-none">
@@ -20,7 +22,7 @@ margin-left: 200px;padding-right:80px;">
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td><a href="{% url 'profile' blog.writer  %}">{{blog.writer}}</a></td>
+                    <td><a class="b" href="{% url 'profile' blog.writer  %}">{{blog.writer}}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성일</th>
@@ -56,7 +58,7 @@ margin-left: 200px;padding-right:80px;">
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td> <a href="{% url 'profile' blog.writer  %}">{{blog.writer}}</a></td>
+                    <td> <a class="b" href="{% url 'profile' blog.writer  %}">{{blog.writer}}</a></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -77,7 +79,7 @@ margin-left: 200px;padding-right:80px;">
     <p>
         <br>
         <div class="card">
-            
+
         </div>
 
         <div class="card" style="min-height:30rem;">
@@ -93,17 +95,17 @@ margin-left: 200px;padding-right:80px;">
 
         <br>
         {% if blog.attached_file == 'files/dummy.txt' %}
-                (첨부된 파일이 없습니다)
-                <br><br>
+        (첨부된 파일이 없습니다)
+        <br><br>
         {% else %}
-            <b>첨부파일</b><br><br>
-            <div class="card" style="min-height:5rem;"><a href="{{blog.attached_file.url}}"
-                    download="">{{blog.attached_file}}</a></div>
-            <br><br>
+        <b>첨부파일</b><br><br>
+        <div class="card" style="min-height:5rem;"><a class="b" href="{{blog.attached_file.url}}"
+                download="">{{blog.attached_file}}</a></div>
+        <br><br>
         {% endif %}
 
         <b>#Hashtag</b> {% for tag in hashtag.all %}
-        <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
+        <a class="b" href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
 
         <hr>
@@ -228,7 +230,9 @@ margin-left: 200px;padding-right:80px;">
 <div class="container d-block d-sm-none">
     <br><br>
     <div class="category">
-        <h1>Free Board</h1>
+        <a class="b" href="{% url 'board' %}">
+            <h1>Free Board</h1>
+        </a>
     </div>
     <br><br>
     <div class="d-block d-sm-none">
@@ -243,7 +247,7 @@ margin-left: 200px;padding-right:80px;">
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td>{{blog.writer}}</td>
+                    <td><a class="b" href="{% url 'profile' blog.writer  %}">{{blog.writer}}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성일</th>
@@ -279,7 +283,7 @@ margin-left: 200px;padding-right:80px;">
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td>{{blog.writer}}</td>
+                    <td><a class="b" href="{% url 'profile' blog.writer  %}">{{blog.writer}}</a></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -304,8 +308,19 @@ margin-left: 200px;padding-right:80px;">
                 <p> {{blog.body}}</p>
             </div>
         </div>
+
+        <br>
+        {% if blog.attached_file == 'files/dummy.txt' %}
+        (첨부된 파일이 없습니다)
+        <br><br>
+        {% else %}
+        <b>첨부파일</b><br><br>
+        <div class="card" style="min-height:5rem;"><a class="b" href="{{blog.attached_file.url}}"
+                download="">{{blog.attached_file}}</a></div>
+        <br><br>
+        {% endif %}
         <b>#Hashtag</b> {% for tag in hashtag.all %}
-        <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
+        <a class="b" href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
 
         <hr>
@@ -429,6 +444,18 @@ margin-left: 200px;padding-right:80px;">
 </div>
 </div>
 <style>
+    a {
+        text-decoration: none;
+        color: rgb(61, 65, 70);
+
+    }
+
+    .b:hover {
+        all: unset;
+        color: rgb(50, 161, 137);
+
+    }
+
     .form-control {
         resize: none;
     }

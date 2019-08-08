@@ -102,8 +102,9 @@ def commissioned(request, profile_id):
         appliers.append(pro)
         
     commission_user=Profile.objects.get(profile_id=profile_id)
+    profile = profile_id
 
-    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user})
+    return render(request, 'commissioned.html',{'applications':applications,'appliers':appliers,'commission_user':commission_user,'profile':profile})
 
 def performing(request, profile_id):
     user=User.objects.get(username=profile_id)
@@ -119,8 +120,9 @@ def performing(request, profile_id):
         perform_profiles.append(Profile.objects.get(profile_id=perform.writer))
     perform_profiles=list(set(perform_profiles))
     perform_user=Profile.objects.get(profile_id=user.username)
+    profile = profile_id
     
-    return render(request, 'performing.html',{'performing_post':performing_post,'perform_profiles':perform_profiles,'perform_user':perform_user})
+    return render(request, 'performing.html',{'performing_post':performing_post,'perform_profiles':perform_profiles,'perform_user':perform_user,'profile':profile})
 
 def scrap(request, profile_id):
     user = User.objects.get(username = profile_id)
@@ -331,6 +333,7 @@ def commission_end(request,profile_id):
     else:
         end_index = index+3 if index <= max_index - 3 else max_index
     page_range = list(paginator.page_range[start_index:end_index])
+    profile = profile_id
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id,'page_range':page_range, 'total_len':total_len,'max_index':max_index-2, })
 
 def submit_result(request,post_id):

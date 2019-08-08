@@ -24,7 +24,7 @@
 <br>
 {{chat_object.content}}
 <br>
-{{chat_object.pub_date}}
+<p class='pubdate'>{{chat_object.pub_date}}</p>
 
 {% if chat_object.writer == request.user.username %}
 <details>
@@ -91,6 +91,11 @@ h2{
 .delete{
   all:unset;
 }
+.pubdate{
+
+font-size:0.5rem;
+}
+
 .delete:hover{
   color:rgb(247, 68, 74);
   text-decoration: none;

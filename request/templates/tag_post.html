@@ -1,13 +1,61 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<br><br><br>
+<div class="pty">
+    <br><br>
+    <h2>해당 태그와 관련된 게시글입니다.</h2>
+    <hr>
+    <br>
+    {% for post in tag_posts %}
+    <a href="{% url 'detail' post.id %}"><b><h4>#{{post.title}}</h4></b>  {{post.writer}} / {{post.pub_date}}<hr></a><br>
+    {% endfor %}
+</div>
 
-<p>해당 태그와 관련된 게시물</p>
-<br>
-
-{% for post in tag_posts %}
-    <a href="{% url 'detail' post.id %}">{{post.title}} / {{post.writer}} / {{post.pub_date}}</a><br>
-{% endfor %}
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 
 
+    .pty {
+        font-family: 'Do Hyeon', sans-serif;
+        text-align: left;
+    }
+
+    .card {
+        text-align: left;
+    }
+
+
+
+    @media screen and (max-width:400px) {
+        div {
+            text-align: left;
+        }
+    }
+
+    @media screen and (min-width: 1000px) {
+        div {
+            text-align: left;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: #000000
+    }
+
+    a:hover {
+        all: unset;
+        color: rgb(50, 161, 137);
+    }
+
+    a.noul:hover {
+        text-decoration: none !important
+    }
+
+    .ask {
+        text-decoration: none;
+        color: #000000
+    }
+</style>
 {% endblock %}

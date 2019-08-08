@@ -73,9 +73,9 @@
             <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a><br>
             <a style="font-size:20px;" href="{% url 'home' %}">MAIN</a>
             <a style="font-size:20px;" href="{% url 'profile' my_profile.profile_id %}">MY PAGE</a><br>
-            
+
             <br>
-            
+
             <a style="font-size:30px;" href="{% url 'request' %}">의뢰게시판</a><br>
             <a style="font-size:30px;" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
             <a style="font-size:30px;" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
@@ -99,10 +99,15 @@
 
 
         <br><br><br><br>
-        <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="280;" height="170;"></div>
+        <div ><img class="image_h " src="{% static '진짜.png' %}" alt="" width="280;" height="170;">
+        </div>
         <br>
         {% if user.is_authenticated %}
-        <a class="btn btn-dark" href="{% url 'b_new'%}">작성하기</a>
+        <div><a href="{% url 'b_new'%}"><img class="img_h" src="{% static 'write2.png' %}"
+                    onmouseover="this.src='{% static 'write.png' %}'" onmouseout="this.src='{% static 'write2.png' %}'"
+                    alt="" width="245.6;" height="55;"></a></div>
+        
+        
         {% endif %}
         <br><br>
         <br>
@@ -125,7 +130,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-h">
-                        <a href="{% url 'b_detail' blog.id %}">
+                        <a class="b" href="{% url 'b_detail' blog.id %}">
                             <h5>{{blog.title}}</h5>
                         </a>
                     </div>
@@ -144,7 +149,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-h">
-                        <a href="{% url 'b_detail' blog.id %}">
+                        <a class="b" href="{% url 'b_detail' blog.id %}">
                             <b>
                                 <h3>{{blog.title}}</h3>
                             </b>
@@ -179,13 +184,13 @@
             <a class="btn btn-dark" href="?page={{blogs.paginator.num_pages}}" role="button">>></a>
             {%endif%} -->
         <!-- 아래는 페이지네이터 코드 개극혐 -->
-        <div class="pg" >
+        <div class="pg">
             {% if blogs.has_other_pages %}
             <ul class="pagination">
                 {% if blogs.has_previous %}
                 <div class="lil" style="font-size: 8rem;">
                     <li>
-                        <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
+                        <a class="b" href="?page={{ blogs.previous_page_number }}">&laquo;</a>
                     </li>
                     {% else %}
                     <li class="disabled">
@@ -193,7 +198,7 @@
                     </li>
                     {% endif %} {% if blogs.number > 2 %}
                     <li>
-                        <a href="?page={{ 1 }}" > 1 </a>
+                        <a class="b" href="?page={{ 1 }}"> 1 </a>
                     </li>
                     <li><span>...<span class="sr-only">...</span></span>
                     </li>
@@ -203,15 +208,15 @@
                         <span>{{ i }} <span class="sr-only">(current)</span></span>
                     </li>
                     {% else %}
-                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    <li><a class="b" href="?page={{ i }}">{{ i }}</a></li>
                     {% endif %}
                     {% endfor %}
                     {% if blogs.number < max_index %}
                     <li><span>...<span class="sr-only">...</span></span></li>
-                    <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
+                    <li><a class="b" href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
                     {% endif %}
                     {% if blogs.has_next %}
-                    <li><a href="?page={{ blogs.next_page_number }}">&raquo;</a></li>
+                    <li><a class="b" href="?page={{ blogs.next_page_number }}">&raquo;</a></li>
                     {% else %}
                     <li class="disabled"><span>&raquo;</span></li>
                     {%endif %}
@@ -400,7 +405,14 @@
 
         a {
             text-decoration: none;
-            color: #3A6FAF;
+            color: rgb(61, 65, 70);
+
+        }
+
+        .b:hover {
+            all: unset;
+            color: rgb(50, 161, 137);
+
         }
 
         .div {
@@ -416,7 +428,14 @@
     @media screen and (min-width: 1000px) {
         a {
             text-decoration: none;
-            color: #8E8D8B
+            color: rgb(61, 65, 70);
+
+        }
+
+        .b:hover {
+            all: unset;
+            color: rgb(50, 161, 137);
+
         }
 
         .card {

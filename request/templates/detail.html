@@ -20,13 +20,17 @@
 
 
     <div class="container d-block d-sm-none" style="text-align:center;"><br><br>
-        <a href="{% url 'request' %}"><h1>MISSION Request</h1></a>
+        <a class="b" href="{% url 'request' %}">
+            <h1>MISSION Request</h1>
+        </a>
     </div>
 
     <div class="container d-none d-sm-block" style="width: 50rem;
 margin-left: 200px;padding-right:80px;">
         <br><br>
-        <a href="{% url 'request' %}"><h1>MISSION Request</h1></a>
+        <a class="b" href="{% url 'request' %}">
+            <h1>MISSION Request</h1>
+        </a>
 
     </div>
     <br><br>
@@ -44,7 +48,7 @@ margin-left: 200px;padding-right:80px;">
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td><a href="{% url 'profile' post.writer  %}">{{post.writer}}</a></td>
+                    <td><a class="b" href="{% url 'profile' post.writer  %}">{{post.writer}}</a></td>
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성일</th>
@@ -78,7 +82,7 @@ margin-left: 200px;padding-right:80px;">
                 </tr>
                 <tr>
                     <th scope="row">&nbsp;작성자</th>
-                    <td><a href="{% url 'profile' post.writer  %}">{{post.writer}}</a></td>
+                    <td><a class="b" href="{% url 'profile' post.writer  %}">{{post.writer}}</a></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -122,14 +126,16 @@ margin-left: 200px;padding-right:80px;">
         <br><br>
         {% else %}
         <b>첨부파일</b><br><br>
-        <div class="card" style="min-height:5rem;"><a href="{{post.attached_file.url}}"
+        <div class="card" style="min-height:5rem;"><a class="b" href="{{post.attached_file.url}}"
                 download="">{{post.attached_file}}</a></div>
         <br><br>
         {% endif %}
         <b>#Hashtag</b><br> {% for tag in hashtag.all %}
-        <a href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
+        <a class="b" href="{% url 'tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
         <br><br><br><br>
+
+        <hr>
         <div class="buttonss_h">
 
 
@@ -148,7 +154,9 @@ margin-left: 200px;padding-right:80px;">
                 <input type="hidden" name='scrap' value="{{user}}">
                 <button class="btn btn-danger" type="submit">scraped</button>
             </form>
+            
             {% endif %}
+            <br>
             {% if post.status == 'ready' %}
             {% if judge == False %}
             <button type="button" class="btn btn-danger" onclick="delUrl()" style="text-align: center;">의뢰신청</a>
@@ -173,9 +181,7 @@ margin-left: 200px;padding-right:80px;">
 
         </div>
         <br>
-        <hr>
-
-        <div class="buttonss" style="float:right;">
+        <div style="float:right;">
             <a class="btn btn-dark" href="{% url 'request' %}" role="button">목록</a>
             {% if user.is_authenticated %}
             {% if user.username == post.writer %}
@@ -251,7 +257,7 @@ margin-left: 200px;padding-right:80px;">
 
                 <textarea class="rounded d-none d-sm-block" name='modify_comment' id="" cols="100"
                     placeholder="write your content">{{comment.content}}</textarea>
-                    <br>
+                <br>
                 <input type="submit" value='수정완료' class="submit_bt d-none d-sm-block"
                     style="rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
             </form>
@@ -260,7 +266,7 @@ margin-left: 200px;padding-right:80px;">
 
                 <textarea class="rounded d-block d-sm-none" name='modify_comment' id="" cols="38"
                     placeholder="write your content">{{comment.content}}</textarea>
-                    <br>
+                <br>
                 <input type="submit" value='수정완료' class="submit_bt d-block d-sm-none"
                     style="rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
                 <br>
@@ -307,6 +313,22 @@ margin-left: 200px;padding-right:80px;">
         </div>
         </div>
         <style>
+            .buttonss_h{
+                float:left;
+            }
+            a {
+                text-decoration: none;
+                color: rgb(61, 65, 70);
+
+            }
+
+            .b:hover {
+                all: unset;
+                color: rgb(50, 161, 137);
+
+
+            }
+
             .form-control {
                 resize: none;
             }
@@ -341,10 +363,10 @@ margin-left: 200px;padding-right:80px;">
                     text-align: center;
                 }
 
-                .buttonss_h {
+                /* .buttonss_h {
                     text-align: center;
                     display: inline;
-                }
+                } */
             }
 
             @media screen and (min-width: 1000px) {
