@@ -6,11 +6,9 @@ from django.contrib.auth.models import User
 def notifications(request):
     user = request.user.profile
     notifications = Notification.objects.filter(to=user)
-
     for noti in notifications:
         noti.confirmation = True
         noti.save()
-
     return render(request, 'notifications.html', {'notifications':notifications})
 
 def confirm_notification(request, noti_id):
