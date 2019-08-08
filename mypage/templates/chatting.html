@@ -28,7 +28,7 @@
 
 {% if chat_object.writer == request.user.username %}
 <details>
-    <summary>수정하기&nbsp<a>/</a>&nbsp<a  class="delete" href="{% url 'chat_delete' chat_id=chat_object.id appId=app_id requestId=request_id  %}" onclick="func_confirm()" > 삭제</a></summary>
+    <summary>수정하기&nbsp<a>/</a>&nbsp<a  class="delete" href="{% url 'chat_delete' chat_id=chat_object.id appId=app_id requestId=request_id  %}">삭제</a></summary>
     <form action="{% url 'chat_edit' chat_id=chat_object.id appId=app_id requestId=request_id %}" method="POST" >
         {% csrf_token %}
           <textarea name= 'modify_chat' id="" cols="50" rows="1" placeholder="수정한 내용을 입력해 주세요"style="border : 2px black;">{{chat_object.content}}</textarea>
@@ -36,19 +36,8 @@
     </form>
 </details>
 {% endif %}
-<div class="line"></div>
-<!-- <input type="button" value="삭" onclick="func_confirm()"/> -->
-            <script type="text/javascript">
-                function func_confirm() {
-                    if (confirm('삭제하시겠습니까?')) {
-                        alert("제출되었습니다.");
-                        window.close();
-                    } else {
-                        alert.close();
-                    }
-                }
-            </script>
-  <hr>
+<hr>
+
 {% endfor %}
 
 <form action="{% url 'new_chat' chat_id %}" method="POST">
