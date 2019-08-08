@@ -40,7 +40,7 @@
             </div>
         </div>
         {% if error %}
-        {{error}}
+        <p class='error'>{{error}}</p>
         {% endif %}
         <div class="form-group row">
             <label for="inputTitle" class="col-sm-2 col-form-label">사진첨부</label>
@@ -82,7 +82,9 @@
     <br><br><br><br>
 </form>
 <style>
-    
+    .error{
+    color:red;
+    font-size:1rem;}
     form {
         text-align: center;
     }
