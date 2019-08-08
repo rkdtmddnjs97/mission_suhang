@@ -28,11 +28,27 @@
         <div class="container">
             <div class="row">
                 <div class="col" style="background: black;">
+                    <!-- 왼쪽 -->
                    <br>
-                    <a href="{% url 'board'%}">자유게시판</a>
+                    <a href="{% url 'board'%}" style="color:white; font-size:2rem;">▶Free Board </a>
                     <br>
+                    <p>자유게시판 HOT 게시물</p>
+                    {% for liked in like_lists %} 
+                        {% for entry in liked %}
+                            {% if forloop.counter0 == 0 %}
+                                <a href="{% url 'b_detail' entry.id %}">
+                                  &nbsp   <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
+                                 &nbsp <a style="color: white;">  {{entry.title}} /
+                            {% else %} ♡ : {{entry}}</a><br>
+                            {% endif %}
+                            
+                        {% endfor %}
+                        <br>  
+                    {% endfor %}
+                    <hr>
                 </div>
                 <div class="col-6">
+                    <!-- 가운데 -->
                     <br>
                     <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">
                         <span class="search_menu">
@@ -111,21 +127,7 @@
                     <hr>
 
                     <!-- 인기 게시글과 hot 의뢰글 -->
-                    <p>자유게시판 HOT 게시물</p>
-                    {% for liked in like_lists %} 
-                        {% for entry in liked %}
-                            {% if forloop.counter0 == 0 %}
-                                <a href="{% url 'b_detail' entry.id %}">
-                                    <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
-                                    {{entry.title}} /
-                                </a>
-                            {% else %}
-                                좋아요 개수 : {{entry}}
-                            {% endif %}
-                        {% endfor %}
-                        <br>  
-                    {% endfor %}
-                    <hr>
+                   
                     <p>의뢰게시판 HOT 게시물</p>
                     {% for liked in scrap_lists %} 
                         {% for entry in liked %}
@@ -142,13 +144,7 @@
                     {% endfor %}
                     <hr> 
 
-                    <span>최신 의뢰글</span><br>
-                        {% for recent_post in recent_posts %}
-                            <a href="{% url 'detail' recent_post.id%}">
-                                <img src="{{recent_post.attached_img.url}}" alt="" width="50px" height="50px">
-                                {{recent_post.title}} / {{recent_post.writer}}
-                            </a><br>
-                        {% endfor %}
+                    
                     <hr>
                     <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
                     <p>추천 의뢰글</p>
@@ -164,7 +160,15 @@
                     {% endfor %}
                 </div>
                 <div class="col"  style="background: black; color:white;">
-                    3 of 3
+                    <!-- 가생이 오른쪽 -->
+                    <br>
+                    <span style="color:white; font-size:2rem;"> ▶Request Board</span><br>
+                        {% for recent_post in recent_posts %}
+                            <a href="{% url 'detail' recent_post.id%}">
+                                <img src="{{recent_post.attached_img.url}}" alt="" width="340rem;">
+                                <a style="color:white;">{{recent_post.title}} / {{recent_post.writer}}</a>
+                            </a><br>
+                        {% endfor %}
                     <br>
                     <a href="{% url 'request'%}">의뢰게시판</a>
                     {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
