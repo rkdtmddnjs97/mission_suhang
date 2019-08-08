@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         {% if error1 %}
-                        {{error1}}
+                        <p class='error1'>{{error1}}</p>
                         {% endif %}
 
                         <div class="form-group row">
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                         {% if error %}
-                        {{error}}
+                        <p class='error'>{{error}}</p>
                         {% endif %}
                         <hr>
 
@@ -102,10 +102,10 @@
                             </div>
                         </div>
                         {% if error2 %}
-                        {{error2}}
+                        <p class='error2'>{{error2}}</p>
                         {% endif %}
                         {% if error3 %}
-                        {{error3}}
+                        <p class='error3'>{{error3}}</p>
                         {% endif %}
                         
                         <hr>
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         {% if error4 %}
-                        {{error4}}
+                        <p class='error4'>{{error4}}</p>
                         {% endif %}
                         <hr>
                         <div class="form-group row">
@@ -195,6 +195,7 @@
 
 </body>
 <script type="text/javascript">
+    
 
     $('.result_tag').hide();
     $('.result_school').hide();
@@ -291,7 +292,21 @@
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
-
+    .error{
+    color:red;
+    font-size:1rem;}
+    .error1{
+    color:red;
+    font-size:1rem;}
+    .error2{
+    color:red;
+    font-size:1rem;}
+    .error3{
+    color:red;
+    font-size:1rem;}
+    .error4{
+    color:red;
+    font-size:1rem;}
     .ppontt {
         font-family: 'Do Hyeon', sans-serif;
         text-align: center;

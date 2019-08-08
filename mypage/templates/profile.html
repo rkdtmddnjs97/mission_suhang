@@ -3,6 +3,7 @@
 {% block content %}
 
 {% load staticfiles %}
+{% if user.is_authenticated %}
 <!-- 새사이드네브 -->
 <div id="mysidenav" class="sidenav">
     <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a>
@@ -15,8 +16,9 @@
     <a style="font-size:2.1rem;" href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
     <a style="font-size:2.1rem;" href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
 </div>
-<span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true" ></i> <a style="font-size:2rem;">◀Open Mission</a></span>
 
+<span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true" ></i> <a style="font-size:2rem;">◀Open Mission</a></span>
+{% endif %}
 <script>
     function openNav() {
         document.getElementById('mysidenav').style.width = '300px';
@@ -39,7 +41,7 @@
     <div class="row">
       <div class="col-6 col-md-4">
         <br>
-        <div><img style="width: 13.5rem;" src="{{ my_profile.profile_img.url }}"></div>
+        <div><img style="width: 13.5rem; height: 18rem;" src="{{ my_profile.profile_img.url }}"></div>
       </div>
 
       <div class="col-12 col-md-8">
@@ -124,7 +126,8 @@
   <br><br>
 </div>
   {% endif %}
-  <a href="#"><img style="position: fixed; bottom:5px; right:5px;" class="top1" src="{% static 'top.png' %}"></a>
+  <a href="#"><img src="{% static 'top.png' %}" style="position: fixed; bottom:5px; right:5px;" class="top1" ></a>
+  
 </body>
   <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
@@ -202,6 +205,7 @@
     @media screen and (max-width:600px) {
       img{
        width:  5rem;
+       height: 8rem;
       }
       .row {
       width: 20rem;
@@ -260,6 +264,7 @@
       }
       .top1 {
         width: 50px;
+        height: 50px;
       }
       .top{
        display: none;

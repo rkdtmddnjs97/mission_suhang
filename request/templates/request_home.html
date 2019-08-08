@@ -1,75 +1,172 @@
-{% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="container">
-    <br><br>
-    <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
 
-    <br>
-   {% if user.is_authenticated %}
-    <div><a href="{% url 'new'%}"><img class="img_h" src="{% static '리퀘스트1.png' %}"
-                onmouseover="this.src='{% static '리퀘스트2.png' %}'" onmouseout="this.src='{% static '리퀘스트1.png' %}'"
-                alt="" width="245.6;" height="45;"></a></div>
-    <br><br><br>
-    <div class="d-none d-sm-block">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>미션수행</title>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div class="ptd">
+        <!-- 여기가 모바일 -->
+        <div class="mnav d-block d-sm-none">
+            <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
+                <div class="dropdown">
+                    <div class='pont'>
+                        <a class="navbar-brand">
+                            <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                MY▼
+                            </a>
+
+
+                            <div class="dropdown-menu">
+                                {% if not user.is_authenticated %}
+                                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                                <a class="dropdown-item" href="{% url 'signup' %}">Signup</a>
+
+                                {% else %}
+                                <form id="logout" class="dropdown-item" method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <input class="logout" type="submit" value="Logout">
+                                </form>
+                                <a class="dropdown-item" href="{% url 'profile' user.profile.profile_id %}">Mypage
+                                    ({{user.username}})</a>
+                                <a class="dropdown-item" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+                                <!-- <a class="dropdown-item" href="">수행중인 미션</a>
+                      <a class="dropdown-item" href="">수행완료된 미션</a>
+                      <a class="dropdown-item" href="">의뢰중인 미션</a>
+                      <a class="dropdown-item" href="">의뢰완료된 미션</a>
+                      <a class="dropdown-item" href="">스크랩한 미션</a> -->
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="hh">
+                    <a class="navbar-brand" href="{% url 'home' %}">Mission Suhang</a>
+                </div>
+
+
+        </div>
+
+        <!-- 새사이드네브 -->
+        {% if user.is_authenticated %}
+        <div id="mysidenav" class="sidenav d-none d-sm-block">
+                <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a><br>
+                <a style="font-size:20px;" href="{% url 'home' %}">MAIN</a>
+                <a style="font-size:20px;" href="{% url 'profile' my_profile.profile_id %}">MY PAGE</a><br>
+                
+                <br>
+                
+                <a style="font-size:30px;" href="{% url 'board' %}">자유게시판</a><br>
+                <a style="font-size:30px;" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
+                <a style="font-size:30px;" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
+                <a style="font-size:30px;" href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
+                <a style="font-size:30px;" href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
+                <a style="font-size:30px;" href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
+        </div>
+
+        <span class="openmenu d-none d-sm-block" onclick='openNav()'><i class="fa fa-angle-double-left fa-5"
+                aria-hidden="true"></i> <a style="font-size:40px;float:left;">◀Open Mission</a></span>
+        {% endif %}
+        <script>
+            function openNav() {
+                document.getElementById('mysidenav').style.width = '300px';
+            }
+            function closeNav() {
+                document.getElementById('mysidenav').style.width = '0';
+            }
+        </script>
+
+
+
+        <br><br><br><br>
+        <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="280;" height="170;"></div>
+
+        <br>
+        {% if user.is_authenticated %}
+        <div><a href="{% url 'new'%}"><img class="img_h" src="{% static '리퀘스트1.png' %}"
+                    onmouseover="this.src='{% static '리퀘스트2.png' %}'" onmouseout="this.src='{% static '리퀘스트1.png' %}'"
+                    alt="" width="245.6;" height="45;"></a></div>
+        <br><br><br>
+        <div class="d-none d-sm-block" style="width:70rem;margin-left:15rem;">
             {% endif %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col" class="tb">&nbsp;&nbsp;&nbsp;제목</th>
-                    <th scope="col">&nbsp;&nbsp;작성자</th>
-                    <th scope="col">작성일&nbsp;</th>
-                </tr>ㅑㅏ
-            </thead>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="tb">&nbsp;&nbsp;&nbsp;제목</th>
+                        <th scope="col">&nbsp;&nbsp;작성자</th>
+                        <th scope="col">작성일&nbsp;</th>
+                    </tr>
+                </thead>
 
-        </table>
-    </div>
-    {% for post in blogs %}
-    <div class="card d-none d-sm-block">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-h">
-                    <a href="{% url 'detail' post.id %}">
-                        <h5>{{post.title}}</h5>
-                    </a>
-                </div>
-                <div class="col-sm">
-                    <p>{{post.writer}}</p>
-                </div>
-                <div class="col-sm">
-                    <h6>{{post.pub_date}}</h6>
+            </table>
+        </div>
+        {% for post in blogs %}
+        <div class="card d-none d-sm-block" style="width:70rem;margin-left:15rem;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-h">
+                        <a href="{% url 'detail' post.id %}">
+                            <h5>{{post.title}}</h5>
+                        </a>
+                    </div>
+                    <div class="col-sm">
+                        <p>{{post.writer}}</p>
+                    </div>
+                    <div class="col-sm">
+                        <h6>{{post.pub_date}}</h6>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-    <div class="card d-block d-sm-none">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-h">
-                    <a href="{% url 'detail' post.id %}">
-                        <b>
-                            <h3>{{post.title}}</h3>
-                        </b>
-                    </a>
-                </div>
-                <div class="col-sm">
-                    <p>{{post.body}}</p>
-                </div>
-                <div class="col-sm-a" style="color:#8E8D8B;">
-                    <p>{{post.writer}}&nbsp;&nbsp;|&nbsp;&nbsp;</p>
-                </div>
-                <div class="col-sm-b" style="color:#8E8D8B;">
-                    <h6>{{post.pub_date}}</h6>
+        </div>
+        <div class="card d-block d-sm-none">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-h">
+                        <a href="{% url 'detail' post.id %}">
+                            <b>
+                                <h3>{{post.title}}</h3>
+                            </b>
+                        </a>
+                    </div>
+                    <div class="col-sm">
+                        <p>{{post.body}}</p>
+                    </div>
+                    <div class="col-sm-a" style="color:#8E8D8B;">
+                        <p>{{post.writer}}&nbsp;&nbsp;|&nbsp;&nbsp;</p>
+                    </div>
+                    <div class="col-sm-b" style="color:#8E8D8B;">
+                        <h6>{{post.pub_date}}</h6>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-    {% endfor %}
-    <br><br><br>
-    <!-- {%if blogs.has_previous%}
+        </div>
+        {% endfor %}
+        <br><br><br>
+        <!-- {%if blogs.has_previous%}
     <a class="btn btn-dark" href="?page=1" role="button">
         </a> <a class="btn btn-dark" href="?page={{blogs.previous_page_number}}" role="button">
             </a> {%endif%} <span>{{blogs.number}}</span>
@@ -80,48 +177,168 @@
                 <a class="btn btn-dark" href="?page={{blogs.next_page_number}}" role="button">></a>
                 <a class="btn btn-dark" href="?page={{blogs.paginator.num_pages}}" role="button">>></a>
                 {%endif%} -->
-                <br><br>
-                {% if blogs.has_other_pages %}
-                <ul class="pagination btn btn-dark"  href="?page=1" role="button"> 
-                    {% if blogs.has_previous %}
-                     <li>
-                         <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
-                   </li>
-                    {% else %} 
-                    <li class="disabled">
-                       <span>&laquo;</span>
-                   </li> 
-                   {% endif %} {% if blogs.number > 2 %}
-                    <li>
-                        <a href="?page={{ 1 }}"> 1 </a>
-                   </li>
-                   <li><span>...<span class="sr-only">...</span></span>
-                   </li>
-                   {% endif %} {% for i in page_range %}
-                   {% if blogs.number == i %}
-                   <li class="active">
-                       <span>{{ i }} <span class="sr-only">(current)</span></span>
-                   </li>
-                    {% else %}
-                     <li><a href="?page={{ i }}">{{ i }}</a></li> 
-                     {% endif %} 
-                     {% endfor %}
-                   {% if blogs.number < max_index %} 
-                   <li><span>...<span class="sr-only">...</span></span></li>
-                   <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
-                    {% endif %}
-                   {% if blogs.has_next %} 
-                   <li><a href="?page={{ blogs.next_page_number }}">&raquo;</a></li>
-                    {% else %}
-                   <li class="disabled"><span>&raquo;</span></li>
-                    {%endif %}
-                    </ul>
-                    {%endif%}
-           
-           
-</div>
+        <br><br>
+        <div class="pgr">
+            {% if blogs.has_other_pages %}
+            <ul class="pagination">
+                {% if blogs.has_previous %}
+                <li>
+                    <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
+                </li>
+                {% else %}
+                <li class="disabled">
+                    <span>&laquo;</span>
+                </li>
+                {% endif %} {% if blogs.number > 2 %}
+                <li>
+                    <a href="?page={{ 1 }}"> 1 </a>
+                </li>
+                <li><span>...<span class="sr-only">...</span></span>
+                </li>
+                {% endif %} {% for i in page_range %}
+                {% if blogs.number == i %}
+                <li class="active">
+                    <span>{{ i }} <span class="sr-only">(current)</span></span>
+                </li>
+                {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if blogs.number < max_index %}
+                <li><span>...<span class="sr-only">...</span></span></li>
+                <li><a href="?page={{ max_index|add:'2' }}">{{ max_index|add:"2" }}</a></li>
+                {% endif %}
+                {% if blogs.has_next %}
+                <li><a href="?page={{ blogs.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+                {%endif %}
+            </ul>
+            {%endif%}<br></div>
+
+
+    </div>
+    </div>
+</body>
 <style>
-    
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+
+    .ptd {
+        font-family: 'Do Hyeon', sans-serif;
+        text-align: center;
+    }
+
+    .mnav {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
+    /* 사이드바 스타일 */
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgb(0, 0, 0);
+        overflow-x: hidden;
+        transition: 0.5s ease-in-out;
+        padding-top: 60px;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #fff;
+        display: block;
+        transition: 0.2s ease-in-out;
+    }
+
+    .sidenav a:hover,
+    .offcanvas a:focus {
+        color: rgb(83, 177, 156);
+    }
+
+    .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px !important;
+        margin-left: 50px;
+    }
+
+    .openmenu:hover {
+        color: rgb(83, 177, 156);
+        transition: 0.5s ease-in-out;
+    }
+
+    .openmenu {
+        font-size: 25px;
+        cursor: pointer;
+        transition: 0.5s ease-in-out;
+    }
+
+    .openmenu>i {
+        font-size: 30px;
+    }
+
+
+    /* 모바일 네브바 */
+    .dropdown-item:hover {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        ;
+        background: rgb(247, 68, 74);
+        ;
+
+    }
+
+    button {
+        all: unset;
+    }
+
+    .edit_bt:hover {
+        all: unset;
+        color: rgb(247, 68, 74);
+    }
+
+
+    .holder::placeholder {
+        color: rgb(255, 255, 255);
+    }
+
+    .holder:hover {
+        text-decoration: none;
+        color: rgb(50, 161, 137);
+    }
+
+    .logout {
+        all: unset;
+    }
+
+    .navbar-brand {
+        all: unset;
+        color: white;
+        text-align: right;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 1.3rem;
+    }
+
+    .navbar-brand:hover {
+        color: rgb(50, 161, 137);
+    }
+
+    #dropdownMenuLink {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    #dropdownMenuLink:hover {
+        color: rgb(247, 68, 74);
+    }
+
     div {
         text-align: center;
     }
@@ -154,6 +371,10 @@
     }
 
 
+    li {
+        font-size: 20pt;
+
+    }
 
     @media screen and (max-width:600px) {
         .card {
@@ -169,6 +390,11 @@
         a {
             text-decoration: none;
             color: #3A6FAF;
+        }
+
+        .pgr {
+            margin-left: 10.5rem;
+
         }
     }
 
@@ -186,8 +412,13 @@
             margin-bottom: 10px;
 
         }
+
+        .pgr {
+            margin-left: 50rem;
+        }
     }
-/* 
+
+    /* 
     body {
         text-align: center;
     }
@@ -216,7 +447,6 @@
     a.noul:hover {
         text-decoration: none !important
     }
-
 </style>
 
 {% endblock %}

@@ -70,21 +70,23 @@
         <!-- 새사이드네브 -->
         {% if user.is_authenticated %}
         <div id="mysidenav" class="sidenav d-none d-sm-block">
-            <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a>
-            <a style="font-size:45px;" href="">MY MISSION</a><br>
+            <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a><br>
+            <a style="font-size:20px;" href="{% url 'home' %}">MAIN</a>
+            <a style="font-size:20px;" href="{% url 'profile' my_profile.profile_id %}">MY PAGE</a><br>
+            
             <br>
-            <br>
-          
-            <a style="font-size:35px;" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
-            <a style="font-size:35px;" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
-            <a style="font-size:35px;" href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
-            <a style="font-size:35px;" href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
-            <a style="font-size:35px;" href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
+            
+            <a style="font-size:30px;" href="{% url 'request' %}">의뢰게시판</a><br>
+            <a style="font-size:30px;" href="{% url 'performing' my_profile.profile_id %}">수행중인 미션</a><br>
+            <a style="font-size:30px;" href="{% url 'performing_end' my_profile.profile_id %}">수행완료된 미션</a><br>
+            <a style="font-size:30px;" href="{% url 'commissioned' my_profile.profile_id %}">의뢰중인 미션</a><br>
+            <a style="font-size:30px;" href="{% url 'commission_end' my_profile.profile_id %}">의뢰완료된 미션</a><br>
+            <a style="font-size:30px;" href="{% url 'scrap' my_profile.profile_id %}">스크랩한 미션</a>
         </div>
 
         <span class="openmenu d-none d-sm-block" onclick='openNav()'><i class="fa fa-angle-double-left fa-5"
-                aria-hidden="true"></i> <a style="font-size:40px;float:left;">◀Open Mission</a></span>
-                {% endif %}
+                aria-hidden="true"></i> <a style="font-size:40px;float:left;">◀Open Menu</a></span>
+        {% endif %}
         <script>
             function openNav() {
                 document.getElementById('mysidenav').style.width = '300px';
@@ -177,11 +179,11 @@
             <a class="btn btn-dark" href="?page={{blogs.paginator.num_pages}}" role="button">>></a>
             {%endif%} -->
         <!-- 아래는 페이지네이터 코드 개극혐 -->
-        <div class="pg">
+        <div class="pg" >
             {% if blogs.has_other_pages %}
             <ul class="pagination">
                 {% if blogs.has_previous %}
-                <div class="lil">
+                <div class="lil" style="font-size: 8rem;">
                     <li>
                         <a href="?page={{ blogs.previous_page_number }}">&laquo;</a>
                     </li>
@@ -191,7 +193,7 @@
                     </li>
                     {% endif %} {% if blogs.number > 2 %}
                     <li>
-                        <a href="?page={{ 1 }}"> 1 </a>
+                        <a href="?page={{ 1 }}" > 1 </a>
                     </li>
                     <li><span>...<span class="sr-only">...</span></span>
                     </li>
@@ -380,7 +382,10 @@
         margin: 0 auto;
     }
 
+    li {
+        font-size: 20pt;
 
+    }
 
     @media screen and (max-width:600px) {
         .card {
@@ -401,10 +406,12 @@
         .div {
             text-align: center;
         }
+
         .pg {
             margin-left: 10.5rem;
         }
     }
+
 
     @media screen and (min-width: 1000px) {
         a {

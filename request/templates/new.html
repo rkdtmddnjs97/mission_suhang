@@ -40,7 +40,7 @@
             </div>
         </div>
         {% if error %}
-        {{error}}
+        <p class='error'>{{error}}</p>
         {% endif %}
         <div class="form-group row">
             <label for="inputTitle" class="col-sm-2 col-form-label">사진첨부</label>
@@ -68,8 +68,8 @@
             </div>
         </div>
         <br>
-        ## SEARCH TAG ## <br>
-        <input type="text" name='search_tag_data' id='search_tag'><br><br>
+        ## SEARCH TAG ## <br><br><br>
+        <input class="form-control" type="text" name='search_tag_data' id='search_tag'><br><br>
         {% for tag in hashtag %}
         <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
         {% endfor %}
@@ -82,7 +82,9 @@
     <br><br><br><br>
 </form>
 <style>
-    
+    .error{
+    color:red;
+    font-size:1rem;}
     form {
         text-align: center;
     }
@@ -110,7 +112,6 @@
             width: 50rem;
 
         }
-
         .rb {
             margin-right: 52rem;
 

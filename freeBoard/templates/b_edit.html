@@ -30,10 +30,10 @@
                 </div>
 
                 <div class="form-group row">
-                        <label for="inputTitle" class="col-sm-2 col-form-label" >내용</label>
+                        <label for="inputTitle" class="col-sm-2 col-form-label">내용</label>
                         <div class="col-sm-8">
-                                <textarea class="form-control" name="body"
-                                        style="height:30rem;" required='required'>{{edit_post.body}}</textarea>
+                                <textarea class="form-control" name="body" style="height:30rem;"
+                                        required='required'>{{edit_post.body}}</textarea>
                         </div>
                 </div>
                 <div class="form-group row">
@@ -50,58 +50,86 @@
                         <label for="inputTitle" class="col-sm-2 col-form-label">파일첨부</label>
                         <div class="col-sm-8">
                                 <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="attached_file">
-                                <label class="custom-file-label" for="customFile">파일을 선택해주세요</label>
+                                        <input type="file" class="custom-file-input" name="attached_file">
+                                        <label class="custom-file-label" for="customFile">파일을 선택해주세요</label>
                                 </div>
                         </div>
                 </div>
                 <div>
-                        <label for="inputTitle" class="col-sm-2 col-form-label">#TAG</label>
-                        {% for tag in checked_tag %}
-                                <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}" checked="checked">#{{tag}}    
-                        {% endfor %}
-                        <br>
-                        
-                        <div class="col-sm-8">
-                                <textarea class="form-control" name='add_hashtag' id="new_hashtag" placeholder="#이렇게#작성해줘요#참쉽죠?"></textarea>
+                        <div class="form-group row">
+                                <label for="inputTitle" class="col-sm-2 col-form-label">해시태그추가</label>
+                                <div class="col-sm-8">
+                                        <textarea class="form-control" name='add_hashtag' id="new_hashtag"
+                                                placeholder="#이렇게#추가해줘요#참쉽죠?"></textarea>
+                                </div>
                         </div>
-                        
-                        <br>
-                        ##SEARCH TAG## <br>
-                        <input type="text" name='search_tag_data' id='search_tag'><br><br>
-                        클릭해주세용 <br>
+                        <div class="form-group row">
+                                <label for="inputTitle" class="col-sm-2 col-form-label">해시태그검색</label>
+                                <div class="col-sm-8">
+                                        <input type="text" class="form-control" name='search_tag_data' id='search_tag'>
+                                </div>
+                                <br>
+                        </div>↓ 클릭해주세용 ↓<br>
                         {% for tag in all_tag %}
-                                <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}" style="color: blue">#{{tag}}</a>
+                        <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}"
+                                style="color: blue">#{{tag}}</a>
                         {% endfor %}
                         <br><br>
+                        <div class="form-group row">
+                                <label for="inputTitle" class="col-sm-2 col-form-label">기존태그</label>
+                                <div class="col-sm-8">
+
+                                        {% for tag in checked_tag %}
+                                        <input type="checkbox" name="hashtag" id="tag_box" class="tag_list"
+                                                value="{{tag}}" checked="checked">#{{tag}}
+                                        {% endfor %}</div>
+                        </div>
+                        <br>
+
+
+
+                        <br>
+
                 </div>
 
 
         </div>
+        <br><br>
         <div class="bttn">
-                        <button class="btn btn-dark" onclick="func_confirm()" type="button">수정하기</button></div>
-                <script type="text/javascript">
-                        function func_confirm() {
-                                if (confirm('수정하시겠습니까?')) {
-                                        alert("수정되었습니다.");
-                                        $("#free_update").submit();
-                                        // location.href = "{%url 'b_update' edit_post.id %}";
-                                        window.close();
-        
-                                } else {
-                                        cancel();
-                                }
+                <button class="btn btn-dark" onclick="func_confirm()" type="button">수정하기</button>
+
+                <button onclick = "location.href ='{% url 'b_detail' edit_post.id %}'" class="btn btn-dark">돌아가기</button></div>
+
+        </div>
+
+        <script type="text/javascript">
+                function func_confirm() {
+                        if (confirm('수정하시겠습니까?')) {
+                                alert("수정되었습니다.");
+                                $("#free_update").submit();
+                                // location.href = "{%url 'b_update' edit_post.id %}";
+                                window.close();
+
+                        } else {
+                                cancel();
                         }
-                        function cancel(){
-                                window.history.back();
-                        }
-                </script>
+                }
+
+                function cancel() {
+                        window.history.back();
+                }
+        </script>
+
                 
 </form>
-<div class="bttn">
-        <button onclick = "location.href ='{% url 'b_detail' edit_post.id %}'" class="btn btn-dark">돌아가기</button></div>
-</div>
+
+
         
+        </div>
+        <br><br>
+</form>
+
+
 
 <style>
         .card {
@@ -133,7 +161,7 @@
 
                 .card {
                         width: 50rem;
-                        
+
                 }
 
                 .fr {
