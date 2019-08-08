@@ -36,16 +36,17 @@
                     <br>
                     <p>자유게시판 HOT 게시물</p>
                     {% for liked in like_lists %}
-                    {% for entry in liked %}
-                    {% if forloop.counter0 == 0 %}
-                    <a href="{% url 'b_detail' entry.id %}">
-                        &nbsp <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
-                    &nbsp <a style="color: white;"> {{entry.title}} /
-                        {% else %} ♡ : {{entry}}</a><br>
-                    {% endif %}
+                        {% for entry in liked %}
+                            {% if forloop.counter0 == 0 %}
+                                <a href="{% url 'b_detail' entry.id %}">
+                                    &nbsp <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
+                                &nbsp <a style="color: white;"> {{entry.title}} /
+                            {% else %} 
+                                ♡ : {{entry}}</a><br>
+                            {% endif %}
 
-                    {% endfor %}
-                    <br>
+                        {% endfor %}
+                        <br>
                     {% endfor %}
                     <hr>
                     <p>NEW 자유게시판</p>
@@ -71,21 +72,27 @@
                                 class="chk_box">자유 게시판<a>/</a>
                             <input type="checkbox" name="input_board" value="missionboard" id="missionboard"
                                 class="chk_box">의뢰 게시판
-                        </span>
-                        <span class="search_menu">
-                            <select class="form-control" name="input_type"
-                                style=" border:1px; border-bottom: #000000 2px solid; width: 25rem; margin:  0 0 0 0.7rem ;">
-                                <option name="input_type" value="title" selected>제목</option>
-                                <option name="input_type" value="writer">작성자</option>
-                                <option name="input_type" value="body">내용</option>
-                                <option name="input_type" value="hashtag">해시태그</option>
-                            </select>
-                        </span>
-                        <input type="text" id="search_data" name='input_data'
-                            style=" all:unset; font-size: 1.5rem; width: 40rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px ;"
-                            placeholder="Search" class="holder">
-                        <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
-                                src="{% static 'search1.png' %}" width="37px;"></button>
+                        </span><br>
+                        <div style="display: inline; ">
+                            <span class="search_menu" style="float: left">
+                                <select class="form-control" name="input_type"
+                                    style=" border:1px; border-bottom: #000000 2px solid; width: 8rem; margin:  0 0 0 0.7rem;">
+                                    <option name="input_type" value="title" selected>제목</option>
+                                    <option name="input_type" value="writer">작성자</option>
+                                    <option name="input_type" value="body">내용</option>
+                                    <option name="input_type" value="hashtag">해시태그</option>
+                                </select>
+                            </span>
+                            <div style="float: left">
+                                <input type="text" id="search_data" name='input_data'
+                                    style=" all:unset; font-size: 1.5rem; width: 34rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px;"
+                                    placeholder="Search" class="holder">
+                                <button style="all:unset; float:right" type='submit' class='sch_smit' id='search_submit'><img class="image"
+                                        src="{% static 'search1.png' %}" width="37px;"></button>
+                            </div>
+                        </div>
+                       
+                        <br>
                         <br>
                         <!-- 연관 검색어 -->
                         {% for req_title in all_request_title %}
@@ -158,6 +165,8 @@
 
                     <!-- 인기 게시글과 hot 의뢰글 -->
 
+                    <hr>
+
                     <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
                     <p>추천 의뢰글</p>
                     {% for tag, posts in recommend_post.items %}
@@ -170,7 +179,11 @@
                     {% endfor %}
                     <br>
                     {% endfor %}
+                    <hr>
+                
+                
                 </div>
+
                 <div class="col" style="background: black; color:white;">
                     <!-- 가생이 오른쪽 -->
                     <br>
@@ -178,20 +191,19 @@
 
                     <p>의뢰게시판 HOT 게시물</p>
                     {% for liked in scrap_lists %}
-                    {% for entry in liked %}
-                    {% if forloop.counter0 == 0 %}
-                    <a href="{% url 'detail' entry.id %}">
-                        <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
-                        {{entry.title}} /
-                    </a>
-                    {% else %}
-                    스크랩 개수 : {{entry}}
-                    {% endif %}
-                    {% endfor %}
+                        {% for entry in liked %}
+                            {% if forloop.counter0 == 0 %}
+                            <a href="{% url 'detail' entry.id %}">
+                                <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
+                                {{entry.title}} /
+                            </a>
+                            {% else %}
+                            스크랩 개수 : {{entry}}
+                            {% endif %}
+                        {% endfor %}
                     <br>
                     {% endfor %}
                     <hr>
-
 
                     {% for recent_post in recent_posts %}
                     <a href="{% url 'detail' recent_post.id%}">
