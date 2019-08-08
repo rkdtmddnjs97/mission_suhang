@@ -79,6 +79,7 @@ margin-left: 200px;padding-right:80px;">
         <div class="card">
             
         </div>
+
         <div class="card" style="min-height:30rem;">
             <div class="card-body">
                 <br>
@@ -100,6 +101,7 @@ margin-left: 200px;padding-right:80px;">
                     download="">{{blog.attached_file}}</a></div>
             <br><br>
         {% endif %}
+
         <b>#Hashtag</b> {% for tag in hashtag.all %}
         <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}
@@ -147,7 +149,6 @@ margin-left: 200px;padding-right:80px;">
                 <div class="col-4" style="text-align: center;line-height:2rem;"> {{comment.writer}}&nbsp;&nbsp;</div>
                 <div class="col-8">{{comment.content}}</div>
             </div>
-
     </h5>
 
     {% if user.is_authenticated %}

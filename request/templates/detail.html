@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
+
 <head>
     <meta charset="utf-8">
     <title>jquery DOM</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  </head>
-  <body>
-<!-- <script>
+</head>
+
+<body>
+    <!-- <script>
     $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();    
       $('#btn1').on("click",function () {
@@ -16,15 +18,20 @@
     });
 </script> -->
 
-<div class="container">
-    <br><br><br>
-    <div class="category">
+
+    <div class="container d-block d-sm-none" style="text-align:center;"><br><br>
         <a href="{% url 'request' %}"><h1>MISSION Request</h1></a>
+    </div>
+
+    <div class="container d-none d-sm-block" style="width: 50rem;
+margin-left: 200px;padding-right:80px;">
+        <br><br>
+        <a href="{% url 'request' %}"><h1>MISSION Request</h1></a>
+
     </div>
     <br><br>
 
-    <br>
-    <hr>
+
     <div class="d-block d-sm-none">
         <table class="table table-borderless ">
             <thead>
@@ -43,7 +50,7 @@
                     <th scope="row">&nbsp;작성일</th>
                     <td>{{post.pub_date}}</td>
                 </tr>
-               
+
                 <tr>
                     <th scope="row">&nbsp;금액</th>
                     <td>{{post.deposit}}</td>
@@ -81,7 +88,7 @@
 
                 </tr>
                 <tr>
-                  
+
                     <td>&nbsp;<b>금액</b></td>
                     <td>{{post.deposit}}</td>
                     <td></td>
@@ -111,8 +118,8 @@
 
         <br>
         {% if post.attached_file == 'files/dummy.txt' %}
-                (첨부된 파일이 없습니다)
-                <br><br>
+        (첨부된 파일이 없습니다)
+        <br><br>
         {% else %}
         <b>첨부파일</b><br><br>
         <div class="card" style="min-height:5rem;"><a href="{{post.attached_file.url}}"
@@ -125,26 +132,26 @@
         <br><br><br><br>
         <div class="buttonss_h">
 
-            
-                
-        
+
+
+
 
             {% if user.is_authenticated %}
             {% if user.username != post.writer %}
-                {% if isScraped == False %}
-                    <form action="{% url 'scrap' post.id %}" method="get">
-                        <input type="hidden" name='scrap' value="{{user}}">
-                        <button class="btn btn-danger" type="submit">scrap</button>
-                    </form>
-                {% else %}
-                    <form action="{% url 'scrap' post.id %}" method="get">
-                        <input type="hidden" name='scrap' value="{{user}}">
-                        <button class="btn btn-danger" type="submit">scraped</button>
-                    </form>
-                {% endif %}
+            {% if isScraped == False %}
+            <form action="{% url 'scrap' post.id %}" method="get">
+                <input type="hidden" name='scrap' value="{{user}}">
+                <button class="btn btn-danger" type="submit">scrap</button>
+            </form>
+            {% else %}
+            <form action="{% url 'scrap' post.id %}" method="get">
+                <input type="hidden" name='scrap' value="{{user}}">
+                <button class="btn btn-danger" type="submit">scraped</button>
+            </form>
+            {% endif %}
             {% if post.status == 'ready' %}
             {% if judge == False %}
-                <button type="button" class="btn btn-danger" onclick="delUrl()">의뢰신청</a>
+            <button type="button" class="btn btn-danger" onclick="delUrl()" style="text-align: center;">의뢰신청</a>
                 <script type="text/javascript">
                     function delUrl() {
                         var Del = confirm("신청하시겠습니까?");
@@ -158,12 +165,12 @@
                     }
                 </script>
 
-            {% endif %}
-            {% endif %}
-            {% endif %}
-            {% endif %}
-         
-            
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
+
+
         </div>
         <br>
         <hr>
@@ -173,7 +180,7 @@
             {% if user.is_authenticated %}
             {% if user.username == post.writer %}
             {% if post.status != 'running' and post.status != 'completed' %}
-            
+
             <a class="btn btn-dark" href="{% url 'edit' post.id %}" role="button">수정</a>
             <button type="button" class="btn btn-dark" role="button" onclick="delUrl()">삭제</a>
                 <script type="text/javascript">
@@ -199,20 +206,64 @@
         <br><br><br>
         <h5><b>댓글</b></h5>
         {% for comment in comments %}
-        <h5>{{comment.writer}} : {{comment.content}}</h5>
+        <h5>
+            <div class="rounded text-break d-none d-sm-block"
+                style="width: 48rem;min-height:2rem;border-color:#A6A6A7;">
+                <div class="row">
+                    <div class="col-4" style="text-align: center;"> {{comment.writer}}&nbsp;&nbsp;
+                    </div>
+                    <div class="col-8">{{comment.content}}</div>
+                </div>
+            </div>
+            <div class="rounded text-break d-block d-sm-none"
+                style="width: 18rem;min-height:2rem;border-color:#A6A6A7;">
+                <div class="row">
+                    <div class="col-4" style="text-align: center;"> {{comment.writer}}&nbsp;&nbsp;
+                    </div>
+                    <div class="col-8">{{comment.content}}</div>
+                </div>
+            </div>
+        </h5>
+
         {% if user.is_authenticated %}
-    {% if user.username == comment.writer %}
-        <a class="btn btn-outline-dark" href="{% url 'comment_delete' comment.id %}" role="button">삭제</a>
+        {% if user.username == comment.writer %}
+
         <details>
-            <summary>수정하기</summary>
+            <summary>수정하기&nbsp<a>/</a>&nbsp<a role="button" onclick="delUrll()"> 삭제</a>
+                <hr>
+            </summary>
+            <script type="text/javascript">
+                function delUrll() {
+                    var Del = confirm("삭제 하시겠습니까?")
+                    if (Del == true) {
+                        alert("삭제 되었습니다.")
+                        location.href = "{%url 'comment_delete' comment.id %}"
+
+                    } else {
+                        alert("취소 되었습니다.")
+                        self.close()
+                    }
+                }
+
+            </script>
             <form action="{% url 'modify' comment.id %}" method="POST">
                 {% csrf_token %}
 
-                <textarea name='modify_comment' id="" cols="30" rows="10"
+                <textarea class="rounded d-none d-sm-block" name='modify_comment' id="" cols="100"
                     placeholder="write your content">{{comment.content}}</textarea>
+                    <br>
+                <input type="submit" value='수정완료' class="submit_bt d-none d-sm-block"
+                    style="rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
+            </form>
+            <form action="{% url 'modify' comment.id %}" method="POST">
+                {% csrf_token %}
+
+                <textarea class="rounded d-block d-sm-none" name='modify_comment' id="" cols="38"
+                    placeholder="write your content">{{comment.content}}</textarea>
+                    <br>
+                <input type="submit" value='수정완료' class="submit_bt d-block d-sm-none"
+                    style="rgb(250, 250, 249); border: 1px white; border-bottom: 2.8px solid  rgb(12, 12, 12);">
                 <br>
-                <br>
-                <input type="submit" value='수정'>
 
             </form>
         </details>
@@ -220,23 +271,23 @@
         {% endif %}
         <hr>
 
-       
+
         {% endfor%}
         {%if comments.has_previous%}
-    <a href="?page=1">First</a>
-    <a href="?page={{comments.previous_page_number}}">Previous</a>
-    {%endif%}
+        <a href="?page=1">First</a>
+        <a href="?page={{comments.previous_page_number}}">Previous</a>
+        {%endif%}
 
-    <span>{{comments.number}}</span>
-    <span>of</span>
-    <span>{{comments.paginator.num_pages}}</span>
+        <span>{{comments.number}}</span>
+        <span>of</span>
+        <span>{{comments.paginator.num_pages}}</span>
 
-    {%if comments.has_next%}
-    <a href="?page={{comments.next_page_number}}">Next</a>
-    <a href="?page={{comments.paginator.num_pages}}">Last</a>
-    {%endif%}
-    <br>
-    {% if user.is_authenticated %}
+        {%if comments.has_next%}
+        <a href="?page={{comments.next_page_number}}">Next</a>
+        <a href="?page={{comments.paginator.num_pages}}">Last</a>
+        {%endif%}
+        <br>
+        {% if user.is_authenticated %}
         <form action="{% url 'new_comment' post.id %}" method="POST">
             {% csrf_token %}
 
@@ -252,64 +303,79 @@
             <br><br>
         </form>
         {% endif %}
-</div>
-</div>
-<style>
-    .form-control {
-        resize: none;
-    }
+        </div>
+        </div>
+        </div>
+        <style>
+            .form-control {
+                resize: none;
+            }
 
-    .card {
-        border-right: none;
-        border-left: none;
-        border-top: none;
-        border-bottom: none;
-    }
+            .card {
+                border-right: none;
+                border-left: none;
+                border-top: none;
+                border-bottom: none;
+            }
 
-    .bt {
-        all: unset;
-        color: rgb(0, 0, 0);
-        background-color: black;
-        padding: 2px;
-    }
+            .bt {
+                all: unset;
+                color: rgb(0, 0, 0);
+                background-color: black;
+                padding: 2px;
+            }
+
+            .text-break {
+                border: 1px solid #EAEDF0;
+                vertical-align: middle;
+            }
+
+            textarea {
+                resize: none;
+            }
 
 
 
-    @media screen and (max-width:600px) {
-        .category {
-            text-align: center;
-        }
+            @media screen and (max-width:600px) {
+                .category {
+                    text-align: center;
+                }
 
-        .buttonss_h {
-            text-align: center;
-            display: inline;
-        }
-    }
+                .buttonss_h {
+                    text-align: center;
+                    display: inline;
+                }
+            }
 
-    @media screen and (min-width: 1000px) {
-        .category {
-            text-align: center;
-        }
+            @media screen and (min-width: 1000px) {
+                .category {
+                    text-align: center;
+                }
 
-        .buttonss {
-            float: right;
-        }
+                .buttonss {
+                    float: right;
+                }
 
-        .buttonss_h {
-            text-align: center;
-            display: inline;
-        }
-    }
-</style>
+                .buttonss_h {
+                    text-align: center;
+                    display: inline;
+                }
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+                .container {
+                    width: 50rem;
+                    margin-left: 200px;
+                }
+            }
+        </style>
 
-</div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        </div>
 </body>
 
 {%endblock%}

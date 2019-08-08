@@ -68,8 +68,8 @@
             </div>
         </div>
         <br>
-        ## SEARCH TAG ## <br>
-        <input type="text" name='search_tag_data' id='search_tag'><br><br>
+        ## SEARCH TAG ## <br><br><br>
+        <input class="form-control" type="text" name='search_tag_data' id='search_tag'><br><br>
         {% for tag in hashtag %}
         <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
         {% endfor %}
@@ -112,7 +112,6 @@
             width: 50rem;
 
         }
-
         .rb {
             margin-right: 52rem;
 
