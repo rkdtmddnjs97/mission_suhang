@@ -7,11 +7,8 @@ from hashtag.models import Hashtag
 from .models import MTM_chat,chatting,Review,complaint
 from django.core.exceptions import ObjectDoesNotExist
 from notification.views import create_notification
-<<<<<<< HEAD
 from django.core.paginator import Paginator
-=======
 from django.utils import timezone
->>>>>>> b5cb96d9c186f502a2b48f0bb05540e223cde0ed
 
 
 def chat(request,app_id,request_id):
