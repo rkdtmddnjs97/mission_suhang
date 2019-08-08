@@ -1,10 +1,11 @@
-ㄴ{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
 
 <form action="{% url 'update' post.id %}" method="POST" enctype="multipart/form-data">
-        <br><br><br>
-        <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+        <br><br>
+        <h1 class="rbe">Request Board</h1>
+        <!-- <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div> -->
         <br><br>
         {% csrf_token %}
         <div class="card">
@@ -15,22 +16,23 @@
                 <div class="form-group row">
                         <label for="staticUser" class="col-sm-2 col-form-label">제목</label>
                         <div class="col-sm-8">
-                                <input type="text" name='title' value="{{post.title}}" class="form-control-plaintext" required='required'>
+                                <input type="text" name='title' value="{{post.title}}" class="form-control"
+                                        required='required' style="text-align: center;">
                         </div>
                 </div>
                 <div class="form-group row">
                         <label for="staticUser" class="col-sm-2 col-form-label">작성자</label>
                         <div class="col-sm-8">
                                 <input type="text" readonly class="form-control-plaintext" id="staticEmail"
-                                        value="{{post.writer}}">
+                                        value="{{post.writer}}" style="text-align: center;">
                         </div>
                 </div>
 
                 <div class="form-group row">
                         <label for="inputTitle" class="col-sm-2 col-form-label">내용</label>
                         <div class="col-sm-8">
-                                <textarea class="form-control" name="body"
-                                        style="height:30rem;" required='required'>{{post.body}}</textarea>
+                                <textarea class="form-control" name="body" style="height:30rem;"
+                                        required='required'>{{post.body}}</textarea>
                         </div>
                 </div>
                 <div class="form-group row">
@@ -47,46 +49,69 @@
                 </div>
                 <br>
                 <div>
-                        <label for="inputTitle" class="col-sm-2 col-form-label">#TAG</label>
-                        {% for tag in checked_tag %}
-                                <input type="checkbox" name="hashtag" id="tag_box" class="tag_list" value="{{tag}}" checked="checked">#{{tag}}    
-                        {% endfor %}
-                        <br>
-                        
-                        <div class="col-sm-8">
-                                <textarea class="form-control" name='add_hashtag' id="new_hashtag" placeholder="#이렇게#작성해줘요#참쉽죠?"></textarea>
+                        <div class="form-group row">
+                                <label for="inputTitle" class="col-sm-2 col-form-label">해시태그추가</label>
+                                <div class="col-sm-8">
+                                        <textarea class="form-control" name='add_hashtag' id="new_hashtag"
+                                                placeholder="#이렇게#추가해줘요#참쉽죠?"></textarea>
+                                </div>
                         </div>
-                        
-                        <br>
-                        ##SEARCH TAG## <br>
-                        <input type="text" name='search_tag_data' id='search_tag'><br><br>
-                        클릭해주세용 <br>
+                        <div class="form-group row">
+                                <label for="inputTitle" class="col-sm-2 col-form-label">해시태그검색</label>
+                                <div class="col-sm-8">
+                                        <input type="text" class="form-control" name='search_tag_data' id='search_tag'>
+                                </div>
+                                <br>
+                        </div>↓ 클릭해주세용 ↓<br>
                         {% for tag in all_tag %}
-                                <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}" style="color: blue">#{{tag}}</a>
+                        <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}"
+                                style="color: blue">#{{tag}}</a>
                         {% endfor %}
                         <br><br>
-                        
-                        <br><br>
+                        <div class="form-group row">
+                                <label for="inputTitle" class="col-sm-2 col-form-label">기존태그</label>
+                                <div class="col-sm-8">
+
+                                        {% for tag in checked_tag %}
+                                        <input type="checkbox" name="hashtag" id="tag_box" class="tag_list"
+                                                value="{{tag}}" checked="checked">#{{tag}}
+                                        {% endfor %}</div>
+                        </div>
+                        <br>
+
+
+
+                        <br>
+
                 </div>
-                
-                <br><br><br>
+
+
+        </div>
+
+
+        <br><br><br>
         </div>
         <br><br><br>
-        <button class="btn btn-dark" type='submit' onclick="func_confirm()">수정하기</button>
-        <script type="text/javascript">
-                function func_confirm() {
-                    if (confirm('수정하시겠습니까?')) {
-                        alert("수정되었습니다.");
-                        window.close();
-                        
-                    } else {
-                        alert.close();
-                    }
-                }
-            </script>
+        <div class="bttnne">
+                <button class="btn btn-dark" type='submit' onclick="func_confirm()">수정하기</button>
+                <script type="text/javascript">
+                        function func_confirm() {
+                                if (confirm('수정하시겠습니까?')) {
+                                        alert("수정되었습니다.");
+                                        window.close();
+
+                                } else {
+                                        alert.close();
+                                }
+                        }
+                        function cancel() {
+                                window.history.back();
+                        }
+                </script>
+        </div>
         <br><br><br><br>
 
-        <button type='submit'>작성하기</button>
+
 </form>
 <style>
         .card {
@@ -112,8 +137,22 @@
         }
 
         @media screen and (min-width: 1000px) {
+                .bttnne {
+                        margin-right: 18rem;
+                }
+
                 div {
                         text-align: center;
+                }
+
+                .card {
+                        width: 50rem;
+
+                }
+
+                .rbe {
+                        margin-right: 52rem;
+
                 }
         }
 </style>

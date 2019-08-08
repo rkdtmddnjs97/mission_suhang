@@ -13,6 +13,10 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 
 def request_home(request):
+    try:
+        my_profile = Profile.objects.get(profile_id=request.user.username)
+    except ObjectDoesNotExist:
+        my_profile=None
     post_list=[]
     tmp= Post.objects.all()
     page = request.GET.get('page')
@@ -27,7 +31,7 @@ def request_home(request):
     else:
         my_scrap_post = None
     post_list.reverse()
-    paginator = Paginator(post_list, 3)
+    paginator = Paginator(post_list, 9)
     total_len = len(post_list)
     try:
        post_list = paginator.get_page(page)
@@ -44,7 +48,7 @@ def request_home(request):
         end_index = index+3 if index <= max_index - 3 else max_index
     page_range = list(paginator.page_range[start_index:end_index])
 
-    return render(request, 'request_home.html', {'blogs':post_list,'scrap_post':my_scrap_post, 'page_range':page_range, 'total_len':total_len,'max_index':max_index-2})
+    return render(request, 'request_home.html', {'blogs':post_list,'scrap_post':my_scrap_post, 'page_range':page_range, 'total_len':total_len,'max_index':max_index-2,'my_profile':my_profile})
                                         
 
 def detail(request,post_id):
