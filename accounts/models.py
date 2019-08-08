@@ -18,7 +18,7 @@ class Profile(models.Model):
     email=models.CharField(max_length=200,null=True,unique=True)
     approval=models.BooleanField(default=False)
     profile_id=models.CharField(unique=True,max_length=200,null=True)
-    profile_img=DefaultStaticImageField(upload_to='profile_img/', blank=True, default_image_path='images/no_image.png')
+    profile_img=DefaultStaticImageField(upload_to='profile_img/', blank=True, default_image_path='images/default_profile_img')
     money=models.IntegerField(default=0)
     connector=models.IntegerField(null=True)
     mission_count=models.IntegerField(default=0)
@@ -36,4 +36,4 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 class Picture(models.Model):
-        tmp_img=DefaultStaticImageField(upload_to='tmp_img/', blank=True, default_image_path='images/no_image.png')
+        tmp_img=DefaultStaticImageField(upload_to='tmp_img/', blank=True, default_image_path='images/default_profile_img')

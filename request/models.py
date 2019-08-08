@@ -14,7 +14,7 @@ class Post(models.Model):
     hashtag = models.ManyToManyField(Hashtag, related_name="post_tag")
     approved_id=models.CharField(null=True,max_length=200)
     s_flag=models.BooleanField(default=False)
-    attached_img=DefaultStaticImageField(upload_to='attached_img/', blank=True, default_image_path='images/no_image.png')
+    attached_img=DefaultStaticImageField(upload_to='attached_img/', blank=True, default_image_path='images/default_mission_img.png')
     attached_file=DefaultStaticImageField(upload_to='attached_file/', blank=True, default_image_path='files/dummy.txt')
     deposit=models.IntegerField(default=0)
     

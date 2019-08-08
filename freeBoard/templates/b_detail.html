@@ -5,7 +5,7 @@
 margin-left: 200px;padding-right:80px;">
     <br><br>
     <div class="category">
-        <h1>Free Board</h1>
+        <a href="{% url 'board' %}"><h1>Free Board</h1></a>
     </div>
     <br><br>
     <div class="d-block d-sm-none">
@@ -76,11 +76,32 @@ margin-left: 200px;padding-right:80px;">
 
     <p>
         <br>
+        <div class="card">
+            
+        </div>
+
         <div class="card" style="min-height:30rem;">
+            <div class="card-body">
+                <br>
+                <img src="{{blog.attached_img.url}}" alt="" width="500px" height="300px"><br>
+                <br>
+            </div>
             <div class="card-body">
                 <p> {{blog.body}}</p>
             </div>
         </div>
+
+        <br>
+        {% if blog.attached_file == 'files/dummy.txt' %}
+                (첨부된 파일이 없습니다)
+                <br><br>
+        {% else %}
+            <b>첨부파일</b><br><br>
+            <div class="card" style="min-height:5rem;"><a href="{{blog.attached_file.url}}"
+                    download="">{{blog.attached_file}}</a></div>
+            <br><br>
+        {% endif %}
+
         <b>#Hashtag</b> {% for tag in hashtag.all %}
         <a href="{% url 'b_tag_post' tag.id %}">#{{tag}}</a>
         {% endfor %}

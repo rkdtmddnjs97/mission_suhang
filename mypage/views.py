@@ -7,6 +7,7 @@ from hashtag.models import Hashtag
 from .models import MTM_chat,chatting,Review,complaint
 from django.core.exceptions import ObjectDoesNotExist
 from notification.views import create_notification
+from django.utils import timezone
 
 
 def chat(request,app_id,request_id):
@@ -34,6 +35,7 @@ def new_chat(request,chat_id):
     tmp.chatting_fk=MTM_chat.objects.get(id=chat_id)
     tmp.writer=request.POST['writer']
     tmp.content=request.POST['content']
+    tmp.pub_date= timezone.datetime.now()
     tmp.save()
     app_id=request.POST['app_id']
     request_id=request.POST['request_id']
@@ -114,6 +116,7 @@ def performing(request, profile_id):
     perform_profiles=[]
     for perform in performing_post:
         perform_profiles.append(Profile.objects.get(profile_id=perform.writer))
+    perform_profiles=list(set(perform_profiles))
     perform_user=Profile.objects.get(profile_id=user.username)
     
     return render(request, 'performing.html',{'performing_post':performing_post,'perform_profiles':perform_profiles,'perform_user':perform_user})

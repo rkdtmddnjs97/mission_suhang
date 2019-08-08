@@ -18,14 +18,16 @@
     });
 </script> -->
 
+
     <div class="container d-block d-sm-none" style="text-align:center;"><br><br>
-        <h1>MISSION Request</h1>
+        <a href="{% url 'request' %}"><h1>MISSION Request</h1></a>
     </div>
 
     <div class="container d-none d-sm-block" style="width: 50rem;
 margin-left: 200px;padding-right:80px;">
         <br><br>
-        <h1>MISSION Request</h1>
+        <a href="{% url 'request' %}"><h1>MISSION Request</h1></a>
+
     </div>
     <br><br>
 
@@ -107,10 +109,7 @@ margin-left: 200px;padding-right:80px;">
         <div class="card" style="min-height:30rem;">
             <div class="card-body">
                 <br>
-                {% if post.attached_img == 'images/no_image.png' %}
-                {% else %}
-                <img src="{{post.attached_img.url}}" alt=""><br>
-                {% endif %}
+                <img src="{{post.attached_img.url}}" alt="" width="500px" height="300px"><br>
                 <p> {{post.body}}</p>
                 <br>
 

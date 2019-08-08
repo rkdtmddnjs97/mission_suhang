@@ -109,8 +109,8 @@
         <div class="log_top">Login</div>
         <hr>
         {% if error %}
-        <br>
-        {{ error }}
+        
+        <p class='error'>{{ error }}</p>
         
         {% endif %}
           <form method="POST" action="{% url 'login'%}">
@@ -151,6 +151,10 @@
     hr{
     border: 1px solid rgb(255, 255, 255);
   }
+  .error{
+color:red;
+font-size:1rem;
+}
   .log_top{
     text-align: center;
     text-decoration: underline;

@@ -13,6 +13,7 @@ class chatting(models.Model):
         chatting_fk=models.ForeignKey(MTM_chat,on_delete=models.CASCADE, null=True)
         writer = models.CharField(max_length=200)
         content = models.TextField(null=True)
+        pub_date = models.DateTimeField('Date published',null=True)
 
 class Review(models.Model):
         review_fk=models.ForeignKey(Profile,on_delete=models.CASCADE, null=True)
