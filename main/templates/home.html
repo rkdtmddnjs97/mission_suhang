@@ -22,70 +22,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    
     {% load staticfiles %}
-
-<!-- 
-<div class="pont">
-<br>
-{% if judge == True %}
-    <a href="{% url 'dissatisfication'%}">민원사항</a>
-{% endif %}
-<br>
-<a href="{% url 'board'%}">자유게시판</a>
-<br>
-<a href="{% url 'request'%}">의뢰게시판</a>
-<br>
-<a href="{% url 'announcement_board' %}">공지사항</a>
-<br><br>
-
-<span>최근 공지사항</span><br>
-{% for announcemnt in recent_announcements %}
-<a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a>
-{% endfor %}
-<br><br>
-<span>자유게시판 최근 게시물</span><br>
-{% for recent_free in recent_freeboard %}
-    <a href="{% url 'b_detail' recent_free.id%}">{{recent_free.title}}</a><br>
-{% endfor %}
-<br><br>
-
-
-<form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()" >      
-        <span class="search_menu">
-            <input type = "checkbox" name = "input_board" value = "freeboard" id = "freeboard" class="chk_box" >자유 게시판<br>
-            <input type = "checkbox" name = "input_board" value = "missionboard" id = "missionboard" class="chk_box" >의뢰 게시판<br>
-        </span>
-        <span class="search_menu">
-                <select class="form-control"  name ="input_type" >
-                  <option name="input_type" value ="title" selected>제목</option>
-                  <option name="input_type" value ="writer">작성자</option>
-                  <option name="input_type" value ="body">내용</option>
-                  <option name="input_type" value ="hashtag">해시태그</option>
-                </select>
-        </span>
-            <input type="text" id="search_data" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
-            <br>
-            <-- <span>연관 검색어</span><br> -->
-            <!-- {% for req_title in all_request_title %}
-                <a class="request_title" onclick="search_title($(this).attr('value'))" value="{{req_title}}">{{req_title}}<br></a>
-            {% endfor %}
-            {% for fre_title in all_free_title %}
-                <a class="free_title" onclick="search_title($(this).attr('value'))" value="{{fre_title}}">{{fre_title}}<br></a>
-            {% endfor %}
-
-    </form>
-
-
-
-
-<-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
-<!-- <span>Hot 수행자 : </span>
-{% for hot_user in hot_users %}
-    <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
-{% endfor %}
-<br><br>  -->
-
-
     <div class="pont">
         <div class="container">
             <div class="row">
@@ -132,50 +70,20 @@
                     <a class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜2.png' %}" width="755rem"></a>
                     <br>
                     {% if judge == True %}
-                    <a href="{% url 'dissatisfication'%}">민원사항</a>
+                        <a href="{% url 'dissatisfication'%}">민원사항</a>
+                        <br>
                     {% endif %}
+                    
                     <a href="{% url 'announcement_board' %}">공지사항</a>
-                    <br>
+                    <br><hr>
                     <div>
                     <p>최근 공지사항</p>
-                    <hr>
                     {% for announcemnt in recent_announcements %}
-                  
-                    <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a><br>
+                        <img src="{{announcemnt.announcement_img.url}}" alt="" width="50px" height="50px">
+                        <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a><br>
                     {% endfor %}
+                    <hr>
                 </div>
-                    <br>
-                    <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
-                    <span>Hot 수행자 : </span>
-                        {% for hot_user in hot_users %}
-                            <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
-                        {% endfor %}
-                    <br><br>
-                    <!-- 인기 게시글과 hot 의뢰글 -->            
-                    {% for liked in like_lists %} 
-                        {% for entry in liked %}
-                            {% if forloop.counter0 == 0 %}
-                            <a href="{% url 'b_detail' entry.id %}">{{entry.title}}</a>:
-                            {% else %}
-                            {{entry}}
-                            {% endif %}
-                        {% endfor %}  
-                    {% endfor %}
-                    <br>
-                    <p>HOT 의뢰  </p>
-                    {% for liked in scrap_lists %} 
-                    {% for entry in liked %}
-                        {% if forloop.counter0 == 0 %}
-                        <a href="{% url 'detail' entry.id %}">{{entry.title}}</a>
-                    
-                        {% else %}
-                            {{entry}}
-                        {% endif %}
-                        {% endfor %}  
-                    {% endfor %}
-                    <br>
-                    <br><br> 
-
                     <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
                     <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
 
@@ -183,21 +91,67 @@
                     <p>진행되지 않은 의뢰는 {{ready_number}}건 입니다.</p>
 
                     <p>현재 진행 중인 의뢰는 {{running_number}}건 입니다.</p>
+                    <hr>
 
-                    <span>최신 의뢰</span><br>
-                    {% for recent_post in recent_posts %}
+                    <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
+                    <span>Hot 수행자 : </span>
+                        {% for hot_user in hot_users %}
+                            <a href="{% url 'profile' hot_user.profile_id %}">
+                                <img src="{{hot_user.profile_img.url}}" alt="" width="50px" height="50px">
+                                {{hot_user.profile_id}}
+                            </a>
+                        {% endfor %}
+                    <hr>
 
-                    <a href="{% url 'detail' recent_post.id%}">{{recent_post.title}}</a><br>
-
+                    <!-- 인기 게시글과 hot 의뢰글 -->
+                    <p>자유게시판 HOT 게시물</p>
+                    {% for liked in like_lists %} 
+                        {% for entry in liked %}
+                            {% if forloop.counter0 == 0 %}
+                                <a href="{% url 'b_detail' entry.id %}">
+                                    <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
+                                    {{entry.title}} /
+                                </a>
+                            {% else %}
+                                좋아요 개수 : {{entry}}
+                            {% endif %}
+                        {% endfor %}
+                        <br>  
                     {% endfor %}
-                    <br>
+                    <hr>
+                    <p>의뢰게시판 HOT 게시물</p>
+                    {% for liked in scrap_lists %} 
+                        {% for entry in liked %}
+                            {% if forloop.counter0 == 0 %}
+                                <a href="{% url 'detail' entry.id %}">
+                                    <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
+                                    {{entry.title}} /
+                                </a>
+                            {% else %}
+                                스크랩 개수 : {{entry}}
+                            {% endif %}
+                        {% endfor %}
+                        <br>
+                    {% endfor %}
+                    <hr> 
 
+                    <span>최신 의뢰글</span><br>
+                        {% for recent_post in recent_posts %}
+                            <a href="{% url 'detail' recent_post.id%}">
+                                <img src="{{recent_post.attached_img.url}}" alt="" width="50px" height="50px">
+                                {{recent_post.title}} / {{recent_post.writer}}
+                            </a><br>
+                        {% endfor %}
+                    <hr>
                     <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
-                    <p>추천 의뢰</p>
+                    <p>추천 의뢰글</p>
                     {% for tag, posts in recommend_post.items %}
-                    #{{tag}}와 관련된 게시물
+                    #{{tag}}와 관련된 게시물<br>
                     {% for post in posts %}
-                    <a href="{% url 'detail' post.id %}">{{post}}</a>
+                    <a href="{% url 'detail' post.id %}">
+                        <img src="{{post.attached_img.url}}" alt="" width="50px" height="50px">
+                        {{post.title}} / {{post.writer}}
+                    </a><br>
                     {% endfor %}
                     <br>
                     {% endfor %}

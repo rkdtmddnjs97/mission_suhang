@@ -5,7 +5,7 @@
 margin-left: 200px;padding-right:80px;">
     <br><br>
     <div class="category">
-        <h1>Free Board</h1>
+        <a href="{% url 'board' %}"><h1>Free Board</h1></a>
     </div>
     <br><br>
     <div class="d-block d-sm-none">
@@ -76,20 +76,17 @@ margin-left: 200px;padding-right:80px;">
 
     <p>
         <br>
-        <div class="card" style="min-height:30rem;">
-            <div class="card-body">
-                <p> {{blog.body}}</p>
-            </div>
+        <div class="card">
+            
         </div>
         <div class="card" style="min-height:30rem;">
             <div class="card-body">
                 <br>
-                {% if blog.attached_img == 'images/no_image.png' %}
-                {% else %}
-                <img src="{{blog.attached_img.url}}" alt=""><br>
-                {% endif %}
+                <img src="{{blog.attached_img.url}}" alt="" width="500px" height="300px"><br>
                 <br>
-
+            </div>
+            <div class="card-body">
+                <p> {{blog.body}}</p>
             </div>
         </div>
 
