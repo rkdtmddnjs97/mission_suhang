@@ -238,9 +238,7 @@ def submission(request,post_id):
     submission_result=submit_form.objects.get(submit=post_id)
     return render(request,'submission.html',{'submission_result':submission_result,'post':post})
 
-def recharge(request,profile_id):
-  
-    
+def recharge(request,profile_id):  
     money=request.POST['charge_money']
     profile=profile_id
     return render(request,'charge.html',{'money':money,'profile':profile})

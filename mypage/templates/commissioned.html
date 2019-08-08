@@ -1,107 +1,195 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
 {% block content %}
-<div class="container">
-    <br><br><br>
-    <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+<!-- 새사이드네브 -->
+<div id="mysidenav" class="sidenav">
+    <a style="font-size:40px;" href="#" class="closebtn" onclick='closeNav()'>x</a>
+    <a style="font-size:45px;" href="">MY MISSION</a><br>
     <br>
-    <h3>의뢰한 글</h3>
-    <hr>
-    {% for commission in applications %}
-    <div class="card">
-        <div class="container" style="border-color:black; height: 8rem;">
-            <div class="row">
-                <br>
-                <div class="col-4"><a href="{% url 'detail' commission.id %}">
+    <br>
+    <a style="font-size:35px;" href="">수행중인 미션</a><br>
+    <a style="font-size:35px;" href="">수행완료된 미션</a><br>
+    <a style="font-size:35px;" href="">의뢰중인 미션</a><br>
+    <a style="font-size:35px;" href="">의뢰완료된 미션</a><br>
+    <a style="font-size:35px;" href="">스크랩한 미션</a>
+</div>
 
-                        <br><b>{{commission.title}}</b>
-                    </a>
+<span class="openmenu" onclick='openNav()'><i class="fa fa-angle-double-left fa-5" aria-hidden="true"></i> <a
+        style="font-size:40px;">
+        ◀Open Mission
+    </a></span>
 
+<script>
+    function openNav() {
+        document.getElementById('mysidenav').style.width = '300px';
+    }
+    function closeNav() {
+        document.getElementById('mysidenav').style.width = '0';
+    }
+</script>
 <br>
-                    {{commission.pub_date}}</div><br>
-                    <a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
-                <div class="col-6"> {% if commission.status == 'ready' %}
-                    <details>
-                        <br><summary>수행자들</summary>
+<div class="title">
+    <h1>Your Request</h1>
+</div>
+<br>
 
-                        {% for applie in appliers%}
-                        {% if applie.connector == commission.id %}
-                        <a href="{% url 'profile' applie.profile_id%}">{{applie.profile_id}}</a>
 
-                        <form action="{% url 'start' post_id=commission.id app_id=applie.profile_id %}" method="POST">
-                            {% csrf_token%}
 
-                            <button type="submit">승낙</button>
+{% for commission in applications %}
+<a href="{% url 'detail' commission.id %}">
 
-                        </form>
-                        <a href="#"
-                            onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">채팅</a>
-                        <a href="{% url 'disagree' post_id=commission.id app_id=applie.profile_id %}">거절</a>
+    <br>제목 : {{commission.title}}
+</a>
+<p>{{commission.pub_date}}</p>
 
-                        {% endif %}
+{% if commission.status == 'ready' %}
+<details>
 
-                        {% endfor %}
+    <summary>수행자들</summary>
 
-                    </details>
-                    {% else %}
-                    {% for applie in appliers%}
-                    {% if applie.connector == commission.id %}
-                    {% if commission.approved_id == applie.profile_id%}
-                    <br>수행중인 계정:<a href="{% url 'profile' applie.profile_id%}">{{applie.profile_id}}</a>
-                    
-                    {% if commission.s_flag == True %}
-                    <br>제출상태:제출완료<br>
-                    <a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
-                    <br>
+    {% for applie in appliers%}
+    {% if applie.connector == commission.id %}
+    
 
-                    <a href="{% url 'submission' commission.id %}">제출물 보기</a>
-                    {% else %}
-                    <br>제출상태:제출전
-                    <a href="{% url 'commission_quit' commission.id %}">의뢰 포기 </a>
-                    {% endif %}
-                    <a href="#"
-                        onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">채팅</a>
-                    {% endif %}
-                    {% endif %}
+    <form action="{% url 'start' post_id=commission.id app_id=applie.profile_id %}" method="POST">
+        {% csrf_token%}
 
-                    {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
+        <button type="submit"><br><h3>{{applie.profile_id}}님의 수행신청 승낙</h3></button>
+
+    </form><a href="{% url 'profile' applie.profile_id%}">▷{{applie.profile_id}}◁</a>
+    <a href="#"
+        onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">채팅/</a>
+    <a href="{% url 'disagree' post_id=commission.id app_id=applie.profile_id %}">거절</a>
+    
+
+
+    {% endif %}
+
 
     {% endfor %}
-    <br>
-    <a class="btn btn-dark" href="{% url 'profile' commission_user.profile_id%}" role="button">뒤로가기</a>
+
+</details>
+{% else %}
+{% for applie in appliers%}
+{% if applie.connector == commission.id %}
+{% if commission.approved_id == applie.profile_id%}
+수행중인 계정 &nbsp;:&nbsp;<a href="{% url 'profile' applie.profile_id%}">{{applie.profile_id}}</a>
+
+{% if commission.s_flag == True %}
+제출상태&nbsp;:제출완료&nbsp;<br>
+<a href="{% url 'commission_quit' commission.id %}">의뢰포기 </a>
+<br>
+
+<a href="{% url 'submission' commission.id %}">제출물 보기</a>
+{% else %}
+&nbsp;/&nbsp;제출상태&nbsp;:&nbsp;제출전<br>
+<a href="{% url 'commission_quit' commission.id %}">▷의뢰포기◁ </a>
+{% endif %}
+<a href="#"
+    onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">▷채팅◁</a><hr>
+{% endif %}
+{% endif %}
+
+{% endfor %}
+{% endif %}{% endfor %}
+<hr>
+</div>
+</div>
+</div>
+
+
+
+</div>
+<br>
+
 </div>
 <style>
-    .card {
-        border-color: #C2D0E1;
-        text-align: center;
-        margin-bottom:30px;
+    .hr {
+        border: none;
+        border-top: 3px dotted blue;
+        color: #fff;
+        background-color: #fff;
+        height: 1px;
+        width: 50%;
     }
 
-    .col-4 {
+
+    a {
+        all: unset;
         text-align: center;
-        padding-left:150px;
-        
     }
 
-    .col-6 {
-        text-align: center;
-        padding-left:220px;
+    a:hover {
+        text-decoration: none;
+        color: rgb(50, 161, 137);
     }
 
-    @media screen and (max-width:400px) {
-        div {
-            text-align: center;
+    hr {
+        border-top: white 1px solid;
+        border-bottom: #000000 2px solid;
+    }
+
+    .a1:hover {
+        color: rgb(247, 68, 74);
+    }
+
+    .title {
+        text-decoration: underline;
+    }
+
+    @media screen and (min-width: 500px) and (max-width:200px) {
+        .top {
+            display: none;
         }
     }
 
     @media screen and (min-width: 1000px) {
-        div {
-            text-align: center;
+        p {
+            font-size: 1.7rem;
+        }
+
+        hr {
+            width: 70rem;
+        }
+
+        a {
+            font-size: 2rem;
+        }
+
+        .top4 {
+            position: fixed;
+            bottom: 0.5rem;
+            right: 23.5rem;
+        }
+
+        .back2 {
+            position: fixed;
+            bottom: 0.5rem;
+            right: 25.5rem;
+        }
+
+        .title {
+            font-size: 60px;
+        }
+
+        .top {
+            display: none;
+        }
+
+        .plus {
+            font-size: 33px;
+        }
+
+        h1 {
+            font-size: 50px;
+        }
+
+        .list {
+            font-size: 33px;
+        }
+
+        .list_title {
+            font-size: 33px;
         }
     }
 </style>
