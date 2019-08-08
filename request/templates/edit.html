@@ -1,8 +1,8 @@
-ㄴ{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
 
-<form action="{% url 'update' post.id %}" method="POST" enctype="multipart/form-data">
+<form action="{% url 'update' post.id %}" method="POST" id="request_update"  enctype="multipart/form-data">
         <br><br><br>
         <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
         <br><br>
@@ -72,22 +72,29 @@
                 <br><br><br>
         </div>
         <br><br><br>
-        <button class="btn btn-dark" type='submit' onclick="func_confirm()">수정하기</button>
+        <div class="bttn">
+                <button class="btn btn-dark" onclick="func_confirm()" type="button">수정하기</button>
+        </div>
         <script type="text/javascript">
                 function func_confirm() {
-                    if (confirm('수정하시겠습니까?')) {
-                        alert("수정되었습니다.");
-                        window.close();
-                        
-                    } else {
-                        alert.close();
-                    }
-                }
-            </script>
-        <br><br><br><br>
+                        if (confirm('수정하시겠습니까?')) {
+                                alert("수정되었습니다.");
+                                $("#request_update").submit();
+                                window.close();
 
-        <button type='submit'>작성하기</button>
+                        } else {
+                                cancel();
+                        }
+                }
+                
+                function cancel(){
+                        window.history.back();
+                }
+        </script>
 </form>
+<div class="bttn">
+        <button onclick = "location.href ='{% url 'detail' post.id %}'" class="btn btn-dark">돌아가기</button></div>
+</div>
 <style>
         .card {
                 text-align: center;

@@ -79,25 +79,28 @@
 
         </div>
         <div class="bttn">
-                        <button class="btn btn-dark" onclick="func_confirm()" type="button">수정하기</button></div>
-                <script type="text/javascript">
-                        function func_confirm() {
-                                if (confirm('수정하시겠습니까?')) {
-                                        alert("수정되었습니다.");
-                                        $("#free_update").submit();
-                                        // location.href = "{%url 'b_update' edit_post.id %}";
-                                        window.close();
-        
-                                } else {
-                                        cancel();
-                                }
+                <button class="btn btn-dark" onclick="func_confirm()" type="button">수정하기</button>
+        </div>
+        <script type="text/javascript">
+                function func_confirm() {
+                        if (confirm('수정하시겠습니까?')) {
+                                alert("수정되었습니다.");
+                                $("#free_update").submit();
+                                // location.href = "{%url 'b_update' edit_post.id %}";
+                                window.close();
+
+                        } else {
+                                cancel();
                         }
-                        function cancel(){
-                                window.history.back();
-                        }
-                </script>
+                }
+                
+                function cancel(){
+                        window.history.back();
+                }
+        </script>
                 
 </form>
+
 <div class="bttn">
         <button onclick = "location.href ='{% url 'b_detail' edit_post.id %}'" class="btn btn-dark">돌아가기</button></div>
 </div>
