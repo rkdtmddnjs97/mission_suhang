@@ -2,34 +2,32 @@
 {% load staticfiles %}
 {% block content %}
 <br><br><br>
-<div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div>
+<!-- <div><img class="image_h" src="{% static '로고1.png' %}" alt="" width="280;" height="170;"></div> -->
 <br><br>
 <h2>해당 태그와 관련된 게시글입니다.</h2>
 <hr>
 <br>
 
 {% for post in b_tag_posts %}
-<a href="{% url 'b_detail' post.id %}"><b>
-        <h3>#{{post.title}}</h3>
-    </b></a>
+<a href="{% url 'b_detail' post.id %}"><b><h4>#{{post.title}}</h4></b>  {{post.writer}} / {{post.pub_date}}<hr></a>
 {% endfor %}
 
 <style>
     .card {
-        text-align: center;
+        text-align: left;
     }
 
 
 
     @media screen and (max-width:400px) {
         div {
-            text-align: center;
+            text-align: left;
         }
     }
 
     @media screen and (min-width: 1000px) {
         div {
-            text-align: center;
+            text-align: left;
         }
     }
 
@@ -38,9 +36,15 @@
         color: #000000
     }
 
+    a:hover {
+        all: unset;
+        color: rgb(50, 161, 137);
+    }
+
     a.noul:hover {
         text-decoration: none !important
     }
+
     .ask {
         text-decoration: none;
         color: #000000
