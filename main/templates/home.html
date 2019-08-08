@@ -22,12 +22,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    {% load staticfiles %}
 
-
-        {% load staticfiles %}
-        <div class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜.png' %}" width="750px"></div>
-
-
+<!-- 
 <div class="pont">
 <br>
 {% if judge == True %}
@@ -68,26 +65,25 @@
         </span>
             <input type="text" id="search_data" name='input_data' style=" all:unset; font-size: 1.5rem; width: 330px; border-bottom: #ffffff 2px solid;  margin: 0 0 0 10px ;" placeholder="Search" class="holder">
             <br>
-            <!-- <span>연관 검색어</span><br> -->
-            {% for req_title in all_request_title %}
+            <-- <span>연관 검색어</span><br> -->
+            <!-- {% for req_title in all_request_title %}
                 <a class="request_title" onclick="search_title($(this).attr('value'))" value="{{req_title}}">{{req_title}}<br></a>
             {% endfor %}
             {% for fre_title in all_free_title %}
                 <a class="free_title" onclick="search_title($(this).attr('value'))" value="{{fre_title}}">{{fre_title}}<br></a>
             {% endfor %}
-        <button type='submit' class='sch_smit' id='search_submit'><img class="image" src="{% static 'search.png' %}" width="37px;"></button>
 
     </form>
 
 
 
 
-<!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
-<span>Hot 수행자 : </span>
+<-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
+<!-- <span>Hot 수행자 : </span>
 {% for hot_user in hot_users %}
     <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
 {% endfor %}
-<br><br>
+<br><br>  -->
 
 
     <div class="pont">
@@ -118,9 +114,10 @@
                         <input type="text" id="search_data" name='input_data'
                             style=" all:unset; font-size: 1.5rem; width: 40rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px ;"
                             placeholder="Search" class="holder">
-                       
-                        <!-- for문 만들어서 출력 -->
-                        <!-- <span>연관 검색어</span><br> -->
+                        <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
+                            src="{% static 'search1.png' %}" width="37px;"></button>
+                        <br>
+                        <!-- 연관 검색어 -->
                         {% for req_title in all_request_title %}
                         <a class="request_title" onclick="search_title($(this).attr('value'))"
                             value="{{req_title}}">{{req_title}}<br></a>
@@ -129,8 +126,7 @@
                         <a class="free_title" onclick="search_title($(this).attr('value'))"
                             value="{{fre_title}}">{{fre_title}}<br></a>
                         {% endfor %}
-                        <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
-                                src="{% static 'search1.png' %}" width="37px;"></button>
+                        
 
                     </form>
                     <a class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜2.png' %}" width="755rem"></a>
@@ -151,37 +147,34 @@
                     <br>
                     <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
                     <span>Hot 수행자 : </span>
-                    {% for hot_user in hot_users %}
-
-                    <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
-
-                    {% endfor %}
+                        {% for hot_user in hot_users %}
+                            <a href="{% url 'profile' hot_user.profile_id %}">{{hot_user.profile_id}}</a>
+                        {% endfor %}
                     <br><br>
-                    <!-- 인기 게시글과 hot 의뢰글 -->
-                
-  {% for liked in like_lists %} 
-    {% for entry in liked %}
-        {% if forloop.counter0 == 0 %}
-        <a href="{% url 'b_detail' entry.id %}">{{entry.title}}</a>:
-         {% else %}
-           {{entry}}
-        {% endif %}
-    {% endfor %}  
-  {% endfor %}
-<br>
-<p>HOT 의뢰  </p>
-{% for liked in scrap_lists %} 
-   {% for entry in liked %}
-      {% if forloop.counter0 == 0 %}
-      <a href="{% url 'detail' entry.id %}">{{entry.title}}</a>
-  
-       {% else %}
-         {{entry}}
-      {% endif %}
-    {% endfor %}  
-{% endfor %}
-<br>
-<br><br> 
+                    <!-- 인기 게시글과 hot 의뢰글 -->            
+                    {% for liked in like_lists %} 
+                        {% for entry in liked %}
+                            {% if forloop.counter0 == 0 %}
+                            <a href="{% url 'b_detail' entry.id %}">{{entry.title}}</a>:
+                            {% else %}
+                            {{entry}}
+                            {% endif %}
+                        {% endfor %}  
+                    {% endfor %}
+                    <br>
+                    <p>HOT 의뢰  </p>
+                    {% for liked in scrap_lists %} 
+                    {% for entry in liked %}
+                        {% if forloop.counter0 == 0 %}
+                        <a href="{% url 'detail' entry.id %}">{{entry.title}}</a>
+                    
+                        {% else %}
+                            {{entry}}
+                        {% endif %}
+                        {% endfor %}  
+                    {% endfor %}
+                    <br>
+                    <br><br> 
 
                     <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
                     <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
