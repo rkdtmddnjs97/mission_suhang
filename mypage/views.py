@@ -317,6 +317,7 @@ def performing_end(request,profile_id):
         end_index = index+3 if index <= max_index - 3 else max_index
     page_range = list(paginator.page_range[start_index:end_index]) 
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id,'page_range':page_range, 'total_len':total_len,'max_index':max_index-2, })
+
 def commission_end(request,profile_id):
     tmp=Post.objects.filter(writer=request.user.username)
     page = request.GET.get('page')
