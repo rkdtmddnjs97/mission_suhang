@@ -41,6 +41,7 @@
     <br>제목 : {{commission.title}}
 </a>
 <p>{{commission.pub_date}}</p>
+<p><a href="{% url 'commission_quit' commission.id %}">의뢰포기 </a></p>
 
 {% if commission.status == 'ready' %}
 <details>
@@ -77,13 +78,13 @@
 
 {% if commission.s_flag == True %}
 제출상태&nbsp;:제출완료&nbsp;<br>
-<a href="{% url 'commission_quit' commission.id %}">의뢰포기 </a>
+
 <br>
 
 <a href="{% url 'submission' commission.id %}">제출물 보기</a>
 {% else %}
 &nbsp;/&nbsp;제출상태&nbsp;:&nbsp;제출전<br>
-<a href="{% url 'commission_quit' commission.id %}">▷의뢰포기◁ </a>
+
 {% endif %}
 <a href="#"
     onclick="window.open('{% url 'chat' app_id=applie.id request_id=commission_user.id  %}','채팅창','width=500,height=700')">▷채팅◁</a><hr>
