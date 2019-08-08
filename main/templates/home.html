@@ -49,7 +49,10 @@
                     <hr>
                     <p>NEW 자유게시판</p>
                     {% for recent_free in recent_freeboard %}
-                    <a href="{% url 'b_detail' recent_free.id %}">{{recent_free.title}}</a><br>
+                    <a href="{% url 'b_detail' recent_free.id %}">
+                            &nbsp <img src="{{recent_free.attached_img.url}}" alt="" width="340rem;"></a>
+                            &nbsp <a style="color: white;">
+                        {{recent_free.title}}<br>
                     {% endfor %}
                     <hr>
                 </div>
