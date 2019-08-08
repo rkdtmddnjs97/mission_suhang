@@ -31,6 +31,7 @@
                     <!-- 왼쪽 -->
                     <br>
 
+
                     <a href="{% url 'board'%}" style="color:white; font-size:2rem;">▶Free Board </a>
                     <br>
                     <p>자유게시판 HOT 게시물</p>
@@ -56,6 +57,11 @@
                     {% endfor %}
                     <hr>
                 </div>
+
+                <style>
+                    
+                        
+                        </style>
                 <div class="col-6">
                     <!-- 가운데 -->
                     <br>
@@ -100,40 +106,46 @@
                     <a href="{% url 'dissatisfication'%}">민원사항</a>
                     <br>
                     {% endif %}
-
-                  
+<br>
+                    <div class="container">
+                            <div class="row">
+                              <div class="col">
+                                    <div class="f4">
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align: center; border-bottom: 2px solid rgb(50, 161, 137); "><a href="{% url 'announcement_board' %}" style="all:unset; color:rgb(247, 68, 74); font-size: 1.3rem;">Announcement</a></td>
+                                                </tr>
+                                                {% for announcemnt in recent_announcements %}
+                                                <tr>
+                                                    <td>&nbsp -<a href="{% url 'announcement_detail' announcemnt.id %}"
+                                                            style="border-bottom: #000000 2px solid; border:5rem;">{{announcemnt.title}}<br></a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                
+                                            </table>
+                                        </div>
+                              </div>
+                              <div class="col">
+                                    <div class="best">
+                                            <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
+                                            <p>현재 완료된 미션수행은 <a style="color: red;">{{mission_completed}}</a>건 입니다.<br>
+                                            <!-- 최근 올라온 의뢰글 표시 -->
+                                           진행되지 않은 의뢰는 <a  style="color: red;">{{ready_number}}</a>건 입니다.<br>
+                                            현재 진행 중인 의뢰는 <a  style="color: red;">{{running_number}}</a>건 입니다.</p>
+                                        </div>
+                              </div>
+                            </div>
+                            </div>
                     <br>
                     <hr>
                     <div>
-                       <div class="f4">
-                        <table>
-                            <tr>
-                                <td style="text-align: center; border-bottom: 2px solid #444444; "><a href="{% url 'announcement_board' %}" style="all:unset; color:rgb(247, 68, 74); font-size: 1.3rem;">Announcement</a></td>
-                            </tr>
-                            {% for announcemnt in recent_announcements %}
-                            <tr>
-                                <td>&nbsp -<a href="{% url 'announcement_detail' announcemnt.id %}"
-                                        style="border-bottom: #000000 2px solid; border:5rem;">{{announcemnt.title}}<br></a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            
-                        </table>
-                        
-                    </div>
+                      
                     </div>
                     <div>
 
                     </div>
-                    <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
-                    <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
-
-                    <!-- 최근 올라온 의뢰글 표시 -->
-                    <p>진행되지 않은 의뢰는 {{ready_number}}건 입니다.</p>
-
-                    <p>현재 진행 중인 의뢰는 {{running_number}}건 입니다.</p>
-                    <hr>
-
+                   
                     <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
                     <span>Hot 수행자 : </span>
                     {% for hot_user in hot_users %}
@@ -146,10 +158,6 @@
 
                     <!-- 인기 게시글과 hot 의뢰글 -->
 
-
-
-
-                    <hr>
                     <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
                     <p>추천 의뢰글</p>
                     {% for tag, posts in recommend_post.items %}
@@ -166,7 +174,7 @@
                 <div class="col" style="background: black; color:white;">
                     <!-- 가생이 오른쪽 -->
                     <br>
-                    <span style="color:white; font-size:2rem;"> ▶Request Board</span><br>
+                    <span style="color:white; font-size:2rem;"> <a href="{% url 'request'%}">▶Request Board</a> </span><br>
 
                     <p>의뢰게시판 HOT 게시물</p>
                     {% for liked in scrap_lists %}
@@ -245,18 +253,28 @@
                             src="{% static 'top.png' %}" width="50px;"></a>
                 </div>
                 <style>
+                    .best{
+                        width: 100%;
+                        padding: 2.5rem 0  2.5rem 0 ;
+                        color:white;
+                        background-color: #000000;
+                        border-radius: 3px;
+                        text-align: center;
+                        font-size: 1.6rem;
+
+                    }
                     /* 표 */
                     table {
-                        width: 90%;
+                        width: 80%;
                         border-collapse: collapse;
-                       margin: 1rem 1rem 1.5rem 1rem;
+                       margin: 1rem 1rem 1.5rem 2rem;
                     }
                     .f4{
-                        width: 50%;
+                        width: 100%;
                         /* border: 1px solid #444444; */
-                        border-radius: 10px;
-                        background-color: #f0f0f0;
-                        border: 2px solid #444444;
+                        border-radius: 5px;
+                        background-color: #ffffff;
+                        border: 2px solid rgb(50, 161, 137);
 
                     }
                   
