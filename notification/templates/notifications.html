@@ -39,14 +39,14 @@
                         <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
-                    
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'signup' %}">Signup</a>
                     </li>
-                  
+
                     {% else %}
                     {% if request.user.profile.approval == True or request.user.is_superuser == True %}
                     <li class="nav-item">
@@ -68,97 +68,105 @@
 
                 </ul>
 
-                
 
-    <form action="{% url 'search' %}" method="GET" class="search_bar">
-        <span class="search_menu">
-                <select class="form-control"  name ="input_type" >
-                  <option name="input_type" value ="title" selected>title</option>
-                  <option name="input_type" value ="hashtag">hashtag</option>
-                  <option name="input_type" value ="writer">writer</option>
-                  <option name="input_type" value ="body">Context</option>
-                </select>
-        </span>
-        <span class='green_window'>
-            <input type="text" name='input_data' class='input_text'>
-        </span>
-        &nbsp;
-        <button type='submit' class='sch_smit'>검색</button>
-    </form>
 
-           
+                <form action="{% url 'search' %}" method="GET" class="search_bar">
+                    <span class="search_menu">
+                        <select class="form-control" name="input_type">
+                            <option name="input_type" value="title" selected>title</option>
+                            <option name="input_type" value="hashtag">hashtag</option>
+                            <option name="input_type" value="writer">writer</option>
+                            <option name="input_type" value="body">Context</option>
+                        </select>
+                    </span>
+                    <span class='green_window'>
+                        <input type="text" name='input_data' class='input_text'>
+                    </span>
+                    &nbsp;
+                    <button type='submit' class='sch_smit'>검색</button>
+                </form>
+
+
             </div>
         </nav>
 
 
         <div class="container">
+            <br><br><br>
+            <h1>알림 센터</h1><br>
+            <hr><br>
 
-        알림 센터<br><hr><br>
-
-        {% for notification in notifications reversed %}
+            {% for notification in notifications reversed %}
             {% if notification.notification_type == 'comment' %}
-                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게 "{{notification.notifi_comment}}"라고 댓글을 달았습니다.
-                / {{notification.notifi_date}}
-                <br>
-                <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
-                
+            <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게
+            "{{notification.notifi_comment}}"라고 댓글을 달았습니다.
+            / {{notification.notifi_date}}
+            <br><br>
+            <a class="b" href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+
             {% elif notification.notification_type == 'mission_apply' %}
-                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 의뢰글에 대해 미션 신청을 하였습니다.
-                / {{notification.notifi_date}}
-                <br>
-                <a href="{% url 'commissioned' notification.to %}">보러가기</a>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+            <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 의뢰글에 대해 미션 신청을 하였습니다.
+            / {{notification.notifi_date}}
+            <br><br>
+            <a class="b" href="{% url 'commissioned' notification.to %}">보러가기</a>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
 
             {% elif notification.notification_type == 'mission_accept' %}
-                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 미션신청을 승낙하였습니다.
-                / {{notification.notifi_date}}
-                <br>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+            <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 미션신청을 승낙하였습니다.
+            / {{notification.notifi_date}}
+            <br><br>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
 
             {% elif notification.notification_type == 'mission_reject' %}
-                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 미션신청을 거절하였습니다. 너무 슬퍼마세요...
-                / {{notification.notifi_date}}
-                <br>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+            <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 미션신청을 거절하였습니다. 너무
+            슬퍼마세요...
+            / {{notification.notifi_date}}
+            <br><br><br>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
 
             {% elif notification.notification_type == 'mision_submit' %}
-                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 의뢰글에 대한 제출물을 제출하였습니다.
-                / {{notification.notifi_date}}
-                <br>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+            <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 의뢰글에 대한 제출물을 제출하였습니다.
+            / {{notification.notifi_date}}
+            <br><br><br>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
 
             {% elif notification.notification_type == 'mission_complete' %}
-                축하합니다!<br>
-                의뢰자 <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>님의 미션을 완료하셨습니다.
-                / {{notification.notifi_date}}
-                <br>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+            축하합니다!<br>
+            의뢰자 <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>님의 미션을 완료하셨습니다.
+            / {{notification.notifi_date}}
+            <br><br><br>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
 
             {% elif notification.notification_type == 'chat' %}
-                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게 "{{notification.notifi_comment}}"라고 쪽지를 보냈습니다.
-                / {{notification.notifi_date}}
-                <br>
-                <a href="#" onclick="window.open('{% url 'chat' app_id=notification.to.id request_id=notification.creator.id   %}','채팅창','width=500,height=700')">채팅</a>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+            <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신에게
+            "{{notification.notifi_comment}}"라고 쪽지를 보냈습니다.
+            / {{notification.notifi_date}}
+            <br><br><br>
+            <a class="b" href="#"
+                onclick="window.open('{% url 'chat' app_id=notification.to.id request_id=notification.creator.id   %}','채팅창','width=500,height=700')">채팅</a>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
 
             {% elif notification.notification_type == 'report' %}
-                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 "{{notification.notifi_comment}}"라고 신고를 하였습니다.
-                / {{notification.notifi_date}}
-                <br>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+            <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가
+            "{{notification.notifi_comment}}"라고 신고를 하였습니다.
+            / {{notification.notifi_date}}
+            <br><br>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
 
             {% elif notification.notification_type == 'scrap' %}
-                <a href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 게시물 '{{notification.notifi_post_id.title}}'을(를) 스크랩하였습니다.
-                / {{notification.notifi_date}}
-                <br>
-                <a href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
-                <a href="{% url 'delete_notification' notification.id %}">알림삭제</a>
+            <a class="b" href="{% url 'profile' notification.creator %}">{{notification.creator}}</a>가 당신의 게시물
+            '{{notification.notifi_post_id.title}}'을(를) 스크랩하였습니다.
+            / {{notification.notifi_date}}
+            <br><br>
+            <a class="b" href="{% url 'detail' notification.notifi_post_id.id %}">보러가기</a>
+            <a class="b" href="{% url 'delete_notification' notification.id %}">알림삭제</a>
 
             {% endif %}
 
-            <br><hr>
-        {% endfor %}
+            <br>
+            <hr>
+            {% endfor %}
         </div>
     </div>
 </body>
@@ -173,6 +181,19 @@
     .pont {
         font-family: 'Do Hyeon', sans-serif;
     }
+
+    a {
+        text-decoration: none;
+        color: rgb(61, 65, 70);
+
+    }
+
+    .b:hover {
+        all: unset;
+        color: rgb(50, 161, 137);
+
+    }
+
     .search_menu {
         display: inline-block;
     }
