@@ -60,7 +60,7 @@
             </div>
             <br>
         </div>↓ 클릭해주세용 ↓<br>
-        {% for tag in all_tag %}
+        {% for tag in hashtag %}
         <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}"
             style="color: blue">#{{tag}}</a>
         {% endfor %}
@@ -124,6 +124,5 @@
 
     }
 </style>
-
 
 {% endblock %}
