@@ -78,10 +78,9 @@
       {% for review in review_objects %}
       의뢰자:{{review.writer}}<br>
       후기:{{review.reviews}}<br>
-      평점:{% if review.ratings == 0 %}
-           <p>평점이 안매개졌습니다</p>
+      평점:
           <div class="rating">
-            {% elif review.ratings == 1 %}
+            {% if review.ratings == 1 %}
           <label>
             <span class="icon">★</span>
           </label>
