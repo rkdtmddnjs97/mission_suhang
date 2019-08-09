@@ -54,11 +54,6 @@
                             <a class="dropdown-item" href="{% url 'profile' user.profile.profile_id %}">Mypage
                                 ({{user.username}})</a>
                             <a class="dropdown-item" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
-                            <!-- <a class="dropdown-item" href="">수행중인 미션</a>
-                <a class="dropdown-item" href="">수행완료된 미션</a>
-                <a class="dropdown-item" href="">의뢰중인 미션</a>
-                <a class="dropdown-item" href="">의뢰완료된 미션</a>
-                <a class="dropdown-item" href="">스크랩한 미션</a> -->
                             {% endif %}
                         </div>
                     </a>
@@ -131,12 +126,10 @@
                                 <input class="form-control" name="university" placeholder="write your university"
                                     id='search_school' required='required'>
                                 <br>
-                                <p style="color:crimson;">검색하고 학교이름을 '꼭' 클릭해주세요</p><br>
-
-                                <br>
+                                <p style="color:crimson;">검색하고 학교이름을 '꼭' 클릭해주세요</p>
                                 {% for sch_name, e_mail in school.items %}
                                 <a class="result_school"
-                                    onclick="input_school($(this).attr('key'),$(this).attr('value'))" key="{{sch_name}}"
+                                    onclick="input_school($(this).attr('key'),$(this).attr('value'))" key="{{sch_name}}" style="color: blue;"
                                     value="{{e_mail}}">{{sch_name}}</a>
                                 {% endfor %}
                             </div>
