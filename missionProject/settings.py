@@ -20,11 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7isg#bcw9lv!azbwf@d$i@wby@o+hm4aw4#7j%(o1_7o(4cqhh'
-# SECRET_KEY= os.environ.get('DJANGO_SECRET_KEY', '7isg#bcw9lv!azbwf@d$i@wby@o+hm4aw4#7j%(o1_7o(4cqhh')
+#SECRET_KEY = '7isg#bcw9lv!azbwf@d$i@wby@o+hm4aw4#7j%(o1_7o(4cqhh'
+SECRET_KEY= os.environ.get('DJANGO_SECRET_KEY', '7isg#bcw9lv!azbwf@d$i@wby@o+hm4aw4#7j%(o1_7o(4cqhh')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-#DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+#DEBUG = True
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 
 ALLOWED_HOSTS = ["*"]
@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'missionProject.urls'
@@ -150,3 +151,5 @@ EMAIL_HOST_PASSWORD = 'hjkhjk66'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+Heroku: Update database configuration from $DATABASE_URL. import dj_database_url db_from_env = dj_database_url.config(conn_max_age=500) DATABASES['default'].update(db_from_env
