@@ -128,6 +128,15 @@ def create(request):
     applyMission.save()
     hash_list = request.POST['hashtag'].split('#')
 
+    my_profile = Profile.objects.get(profile_id=request.user.username)
+    if my_profile.university is not None:
+        if Hashtag.objects.filter(name=my_profile.university.upper()).exists():
+            school_tag = Hashtag.objects.get(name=my_profile.university.upper())
+            new_post.hashtag.add(school_tag)
+        else:
+            school_tag = Hashtag.objects.create(name=my_profile.university.upper())
+            new_post.hashtag.add(school_tag)
+
     for index,hash in enumerate(hash_list):
         if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
             pass

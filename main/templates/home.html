@@ -85,7 +85,7 @@
                             </span>
                             <span class="search_menu" style="float: left">
                                 <select class="form-control" name="input_type"
-                                    style=" border:1px; border-bottom: #000000 2px solid; width: 7rem; margin:  0 0 0 0.7rem;">
+                                    style=" border:1px; border-bottom: #000000 2px solid; width: 7rem; margin:  0 0 0 0.7rem;" id="filter_type">
                                     <option name="input_type" value="title" class="board_menu title_menu" selected>제목</option>
                                     <option name="input_type" value="writer" class="board_menu">작성자</option>
                                     <option name="input_type" value="body" class="board_menu">내용</option>
@@ -376,23 +376,24 @@
                         $('#search_data').on("propertychange change keyup paste input", function () {
                             var val = $(this).val();
                             var type = $("#search_type option:selected").val();
+                            var filter_type = $("#filter_type option:selected").val();
                             // console.log(type);
                             // console.log(typeof(type));
-                            if (type == "freeboard") {
+                            if (type == "freeboard" && filter_type == "title") {
                                 if (val == "") {
                                     $('.free_title').hide();
                                 } else {
                                     $('.free_title').hide();
                                     $(".free_title:contains('" + val + "')").show();
                                 }
-                            } else if (type == "missionboard") {
+                            } else if (type == "missionboard" && filter_type == "title") {
                                 if (val == "") {
                                     $('.request_title').hide();
                                 } else {
                                     $('.request_title').hide();
                                     $(".request_title:contains('" + val + "')").show();
                                 }
-                            } else if (type == "allBoard") {
+                            } else if (type == "allBoard" && filter_type == "title") {
                                 if (val == "") {
                                     $('.free_title').hide();
                                     $('.request_title').hide();
