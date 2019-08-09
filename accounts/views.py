@@ -228,5 +228,5 @@ def login(request):
 def logout(request):
     if request.method == 'POST':
         auth.logout(request)
-        return redirect('home')
-    return render(request, 'signup.html')
+        return redirect('first_page')
+    return redirect('first_page')
