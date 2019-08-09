@@ -67,25 +67,35 @@
                     <!-- 가운데 -->
                     <br>
                     <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">
-                        <span class="search_menu">
+                        <!-- <span class="search_menu">
                             <input type="checkbox" name="input_board" value="freeboard" id="freeboard"
                                 class="chk_box">자유 게시판<a>/</a>
                             <input type="checkbox" name="input_board" value="missionboard" id="missionboard"
                                 class="chk_box">의뢰 게시판
-                        </span><br>
-                        <div style="display: inline; ">
+                        </span> -->
+                        
+                        <div style="display: inline;">
+                            <span style="float: left">
+                                <select class="form-control" name="search_type" id="search_type" style=" border:1px; border-bottom: #000000 2px solid; width: 7rem; margin:  0 0 0 0.7rem;" onchange="search_type_check()">
+                                    <option name="search_type" value="freeboard">자유게시판</option>
+                                    <option name="search_type" value="missionboard">의뢰게시판</option>
+                                    <option name="search_type" value="allBoard" selected>모든게시판</option>
+                                    <option name="search_type" value="user">유저검색</option>
+                                </select>
+                            </span>
                             <span class="search_menu" style="float: left">
                                 <select class="form-control" name="input_type"
-                                    style=" border:1px; border-bottom: #000000 2px solid; width: 8rem; margin:  0 0 0 0.7rem;">
-                                    <option name="input_type" value="title" selected>제목</option>
-                                    <option name="input_type" value="writer">작성자</option>
-                                    <option name="input_type" value="body">내용</option>
-                                    <option name="input_type" value="hashtag">해시태그</option>
+                                    style=" border:1px; border-bottom: #000000 2px solid; width: 7rem; margin:  0 0 0 0.7rem;">
+                                    <option name="input_type" value="title" class="board_menu title_menu" selected>제목</option>
+                                    <option name="input_type" value="writer" class="board_menu">작성자</option>
+                                    <option name="input_type" value="body" class="board_menu">내용</option>
+                                    <option name="input_type" value="hashtag" class="board_menu">해시태그</option>
+                                    <option name="input_type" value="user" class="user_menu">유저이름</option>
                                 </select>
                             </span>
                             <div style="float: left">
                                 <input type="text" id="search_data" name='input_data'
-                                    style=" all:unset; font-size: 1.5rem; width: 34rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px;"
+                                    style=" all:unset; font-size: 1.5rem; width: 27rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px;"
                                     placeholder="Search" class="holder">
                                 <button style="all:unset; float:right" type='submit' class='sch_smit' id='search_submit'><img class="image"
                                         src="{% static 'search1.png' %}" width="37px;"></button>
@@ -312,6 +322,7 @@
                     $('.result_tag').hide();
                     $('.request_title').hide();
                     $('.free_title').hide();
+                    $('.user_menu').hide();
 
                     $('[rel="popover"]').popover({
                         container: 'body',
@@ -364,25 +375,24 @@
                     jQuery(function ($) {
                         $('#search_data').on("propertychange change keyup paste input", function () {
                             var val = $(this).val();
-                            var free = $('input:checkbox[id="freeboard"]').is(":checked")
-                            var mission = $('input:checkbox[id="missionboard"]').is(":checked")
-
-                            if (free == true && mission == false) {
+                            var type = $("#search_type option:selected").val();
+                            // console.log(type);
+                            // console.log(typeof(type));
+                            if (type == "freeboard") {
                                 if (val == "") {
                                     $('.free_title').hide();
                                 } else {
                                     $('.free_title').hide();
                                     $(".free_title:contains('" + val + "')").show();
                                 }
-                            } else if (free == false && mission == true) {
-
+                            } else if (type == "missionboard") {
                                 if (val == "") {
                                     $('.request_title').hide();
                                 } else {
                                     $('.request_title').hide();
                                     $(".request_title:contains('" + val + "')").show();
                                 }
-                            } else if (free == true && mission == true) {
+                            } else if (type == "allBoard") {
                                 if (val == "") {
                                     $('.free_title').hide();
                                     $('.request_title').hide();
@@ -400,6 +410,22 @@
                         $('#search_data').val(val);
                         $('.request_title').hide();
                         $('.free_title').hide();
+                    }
+
+                    function search_type_check() {
+                        var type = $("#search_type option:selected").val();
+                        if (type == "user") {
+                            $('.user_menu').show();
+                            $('.board_menu').hide();
+                            $('.user_menu').attr('selected',true);
+                            $('.board_menu').attr('selected',false);
+                        }
+                        else {
+                            $('.user_menu').hide();
+                            $('.board_menu').show();
+                            $('.title_menu').attr('selected',true);
+                            $('.user_menu').attr('selected',false);
+                        }
                     }
 
                 </script>
