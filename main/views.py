@@ -12,6 +12,8 @@ from freeBoard.models import B_Blog
 import operator
 
 # Create your views here.
+def first_page(request):
+    return render(request,'first_page.html')
 def home(request):
     judge=False
     if request.user.is_superuser == True:
@@ -70,19 +72,20 @@ def home(request):
     for post in B_Blog.objects.all():
         like_list[post] = post.user.count()
     data= sorted(like_list.items(), key=operator.itemgetter(1), reverse = True)
-    data = data[0:5]
+    data = data[0:3]
     like_lists =[]
     for dat in data:
         like_lists.append(list(dat))
     # hot 의뢰 글
     scrap_list={}
     for post in Post.objects.all():
-        scrap_list[post] = post.user.count()
+       if post.status != 'running' and post.status != 'completed':
+            scrap_list[post] = post.user.count()
     datas= sorted(scrap_list.items(), key=operator.itemgetter(1), reverse = True)
-    datas = datas[0:5]
+    datas = datas[0:3]
     scrap_lists =[]
     for datt in datas:
-        scrap_lists.append(list(datt))  
+           scrap_lists.append(list(datt))  
     
     if request.user.is_anonymous or request.user.is_superuser:
         return render(request, 'home.html',{'recent_posts':recent_posts,'hot_users':hot_users, 'mission_completed':mission_completed,'ready_number':ready_number,'running_number':running_number, 'judge':judge,'recent_announcements':recent_announcements, 'recent_freeboard': recent_freeboard, 'all_request_title':all_request_title, 'all_free_title':all_free_title, 'scrap_lists': scrap_lists , 'like_lists':like_lists})

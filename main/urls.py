@@ -12,5 +12,6 @@ urlpatterns = [
     path('announce_delete/<int:announcement_id>',views.announce_delete,name='announce_delete'),
     path('announce_edit/<int:announcement_id>',views.announce_edit,name='announce_edit'),
     path('update_announce/<int:announcement_id>',views.update_announce,name='update_announce'),
+    path('', views.home, name="home"),
 
 ]

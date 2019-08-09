@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from request.models import Post,ApplyMission,submit_form
-from accounts.models import Profile
+from accounts.models import Profile, DefaultImg
 from django.utils import timezone
 from django.contrib.auth.models import User
 from hashtag.models import Hashtag
@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from notification.views import create_notification
 from django.core.paginator import Paginator
 from django.utils import timezone
+from django.templatetags.static import static
 
 
 def chat(request,app_id,request_id):
@@ -132,16 +133,31 @@ def scrap(request, profile_id):
     return render(request, 'scrap.html', {'scraped_post':my_scraped_post, 'profile':profile})
 
 def myProfile(request, profile_id):
+    clients_list=[]
+    appliers=[]
     if request.user.is_authenticated: 
         user_profile=Profile.objects.get(profile_id=request.user.username)
+        if request.user.username != profile_id:
+            applier_user=User.objects.get(username=profile_id)
+            appliers=ApplyMission.objects.filter(applier=applier_user.id)
+            clients=Post.objects.filter(writer=profile_id)
+            for client in clients:
+                if client.status != 'completed':
+                    clients_list.append(client)
+                
     else:
          user_profile=None
+         applier_user=User.objects.get(username=profile_id)
+         appliers=ApplyMission.objects.filter(applier=applier_user.id)
+         clients=Post.objects.filter(writer=profile_id)
+         for client in clients:
+             if client.status != 'completed':
+                 clients_list.append(client)
     my_profile = Profile.objects.get(profile_id=profile_id)
     tag_list = my_profile.hashtag.all()
     review_object=Review.objects.filter(review_fk=my_profile.id)
     
     number=review_object.count()
-   
     average_rate=0
     for rate in review_object:
         average_rate+=rate.ratings
@@ -153,7 +169,9 @@ def myProfile(request, profile_id):
     for review in review_object:
         if (review.reviews != None and review.ratings > 0) or (review.reviews == None and review.ratings == 0):
             review_objects.append(review)
-    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number,'user_profile':user_profile})
+    
+        
+    return render(request, 'profile.html', {'my_profile':my_profile, 'tag_list':tag_list,'review_objects':review_objects,'average_rate':average_rate,'number':number,'user_profile':user_profile,'appliers':appliers,'clients_list':clients_list})
 
 
 def editProfile(request, profile_id):
@@ -179,11 +197,18 @@ def updateProfile(request, profile_id):
     update_profile.department=request.POST['department']
     update_profile.name=request.POST['name']
     update_profile.introduction=request.POST['introduction']
+    default_img = DefaultImg()
     
-    if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
-        pass
-    else:
-        update_profile.profile_img = request.FILES.get('pofile_img')
+    
+    #기본프로필 이미지 사용 체크
+    if request.POST.getlist('use_default_img') == []:
+        if request.FILES.get('pofile_img') is None: #프로필 사진 form이 입력되지 않았을 시.
+            pass
+        else:
+            update_profile.profile_img = request.FILES.get('pofile_img')
+    else:    
+        update_profile.profile_img = default_img.image
+        
 
     # Hashtag
     tag_list = request.POST.getlist('hashtag')
@@ -309,6 +334,7 @@ def performing_end(request,profile_id):
         end_index = index+3 if index <= max_index - 3 else max_index
     page_range = list(paginator.page_range[start_index:end_index]) 
     return render(request,'perform_end.html',{'blocked_posts':blocked_posts,'profile_id':profile_id,'page_range':page_range, 'total_len':total_len,'max_index':max_index-2, })
+
 def commission_end(request,profile_id):
     tmp=Post.objects.filter(writer=request.user.username)
     page = request.GET.get('page')
