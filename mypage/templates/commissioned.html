@@ -55,7 +55,7 @@
     <form action="{% url 'start' post_id=commission.id app_id=applie.profile_id %}" method="POST">
         {% csrf_token%}
 
-        <button type="submit"><br><h3>{{applie.profile_id}}님의 수행신청 승낙</h3></button>
+        <button type="submit"><br><h3 style="color:rgb(247, 68, 74); ">{{applie.profile_id}}님의 수행신청 승낙</h3></button>
 
     </form><a href="{% url 'profile' applie.profile_id%}">▷{{applie.profile_id}}◁</a>
     <a href="#"
@@ -63,7 +63,7 @@
     <a href="{% url 'disagree' post_id=commission.id app_id=applie.profile_id %}">거절</a>
     
 
-
+<hr>
     {% endif %}
 
 
@@ -74,16 +74,16 @@
 {% for applie in appliers%}
 {% if applie.connector == commission.id %}
 {% if commission.approved_id == applie.profile_id%}
-수행중인 계정 &nbsp;:&nbsp;<a href="{% url 'profile' applie.profile_id%}">{{applie.profile_id}}</a>
+<h3>수행중인 계정 &nbsp;:&nbsp;<a href="{% url 'profile' applie.profile_id%}">{{applie.profile_id}}</a><br>
 
+
+제출상태:
 {% if commission.s_flag == True %}
-제출상태&nbsp;:제출완료&nbsp;<br>
-
-<br>
+<a style="color:rgb(247, 68, 74); ">제출완료&nbsp;</a></h3>
 
 <a href="{% url 'submission' commission.id %}">제출물 보기</a>
 {% else %}
-&nbsp;/&nbsp;제출상태&nbsp;:&nbsp;제출전<br>
+&nbsp;제출전<br>
 
 {% endif %}
 <a href="#"
@@ -105,6 +105,9 @@
 
 </div>
 <style>
+    summary{
+        font-size:2rem;
+    }
     .hr {
         border: none;
         border-top: 3px dotted blue;
