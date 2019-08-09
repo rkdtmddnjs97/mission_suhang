@@ -9,6 +9,7 @@
     <!-- bootstrap css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 
 <body>
@@ -24,51 +25,17 @@
         crossorigin="anonymous"></script>
 
     {% load staticfiles %}
+
+
     <div class="pont">
-        <div class="container">
-            <div class="row">
-                <div class="col" style="background: black;">
-                    <!-- 왼쪽 -->
-                    <br>
 
-
-                    <a href="{% url 'board'%}" style="color:white; font-size:2rem;">▶Free Board </a>
-                    <br>
-                    <p>자유게시판 HOT 게시물</p>
-                    {% for liked in like_lists %}
-                    {% for entry in liked %}
-                    {% if forloop.counter0 == 0 %}
-                    <a href="{% url 'b_detail' entry.id %}">
-                        &nbsp <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
-                    &nbsp <a style="color: white;"> {{entry.title}} /
-                        {% else %} ♡ : {{entry}}</a><br>
-                    {% endif %}
-
-                    {% endfor %}
-                    <br>
-                    {% endfor %}
-                    <hr>
-                    <p>NEW 자유게시판</p>
-                    {% for recent_free in recent_freeboard %}
-                    <a href="{% url 'b_detail' recent_free.id %}">
-                            &nbsp <img src="{{recent_free.attached_img.url}}" alt="" width="340rem;"></a>
-                            &nbsp <a style="color: white;">
-                        {{recent_free.title}}<br>
-                    {% endfor %}
-                    <hr>
-                </div>
-
-                <style>
-                    
-                        
-                        </style>
-                <div class="col-6">
-                    <!-- 가운데 -->
-                    <br>
+        <div class="row">
+            <div class="col">
+                <div class="box_y" style="margin:2rem 1rem 1rem 7rem;">
                     <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">
                         <span class="search_menu">
                             <input type="checkbox" name="input_board" value="freeboard" id="freeboard"
-                                class="chk_box">자유 게시판<a>/</a>
+                                class="chk_box"><a>자유 게시판</a><a>/</a>
                             <input type="checkbox" name="input_board" value="missionboard" id="missionboard"
                                 class="chk_box">의뢰 게시판
                         </span>
@@ -96,301 +63,479 @@
                         <a class="free_title" onclick="search_title($(this).attr('value'))"
                             value="{{fre_title}}">{{fre_title}}<br></a>
                         {% endfor %}
-
-
                     </form>
-                    <a class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜2.png' %}"
-                            width="755rem"></a>
-                    <br>
-                    {% if judge == True %}
-                    <a href="{% url 'dissatisfication'%}">민원사항</a>
-                    <br>
-                    {% endif %}
-<br>
-                    <div class="container">
-                            <div class="row">
-                              <div class="col">
-                                    <div class="f4">
-                                            <table>
-                                                <tr>
-                                                    <td style="text-align: center; border-bottom: 2px solid rgb(50, 161, 137); "><a href="{% url 'announcement_board' %}" style="all:unset; color:rgb(247, 68, 74); font-size: 1.3rem;">Announcement</a></td>
-                                                </tr>
-                                                {% for announcemnt in recent_announcements %}
-                                                <tr>
-                                                    <td>&nbsp -<a href="{% url 'announcement_detail' announcemnt.id %}"
-                                                            style="border-bottom: #000000 2px solid; border:5rem;">{{announcemnt.title}}<br></a>
-                                                    </td>
-                                                </tr>
-                                                {% endfor %}
-                                                
-                                            </table>
-                                        </div>
-                              </div>
-                              <div class="col">
-                                    <div class="best">
-                                            <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
-                                            <p>현재 완료된 미션수행은 <a style="color: red;">{{mission_completed}}</a>건 입니다.<br>
-                                            <!-- 최근 올라온 의뢰글 표시 -->
-                                           진행되지 않은 의뢰는 <a  style="color: red;">{{ready_number}}</a>건 입니다.<br>
-                                            현재 진행 중인 의뢰는 <a  style="color: red;">{{running_number}}</a>건 입니다.</p>
-                                        </div>
-                              </div>
-                            </div>
-                            </div>
-                    <br>
-                    <hr>
-                    <div>
-                      
-                    </div>
-                    <div>
+                </div>
+                <a class="box" style="margin: 0 0 0 2rem;" href="{% url 'home' %}"><img class="image"
+                        src="{% static '진짜2.png' %}" width="889rem"></a>
 
-                    </div>
-                   
-                    <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
+                <div class="hot"
+                    style=" margin: 0 0 0 2rem; background-color: rgb(7, 7, 7); color:white; width:55rem; font-size:2.5rem; ">
                     <span>Hot 수행자 : </span>
                     {% for hot_user in hot_users %}
-                    <a href="{% url 'profile' hot_user.profile_id %}">
+                    <a href="{% url 'profile' hot_user.profile_id %}" style="all:unset;">
                         <img src="{{hot_user.profile_img.url}}" alt="" width="50px" height="50px">
                         {{hot_user.profile_id}}
                     </a>
                     {% endfor %}
-                    <hr>
-
-                    <!-- 인기 게시글과 hot 의뢰글 -->
-
-                    <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
-                    <p>추천 의뢰글</p>
-                    {% for tag, posts in recommend_post.items %}
-                    #{{tag}}와 관련된 게시물<br>
-                    {% for post in posts %}
-                    <a href="{% url 'detail' post.id %}">
-                        <img src="{{post.attached_img.url}}" alt="" width="50px" height="50px">
-                        {{post.title}} / {{post.writer}}
-                    </a><br>
-                    {% endfor %}
                     <br>
-                    {% endfor %}
                 </div>
-                <div class="col" style="background: black; color:white;">
-                    <!-- 가생이 오른쪽 -->
-                    <br>
-                    <span style="color:white; font-size:2rem;"> <a href="{% url 'request'%}">▶Request Board</a> </span><br>
-
-                    <p>의뢰게시판 HOT 게시물</p>
-                    {% for liked in scrap_lists %}
-                    {% for entry in liked %}
-                    {% if forloop.counter0 == 0 %}
-                    <a href="{% url 'detail' entry.id %}">
-                        <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
-                        {{entry.title}} /
-                    </a>
-                    {% else %}
-                    스크랩 개수 : {{entry}}
-                    {% endif %}
-                    {% endfor %}
-                    <br>
-                    {% endfor %}
-                    <hr>
-
-
-                    {% for recent_post in recent_posts %}
-                    <a href="{% url 'detail' recent_post.id%}">
-                        <img src="{{recent_post.attached_img.url}}" alt="" width="340rem;">
-                        <a style="color:white;">{{recent_post.title}} / {{recent_post.writer}}</a>
-                    </a><br>
-                    {% endfor %}
-                    <br>
-                    <a href="{% url 'request'%}">의뢰게시판</a>
-                    {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
-                    <a class="nav-link" href="{% url 'signup' %}">Signup</a>
-                    {% else %}
-                    {% if request.user.profile.approval == True or request.user.is_superuser == True %}
-                    <a id="logout_btn">
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <input style="all:unset; color: rgb(255, 255, 255);" type="submit" value="Logout">
-                        </form>
-                    </a>
-                    {% if request.user.is_superuser == False %}
-                    <a href="{% url 'profile' user.profile.profile_id %}">Mypage (
-                        {{user.username}} ) </a>
-
-                    {% endif %}
-
-                    <a href="#" rel="popover" data-trigger="focus" data-placement="bottom"
-                        data-popover-content="#list-popover">알림({{notifi_count}})</a>
-                    <div id="list-popover" style="display:none">
-                        <a class="ul-popover">
-                            {% for notification in notification_list %}
-                            {% if notification.notification_type == 'comment' %}
-                            <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가
-                                {{notification.notification_type}}하였습니다.</a><br>
-                            {% else %}
-                            <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a><br>
+                <br>
+                <div class="container" style=" margin: 0 0 0 1rem;">
+                    <div class="row">
+                        <div class="col">
+                            {% if judge == True %}
+                            <a href="{% url 'dissatisfication'%}">민원사항</a>
+                            <br>
                             {% endif %}
-                            {% endfor %}
-                            <a href="{% url 'notifications' %}">see all</a>
-                        </a>
+                            <div class="f4">
+                                <table>
+                                    <tr>
+                                        <th>
+                                            <div style="text-align: center; font-size:2rem; color: rgb(0, 0, 0);">
+                                                Announcement</div>
+                                    </tr>
+                                    </th>
+                                    {% for announcemnt in recent_announcements %}
+                                    <tr>
+                                        <th>
+                                            <a href="{% url 'announcement_detail' announcemnt.id %}"
+                                                style="all:unset; border: rgb(0, 0, 0) 2px solid; border:5rem; color: rgb(0, 0, 0); font-size:1.2rem;">
+                                                ▶&nbsp{{announcemnt.title}}
+                                    </tr>
+                                    </th>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="num">
+                                <div class="a1">
+                                    <br>
+                                    <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
+                                    <p>현재 완료된 미션수행은 <a style="color: rgb(255, 0, 0);">{{mission_completed}}</a>건
+                                        입니다.<br>
+                                        <!-- 최근 올라온 의뢰글 표시 -->
+                                        진행되지 않은 의뢰는 <a style="color:  rgb(255, 0, 0);">{{ready_number}}</a>건 입니다.<br>
+                                        현재 진행 중인 의뢰는 <a style="color:  rgb(255, 0, 0);">{{running_number}}</a>건 입니다.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
 
 
-                        {% endif %}
-
-                        <br>
                     </div>
                 </div>
+                <br>
+                <div class="acc"  style="margin: 0 0 0 2rem;">
+                    <div class="row">
+                        <div class="col" style="font-size: 2rem;">
 
 
+                            {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
+                            <a class="hi" href="{% url 'login' %}">Login</a>
+                            <a class="hi" href="{% url 'signup' %}">Signup</a>
+                            {% else %}
+                            {% if request.user.profile.approval == True or request.user.is_superuser == True %}
+                            <a id="logout_btn">
+                                <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <input style=" all:unset; color: rgb(0, 0, 0);" type="submit" value="Logout">
+                                </form>
+                            </a>
+                            {% if request.user.is_superuser == False %}
+                            <a class="hi" href="{% url 'profile' user.profile.profile_id %}">Mypage (
+                                {{user.username}} ) </a>
+
+                            {% endif %}
+
+                            <a class="hi" style="all:unset;" href="#" rel="popover" data-trigger="focus"
+                                data-placement="bottom" data-popover-content="#list-popover">알림({{notifi_count}})</a>
+                            <div id="list-popover" style="display:none">
+                                <a class="ul-popover">
+                                    {% for notification in notification_list %}
+                                    {% if notification.notification_type == 'comment' %}
+                                    <a class="hi"
+                                        href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가
+                                        {{notification.notification_type}}하였습니다.</a><br>
+                                    {% else %}
+                                    <a>{{notification.creator}}가
+                                        {{notification.notification_type}}하였습니다.</a><br>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <a href="{% url 'notifications' %}">see all</a>
+                                </a>
 
 
-                <!--  뿌야-->
-
-                {% endif %}
-
-
-
-                <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top"
-                            src="{% static 'top.png' %}" width="50px;"></a>
-                </div>
-                <style>
-                    .best{
-                        width: 100%;
-                        padding: 2.5rem 0  2.5rem 0 ;
-                        color:white;
-                        background-color: #000000;
-                        border-radius: 3px;
-                        text-align: center;
-                        font-size: 1.6rem;
+                                {% endif %}
+                            </div>
+                        </div>
+                            <div class="col">
+                                해미쉬태그
+                                <!-- <p>추천 의뢰글</p>
+                                {% for tag, posts in recommend_post.items %}
+                                #{{tag}}와 관련된 게시물<br>
+                                {% for post in posts %}
+                                <a href="{% url 'detail' post.id %}">
+                                    <img src="{{post.attached_img.url}}" alt="" width="50px" height="50px">
+                                    {{post.title}} / {{post.writer}}
+                                </a><br>
+                                {% endfor %}
+                                <br>
+                                {% endfor %} -->
+                            </div>
                         
-                    }
-                    /* 표 */
-                    table {
-                        width: 80%;
-                        border-collapse: collapse;
-                       margin: 1rem 1rem 1.5rem 2rem;
-                    }
-                    .f4{
-                        width: 100%;
-                        /* border: 1px solid #444444; */
-                        border-radius: 5px;
-                        background-color: #ffffff;
-                        border: 2px solid rgb(50, 161, 137);
+                    </div>
+                </div>
+            </div>
 
-                    }
-                  
 
-                    th,
-                    td {
-                        border-bottom: 2px solid #444444;
-                       
-                    }
+            <div class="col">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                            role="tab" aria-controls="nav-home" aria-selected="true"
+                            style="color:rgb(0, 0, 0); font-size:1.5rem; ">Free Board</a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+                            role="tab" aria-controls="nav-profile" aria-selected="false"
+                            style="color:rgb(0, 0, 0); font-size:1.5rem;">Reqest Board</a>
 
-                    .container {
-                        all: unset;
-                        width: 100rem;
-                    }
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
+                            style="width: 45rem; height: 25rem;">
+                            <br>
+                            <span style="color:rgb(0, 0, 0); font-size:3rem;"> <a class="hi"
+                                    href="{% url 'board'%}">▶Free Board
+                                </a> </span><br>
 
-                    a {
-                        all: unset;
-                        color: rgb(75, 57, 57);
-                    }
-                </style>
-                <script type="text/javascript">
+                            <!-- 자유게시판 -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="{% static '자유이미지.png' %}" class="d-block w-100" alt="...">
+                                </div>
+                                {% for recent_free in recent_freeboard %}
+                                <div class="carousel-item" style="text-align: center;">
+                                    <a href="{% url 'b_detail' recent_free.id %}"><img
+                                            src="{{recent_free.attached_img.url}}" alt=""
+                                            style="max-height: 25rem;"></a><br>
+                                    <a style="font-size: 1.8rem;">-{{recent_free.title}}-</a><br>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
 
-                    $('.result_tag').hide();
-                    $('.request_title').hide();
-                    $('.free_title').hide();
+                        <div>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="hhh">
+                            <br>
+                            <p style="font-size: 2.2rem; margin:0 0 0 17rem; color: rgb(247, 68, 74); ">자유게시판 HOT</p>
+                            <br>
+                            <table style="width:80%; margin:0 0 0 3rem;">
+                                {% for liked in like_lists %}
+                                {% for entry in liked %}
+                                {% if forloop.counter0 == 0 %}
+                                <!-- <a href="{% url 'b_detail' entry.id %}">
+                                     &nbsp <img src="{{entry.attached_img.url}}" alt="" width="800rem;"></a> -->
+                                <tr>
+                                    <th style="border-bottom: 2.5px solid  rgb(0, 0, 0);">
+                                        &nbsp <a style="color: rgb(0, 0, 0);  font-size: 1.5rem;"
+                                            href="{% url 'b_detail' entry.id %}"> {{entry.title}} &nbsp
+                                            {% else %} <a style="color:red;">♥</a> : {{entry}}</a><br>
+                                    </th>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                                {% endfor %}
+                            </table>
+                        </div>
 
-                    $('[rel="popover"]').popover({
-                        container: 'body',
-                        html: true,
-                        content: function () {
-                            var clone = $($(this).data('popover-content')).clone(true).html();
-                            return clone;
-                        }
-                    }).click(function (e) {
-                        e.preventDefault();
-                    });
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <br>
+                        <span style="color:rgb(0, 0, 0); font-size:3rem;"> <a class="hi"
+                                href="{% url 'request'%}">▶Request
+                                Board</a> </span><br>
+                        <!-- 의뢰게시판최금=ㄴ -->
+                        <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel"
+                            style="width: 45rem; height: 25rem;">
+                            <div class="carousel-inner" style="text-align: center;">
+                                <div class="carousel-item active" data-interval="10000">
+                                    <img src="{% static '의뢰이미.png' %}" class="d-block w-100" alt="...">
+                                </div>
+                                {% for recent_post in recent_posts %}
+                                <div class="carousel-item" data-interval="2000">
 
-                    $('[rel="popover_like"]').popover({
-                        container: 'body',
-                        html: true,
-                        content: function () {
-                            var clone = $($(this).data('popover-content')).clone(true).html();
-                            return clone;
-                        }
-                    }).click(function (e) {
-                        e.preventDefault();
-                    });
+                                    <a href="{% url 'detail' recent_post.id%}">
+                                        <img src="{{recent_post.attached_img.url}}" alt="" style="max-height: 25rem;">
+                                        <a style="color:rgb(0, 0, 0);"><a style="font-size: 1.8rem;">-
+                                                {{recent_post.title}}-</a></a>
+                                    </a><br>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleInterval" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleInterval" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
 
-                    $('[rel="popover_scrap"]').popover({
-                        container: 'body',
-                        html: true,
-                        content: function () {
-                            var clone = $($(this).data('popover-content')).clone(true).html();
-                            return clone;
-                        }
-                    }).click(function (e) {
-                        e.preventDefault();
-                    });
 
-                    function check() {
-                        var chkbox = document.getElementsByName('input_board');
-                        var chk = true;
-                        for (var i = 0; i < chkbox.length; i++) {
-                            if (chkbox[i].checked) { pass }
-                            else { chk = false; }
-                        }
-                        if (chk == false) {
-                            alert("검색 할 게시판을 선택해주세요!");
-                            return false;
-                        }
-                        else { return true; }
-                    }
+                        <br>
+                        <br>
+                        <br>
+                        <div class="hhh">
+                            <br>
+                            <p style="font-size: 2.2rem; margin:0 0 0 17rem; color: rgb(247, 68, 74); ">의뢰게시판 HOT</p>
+                            <br>
+                            <table style="width:80%; margin:0 0 0 3rem;">
+                                {% for liked in scrap_lists %}
+                                {% for entry in liked %}
+                                {% if forloop.counter0 == 0 %}
+                                <tr>
+                                    <th style="border-bottom: 2.5px solid  rgb(0, 0, 0);">
+                                        <a style="color: rgb(0, 0, 0);  font-size: 1.5rem;"
+                                            href="{% url 'detail' entry.id %}">
+                                            {{entry.title}} /
+                                        </a>
+                                        {% else %}
+                                        <a style="color:red;">
+                                            Scrap : {{entry}}
+                                        </a>
 
-                    // 검색바 연관검색
-                    jQuery(function ($) {
-                        $('#search_data').on("propertychange change keyup paste input", function () {
-                            var val = $(this).val();
-                            var free = $('input:checkbox[id="freeboard"]').is(":checked")
-                            var mission = $('input:checkbox[id="missionboard"]').is(":checked")
+                                        {% endif %}
+                                        {% endfor %}
+                                        <br>
+                                        {% endfor %}
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
 
-                            if (free == true && mission == false) {
-                                if (val == "") {
-                                    $('.free_title').hide();
-                                } else {
-                                    $('.free_title').hide();
-                                    $(".free_title:contains('" + val + "')").show();
-                                }
-                            } else if (free == false && mission == true) {
 
-                                if (val == "") {
-                                    $('.request_title').hide();
-                                } else {
-                                    $('.request_title').hide();
-                                    $(".request_title:contains('" + val + "')").show();
-                                }
-                            } else if (free == true && mission == true) {
-                                if (val == "") {
-                                    $('.free_title').hide();
-                                    $('.request_title').hide();
-                                } else {
-                                    $('.free_title').hide();
-                                    $('.request_title').hide();
-                                    $(".free_title:contains('" + val + "')").show();
-                                    $(".request_title:contains('" + val + "')").show();
-                                }
-                            }
-                        });
-                    });
 
-                    function search_title(val) {
-                        $('#search_data').val(val);
-                        $('.request_title').hide();
+
+
+
+
+
+                    </div>
+
+                </div>
+
+
+
+                <br>
+
+
+                <!-- </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+
+
+
+    <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top" src="{% static 'top.png' %}"
+                width="50px;"></a>
+    </div>
+    <style>
+        .hi {
+            all: unset;
+        }
+
+        .hi:hover {
+            all: unset;
+            color: rgb(255, 71, 71);
+        }
+
+        .hhh {
+            width: 35rem;
+            height: 20rem;
+            border: 6px solid rgb(0, 0, 0);
+
+        }
+
+        .hot {
+            font-size: 2rem;
+            margin: 2rem 0 0 0;
+            text-align: center;
+        }
+
+        .num {
+
+            width: 25rem;
+            height: 15rem;
+            background-color: #ffffff;
+            color: #000000;
+            text-align: center;
+            font-size: 1.8rem;
+            border: 4px solid rgb(5, 5, 5);
+            background-color: rgb(255, 255, 255);
+            /* border-radius: 5px; */
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 1rem 1rem 1.5rem 2rem;
+        }
+
+        .f4 {
+            width: 25rem;
+            height: 15rem;
+            /* border: 1px solid #444444; */
+            /* border-radius: 5px; */
+            background-color: rgb(251, 255, 254);
+            border: 4px solid rgb(0, 0, 0);
+
+        }
+
+
+        th,
+        td {
+            border-bottom: 2px solid #444444;
+
+
+        }
+
+
+        .b_y {
+            background-color: #000000;
+        }
+
+        .e18 {
+            width: 50rem;
+        }
+
+        .container {
+            /* margin: 0 0 0 350px ; */
+
+        }
+    </style>
+    <script type="text/javascript">
+
+        $('.result_tag').hide();
+        $('.request_title').hide();
+        $('.free_title').hide();
+
+        $('[rel="popover"]').popover({
+            container: 'body',
+            html: true,
+            content: function () {
+                var clone = $($(this).data('popover-content')).clone(true).html();
+                return clone;
+            }
+        }).click(function (e) {
+            e.preventDefault();
+        });
+
+        $('[rel="popover_like"]').popover({
+            container: 'body',
+            html: true,
+            content: function () {
+                var clone = $($(this).data('popover-content')).clone(true).html();
+                return clone;
+            }
+        }).click(function (e) {
+            e.preventDefault();
+        });
+
+        $('[rel="popover_scrap"]').popover({
+            container: 'body',
+            html: true,
+            content: function () {
+                var clone = $($(this).data('popover-content')).clone(true).html();
+                return clone;
+            }
+        }).click(function (e) {
+            e.preventDefault();
+        });
+
+        function check() {
+            var chkbox = document.getElementsByName('input_board');
+            var chk = true;
+            for (var i = 0; i < chkbox.length; i++) {
+                if (chkbox[i].checked) { pass }
+                else { chk = false; }
+            }
+            if (chk == false) {
+                alert("검색 할 게시판을 선택해주세요!");
+                return false;
+            }
+            else { return true; }
+        }
+
+        // 검색바 연관검색
+        jQuery(function ($) {
+            $('#search_data').on("propertychange change keyup paste input", function () {
+                var val = $(this).val();
+                var free = $('input:checkbox[id="freeboard"]').is(":checked")
+                var mission = $('input:checkbox[id="missionboard"]').is(":checked")
+
+                if (free == true && mission == false) {
+                    if (val == "") {
                         $('.free_title').hide();
+                    } else {
+                        $('.free_title').hide();
+                        $(".free_title:contains('" + val + "')").show();
                     }
+                } else if (free == false && mission == true) {
 
-                </script>
+                    if (val == "") {
+                        $('.request_title').hide();
+                    } else {
+                        $('.request_title').hide();
+                        $(".request_title:contains('" + val + "')").show();
+                    }
+                } else if (free == true && mission == true) {
+                    if (val == "") {
+                        $('.free_title').hide();
+                        $('.request_title').hide();
+                    } else {
+                        $('.free_title').hide();
+                        $('.request_title').hide();
+                        $(".free_title:contains('" + val + "')").show();
+                        $(".request_title:contains('" + val + "')").show();
+                    }
+                }
+            });
+        });
+
+        function search_title(val) {
+            $('#search_data').val(val);
+            $('.request_title').hide();
+            $('.free_title').hide();
+        }
+
+    </script>
 
 </body>
 
