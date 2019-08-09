@@ -131,26 +131,30 @@
   <br><br>
 </div>
 
-{% else %}
-<details>
-  <summary>의뢰중인 미션</summary>
-  {% for client in clients_list %}
-  <a href="{% url 'detail' client.id %}" >{{client.title}}</a><br>
-  {% endfor %}
-  </details>
 
-<details>
-<summary>수행중인 미션</summary>
-{% for applier in appliers %}
-<a href="{% url 'detail' applier.post.id %}" >{{applier.post.title}}</a><br>
-{% endfor %}
-</details>
+
   {% endif %}
   
  
   <a href="#"><img src="{% static 'top.png' %}" style="position: fixed; bottom:5px; right:5px;" class="top1" ></a>
   
 </body>
+{% if request.user.username != my_profile.profile_id %}
+ <details>
+    <summary>의뢰중인 미션</summary>
+    {% for client in clients_list %}
+    <a href="{% url 'detail' client.id %}" >{{client.title}}</a><br>
+    {% endfor %}
+    </details>
+  
+    <details>
+    <summary>수행중인 미션</summary>
+    {% for applier in appliers %} 
+       <a href="{% url 'detail' applier.post.id %}" >{{applier.post.title}}</a><br>
+    {% endfor %}
+    </details>
+  
+ {% endif %}
   <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 
