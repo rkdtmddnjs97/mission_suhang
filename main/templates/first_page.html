@@ -1,1 +1,29 @@
-<p>you want <a href="{% url 'home' %}">request</a></p>
+{% load staticfiles %}
+<div class="ptu" >
+    <div class="container" style="text-align:center;">
+        <br><br><br><br><br><br>
+        <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="480;" height="280;"></div>
+        <br><br>
+        <h1>you want <a class="b" href="{% url 'home' %}">request ?</a></h1>
+    </div>
+</div>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+    .ptu {
+        font-family: 'Do Hyeon', sans-serif;
+        text-align: center;
+    }
+    a {
+            text-decoration: none;
+            color: rgb(61, 65, 70);
+
+        }
+
+        .b:hover {
+            all: unset;
+            color: rgb(50, 161, 137);
+
+        }
+
+</style>
