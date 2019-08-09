@@ -111,9 +111,9 @@ margin-left: 200px;padding-right:80px;">
     <p>
         <br>
         <div class="card" style="min-height:30rem;">
-            <div class="card-body">
+            <div class="card-body ">
                 <br>
-                <img src="{{post.attached_img.url}}" alt="" width="500px" height="300px"><br>
+                <img class="asd" src="{{post.attached_img.url}}" alt="" width="500px" height="300px"><br>
                 <p> {{post.body}}</p>
                 <br>
 
@@ -363,6 +363,9 @@ margin-left: 200px;padding-right:80px;">
             @media screen and (max-width:600px) {
                 .category {
                     text-align: center;
+                }
+                .asd{
+                    display:none;
                 }
 
                 /* .buttonss_h {
