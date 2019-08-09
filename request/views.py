@@ -53,6 +53,17 @@ def request_home(request):
 
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
+    all_post =  Post.objects.all()
+    all_post = list(all_post)
+    end_post =all_post[-1]
+    for i, compare_post in enumerate(all_post):
+        if post.id == compare_post.id:
+            if compare_post.id == end_post.id:
+                previous_post = all_post[i-1]
+                next_post = all_post[0]
+            else:
+                previous_post = all_post[i-1]
+                next_post = all_post[i+1]
     comments = Comment.objects.filter(post = post_id)
     page = request.GET.get('page')
     reversed_comment=[]
@@ -72,7 +83,7 @@ def detail(request,post_id):
     total_scrap_user = scrap_users.count()
     isScraped = post.user.filter(username=request.user.username).exists()
 
-    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge, 'total_scrap_user':total_scrap_user, 'isScraped':isScraped})
+    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge, 'total_scrap_user':total_scrap_user, 'isScraped':isScraped, 'previous_post':previous_post, 'next_post':next_post })
 
 def new(request):
     user = request.user
