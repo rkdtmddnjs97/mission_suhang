@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    {% load staticfiles %}
+    <div class="pont">
+        <div class="container">
+            <div class="row">
+                <div class="col" style="background: black;">
+                    <!-- 왼쪽 -->
+                    <br>
+
+
+                    <a href="{% url 'board'%}" style="color:white; font-size:2rem;">▶Free Board </a>
+                    <br>
+                    <p>자유게시판 HOT 게시물</p>
+                    {% for liked in like_lists %}
+                        {% for entry in liked %}
+                            {% if forloop.counter0 == 0 %}
+                                <a href="{% url 'b_detail' entry.id %}">
+                                    &nbsp <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
+                                &nbsp <a style="color: white;"> {{entry.title}} /
+                            {% else %} 
+                                ♡ : {{entry}}</a><br>
+                            {% endif %}
+
+                        {% endfor %}
+                        <br>
+                    {% endfor %}
+                    <hr>
+                    <p>NEW 자유게시판</p>
+                    {% for recent_free in recent_freeboard %}
+                    <a href="{% url 'b_detail' recent_free.id %}">
+                            &nbsp <img src="{{recent_free.attached_img.url}}" alt="" width="340rem;"></a>
+                            &nbsp <a style="color: white;">
+                        {{recent_free.title}}<br>
+                    {% endfor %}
+                    <hr>
+                </div>
+
+                <style>
+                    
+                        
+                        </style>
+                <div class="col-6">
+                    <!-- 가운데 -->
+                    <br>
+                    <!-- 검색바! -->
+                    <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">
+                        <div style="display: inline;">
+                            <span style="float: left">
+                                <select class="form-control" name="search_type" id="search_type" style=" border:1px; border-bottom: #000000 2px solid; width: 7rem; margin:  0 0 0 0.7rem;" onchange="search_type_check()">
+                                    <option name="search_type" value="freeboard">자유게시판</option>
+                                    <option name="search_type" value="missionboard">의뢰게시판</option>
+                                    <option name="search_type" value="allBoard" selected>모든게시판</option>
+                                    <option name="search_type" value="user">유저검색</option>
+                                </select>
+                            </span>
+                            <span class="search_menu" style="float: left">
+                                <select class="form-control" name="input_type"
+                                    style=" border:1px; border-bottom: #000000 2px solid; width: 7rem; margin:  0 0 0 0.7rem;" id="filter_type">
+                                    <option name="input_type" value="title" class="board_menu title_menu" selected>제목</option>
+                                    <option name="input_type" value="writer" class="board_menu">작성자</option>
+                                    <option name="input_type" value="body" class="board_menu">내용</option>
+                                    <option name="input_type" value="hashtag" class="board_menu">해시태그</option>
+                                    <option name="input_type" value="user" class="user_menu">유저이름</option>
+                                </select>
+                            </span>
+                            <div style="float: left">
+                                <input type="text" id="search_data" name='input_data'
+                                    style=" all:unset; font-size: 1.5rem; width: 27rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px;"
+                                    placeholder="Search" class="holder">
+                                <button style="all:unset; float:right" type='submit' class='sch_smit' id='search_submit'><img class="image"
+                                        src="{% static 'search1.png' %}" width="37px;"></button>
+                            </div>
+                        </div>
+                       
+                        <br>
+                        <br>
+                        <!-- 연관 검색어 : 게시물 제목 -->
+                        {% for req_title in all_request_title %}
+                        <a class="request_title" onclick="search_title($(this).attr('value'))"
+                            value="{{req_title}}">{{req_title}}<br></a>
+                        {% endfor %}
+                        {% for fre_title in all_free_title %}
+                        <a class="free_title" onclick="search_title($(this).attr('value'))"
+                            value="{{fre_title}}">{{fre_title}}<br></a>
+                        {% endfor %}
+                        <!-- 연관 검색어 : 해시태그 -->
+                        {% for tag_name in all_hashtag_data %}
+                        <a class="tag_name" onclick="search_title($(this).attr('value'))"
+                            value="{{tag_name}}">#{{tag_name}}<br></a>
+                        {% endfor %}
+
+
+                    </form>
+                    <a class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜2.png' %}"
+                            width="755rem"></a>
+                    <br>
+                    {% if judge == True %}
+                    <a href="{% url 'dissatisfication'%}">민원사항</a>
+                    <br>
+                    {% endif %}
+                    <br>
+                    <div class="container">
+                            <div class="row">
+                              <div class="col">
+                                    <div class="f4">
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align: center; border-bottom: 2px solid rgb(50, 161, 137); "><a href="{% url 'announcement_board' %}" style="all:unset; color:rgb(247, 68, 74); font-size: 1.3rem;">Announcement</a></td>
+                                                </tr>
+                                                {% for announcemnt in recent_announcements %}
+                                                <tr>
+                                                    <td>&nbsp -<a href="{% url 'announcement_detail' announcemnt.id %}"
+                                                            style="border-bottom: #000000 2px solid; border:5rem;">{{announcemnt.title}}<br></a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                
+                                            </table>
+                                        </div>
+                              </div>
+                              <div class="col">
+                                    <div class="best">
+                                        <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
+                                        <p>현재 완료된 미션수행은 <a style="color: red;">{{mission_completed}}</a>건 입니다.<br>
+                                        <!-- 최근 올라온 의뢰글 표시 -->
+                                        진행되지 않은 의뢰는 <a  style="color: red;">{{ready_number}}</a>건 입니다.<br>
+                                        현재 진행 중인 의뢰는 <a  style="color: red;">{{running_number}}</a>건 입니다.</p>
+                                    </div>
+                              </div>
+                            </div>
+                            </div>
+                    <br>
+                    <hr>
+                    <div>
+                      
+                    </div>
+                    <div>
+
+                    </div>
+                   
+                    <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
+                    <span>Hot 수행자 : </span>
+                    {% for hot_user in hot_users %}
+                    <a href="{% url 'profile' hot_user.profile_id %}">
+                        <img src="{{hot_user.profile_img.url}}" alt="" width="50px" height="50px">
+                        {{hot_user.profile_id}}
+                    </a>
+                    {% endfor %}
+                    <hr>
+
+                    <!-- 인기 게시글과 hot 의뢰글 -->
+
+                    <hr>
+
+                    <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
+                    <p>추천 의뢰글</p>
+                    {% for tag, posts in recommend_post.items %}
+                    #{{tag}}와 관련된 게시물<br>
+                    {% for post in posts %}
+                    <a href="{% url 'detail' post.id %}">
+                        <img src="{{post.attached_img.url}}" alt="" width="50px" height="50px">
+                        {{post.title}} / {{post.writer}}
+                    </a><br>
+                    {% endfor %}
+                    <br>
+                    {% endfor %}
+                    <hr>
+                
+                
+                </div>
+
+                <div class="col" style="background: black; color:white;">
+                    <!-- 가생이 오른쪽 -->
+                    <br>
+                    <span style="color:white; font-size:2rem;"> <a href="{% url 'request'%}">▶Request Board</a> </span><br>
+
+                    <p>의뢰게시판 HOT 게시물</p>
+                    {% for liked in scrap_lists %}
+                        {% for entry in liked %}
+                            {% if forloop.counter0 == 0 %}
+                            <a href="{% url 'detail' entry.id %}">
+                                <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
+                                {{entry.title}} /
+                            </a>
+                            {% else %}
+                            스크랩 개수 : {{entry}}
+                            {% endif %}
+                        {% endfor %}
+                    <br>
+                    {% endfor %}
+                    <hr>
+
+                    {% for recent_post in recent_posts %}
+                    <a href="{% url 'detail' recent_post.id%}">
+                        <img src="{{recent_post.attached_img.url}}" alt="" width="340rem;">
+                        <a style="color:white;">{{recent_post.title}} / {{recent_post.writer}}</a>
+                    </a><br>
+                    {% endfor %}
+                    <br>
+                    <a href="{% url 'request'%}">의뢰게시판</a>
+                    {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+                    {% else %}
+                    {% if request.user.profile.approval == True or request.user.is_superuser == True %}
+                    <a id="logout_btn">
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <input style="all:unset; color: rgb(255, 255, 255);" type="submit" value="Logout">
+                        </form>
+                    </a>
+                    {% if request.user.is_superuser == False %}
+                    <a href="{% url 'profile' user.profile.profile_id %}">Mypage (
+                        {{user.username}} ) </a>
+
+                    {% endif %}
+
+                    <a href="#" rel="popover" data-trigger="focus" data-placement="bottom"
+                        data-popover-content="#list-popover">알림({{notifi_count}})</a>
+                    <div id="list-popover" style="display:none">
+                        <a class="ul-popover">
+                            {% for notification in notification_list %}
+                            {% if notification.notification_type == 'comment' %}
+                            <a href="{% url 'detail' notification.notifi_post_id.id %}">{{notification.creator}}가
+                                {{notification.notification_type}}하였습니다.</a><br>
+                            {% else %}
+                            <a>{{notification.creator}}가 {{notification.notification_type}}하였습니다.</a><br>
+                            {% endif %}
+                            {% endfor %}
+                            <a href="{% url 'notifications' %}">see all</a>
+                        </a>
+                        {% endif %}
+                        <br>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
+                <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top"
+                            src="{% static 'top.png' %}" width="50px;"></a>
+                </div>
+                <style>
+                    .best{
+                        width: 100%;
+                        padding: 2.5rem 0  2.5rem 0 ;
+                        color:white;
+                        background-color: #000000;
+                        border-radius: 3px;
+                        text-align: center;
+                        font-size: 1.6rem;
+
+                    }
+                    /* 표 */
+                    table {
+                        width: 80%;
+                        border-collapse: collapse;
+                       margin: 1rem 1rem 1.5rem 2rem;
+                    }
+                    .f4{
+                        width: 100%;
+                        /* border: 1px solid #444444; */
+                        border-radius: 5px;
+                        background-color: #ffffff;
+                        border: 2px solid rgb(50, 161, 137);
+
+                    }
+                  
+
+                    th,
+                    td {
+                        border-bottom: 2px solid #444444;
+                       
+                    }
+
+                    .container {
+                        all: unset;
+                        width: 100rem;
+                    }
+
+                    a {
+                        all: unset;
+                        color: rgb(75, 57, 57);
+                    }
+                </style>
+                <script type="text/javascript">
+
+                    $('.result_tag').hide();
+                    $('.request_title').hide();
+                    $('.free_title').hide();
+                    $('.user_menu').hide();
+                    $('.tag_name').hide();
+
+                    $('[rel="popover"]').popover({
+                        container: 'body',
+                        html: true,
+                        content: function () {
+                            var clone = $($(this).data('popover-content')).clone(true).html();
+                            return clone;
+                        }
+                    }).click(function (e) {
+                        e.preventDefault();
+                    });
+
+                    $('[rel="popover_like"]').popover({
+                        container: 'body',
+                        html: true,
+                        content: function () {
+                            var clone = $($(this).data('popover-content')).clone(true).html();
+                            return clone;
+                        }
+                    }).click(function (e) {
+                        e.preventDefault();
+                    });
+
+                    $('[rel="popover_scrap"]').popover({
+                        container: 'body',
+                        html: true,
+                        content: function () {
+                            var clone = $($(this).data('popover-content')).clone(true).html();
+                            return clone;
+                        }
+                    }).click(function (e) {
+                        e.preventDefault();
+                    });
+
+                    function check() {
+                        var chkbox = document.getElementsByName('input_board');
+                        var chk = true;
+                        for (var i = 0; i < chkbox.length; i++) {
+                            if (chkbox[i].checked) { pass }
+                            else { chk = false; }
+                        }
+                        if (chk == false) {
+                            alert("검색 할 게시판을 선택해주세요!");
+                            return false;
+                        }
+                        else { return true; }
+                    }
+
+                    // 검색바 연관검색
+                    jQuery(function ($) {
+                        $('#search_data').on("propertychange change keyup paste input", function () {
+                            var val = $(this).val();
+                            var type = $("#search_type option:selected").val();
+                            var filter_type = $("#filter_type option:selected").val();
+                            // console.log(type);
+                            // console.log(typeof(type));
+                            if (type == "freeboard") {
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.free_title').hide();
+                                    } else {
+                                        $('.free_title').hide();
+                                        $(".free_title:contains('" + val + "')").show();
+                                    }
+                                }
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
+                                }
+                                
+                            } else if (type == "missionboard") {
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.request_title').hide();
+                                    } else {
+                                        $('.request_title').hide();
+                                        $(".request_title:contains('" + val + "')").show();
+                                    }
+                                }
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
+                                }
+                            } else if (type == "allBoard") {
+                                
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.free_title').hide();
+                                        $('.request_title').hide();
+                                    } else {
+                                        $('.free_title').hide();
+                                        $('.request_title').hide();
+                                        $(".free_title:contains('" + val + "')").show();
+                                        $(".request_title:contains('" + val + "')").show();
+                                    }
+                                }
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
+                                }                                
+                            }
+                        });
+                    });
+
+                    function search_title(val) {
+                        $('#search_data').val(val);
+                        $('.request_title').hide();
+                        $('.free_title').hide();
+                    }
+
+                    function search_type_check() {
+                        var type = $("#search_type option:selected").val();
+                        if (type == "user") {
+                            $('.user_menu').show();
+                            $('.board_menu').hide();
+                            $('.user_menu').attr('selected',true);
+                            $('.board_menu').attr('selected',false);
+                        }
+                        else {
+                            $('.user_menu').hide();
+                            $('.board_menu').show();
+                            $('.title_menu').attr('selected',true);
+                            $('.user_menu').attr('selected',false);
+                        }
+                    }
+                </script>
+
+</body>
+
+</html>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+    .pont {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
+    .box {
+        text-align: center;
+        margin: 5rem 0 0 0;
+    }
+</style>
