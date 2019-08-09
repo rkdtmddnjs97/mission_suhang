@@ -12,6 +12,8 @@ from freeBoard.models import B_Blog
 import operator
 
 # Create your views here.
+def first_page(request):
+    return render(request,'first_page.html')
 def home(request):
     judge=False
     if request.user.is_superuser == True:
