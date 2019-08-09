@@ -264,15 +264,8 @@
                 <div class="col-6">
                     <!-- 가운데 -->
                     <br>
+                    <!-- 검색바! -->
                     <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">
-                        <!-- <span class="search_menu">
-                            <input type="checkbox" name="input_board" value="freeboard" id="freeboard"
-                                class="chk_box">자유 게시판<a>/</a>
-                            <input type="checkbox" name="input_board" value="missionboard" id="missionboard"
-                                class="chk_box">의뢰 게시판
-
-                        </span> -->
-                        
                         <div style="display: inline;">
                             <span style="float: left">
                                 <select class="form-control" name="search_type" id="search_type" style=" border:1px; border-bottom: #000000 2px solid; width: 7rem; margin:  0 0 0 0.7rem;" onchange="search_type_check()">
@@ -304,7 +297,7 @@
                         <br>
 
                         <br>
-                        <!-- 연관 검색어 -->
+                        <!-- 연관 검색어 : 게시물 제목 -->
                         {% for req_title in all_request_title %}
                         <a class="request_title" onclick="search_title($(this).attr('value'))"
                             value="{{req_title}}">{{req_title}}<br></a>
@@ -312,6 +305,11 @@
                         {% for fre_title in all_free_title %}
                         <a class="free_title" onclick="search_title($(this).attr('value'))"
                             value="{{fre_title}}">{{fre_title}}<br></a>
+                        {% endfor %}
+                        <!-- 연관 검색어 : 해시태그 -->
+                        {% for tag_name in all_hashtag_data %}
+                        <a class="tag_name" onclick="search_title($(this).attr('value'))"
+                            value="{{tag_name}}">#{{tag_name}}<br></a>
                         {% endfor %}
 
 
@@ -323,8 +321,8 @@
                     <a href="{% url 'dissatisfication'%}">민원사항</a>
                     <br>
                     {% endif %}
+                    <br>
 
-<br>
                     <div class="container">
                             <div class="row">
                               <div class="col">
@@ -346,12 +344,12 @@
                               </div>
                               <div class="col">
                                     <div class="best">
-                                            <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
-                                            <p>현재 완료된 미션수행은 <a style="color: red;">{{mission_completed}}</a>건 입니다.<br>
-                                            <!-- 최근 올라온 의뢰글 표시 -->
-                                           진행되지 않은 의뢰는 <a  style="color: red;">{{ready_number}}</a>건 입니다.<br>
-                                            현재 진행 중인 의뢰는 <a  style="color: red;">{{running_number}}</a>건 입니다.</p>
-                                        </div>
+                                        <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
+                                        <p>현재 완료된 미션수행은 <a style="color: red;">{{mission_completed}}</a>건 입니다.<br>
+                                        <!-- 최근 올라온 의뢰글 표시 -->
+                                        진행되지 않은 의뢰는 <a  style="color: red;">{{ready_number}}</a>건 입니다.<br>
+                                        현재 진행 중인 의뢰는 <a  style="color: red;">{{running_number}}</a>건 입니다.</p>
+                                    </div>
                               </div>
                             </div>
                             </div>
@@ -459,21 +457,10 @@
                             {% endfor %}
                             <a href="{% url 'notifications' %}">see all</a>
                         </a>
-
-
-
                         {% endif %}
-
                         <br>
                     </div>
                 </div>
-
-
-
-
-                <!--  뿌야-->
-
-
                 {% endif %}
 
 
@@ -531,6 +518,7 @@
                     $('.request_title').hide();
                     $('.free_title').hide();
                     $('.user_menu').hide();
+                    $('.tag_name').hide();
 
                     $('[rel="popover"]').popover({
                         container: 'body',
@@ -587,30 +575,62 @@
                             var filter_type = $("#filter_type option:selected").val();
                             // console.log(type);
                             // console.log(typeof(type));
-                            if (type == "freeboard" && filter_type == "title") {
-                                if (val == "") {
-                                    $('.free_title').hide();
-                                } else {
-                                    $('.free_title').hide();
-                                    $(".free_title:contains('" + val + "')").show();
+                            if (type == "freeboard") {
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.free_title').hide();
+                                    } else {
+                                        $('.free_title').hide();
+                                        $(".free_title:contains('" + val + "')").show();
+                                    }
                                 }
-                            } else if (type == "missionboard" && filter_type == "title") {
-                                if (val == "") {
-                                    $('.request_title').hide();
-                                } else {
-                                    $('.request_title').hide();
-                                    $(".request_title:contains('" + val + "')").show();
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
                                 }
-                            } else if (type == "allBoard" && filter_type == "title") {
-                                if (val == "") {
-                                    $('.free_title').hide();
-                                    $('.request_title').hide();
-                                } else {
-                                    $('.free_title').hide();
-                                    $('.request_title').hide();
-                                    $(".free_title:contains('" + val + "')").show();
-                                    $(".request_title:contains('" + val + "')").show();
+                                
+                            } else if (type == "missionboard") {
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.request_title').hide();
+                                    } else {
+                                        $('.request_title').hide();
+                                        $(".request_title:contains('" + val + "')").show();
+                                    }
                                 }
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
+                                }
+                            } else if (type == "allBoard") {
+                                
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.free_title').hide();
+                                        $('.request_title').hide();
+                                    } else {
+                                        $('.free_title').hide();
+                                        $('.request_title').hide();
+                                        $(".free_title:contains('" + val + "')").show();
+                                        $(".request_title:contains('" + val + "')").show();
+                                    }
+                                }
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
+                                }                                
                             }
                         });
                     });
