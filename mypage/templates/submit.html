@@ -1,40 +1,77 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<h1 style="text-decoration: underline;">Submit Page</h1>
-<form action="{% url 'submit_send' post.id %}" method="POST" enctype="multipart/form-data">
-        <div class="box">
-        {% csrf_token %}
-        제목 : <input type="text" name='title' required='required'>
-        <br>
-        <br>
-        작성자 : <input type="text" name='writer' value='{{user.username}}'>
-        <br>
-        <br>
-        본문 <br> <textarea style="border:#000000 2px solid; resize: none;" name="body" id="" cols="50rem" rows="10rem" placeholder="write your content" required='required'></textarea>
-        <br>
-        <br>
-        첨부파일 : <input type="file" name="attachment">
-        <button type='submit'> 제출</button>
+<br><br><br>
+<div class="container">
+        <h1 class="sp" style="text-decoration: underline;">Submit Page</h1>
+        <form action="{% url 'submit_send' post.id %}" method="POST" enctype="multipart/form-data">
+                <div class="box">
+                        {% csrf_token %}
+                        제목 : <input type="text" name='title' required='required'>
+                        <br>
+                        <br>
+                        작성자 : <input type="text" name='writer' value='{{user.username}}'>
+                        <br>
+                        <br>
+                        본문 <br><br> <textarea style="border:#000000 2px solid; resize: none;" name="body" id=""
+                                cols="50rem" rows="10rem" placeholder="write your content"
+                                required='required'></textarea>
+                        <br>
+                        <br>
+
+                        첨부파일 : <input type="file" name="attachment">
+
+                        <br><br>
+
+                        <button class="ss" type='submit'> 제출</button>
+                </div>
+
+
+
+        </form>
 </div>
 
-
-
-</form>
 <style>
-        input{
-                all:unset;
-                border-bottom:#000000 2px solid;
+        input {
+                all: unset;
+                border-bottom: #000000 2px solid;
         }
-        .box{
+
+        .box {
                 margin: 2rem;
         }
-        button:hover{
+
+        button:hover {
                 color: rgb(247, 68, 74);
         }
+        @media screen and (min-width:1000px) {
+                .ss {
+                        margin-left: 23rem;
+
+
+                }
+                .sp {
+                        margin-left: 2rem;
+                }
+        }
+
         @media screen and (max-width:600px) {
-                textarea{
-                        width: 2rem;
+                textarea {
+                        width: 15rem;
+                }
+
+                .sp {
+                        margin-left: 2rem;
+                }
+
+                .input {
+                        border-bottom: #000000 2px solid;
+                }
+
+                .ss {
+                        margin-left: 14rem;
+
+
                 }
         }
 </style>

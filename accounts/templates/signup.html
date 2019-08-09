@@ -30,6 +30,44 @@
 
 
 <body>
+    <!-- 여기가 모바일 -->
+    <div class="mnav d-block d-sm-none">
+        <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
+            <div class="dropdown">
+                <div class='pont'>
+                    <a class="navbar-brand">
+                        <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            MY▼
+                        </a>
+
+
+                        <div class="dropdown-menu">
+                            {% if not user.is_authenticated %}
+                            <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                            <a class="dropdown-item" href="{% url 'signup' %}">Signup</a>
+
+                            {% else %}
+                            <form id="logout" class="dropdown-item" method="POST" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <input class="logout" type="submit" value="Logout">
+                            </form>
+                            <a class="dropdown-item" href="{% url 'profile' user.profile.profile_id %}">Mypage
+                                ({{user.username}})</a>
+                            <a class="dropdown-item" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+                            <!-- <a class="dropdown-item" href="">수행중인 미션</a>
+                <a class="dropdown-item" href="">수행완료된 미션</a>
+                <a class="dropdown-item" href="">의뢰중인 미션</a>
+                <a class="dropdown-item" href="">의뢰완료된 미션</a>
+                <a class="dropdown-item" href="">스크랩한 미션</a> -->
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="hh">
+                <a class="navbar-brand" href="{% url 'home' %}">Mission Suhang</a>
+            </div>
+    </div>
 
 
 
@@ -47,8 +85,8 @@
                         <div class="form-group row">
                             <label for="email" class="col-sm-2 col-form-label">ID</label>
                             <div class="col-sm-9">
-                                <input type="text" name="username" id="email" class="inpt" required="required"
-                                    placeholder="Your id" required='required'>
+                                <input class="form-control" type="text" name="username" id="email" class="inpt"
+                                    required="required" placeholder="Your id" required='required'>
                             </div>
                         </div>
                         {% if error1 %}
@@ -58,16 +96,16 @@
                         <div class="form-group row">
                             <label for="password" class="col-sm-2 col-form-label">Password</label>
                             <div class="col-sm-9">
-                                <input type="password" name="password1" id="password" class="inpt" required="required"
-                                    placeholder="password" required='required'>
+                                <input class="form-control" type="password" name="password1" id="password" class="inpt"
+                                    required="required" placeholder="password" required='required'>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="password" class="col-sm-2 col-form-label">Confirm Password</label>
                             <div class="col-sm-9">
-                                <input type="password" name="password2" id="password" class="inpt" required="required"
-                                    placeholder="confirm password" required='required'>
+                                <input class="form-control" type="password" name="password2" id="password" class="inpt"
+                                    required="required" placeholder="confirm password" required='required'>
 
                             </div>
                         </div>
@@ -80,7 +118,8 @@
                         <div class="form-group row">
                             <label for="inputName" class="col-sm-2 col-form-label">이름</label>
                             <div class="col-sm-9">
-                                <input class="form-control" name="name" placeholder="write your name" required='required'>
+                                <input class="form-control" name="name" placeholder="write your name"
+                                    required='required'>
 
                             </div>
                         </div>
@@ -90,8 +129,9 @@
                             <label for="inputUniversity" class="col-sm-2 col-form-label">대학교</label>
                             <div class="col-sm-9">
                                 <input class="form-control" name="university" placeholder="write your university"
-                                    id='search_school' required='required'> 
-                                    <br> <p style="color:crimson;">검색하고 학교이름을 '꼭' 클릭해주세요</p><br>
+                                    id='search_school' required='required'>
+                                <br>
+                                <p style="color:crimson;">검색하고 학교이름을 '꼭' 클릭해주세요</p><br>
 
                                 <br>
                                 {% for sch_name, e_mail in school.items %}
@@ -107,7 +147,7 @@
                         {% if error3 %}
                         <p class='error3'>{{error3}}</p>
                         {% endif %}
-                        
+
                         <hr>
                         <div class="form-group row">
                             <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
@@ -127,7 +167,8 @@
                         <div class="form-group row">
                             <label for="inputDepartment" class="col-sm-2 col-form-label">학과</label>
                             <div class="col-sm-9">
-                                <input class="form-control" name="department" placeholder="write your department" required='required'>
+                                <input class="form-control" name="department" placeholder="write your department"
+                                    required='required'>
 
                             </div>
                         </div>
@@ -155,21 +196,22 @@
                         </div>
                         <hr>
                         <div class="form-group row">
-                            
+
                             <div class="col-sm-9">
                                 <div class="hash_s" style="display:inline-block;">
-                                    
-                                        해시태그 검색<br><br>
-                                        <input class="form-control" type="text" name='search_tag_data' id='search_tag'><br><br>
-                                        {% for tag in hashtag %}
-                                        <a class="result_tag" id="result_tag"
-                                            onclick="input_hashtag($(this).attr('tag'))" tag="{{tag}}">#{{tag}}</a>
-                                        {% endfor %}
-                                    
-                                        해시태그 추가<br>
-                                        <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요!<br> ex)
-                                            #이렇게#태그걸어라#알겠냐</span><br>
-                                        ↓<input class="form-control" type="text" name='add_hashtag' id="new_hashtag"></div>
+
+                                    해시태그 검색<br><br>
+                                    <input class="form-control" type="text" name='search_tag_data'
+                                        id='search_tag'><br><br>
+                                    {% for tag in hashtag %}
+                                    <a class="result_tag" id="result_tag" onclick="input_hashtag($(this).attr('tag'))"
+                                        tag="{{tag}}">#{{tag}}</a>
+                                    {% endfor %}
+
+                                    해시태그 추가<br>
+                                    <span class="ex_hashtag" style="color: crimson">*해시태그 앞에 #을 붙여주세요!<br> ex)
+                                        #이렇게#태그걸어라#알겠냐</span><br>
+                                    ↓<input class="form-control" type="text" name='add_hashtag' id="new_hashtag"></div>
                             </div>
                         </div>
                         <hr>
@@ -195,7 +237,7 @@
 
 </body>
 <script type="text/javascript">
-    
+
 
     $('.result_tag').hide();
     $('.result_school').hide();
@@ -292,21 +334,34 @@
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
-    .error{
-    color:red;
-    font-size:1rem;}
-    .error1{
-    color:red;
-    font-size:1rem;}
-    .error2{
-    color:red;
-    font-size:1rem;}
-    .error3{
-    color:red;
-    font-size:1rem;}
-    .error4{
-    color:red;
-    font-size:1rem;}
+    .mnav {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+    .error {
+        color: red;
+        font-size: 1rem;
+    }
+
+    .error1 {
+        color: red;
+        font-size: 1rem;
+    }
+
+    .error2 {
+        color: red;
+        font-size: 1rem;
+    }
+
+    .error3 {
+        color: red;
+        font-size: 1rem;
+    }
+
+    .error4 {
+        color: red;
+        font-size: 1rem;
+    }
+
     .ppontt {
         font-family: 'Do Hyeon', sans-serif;
         text-align: center;
@@ -338,6 +393,59 @@
 
     }
 
+    /* 모바일 네브바 */
+    .dropdown-item:hover {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        ;
+        background: rgb(247, 68, 74);
+        ;
+
+    }
+
+    button {
+        all: unset;
+    }
+
+    .edit_bt:hover {
+        all: unset;
+        color: rgb(247, 68, 74);
+    }
+
+
+    .holder::placeholder {
+        color: rgb(255, 255, 255);
+    }
+
+    .holder:hover {
+        text-decoration: none;
+        color: rgb(50, 161, 137);
+    }
+
+    .logout {
+        all: unset;
+    }
+
+    .navbar-brand {
+        all: unset;
+        color: white;
+        text-align: right;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 1.3rem;
+    }
+
+    .navbar-brand:hover {
+        color: rgb(50, 161, 137);
+    }
+
+    #dropdownMenuLink {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    #dropdownMenuLink:hover {
+        color: rgb(247, 68, 74);
+    }
 
 
 
@@ -347,13 +455,15 @@
         div {
             text-align: center;
         }
-        .custom-file{
-            width:5rem;
-            margin-left:15px;
+
+        .custom-file {
+            width: 5rem;
+            margin-left: 15px;
         }
-        .form-control-plaintext{
-            margin-left:5rem;
-        }        
+
+        .form-control-plaintext {
+            margin-left: 5rem;
+        }
 
         /* .col-sm-9_h {
 
@@ -365,12 +475,14 @@
         div {
             text-align: center;
         }
-        .custom-file{
-            width:69rem;
-            margin-left:15px;
+
+        .custom-file {
+            width: 69rem;
+            margin-left: 15px;
         }
-        .hash_s{
-            margin-left:25rem;
+
+        .hash_s {
+            margin-left: 25rem;
         }
 
 

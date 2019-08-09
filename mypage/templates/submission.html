@@ -1,58 +1,175 @@
 {% extends 'base.html'%}
 {% block content %}
+<br><br><br>
 <h1> 제출결과물 </h1>
 <br>
-
-제목:{{submission_result.title}}
-<br>
-작성자:{{submission_result.writer}}
-<br>
-본문:{{submission_result.body}}
-<br>
-{% if submission_result.attachment == 'files/dummy.txt' %}
+<h4>
+    제목&nbsp;:&nbsp;{{submission_result.title}}
+    <br>
+    작성자&nbsp;:&nbsp;{{submission_result.writer}}
+    <br>
+    본문&nbsp;:&nbsp;{{submission_result.body}}
+    <br><br>
+    {% if submission_result.attachment == 'files/dummy.txt' %}
     첨부된 파일이 없습니다.
-{% else %}
-    첨부파일 :
+    {% else %}
+    첨부파일 &nbsp;:&nbsp;
     <a href="{{submission_result.attachment.url}}" download="">{{submission_result.attachment}}</a>
-{% endif %}
+    {% endif %}</h4>
 <br>
 {% if post.writer == user.username %}
 {% if post.status == 'running' %}
+
+<i class="fas fa-star"></i>
 <details>
     <summary>미션 완료</summary>
     <form action="{% url 'end' post.id %}" method="POST" id="submission_result_form">
+        <br>
         {% csrf_token %}
-      <span>평점</span><br>
-       <input type="radio" name="rating" value="1">1
-       <input type="radio" name="rating" value="2">2
-       <input type="radio" name="rating" value="3">3
-       <input type="radio" name="rating" value="4">4
-       <input type="radio" name="rating" value="5">5
-    <br>
-    <span>후기</span><br>
-    <textarea name= 'review_content' id="" cols="30" rows="10" placeholder="write your review" required='required' ></textarea>
+        <span style="font-size:1.5rem;">평점</span><br>
+        <div class="rating">
+            <label>
+                <input type="radio" name="rating" value="1" required="required" />
+                <span class="icon">★</span>
+            </label>
+            <label>
+                <input type="radio" name="rating" value="2" required="required" />
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+            </label>
+            <label>
+                <input type="radio" name="rating" value="3" required="required" />
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+            </label>
+            <label>
+                <input type="radio" name="rating" value="4" required="required" />
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+            </label>
+            <label>
+                <input type="radio" name="rating" value="5" required="required" />
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+                <span class="icon">★</span>
+            </label>
+        </div>
 
         <br>
-        <input type="submit" value='미션완료'>
-        
+        <span style="font-size:1.5rem;">후기</span><br><br>
+        <div class="col-sm-9">
+            <textarea class="form-control" name='review_content' id="" cols="5" rows="10"
+                placeholder="write your review" required='required'></textarea>
+        </div>
+        <br>
+        <input class="btn btn-dark" type="submit" value='미션완료'>
+        <br><br><br>
+
     </form>
-    </details>
-    {% endif %}
+</details>
+{% endif %}
 {% endif %}
 {% if submission_result.writer == user.username %}
 <details>
-<summary>제출 수정</summary>
-<form action="{% url 'submission_edit' submission_id=submission_result.id postId=post.id %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-      <textarea name= 'content' id="" cols="30" rows="10" placeholder="write your content" required='required'>{{submission_result.body}}</textarea>
-      <br>
-      <input type="file" name="attachment">
-      <br>
-    <input type="submit" value='수정'>
-    
-</form>
+    <summary>제출 수정</summary>
+    <form action="{% url 'submission_edit' submission_id=submission_result.id postId=post.id %}" method="POST"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name='content' id="" cols="30" rows="10" placeholder="write your content"
+            required='required'>{{submission_result.body}}</textarea>
+        <br>
+        <input type="file" name="attachment">
+        <br>
+        <input type="submit" value='수정'>
+
+    </form>
 </details>
 
 {% endif %}
 
+<style>
+    textarea {
+        resize: none;
+    }
+
+    summary {
+        font-size: 2rem;
+    }
+
+    .rating {
+        display: inline-block;
+        position: relative;
+        height: 50px;
+        line-height: 50px;
+        font-size: 50px;
+    }
+
+    .rating label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .rating label:last-child {
+        position: static;
+    }
+
+    .rating label:nth-child(1) {
+        z-index: 5;
+    }
+
+    .rating label:nth-child(2) {
+        z-index: 4;
+    }
+
+    .rating label:nth-child(3) {
+        z-index: 3;
+    }
+
+    .rating label:nth-child(4) {
+        z-index: 2;
+    }
+
+    .rating label:nth-child(5) {
+        z-index: 1;
+    }
+
+    .rating label input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .rating label .icon {
+        float: left;
+        color: transparent;
+    }
+
+    .rating label:last-child .icon {
+        color: #000;
+    }
+
+    .rating:not(:hover) label input:checked~.icon,
+    .rating:hover label:hover input~.icon {
+        color: #09f;
+    }
+
+    .rating label input:focus:not(:checked)~.icon:last-child {
+        color: #000;
+        text-shadow: 0 0 5px #09f;
+    }
+</style>
+<script>
+    $(':radio').change(function () {
+        console.log('New star rating: ' + this.value);
+    });
+</script>
 {% endblock %}
