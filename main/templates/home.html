@@ -22,28 +22,225 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    
+
     {% load staticfiles %}
+
     <div class="pont">
-        <div class="container">
+
+        <!-- 여기가 모바일 -->
+        <div class="mnav">
+            <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
+                <div class="dropdown">
+                    <div class='pont'>
+                        <a class="navbar-brand">
+                            <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                MY▼
+                            </a>
+
+
+                            <div class="dropdown-menu">
+                                {% if not user.is_authenticated %}
+                                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                                <a class="dropdown-item" href="{% url 'signup' %}">Signup</a>
+
+                                {% else %}
+                                <form id="logout" class="dropdown-item" method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <input class="logout" type="submit" value="Logout">
+                                </form>
+                                <a class="dropdown-item" href="{% url 'profile' user.profile.profile_id %}">Mypage
+                                    ({{user.username}})</a>
+                                <a class="dropdown-item" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+                                <!-- <a class="dropdown-item" href="">수행중인 미션</a>
+                  <a class="dropdown-item" href="">수행완료된 미션</a>
+                  <a class="dropdown-item" href="">의뢰중인 미션</a>
+                  <a class="dropdown-item" href="">의뢰완료된 미션</a>
+                  <a class="dropdown-item" href="">스크랩한 미션</a> -->
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="hh">
+                    <a class="navbar-brand" href="{% url 'home' %}">Mission Suhang</a>
+                </div>
+        </div>
+        <div class="container-expand-lg">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                        aria-controls="nav-home" aria-selected="true">Home</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                        aria-controls="nav-profile" aria-selected="false">Request Board</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                        aria-controls="nav-contact" aria-selected="false">Free Board</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <br>
+                    <div style="text-align:center;"><img class="image_h" src="{% static '진짜.png' %}" alt="" width="360;"
+                            height="150;"></div>
+                    <br>
+                    <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">
+                        <span class="search_menu">
+                            <input type="checkbox" name="input_board" value="freeboard" id="freeboard"
+                                class="chk_box">자유 게시판<a>/</a>
+                            <input type="checkbox" name="input_board" value="missionboard" id="missionboard"
+                                class="chk_box">의뢰 게시판
+                        </span>
+                        <span class="search_menu">
+                            <select class="form-control" name="input_type"
+                                style=" border:1px; border-bottom: #000000 2px solid; width: 20rem; margin:  0 0 0 1.5rem ;">
+                                <option name="input_type" value="title" selected>제목</option>
+                                <option name="input_type" value="writer">작성자</option>
+                                <option name="input_type" value="body">내용</option>
+                                <option name="input_type" value="hashtag">해시태그</option>
+                            </select>
+                        </span>
+                        <br>
+                        <input type="text" id="search_data" name='input_data'
+                            style=" all:unset; font-size: 1.5rem; width: 19rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px ;"
+                            placeholder="Search" class="holder">&nbsp;
+                        <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
+                                src="{% static 'search1.png' %}" width="37px;"></button>
+                        <br>
+                        <!-- 연관 검색어 -->
+                        {% for req_title in all_request_title %}
+                        <a class="request_title" onclick="search_title($(this).attr('value'))"
+                            value="{{req_title}}">{{req_title}}<br></a>
+                        {% endfor %}
+                        {% for fre_title in all_free_title %}
+                        <a class="free_title" onclick="search_title($(this).attr('value'))"
+                            value="{{fre_title}}">{{fre_title}}<br></a>
+                        {% endfor %}
+
+
+                    </form>
+                    <br>
+                    <div class="numm">
+                        <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
+                        <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
+
+                        <!-- 최근 올라온 의뢰글 표시 -->
+                        <p>진행되지 않은 의뢰는 {{ready_number}}건 입니다.</p>
+
+                        <p>현재 진행 중인 의뢰는 {{running_number}}건 입니다.</p>
+
+
+
+                    </div>
+                    <br>
+                    <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
+                    <span> MISSIONSUHANG TOP 3 </span><br>
+                    <div style="margin-left:0.7rem;">
+                    {% for hot_user in hot_users %}
+                    <a href="{% url 'profile' hot_user.profile_id %}">
+                        <img src="{{hot_user.profile_img.url}}" alt="" width="340rem;">
+                        <br><br> {{hot_user.profile_id}}
+                    </a>
+                    {% endfor %}
+                </div>
+                <hr>
+                    <br>
+                    <span href="{% url 'announcement_board' %}"" style="color:black; font-size:1rem;float:center;">[ 공지사항 ]</span>
+                        
+                        <div style="margin-left:0.7rem;">
+                        {% for announcemnt in recent_announcements %}
+                        <img src="{{announcemnt.announcement_img.url}}" alt="" width="340rempx" >
+                        <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a><br>
+                        {% endfor %}
+                    </div>
+
+                   
+                    <br><br>
+
+
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <br>
+                    <a href="{% url 'request' %}" style="float:left;">&nbsp;&nbsp;▶Go Request</a>
+                    <br><br>
+                    <span style="color:black; font-size:1rem;float:left;"> &nbsp;&nbsp;[ NEW REQUEST ]</span><br><br>
+                    <div style="margin-left:0.7rem;">
+                        {% for recent_post in recent_posts %}
+                        <a href="{% url 'detail' recent_post.id%}">
+                            <img src="{{recent_post.attached_img.url}}" alt="" width="340rem;">
+                            <br><br>
+                            <a style="color:black;">제목 _ {{recent_post.title}} | {{recent_post.writer}}</a>
+                            <br>
+                        </a><br>
+                        {% endfor %}
+                    </div>
+                    <br><hr><br>
+                    <div style="margin-left:0.7rem;">
+                        <span style="color:black; font-size:1rem;float:left;"> &nbsp;&nbsp;[ HOT REQUEST ]</span><br><br>
+                        {% for liked in scrap_lists %}
+                        {% for entry in liked %}
+                        {% if forloop.counter0 == 0 %}
+                        <a href="{% url 'detail' entry.id %}">
+                            <img src="{{entry.attached_img.url}}" alt="" width="340rem;"><br><br>
+                            제목 _ {{entry.title}} |
+                        </a>
+                        {% else %}
+                        Scrap _ {{entry}}<br>
+                        {% endif %}
+                        {% endfor %}
+                        <br>
+                        {% endfor %}
+                        <br><br>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <br>
+                    <a href="{% url 'board' %}" style="float:left;">&nbsp;&nbsp;▶Go Freeboard</a>
+                    <br><br>
+                    <span style="color:black; font-size:1rem;float:left;"> &nbsp;&nbsp;[ NEW Contents ]</span><br><br>
+                    <div style="margin-left:0.7rem;">
+                    {% for recent_free in recent_freeboard %}
+                    <img src="{{recent_free.attached_img.url}}" alt="" width="340rem;" >
+                    <a href="{% url 'b_detail' recent_free.id %}"><br><br>제목 _ {{recent_free.title}} | {{recent_free.writer}}</a><br><br>
+                    {% endfor %}</div>
+                    <br><hr><br>
+                    <span style="color:black; font-size:1rem;float:left;"> &nbsp;&nbsp;[ HOT Contents ]</span><br><br>
+                    <div style="margin-left:0.7rem;">
+                    {% for liked in like_lists %}
+                    {% for entry in liked %}
+                    {% if forloop.counter0 == 0 %}
+                    <a href="{% url 'b_detail' entry.id %}">
+                        &nbsp <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
+                    <br><br><a style="color: black;">제목 _ {{entry.title}} |
+                        {% else %} Like _ {{entry}}</a><br>
+                    {% endif %}
+
+                    {% endfor %}
+                    <br>
+                    {% endfor %}
+                    </div>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+        <div class="container d-none d-sm-block">
             <div class="row">
                 <div class="col" style="background: black;">
                     <!-- 왼쪽 -->
-                   <br>
+                    <br>
                     <a href="{% url 'board'%}" style="color:white; font-size:2rem;">▶Free Board </a>
                     <br>
                     <p>자유게시판 HOT 게시물</p>
-                    {% for liked in like_lists %} 
-                        {% for entry in liked %}
-                            {% if forloop.counter0 == 0 %}
-                                <a href="{% url 'b_detail' entry.id %}">
-                                  &nbsp   <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
-                                 &nbsp <a style="color: white;">  {{entry.title}} /
-                            {% else %} ♡ : {{entry}}</a><br>
-                            {% endif %}
-                            
-                        {% endfor %}
-                        <br>  
+                    {% for liked in like_lists %}
+                    {% for entry in liked %}
+                    {% if forloop.counter0 == 0 %}
+                    <a href="{% url 'b_detail' entry.id %}">
+                        &nbsp <img src="{{entry.attached_img.url}}" alt="" width="340rem;"></a>
+                    &nbsp <a style="color: white;"> {{entry.title}} /
+                        {% else %} ♡ : {{entry}}</a><br>
+                    {% endif %}
+
+                    {% endfor %}
+                    <br>
                     {% endfor %}
                     <hr>
                 </div>
@@ -58,7 +255,8 @@
                                 class="chk_box">의뢰 게시판
                         </span>
                         <span class="search_menu">
-                          <select class="form-control" name="input_type" style=" border:1px; border-bottom: #000000 2px solid; width: 25rem; margin:  0 0 0 0.7rem ;">
+                            <select class="form-control" name="input_type"
+                                style=" border:1px; border-bottom: #000000 2px solid; width: 25rem; margin:  0 0 0 0.7rem ;">
                                 <option name="input_type" value="title" selected>제목</option>
                                 <option name="input_type" value="writer">작성자</option>
                                 <option name="input_type" value="body">내용</option>
@@ -69,7 +267,7 @@
                             style=" all:unset; font-size: 1.5rem; width: 40rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px ;"
                             placeholder="Search" class="holder">
                         <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
-                            src="{% static 'search1.png' %}" width="37px;"></button>
+                                src="{% static 'search1.png' %}" width="37px;"></button>
                         <br>
                         <!-- 연관 검색어 -->
                         {% for req_title in all_request_title %}
@@ -80,34 +278,36 @@
                         <a class="free_title" onclick="search_title($(this).attr('value'))"
                             value="{{fre_title}}">{{fre_title}}<br></a>
                         {% endfor %}
-                        
+
 
                     </form>
-                    <a class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜2.png' %}" width="755rem"></a>
+                    <a class="box" href="{% url 'home' %}"><img class="image" src="{% static '진짜2.png' %}"
+                            width="755rem"></a>
                     <br>
                     {% if judge == True %}
-                        <a href="{% url 'dissatisfication'%}">민원사항</a>
-                        <br>
+                    <a href="{% url 'dissatisfication'%}">민원사항</a>
+                    <br>
                     {% endif %}
-                    
+
                     <a href="{% url 'announcement_board' %}">공지사항</a>
-                    <br><hr>
+                    <br>
+                    <hr>
                     <div>
-                    <p>최근 공지사항</p>
-                    {% for announcemnt in recent_announcements %}
+                        <p>최근 공지사항</p>
+                        {% for announcemnt in recent_announcements %}
                         <img src="{{announcemnt.announcement_img.url}}" alt="" width="50px" height="50px">
                         <a href="{% url 'announcement_detail' announcemnt.id %}">{{announcemnt.title}}</a><br>
-                    {% endfor %}
-                    <hr>
-                </div>
-                <div>
-                    <p>NEW 자유게시판</p>
-                    {% for recent_free in recent_freeboard %}
+                        {% endfor %}
+                        <hr>
+                    </div>
+                    <div>
+                        <p>NEW 자유게시판</p>
+                        {% for recent_free in recent_freeboard %}
                         <img src="{{recent_free.attached_img.url}}" alt="" width="50px" height="50px">
                         <a href="{% url 'b_detail' recent_free.id %}">{{recent_free.title}}</a><br>
-                    {% endfor %}
-                    <hr>
-                </div>
+                        {% endfor %}
+                        <hr>
+                    </div>
                     <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
                     <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
 
@@ -119,33 +319,33 @@
 
                     <!-- 미션을 많이 수행한 top3 수행자 닉네임 표시 -->
                     <span>Hot 수행자 : </span>
-                        {% for hot_user in hot_users %}
-                            <a href="{% url 'profile' hot_user.profile_id %}">
-                                <img src="{{hot_user.profile_img.url}}" alt="" width="50px" height="50px">
-                                {{hot_user.profile_id}}
-                            </a>
-                        {% endfor %}
+                    {% for hot_user in hot_users %}
+                    <a href="{% url 'profile' hot_user.profile_id %}">
+                        <img src="{{hot_user.profile_img.url}}" alt="" width="50px" height="50px">
+                        {{hot_user.profile_id}}
+                    </a>
+                    {% endfor %}
                     <hr>
 
                     <!-- 인기 게시글과 hot 의뢰글 -->
-                   
-                    <p>의뢰게시판 HOT 게시물</p>
-                    {% for liked in scrap_lists %} 
-                        {% for entry in liked %}
-                            {% if forloop.counter0 == 0 %}
-                                <a href="{% url 'detail' entry.id %}">
-                                    <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
-                                    {{entry.title}} /
-                                </a>
-                            {% else %}
-                                스크랩 개수 : {{entry}}
-                            {% endif %}
-                        {% endfor %}
-                        <br>
-                    {% endfor %}
-                    <hr> 
 
-                    
+                    <p>의뢰게시판 HOT 게시물</p>
+                    {% for liked in scrap_lists %}
+                    {% for entry in liked %}
+                    {% if forloop.counter0 == 0 %}
+                    <a href="{% url 'detail' entry.id %}">
+                        <img src="{{entry.attached_img.url}}" alt="" width="50px" height="50px">
+                        {{entry.title}} /
+                    </a>
+                    {% else %}
+                    스크랩 개수 : {{entry}}
+                    {% endif %}
+                    {% endfor %}
+                    <br>
+                    {% endfor %}
+                    <hr>
+
+
                     <hr>
                     <!-- 해시태그 정보 참고하여 추천 의뢰물 표시-->
                     <p>추천 의뢰글</p>
@@ -160,16 +360,16 @@
                     <br>
                     {% endfor %}
                 </div>
-                <div class="col"  style="background: black; color:white;">
+                <div class="col" style="background: black; color:white;">
                     <!-- 가생이 오른쪽 -->
                     <br>
                     <span style="color:white; font-size:2rem;"> ▶Request Board</span><br>
-                        {% for recent_post in recent_posts %}
-                            <a href="{% url 'detail' recent_post.id%}">
-                                <img src="{{recent_post.attached_img.url}}" alt="" width="340rem;">
-                                <a style="color:white;">{{recent_post.title}} / {{recent_post.writer}}</a>
-                            </a><br>
-                        {% endfor %}
+                    {% for recent_post in recent_posts %}
+                    <a href="{% url 'detail' recent_post.id%}">
+                        <img src="{{recent_post.attached_img.url}}" alt="" width="340rem;">
+                        <a style="color:white;">{{recent_post.title}} / {{recent_post.writer}}</a>
+                    </a><br>
+                    {% endfor %}
                     <br>
                     <a href="{% url 'request'%}">의뢰게시판</a>
                     {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
@@ -186,9 +386,9 @@
                     {% if request.user.is_superuser == False %}
                     <a href="{% url 'profile' user.profile.profile_id %}">Mypage (
                         {{user.username}} ) </a>
-        
+
                     {% endif %}
-        
+
                     <a href="#" rel="popover" data-trigger="focus" data-placement="bottom"
                         data-popover-content="#list-popover">알림({{notifi_count}})</a>
                     <div id="list-popover" style="display:none">
@@ -203,13 +403,13 @@
                             {% endfor %}
                             <a href="{% url 'notifications' %}">see all</a>
                         </a>
-        
-        
+
+
                         {% endif %}
 
-                    <br>
+                        <br>
+                    </div>
                 </div>
-            </div>
 
 
 
@@ -225,8 +425,8 @@
 
 
 
-            <!--  뿌야-->
-          
+                <!--  뿌야-->
+
                 {% endif %}
 
 
@@ -234,116 +434,118 @@
                 <div style="position: fixed; bottom:5px; right:5px;"><a href="#"><img class="top"
                             src="{% static 'top.png' %}" width="50px;"></a>
                 </div>
-                <style>
-                    .container {
-                        all: unset;
-                        width: 100rem;
-                    }
-                    a{
-                        all:unset;
-                        color:rgb(75, 57, 57);
-                    }
-                </style>
-                <script type="text/javascript">
 
-                    $('.result_tag').hide();
-                    $('.request_title').hide();
-                    $('.free_title').hide();
-
-                    $('[rel="popover"]').popover({
-                        container: 'body',
-                        html: true,
-                        content: function () {
-                            var clone = $($(this).data('popover-content')).clone(true).html();
-                            return clone;
-                        }
-                    }).click(function (e) {
-                        e.preventDefault();
-                    });
-
-                    $('[rel="popover_like"]').popover({
-                        container: 'body',
-                        html: true,
-                        content: function () {
-                            var clone = $($(this).data('popover-content')).clone(true).html();
-                            return clone;
-                        }
-                    }).click(function (e) {
-                        e.preventDefault();
-                    });
-
-                    $('[rel="popover_scrap"]').popover({
-                        container: 'body',
-                        html: true,
-                        content: function () {
-                            var clone = $($(this).data('popover-content')).clone(true).html();
-                            return clone;
-                        }
-                    }).click(function (e) {
-                        e.preventDefault();
-                    });
-
-                    function check() {
-                        var chkbox = document.getElementsByName('input_board');
-                        var chk = true;
-                        for (var i = 0; i < chkbox.length; i++) {
-                            if (chkbox[i].checked) { pass }
-                            else { chk = false; }
-                        }
-                        if (chk == false) {
-                            alert("검색 할 게시판을 선택해주세요!");
-                            return false;
-                        }
-                        else { return true; }
-                    }
-
-                    // 검색바 연관검색
-                    jQuery(function ($) {
-                        $('#search_data').on("propertychange change keyup paste input", function () {
-                            var val = $(this).val();
-                            var free = $('input:checkbox[id="freeboard"]').is(":checked")
-                            var mission = $('input:checkbox[id="missionboard"]').is(":checked")
-
-                            if (free == true && mission == false) {
-                                if (val == "") {
-                                    $('.free_title').hide();
-                                } else {
-                                    $('.free_title').hide();
-                                    $(".free_title:contains('" + val + "')").show();
-                                }
-                            } else if (free == false && mission == true) {
-
-                                if (val == "") {
-                                    $('.request_title').hide();
-                                } else {
-                                    $('.request_title').hide();
-                                    $(".request_title:contains('" + val + "')").show();
-                                }
-                            } else if (free == true && mission == true) {
-                                if (val == "") {
-                                    $('.free_title').hide();
-                                    $('.request_title').hide();
-                                } else {
-                                    $('.free_title').hide();
-                                    $('.request_title').hide();
-                                    $(".free_title:contains('" + val + "')").show();
-                                    $(".request_title:contains('" + val + "')").show();
-                                }
-                            }
-                        });
-                    });
-
-                    function search_title(val) {
-                        $('#search_data').val(val);
-                        $('.request_title').hide();
-                        $('.free_title').hide();
-                    }
-
-                </script>
 
 </body>
 
 </html>
+<style>
+    .container {
+        all: unset;
+        width: 100rem;
+    }
+
+    a {
+        all: unset;
+        color: rgb(75, 57, 57);
+    }
+</style>
+<script type="text/javascript">
+
+    $('.result_tag').hide();
+    $('.request_title').hide();
+    $('.free_title').hide();
+
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    $('[rel="popover_like"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    $('[rel="popover_scrap"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    function check() {
+        var chkbox = document.getElementsByName('input_board');
+        var chk = true;
+        for (var i = 0; i < chkbox.length; i++) {
+            if (chkbox[i].checked) { pass }
+            else { chk = false; }
+        }
+        if (chk == false) {
+            alert("검색 할 게시판을 선택해주세요!");
+            return false;
+        }
+        else { return true; }
+    }
+
+    // 검색바 연관검색
+    jQuery(function ($) {
+        $('#search_data').on("propertychange change keyup paste input", function () {
+            var val = $(this).val();
+            var free = $('input:checkbox[id="freeboard"]').is(":checked")
+            var mission = $('input:checkbox[id="missionboard"]').is(":checked")
+
+            if (free == true && mission == false) {
+                if (val == "") {
+                    $('.free_title').hide();
+                } else {
+                    $('.free_title').hide();
+                    $(".free_title:contains('" + val + "')").show();
+                }
+            } else if (free == false && mission == true) {
+
+                if (val == "") {
+                    $('.request_title').hide();
+                } else {
+                    $('.request_title').hide();
+                    $(".request_title:contains('" + val + "')").show();
+                }
+            } else if (free == true && mission == true) {
+                if (val == "") {
+                    $('.free_title').hide();
+                    $('.request_title').hide();
+                } else {
+                    $('.free_title').hide();
+                    $('.request_title').hide();
+                    $(".free_title:contains('" + val + "')").show();
+                    $(".request_title:contains('" + val + "')").show();
+                }
+            }
+        });
+    });
+
+    function search_title(val) {
+        $('#search_data').val(val);
+        $('.request_title').hide();
+        $('.free_title').hide();
+    }
+
+</script>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 
@@ -354,5 +556,86 @@
     .box {
         text-align: center;
         margin: 5rem 0 0 0;
+    }
+
+    /* 모바일 네브바 */
+    .dropdown-item:hover {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        ;
+        background: rgb(247, 68, 74);
+        ;
+
+    }
+
+    button {
+        all: unset;
+    }
+
+    .edit_bt:hover {
+        all: unset;
+        color: rgb(247, 68, 74);
+    }
+
+
+    .holder::placeholder {
+        color: rgb(255, 255, 255);
+    }
+
+    .holder:hover {
+        text-decoration: none;
+        color: rgb(50, 161, 137);
+    }
+
+    .logout {
+        all: unset;
+    }
+
+    .navbar-brand {
+        all: unset;
+        color: white;
+        text-align: right;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 1.3rem;
+    }
+
+    .navbar-brand:hover {
+        color: rgb(50, 161, 137);
+    }
+
+    #dropdownMenuLink {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    #dropdownMenuLink:hover {
+        color: rgb(247, 68, 74);
+    }
+
+    @media screen and (min-width: 1000px) {
+        .container-expand-lg {
+            display: none;
+        }
+
+        .mnav {
+            display: none;
+        }
+    }
+
+    .numm {
+        text-align: center;
+        width: 20rem;
+        height: 7rem;
+        background-color: #ffffff;
+        color: #030303;
+        text-align: center;
+        font-size: 1rem;
+        border: 2px solid black;
+        border-radius: 5px;
+        margin-left: 1.8rem;
+    }
+
+    div {
+        text-align: center;
     }
 </style>
