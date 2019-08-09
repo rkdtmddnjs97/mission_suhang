@@ -4,22 +4,36 @@
 {% block content %}
 <div class="container">
     
-        <h1>{{input_board}}의 검색 결과</h1>
+        <h1>{{search_type}}의 검색 결과</h1>
       
         <hr>
-        {{search_type}} : '{{input_data}}'
-        <div>
+        '{{input_data}}'에 대한 검색 결과
+        <div><br>
         <ol>
-            {% if result_flag == True %}
-                {% for result in results %}
-                <a href="{% url 'detail' result.id %}">
-                    <li>{{result.title}} / {{result.writer}} / {{result.pub_date}}</li>
-                </a>
-                <br>
-                {% endfor %}
+            {% if search_type == 'user' %}
+                {% if result_flag == True %}
+                    {% for result in results %}
+                    <a href="{% url 'profile' result.profile_id %}">
+                        {{result.profile_id}}
+                    </a>
+                    <br>
+                    {% endfor %}
+                {% else %}
+                    <br>
+                    {{results}}
+                {% endif %}
             {% else %}
-                <br>
-                {{results}}
+                {% if result_flag == True %}
+                    {% for result in results %}
+                    <a href="{% url 'detail' result.id %}">
+                        <li>{{result.title}} / {{result.writer}} / {{result.pub_date}}</li>
+                    </a>
+                    <br>
+                    {% endfor %}
+                {% else %}
+                    <br>
+                    {{results}}
+                {% endif %}
             {% endif %}
         </ol>
         </div>

@@ -26,6 +26,106 @@
 
     {% load staticfiles %}
 
+    <div class="pont">
+
+        <!-- 여기가 모바일 -->
+        <div class="mnav">
+            <nav class="navbar navbar-expand-lg " style="background:  rgb(0, 0, 0);">
+                <div class="dropdown">
+                    <div class='pont'>
+                        <a class="navbar-brand">
+                            <a id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                MY▼
+                            </a>
+
+
+                            <div class="dropdown-menu">
+                                {% if not user.is_authenticated %}
+                                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                                <a class="dropdown-item" href="{% url 'signup' %}">Signup</a>
+
+                                {% else %}
+                                <form id="logout" class="dropdown-item" method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <input class="logout" type="submit" value="Logout">
+                                </form>
+                                <a class="dropdown-item" href="{% url 'profile' user.profile.profile_id %}">Mypage
+                                    ({{user.username}})</a>
+                                <a class="dropdown-item" href="{% url 'notifications' %}">알림({{notifi_count}})</a>
+                                <!-- <a class="dropdown-item" href="">수행중인 미션</a>
+                  <a class="dropdown-item" href="">수행완료된 미션</a>
+                  <a class="dropdown-item" href="">의뢰중인 미션</a>
+                  <a class="dropdown-item" href="">의뢰완료된 미션</a>
+                  <a class="dropdown-item" href="">스크랩한 미션</a> -->
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="hh">
+                    <a class="navbar-brand" href="{% url 'home' %}">Mission Suhang</a>
+                </div>
+        </div>
+        <div class="container-expand-lg">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                        aria-controls="nav-home" aria-selected="true">Home</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                        aria-controls="nav-profile" aria-selected="false">Request Board</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                        aria-controls="nav-contact" aria-selected="false">Free Board</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <br>
+                    <div style="text-align:center;"><img class="image_h" src="{% static '진짜.png' %}" alt="" width="360;"
+                            height="150;"></div>
+                    <br>
+                    <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">
+                        <span class="search_menu">
+                            <input type="checkbox" name="input_board" value="freeboard" id="freeboard"
+                                class="chk_box">자유 게시판<a>/</a>
+                            <input type="checkbox" name="input_board" value="missionboard" id="missionboard"
+                                class="chk_box">의뢰 게시판
+                        </span>
+                        <span class="search_menu">
+                            <select class="form-control" name="input_type"
+                                style=" border:1px; border-bottom: #000000 2px solid; width: 20rem; margin:  0 0 0 1.5rem ;">
+                                <option name="input_type" value="title" selected>제목</option>
+                                <option name="input_type" value="writer">작성자</option>
+                                <option name="input_type" value="body">내용</option>
+                                <option name="input_type" value="hashtag">해시태그</option>
+                            </select>
+                        </span>
+                        <br>
+                        <input type="text" id="search_data" name='input_data'
+                            style=" all:unset; font-size: 1.5rem; width: 19rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px ;"
+                            placeholder="Search" class="holder">&nbsp;
+                        <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
+                                src="{% static 'search1.png' %}" width="37px;"></button>
+                        <br>
+                        <!-- 연관 검색어 -->
+                        {% for req_title in all_request_title %}
+                        <a class="request_title" onclick="search_title($(this).attr('value'))"
+                            value="{{req_title}}">{{req_title}}<br></a>
+                        {% endfor %}
+                        {% for fre_title in all_free_title %}
+                        <a class="free_title" onclick="search_title($(this).attr('value'))"
+                            value="{{fre_title}}">{{fre_title}}<br></a>
+                        {% endfor %}
+
+
+                    </form>
+                    <br>
+                    <div class="numm">
+                        <!-- 해당 시스템 총 미션수행완료 갯수 표시 -->
+                        <p>현재 완료된 미션수행은 {{mission_completed}}건 입니다.</p>
+
+                        <!-- 최근 올라온 의뢰글 표시 -->
+                        <p>진행되지 않은 의뢰는 {{ready_number}}건 입니다.</p>
+
 
     <div class="pont">
 
@@ -54,7 +154,9 @@
                         <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
                                 src="{% static 'search1.png' %}" width="37px;"></button>
                         <br>
-                        <!-- 연관 검색어 -->
+
+                        <br>
+                        <!-- 연관 검색어 : 게시물 제목 -->
                         {% for req_title in all_request_title %}
                         <a class="request_title" onclick="search_title($(this).attr('value'))"
                             value="{{req_title}}">{{req_title}}<br></a>
@@ -63,10 +165,18 @@
                         <a class="free_title" onclick="search_title($(this).attr('value'))"
                             value="{{fre_title}}">{{fre_title}}<br></a>
                         {% endfor %}
+                         
+                        <!-- 연관 검색어 : 해시태그 -->
+                        {% for tag_name in all_hashtag_data %}
+                        <a class="tag_name" onclick="search_title($(this).attr('value'))"
+                            value="{{tag_name}}">#{{tag_name}}<br></a>
+                        {% endfor %}
+
                     </form>
                 </div>
                 <a class="box" style="margin: 0 0 0 2rem;" href="{% url 'home' %}"><img class="image"
                         src="{% static '진짜2.png' %}" width="889rem"></a>
+
 
                 <div class="hot"
                     style=" margin: 0 0 0 2rem; background-color: rgb(7, 7, 7); color:white; width:55rem; font-size:2.5rem; ">
@@ -135,6 +245,7 @@
                             {% if not user.is_authenticated or  request.user.profile.approval == False and request.user.is_superuser == False%}
                             <a class="hi" href="{% url 'login' %}">Login</a>
                             <a class="hi" href="{% url 'signup' %}">Signup</a>
+
                             {% else %}
                             {% if request.user.profile.approval == True or request.user.is_superuser == True %}
                             <a id="logout_btn">
@@ -270,6 +381,7 @@
                         </div>
 
                     </div>
+
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <br>
                         <span style="color:rgb(0, 0, 0); font-size:3rem;"> <a class="hi"
@@ -342,19 +454,16 @@
 
 
 
-
-
                     </div>
 
                 </div>
 
 
 
+
                 <br>
 
-
-                <!-- </div>
-                </div> -->
+                
             </div>
         </div>
     </div>
@@ -440,78 +549,134 @@
 
         }
     </style>
-    <script type="text/javascript">
 
-        $('.result_tag').hide();
-        $('.request_title').hide();
-        $('.free_title').hide();
+                
+                <script type="text/javascript">
 
-        $('[rel="popover"]').popover({
-            container: 'body',
-            html: true,
-            content: function () {
-                var clone = $($(this).data('popover-content')).clone(true).html();
-                return clone;
-            }
-        }).click(function (e) {
-            e.preventDefault();
-        });
+                    $('.result_tag').hide();
+                    $('.request_title').hide();
+                    $('.free_title').hide();
+                    $('.user_menu').hide();
+                    $('.tag_name').hide();
 
-        $('[rel="popover_like"]').popover({
-            container: 'body',
-            html: true,
-            content: function () {
-                var clone = $($(this).data('popover-content')).clone(true).html();
-                return clone;
-            }
-        }).click(function (e) {
-            e.preventDefault();
-        });
+                    $('[rel="popover"]').popover({
+                        container: 'body',
+                        html: true,
+                        content: function () {
+                            var clone = $($(this).data('popover-content')).clone(true).html();
+                            return clone;
+                        }
+                    }).click(function (e) {
+                        e.preventDefault();
+                    });
 
-        $('[rel="popover_scrap"]').popover({
-            container: 'body',
-            html: true,
-            content: function () {
-                var clone = $($(this).data('popover-content')).clone(true).html();
-                return clone;
-            }
-        }).click(function (e) {
-            e.preventDefault();
-        });
+                    $('[rel="popover_like"]').popover({
+                        container: 'body',
+                        html: true,
+                        content: function () {
+                            var clone = $($(this).data('popover-content')).clone(true).html();
+                            return clone;
+                        }
+                    }).click(function (e) {
+                        e.preventDefault();
+                    });
 
-        function check() {
-            var chkbox = document.getElementsByName('input_board');
-            var chk = true;
-            for (var i = 0; i < chkbox.length; i++) {
-                if (chkbox[i].checked) { pass }
-                else { chk = false; }
-            }
-            if (chk == false) {
-                alert("검색 할 게시판을 선택해주세요!");
-                return false;
-            }
-            else { return true; }
-        }
+                    $('[rel="popover_scrap"]').popover({
+                        container: 'body',
+                        html: true,
+                        content: function () {
+                            var clone = $($(this).data('popover-content')).clone(true).html();
+                            return clone;
+                        }
+                    }).click(function (e) {
+                        e.preventDefault();
+                    });
 
-        // 검색바 연관검색
-        jQuery(function ($) {
-            $('#search_data').on("propertychange change keyup paste input", function () {
-                var val = $(this).val();
-                var free = $('input:checkbox[id="freeboard"]').is(":checked")
-                var mission = $('input:checkbox[id="missionboard"]').is(":checked")
+                    function check() {
+                        var chkbox = document.getElementsByName('input_board');
+                        var chk = true;
+                        for (var i = 0; i < chkbox.length; i++) {
+                            if (chkbox[i].checked) { pass }
+                            else { chk = false; }
+                        }
+                        if (chk == false) {
+                            alert("검색 할 게시판을 선택해주세요!");
+                            return false;
+                        }
+                        else { return true; }
+                     }
 
-                if (free == true && mission == false) {
-                    if (val == "") {
-                        $('.free_title').hide();
-                    } else {
-                        $('.free_title').hide();
-                        $(".free_title:contains('" + val + "')").show();
-                    }
-                } else if (free == false && mission == true) {
 
-                    if (val == "") {
-                        $('.request_title').hide();
-                    } else {
+                    // 검색바 연관검색
+                    jQuery(function ($) {
+                        $('#search_data').on("propertychange change keyup paste input", function () {
+                            var val = $(this).val();
+                            var type = $("#search_type option:selected").val();
+                            var filter_type = $("#filter_type option:selected").val();
+                            // console.log(type);
+                            // console.log(typeof(type));
+                            if (type == "freeboard") {
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.free_title').hide();
+                                    } else {
+                                        $('.free_title').hide();
+                                        $(".free_title:contains('" + val + "')").show();
+                                    }
+                                }
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
+                                }
+                                
+                            } else if (type == "missionboard") {
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.request_title').hide();
+                                    } else {
+                                        $('.request_title').hide();
+                                        $(".request_title:contains('" + val + "')").show();
+                                    }
+                                }
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
+                                }
+                            } else if (type == "allBoard") {
+                                
+                                if(filter_type == "title"){
+                                    if (val == "") {
+                                        $('.free_title').hide();
+                                        $('.request_title').hide();
+                                    } else {
+                                        $('.free_title').hide();
+                                        $('.request_title').hide();
+                                        $(".free_title:contains('" + val + "')").show();
+                                        $(".request_title:contains('" + val + "')").show();
+                                    }
+                                }
+                                else if(filter_type == "hashtag") {
+                                    if (val == "") {
+                                        $('.tag_name').hide();
+                                    } else {
+                                        $('.tag_name').hide();
+                                        $(".tag_name:contains('" + val + "')").show();
+                                    }
+                                }                                
+                            }
+                        });
+                    });
+
+                    function search_title(val) {
+                        $('#search_data').val(val);
                         $('.request_title').hide();
                         $(".request_title:contains('" + val + "')").show();
                     }
@@ -535,11 +700,134 @@
             $('.free_title').hide();
         }
 
-    </script>
+                    function search_type_check() {
+                        var type = $("#search_type option:selected").val();
+                        if (type == "user") {
+                            $('.user_menu').show();
+                            $('.board_menu').hide();
+                            $('.user_menu').attr('selected',true);
+                            $('.board_menu').attr('selected',false);
+                        }
+                        else {
+                            $('.user_menu').hide();
+                            $('.board_menu').show();
+                            $('.title_menu').attr('selected',true);
+                            $('.user_menu').attr('selected',false);
+                        }
+                    }
+
+                </script>
 
 </body>
 
 </html>
+<style>
+    .container {
+        all: unset;
+        width: 100rem;
+    }
+
+    a {
+        all: unset;
+        color: rgb(75, 57, 57);
+    }
+</style>
+<script type="text/javascript">
+
+    $('.result_tag').hide();
+    $('.request_title').hide();
+    $('.free_title').hide();
+
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    $('[rel="popover_like"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    $('[rel="popover_scrap"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).html();
+            return clone;
+        }
+    }).click(function (e) {
+        e.preventDefault();
+    });
+
+    function check() {
+        var chkbox = document.getElementsByName('input_board');
+        var chk = true;
+        for (var i = 0; i < chkbox.length; i++) {
+            if (chkbox[i].checked) { pass }
+            else { chk = false; }
+        }
+        if (chk == false) {
+            alert("검색 할 게시판을 선택해주세요!");
+            return false;
+        }
+        else { return true; }
+    }
+
+    // 검색바 연관검색
+    jQuery(function ($) {
+        $('#search_data').on("propertychange change keyup paste input", function () {
+            var val = $(this).val();
+            var free = $('input:checkbox[id="freeboard"]').is(":checked")
+            var mission = $('input:checkbox[id="missionboard"]').is(":checked")
+
+            if (free == true && mission == false) {
+                if (val == "") {
+                    $('.free_title').hide();
+                } else {
+                    $('.free_title').hide();
+                    $(".free_title:contains('" + val + "')").show();
+                }
+            } else if (free == false && mission == true) {
+
+                if (val == "") {
+                    $('.request_title').hide();
+                } else {
+                    $('.request_title').hide();
+                    $(".request_title:contains('" + val + "')").show();
+                }
+            } else if (free == true && mission == true) {
+                if (val == "") {
+                    $('.free_title').hide();
+                    $('.request_title').hide();
+                } else {
+                    $('.free_title').hide();
+                    $('.request_title').hide();
+                    $(".free_title:contains('" + val + "')").show();
+                    $(".request_title:contains('" + val + "')").show();
+                }
+            }
+        });
+    });
+
+    function search_title(val) {
+        $('#search_data').val(val);
+        $('.request_title').hide();
+        $('.free_title').hide();
+    }
+
+</script>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 
@@ -550,5 +838,86 @@
     .box {
         text-align: center;
         margin: 5rem 0 0 0;
+    }
+
+    /* 모바일 네브바 */
+    .dropdown-item:hover {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        ;
+        background: rgb(247, 68, 74);
+        ;
+
+    }
+
+    button {
+        all: unset;
+    }
+
+    .edit_bt:hover {
+        all: unset;
+        color: rgb(247, 68, 74);
+    }
+
+
+    .holder::placeholder {
+        color: rgb(255, 255, 255);
+    }
+
+    .holder:hover {
+        text-decoration: none;
+        color: rgb(50, 161, 137);
+    }
+
+    .logout {
+        all: unset;
+    }
+
+    .navbar-brand {
+        all: unset;
+        color: white;
+        text-align: right;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 1.3rem;
+    }
+
+    .navbar-brand:hover {
+        color: rgb(50, 161, 137);
+    }
+
+    #dropdownMenuLink {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+    #dropdownMenuLink:hover {
+        color: rgb(247, 68, 74);
+    }
+
+    @media screen and (min-width: 1000px) {
+        .container-expand-lg {
+            display: none;
+        }
+
+        .mnav {
+            display: none;
+        }
+    }
+
+    .numm {
+        text-align: center;
+        width: 20rem;
+        height: 7rem;
+        background-color: #ffffff;
+        color: #030303;
+        text-align: center;
+        font-size: 1rem;
+        border: 2px solid black;
+        border-radius: 5px;
+        margin-left: 1.8rem;
+    }
+
+    div {
+        text-align: center;
     }
 </style>

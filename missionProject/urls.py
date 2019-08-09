@@ -16,8 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import main.views
-import view_request.urls
-import view_request.views
 import request.urls
 import search.views
 import notification.views
@@ -28,10 +26,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', main.views.home, name="home"),
+    path('', main.views.first_page, name="first_page"),
     path('mypage/', include('mypage.urls')),
     path('accounts/', include('accounts.urls')),
-    path('crud/',include(view_request.urls)),
     path('freeBoard/',include('freeBoard.urls')),
     path('request/', include('request.urls')),
     path('search_result/', search.views.search, name="search"),

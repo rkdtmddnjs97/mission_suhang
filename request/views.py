@@ -53,6 +53,17 @@ def request_home(request):
 
 def detail(request,post_id):
     post = get_object_or_404(Post, pk=post_id)
+    all_post =  Post.objects.all()
+    all_post = list(all_post)
+    end_post =all_post[-1]
+    for i, compare_post in enumerate(all_post):
+        if post.id == compare_post.id:
+            if compare_post.id == end_post.id:
+                previous_post = all_post[i-1]
+                next_post = all_post[0]
+            else:
+                previous_post = all_post[i-1]
+                next_post = all_post[i+1]
     comments = Comment.objects.filter(post = post_id)
     page = request.GET.get('page')
     reversed_comment=[]
@@ -72,7 +83,7 @@ def detail(request,post_id):
     total_scrap_user = scrap_users.count()
     isScraped = post.user.filter(username=request.user.username).exists()
 
-    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge, 'total_scrap_user':total_scrap_user, 'isScraped':isScraped})
+    return render(request, 'detail.html', {'post':post, 'comments': reversed_comment, 'hashtag':hashtag,'judge':judge, 'total_scrap_user':total_scrap_user, 'isScraped':isScraped, 'previous_post':previous_post, 'next_post':next_post })
 
 def new(request):
     user = request.user
@@ -116,6 +127,15 @@ def create(request):
     applyMission.post = new_post
     applyMission.save()
     hash_list = request.POST['hashtag'].split('#')
+
+    my_profile = Profile.objects.get(profile_id=request.user.username)
+    if my_profile.university is not None:
+        if Hashtag.objects.filter(name=my_profile.university.upper()).exists():
+            school_tag = Hashtag.objects.get(name=my_profile.university.upper())
+            new_post.hashtag.add(school_tag)
+        else:
+            school_tag = Hashtag.objects.create(name=my_profile.university.upper())
+            new_post.hashtag.add(school_tag)
 
     for index,hash in enumerate(hash_list):
         if index==0: #리스트의 첫번째값은 공백이므로 패스한다.
