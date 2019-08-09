@@ -250,7 +250,7 @@
         <div class="row">
             <div class="col">
 
-                <div class="box_y" style="margin:2rem 1rem 1rem 2rem; width: 35rem;">
+                <div class="box_y" style="margin:2rem 1rem 1rem 2rem; width: 100%;">
                     <form name="search_bar" action="{% url 'search' %}" method="GET" onsubmit="return check()">
                      <div class="btn-group">
                         <a class="search_menu">
@@ -272,7 +272,7 @@
                             </select>
                         </a>
                         <input type="text" id="search_data" name='input_data'
-                            style=" all:unset; font-size: 1.5rem; width: 35rem; border-bottom: #000000 2px solid;  margin: 0 0 0 10px ;"
+                            style=" all:unset; font-size: 1.5rem; width: 100%; border-bottom: #000000 2px solid;  margin: 0 0 0 10px ;"
                             placeholder="Search" class="holder">
                         <button style="all:unset;" type='submit' class='sch_smit' id='search_submit'><img class="image"
                                 src="{% static 'search1.png' %}" width="37px;"></button>
@@ -296,7 +296,7 @@
                     </form>
                 </div>
                 <a class="box" style="margin: 0 0 0 2rem;" href="{% url 'home' %}"><img class="image"
-                        src="{% static '진짜2.png' %}" width="889rem"></a>
+                        src="{% static '진짜2.png' %}" width="96%;"></a>
 
                 <div class="hot"
                     style=" margin: 0 0 0 2rem;  background-color: rgb(7, 7, 7); color:white; width:95%; font-size:2.5rem; ">
@@ -421,170 +421,156 @@
 
 
             <div class="col">
-                <nav>
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                            role="tab" aria-controls="nav-home" aria-selected="true"
-                            style="color:rgb(0, 0, 0); font-size:1.5rem; ">Free Board</a>
-                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
-                            role="tab" aria-controls="nav-profile" aria-selected="false"
-                            style="color:rgb(0, 0, 0); font-size:1.5rem;">Reqest Board</a>
-
-                    </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
-                            style="width: 45rem; height: 25rem;">
-                            <br>
-                            <span style="color:rgb(0, 0, 0); font-size:3rem;"> <a class="hi"
-                                    href="{% url 'board'%}">▶Free Board
-                                </a> </span><br>
-
-                            <!-- 자유게시판 -->
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src="{% static '자유이미지.png' %}" class="d-block w-100" alt="...">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" style="color:rgb(0, 0, 0);">Home</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" style="color:rgb(0, 0, 0);">Profile</a>
+                            </li>
+                           
+                          </ul>
+                          <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel"
+                                    style="width: 45rem; height: 25rem;">
+                                    <br>
+                                    <span style="color:rgb(0, 0, 0); font-size:3rem;"> <a class="hi"
+                                            href="{% url 'board'%}">▶Free Board
+                                        </a> </span><br>
+        
+                                    <!-- 자유게시판 -->
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img src="{% static '자유이미지.png' %}" class="d-block w-100" alt="...">
+                                        </div>
+                                        {% for recent_free in recent_freeboard %}
+                                        <div class="carousel-item" style="text-align: center;">
+                                            <a href="{% url 'b_detail' recent_free.id %}"><img
+                                                    src="{{recent_free.attached_img.url}}" alt=""
+                                                    style="max-height: 25rem;"></a><br>
+                                            <a style="font-size: 1.8rem;">-{{recent_free.title}}-</a><br>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                        data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                        data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
                                 </div>
-                                {% for recent_free in recent_freeboard %}
-                                <div class="carousel-item" style="text-align: center;">
-                                    <a href="{% url 'b_detail' recent_free.id %}"><img
-                                            src="{{recent_free.attached_img.url}}" alt=""
-                                            style="max-height: 25rem;"></a><br>
-                                    <a style="font-size: 1.8rem;">-{{recent_free.title}}-</a><br>
+        
+                                <div>
                                 </div>
-                                {% endfor %}
-                            </div>
-                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
-                                data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselExampleControls" role="button"
-                                data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-
-                        <div>
-                        </div>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <div class="hhh">
-                            <br>
-                            <p style="font-size: 2.2rem; margin:0 0 0 17rem; color: rgb(247, 68, 74); ">자유게시판 HOT</p>
-                            <br>
-                            <table style="width:80%; margin:0 0 0 3rem;">
-                                {% for liked in like_lists %}
-                                {% for entry in liked %}
-                                {% if forloop.counter0 == 0 %}
-                                <!-- <a href="{% url 'b_detail' entry.id %}">
-                                     &nbsp <img src="{{entry.attached_img.url}}" alt="" width="800rem;"></a> -->
-                                <tr>
-                                    <th style="border-bottom: 2.5px solid  rgb(0, 0, 0);">
-                                        &nbsp <a style="color: rgb(0, 0, 0);  font-size: 1.5rem;"
-                                            href="{% url 'b_detail' entry.id %}"> {{entry.title}} &nbsp
-                                            {% else %} <a style="color:red;">♥</a> : {{entry}}</a><br>
-                                    </th>
-                                </tr>
-                                {% endif %}
-                                {% endfor %}
-                                {% endfor %}
-                            </table>
-                        </div>
-
-                    </div>
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <br>
-                        <span style="color:rgb(0, 0, 0); font-size:3rem;"> <a class="hi"
-                                href="{% url 'request'%}">▶Request
-                                Board</a> </span><br>
-                        <!-- 의뢰게시판최금=ㄴ -->
-                        <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel"
-                            style="width: 45rem; height: 25rem;">
-                            <div class="carousel-inner" style="text-align: center;">
-                                <div class="carousel-item active" data-interval="10000">
-                                    <img src="{% static '의뢰이미.png' %}" class="d-block w-100" alt="...">
-                                </div>
-                                {% for recent_post in recent_posts %}
-                                <div class="carousel-item" data-interval="2000">
-
-                                    <a href="{% url 'detail' recent_post.id%}">
-                                        <img src="{{recent_post.attached_img.url}}" alt="" style="max-height: 25rem;">
-                                        <a style="color:rgb(0, 0, 0);"><a style="font-size: 1.8rem;">-
-                                                {{recent_post.title}}-</a></a>
-                                    </a><br>
-                                </div>
-                                {% endfor %}
-                            </div>
-                            <a class="carousel-control-prev" href="#carouselExampleInterval" role="button"
-                                data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselExampleInterval" role="button"
-                                data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-
-
-                        <br>
-                        <br>
-                        <br>
-                        <div class="hhh">
-                            <br>
-                            <p style="font-size: 2.2rem; margin:0 0 0 17rem; color: rgb(247, 68, 74); ">의뢰게시판 HOT</p>
-                            <br>
-                            <table style="width:80%; margin:0 0 0 3rem;">
-                                {% for liked in scrap_lists %}
-                                {% for entry in liked %}
-                                {% if forloop.counter0 == 0 %}
-                                <tr>
-                                    <th style="border-bottom: 2.5px solid  rgb(0, 0, 0);">
-                                        <a style="color: rgb(0, 0, 0);  font-size: 1.5rem;"
-                                            href="{% url 'detail' entry.id %}">
-                                            {{entry.title}} /
-                                        </a>
-                                        {% else %}
-                                        <a style="color:red;">
-                                            Scrap : {{entry}}
-                                        </a>
-
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <div class="hhh">
+                                    <br>
+                                    <p style="font-size: 2.2rem; margin:0 0 0 17rem; color: rgb(247, 68, 74); ">자유게시판 HOT</p>
+                                    <br>
+                                    <table style="width:80%; margin:0 0 0 3rem;">
+                                        {% for liked in like_lists %}
+                                        {% for entry in liked %}
+                                        {% if forloop.counter0 == 0 %}
+                                        <!-- <a href="{% url 'b_detail' entry.id %}">
+                                             &nbsp <img src="{{entry.attached_img.url}}" alt="" width="800rem;"></a> -->
+                                        <tr>
+                                            <th style="border-bottom: 2.5px solid  rgb(0, 0, 0);">
+                                                &nbsp <a style="color: rgb(0, 0, 0);  font-size: 1.5rem;"
+                                                    href="{% url 'b_detail' entry.id %}"> {{entry.title}} &nbsp
+                                                    {% else %} <a style="color:red;">♥</a> : {{entry}}</a><br>
+                                            </th>
+                                        </tr>
                                         {% endif %}
                                         {% endfor %}
-                                        <br>
                                         {% endfor %}
-                                    </th>
-                                </tr>
-                            </table>
-                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <br>
+                                    <span style="color:rgb(0, 0, 0); font-size:3rem;"> <a class="hi"
+                                        href="{% url 'request'%}">▶Request
+                                        Board</a> </span><br>
+                                <!-- 의뢰게시판최금=ㄴ -->
+                                <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel"
+                                    style="width: 45rem; height: 25rem;">
+                                    <div class="carousel-inner" style="text-align: center;">
+                                        <div class="carousel-item active" data-interval="10000">
+                                            <img src="{% static '의뢰이미.png' %}" class="d-block w-100" alt="...">
+                                        </div>
+                                        {% for recent_post in recent_posts %}
+                                        <div class="carousel-item" data-interval="2000">
+        
+                                            <a href="{% url 'detail' recent_post.id%}">
+                                                <img src="{{recent_post.attached_img.url}}" alt="" style="max-height: 25rem;">
+                                                <a style="color:rgb(0, 0, 0);"><a style="font-size: 1.8rem;">-
+                                                        {{recent_post.title}}-</a></a>
+                                            </a><br>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleInterval" role="button"
+                                        data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleInterval" role="button"
+                                        data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+        
+        
+                                <br>
+                                <br>
+                                <br>
+                            
+                                <div class="hhh">
+                                    <br>
+                                    <p style="font-size: 2.2rem; margin:0 0 0 17rem; color: rgb(247, 68, 74); ">의뢰게시판 HOT</p>
+                                    <br>
+                                    <table style="width:80%; margin:0 0 0 3rem;">
+                                        {% for liked in scrap_lists %}
+                                        {% for entry in liked %}
+                                        {% if forloop.counter0 == 0 %}
+                                        <tr>
+                                            <th style="border-bottom: 2.5px solid  rgb(0, 0, 0);">
+                                                <a style="color: rgb(0, 0, 0);  font-size: 1.5rem;"
+                                                    href="{% url 'detail' entry.id %}">
+                                                    {{entry.title}} /
+                                                </a>
+                                                {% else %}
+                                                <a style="color:red;">
+                                                    Scrap : {{entry}}
+                                                </a>
+        
+                                                {% endif %}
+                                                {% endfor %}
+                                                <br>
+                                                {% endfor %}
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                          </div>
 
 
-
-
-
-
-
-
-                    </div>
-
-                </div>
-
-
-
-                <br>
-
-
-                <!-- </div>
-                </div> -->
+                
+                    
             </div>
         </div>
     </div>
