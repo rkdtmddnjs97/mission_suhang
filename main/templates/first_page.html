@@ -5,9 +5,13 @@
         <div><img class="image_h" src="{% static '진짜.png' %}" alt="" width="480;" height="280;"></div>
         <br><br>
         <!-- <h1>you want <a class="b" href="{% url 'home' %}">request ?</a></h1> -->
-        <a  class="b" href="{% url 'login' %}" onMouseOver='this.innerHTML="Join us!"' onMouseOut='this.innerHTML="You want see Misson?"' style="font-size: 5rem;" >You want see Misson?</a>
+        {% if not user.is_authenticated %}
+            <a  class="b" href="{% url 'login' %}" onMouseOver='this.innerHTML="Join us!"' onMouseOut='this.innerHTML="You want see Misson?"' style="font-size: 5rem;" >You want see Misson?</a>
+        {% else %}
+            <a  class="b" href="{% url 'home' %}" onMouseOver='this.innerHTML="Join us!"' onMouseOut='this.innerHTML="You want see Misson?"' style="font-size: 5rem;" >You want see Misson?</a>
+        {% endif %}
     </div>
-</div>
+</div>  
 <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
 

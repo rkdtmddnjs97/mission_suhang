@@ -303,7 +303,7 @@
                     <span>Hot 수행자 : </span>
                     {% for hot_user in hot_users %}
                     <a href="{% url 'profile' hot_user.profile_id %}" style="all:unset;">
-                       
+
                         {{hot_user.profile_id}}
                     </a>
                     {% endfor %}
