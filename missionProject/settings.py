@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'mypage.apps.MypageConfig',
     'request.apps.RequestConfig',
-    'view_request.apps.ViewRequestConfig',
     'freeBoard.apps.FreeboardConfig',
     'hashtag.apps.HashtagConfig',
     'search.apps.SearchConfig',
