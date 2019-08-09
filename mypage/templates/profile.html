@@ -58,7 +58,9 @@
         <br>
         <a class="pro2">Major</a><a class="pro">: {{my_profile.department}}</a>
         <br>
-        <a class="pro2">Average Score </a><a class="pro">:{{average_rate}} / 5</a>
+
+        <a class="pro2">Average Score </a><a class="pro">:{{average_rate}} / 5</a> 
+
         <br>
         <a class="pro2"> Total Clear Mission</a><a class="pro">:{{number}}</a>
         <br>
@@ -80,40 +82,42 @@
       의뢰자:{{review.writer}}<br>
       후기:{{review.reviews}}<br>
       평점:
-      <div class="rating">
-        {% if review.ratings == 1 %}
-        <label>
-          <span class="icon">★</span>
-        </label>
-        {% elif review.ratings == 2 %}
-        <label>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-        </label>
-        {% elif review.ratings == 3 %}
-        <label>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-        </label>
-        {% elif review.ratings ==  4 %}
-        <label>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-        </label>
-        {% elif review.ratings == 5 %}
-        <label>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-          <span class="icon">★</span>
-        </label>
-        {% endif %}
-      </div>
-      <br>
+
+          <div class="rating">
+            {% if review.ratings == 1 %}
+          <label>
+            <span class="icon">★</span>
+          </label>
+          {% elif review.ratings == 2 %}
+          <label>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+          </label>
+          {% elif review.ratings == 3 %}
+          <label>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+            <span class="icon">★</span> 
+          </label>
+          {% elif review.ratings ==  4 %}
+          <label>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+          </label>
+          {% elif review.ratings == 5 %}
+          <label>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+            <span class="icon">★</span>
+          </label>
+          {% endif %}
+          </div>
+<br>
+
       <hr>
       {% endfor %}
     </details>
@@ -193,7 +197,6 @@
   {% endif %}
   <style>
     @import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
-
     .mnav {
       font-family: 'Do Hyeon', sans-serif;
     }
@@ -201,7 +204,6 @@
     .m2 {
       font-size: 2rem;
     }
-
     .money_in {
       font-family: 'Do Hyeon', sans-serif;
       width: 120px;
@@ -220,38 +222,30 @@
       text-decoration: underline;
       font-size: 2rem;
     }
-
     input {
       all: unset;
       border-bottom: #000000 2px solid;
     }
-
     .plus {
       font-family: 'Do Hyeon', sans-serif;
       background-color: rgb(255, 255, 255);
     }
-
     .plus:hover {
       color: rgb(50, 161, 137);
       text-decoration: underline;
     }
-
     .edit_my {
       all: unset;
     }
-
     .edit_my:hover {
       color: rgb(50, 161, 137);
     }
-
     .login_title {
       margin: 0rem 0 0 25rem;
     }
-
     .a {
       float: left;
     }
-
     .pont {
       font-family: 'Do Hyeon', sans-serif;
     }
@@ -289,7 +283,8 @@
         all: unset;
       }
 
-      p {
+      p{
+
         font-size: 30px;
       }
 
@@ -321,12 +316,10 @@
       .box {
         font-size: 20px;
       }
-
       .title {
         font-size: 2rem;
         margin: 0rem 0 0 0rem;
       }
-
       .login_title {
         display: none;
       }
@@ -339,19 +332,15 @@
       .top {
         display: none;
       }
-
       .money_in {
         font-size: 20px;
       }
-
       .plus {
         font-size: 20px;
       }
 
     }
-
     @media screen and (min-width: 500px) and (max-width:200px) {}
-
     @media screen and (min-width: 1000px) {
       .row {
         width: 48rem;
@@ -386,23 +375,18 @@
       .box {
         font-size: 30px;
       }
-
       .title {
         font-size: 3rem;
       }
-
       .title_nav {
         display: none;
       }
-
       .top {
         width: 40px;
       }
-
       .money_in {
         font-size: 30px;
       }
-
       .plus {
         font-size: 30px;
       }
@@ -411,4 +395,6 @@
   </style>
 
 
+
   {% endblock %}
+

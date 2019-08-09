@@ -1,6 +1,8 @@
 {% extends 'base.html'%}
 {% block content %}
+
 <br><br><br>
+
 <h1> 제출결과물 </h1>
 <br>
 <h4>
@@ -26,6 +28,7 @@
     <form action="{% url 'end' post.id %}" method="POST" id="submission_result_form">
         <br>
         {% csrf_token %}
+
         <span style="font-size:1.5rem;">평점</span><br>
         <div class="rating">
             <label>
@@ -60,6 +63,7 @@
             </label>
         </div>
 
+
         <br>
         <span style="font-size:1.5rem;">후기</span><br><br>
         <div class="col-sm-9">
@@ -93,6 +97,7 @@
 {% endif %}
 
 <style>
+
     textarea {
         resize: none;
     }
@@ -171,5 +176,6 @@
     $(':radio').change(function () {
         console.log('New star rating: ' + this.value);
     });
+
 </script>
 {% endblock %}
