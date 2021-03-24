@@ -45,7 +45,7 @@ pytz==2019.1
 PyYAML==5.1
 pyzmq==18.0.1
 requests==2.22.0
-rsa==4.0
+rsa==4.1
 ruamel.yaml==0.15.96
 six==1.12.0
 sqlparse==0.3.0
